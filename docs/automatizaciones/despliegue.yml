@@ -1,0 +1,44 @@
+name: Despliegue autorizado
+on:
+  workflow_dispatch:
+    inputs:
+      autorizacion:
+        description: 'Escribir PUBLICAR tras autorización actual de Isaac'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: produccion-escrituras
+  cancel-in-progress: false
+jobs:
+  desplegar:
+    if: github.ref == 'refs/heads/main' && inputs.autorizacion == 'PUBLICAR'
+    environment: produccion
+    runs-on: ubuntu-latest
+    env:
+      SG_ENTORNO: produccion
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Comprobar configuración obligatoria
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$NEXT_PUBLIC_SUPABASE_URL"
+          test -n "$NEXT_PUBLIC_SUPABASE_ANON_KEY"
+      - run: npm ci
+      - run: npm run verificar
+      - run: npm audit --audit-level=low
+      - run: npm run build:worker
+      - name: Registrar versiones previas
+        run: npx wrangler deployments list
+      - name: Desplegar Worker
+        run: npx wrangler deploy

@@ -1,0 +1,54 @@
+name: Migraciones controladas
+on:
+  workflow_dispatch:
+    inputs:
+      destino:
+        description: Entorno de destino
+        type: choice
+        options: [produccion, test]
+        default: test
+        required: true
+      solo_simular:
+        description: Mostrar cambios sin aplicarlos
+        type: boolean
+        default: true
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: produccion-escrituras
+  cancel-in-progress: false
+jobs:
+  migrar:
+    if: github.ref == 'refs/heads/main'
+    environment: ${{ inputs.destino }}
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      RESPALDO_AGE_RECIPIENT: ${{ vars.RESPALDO_AGE_RECIPIENT }}
+      R2_ENDPOINT: ${{ vars.R2_ENDPOINT }}
+      R2_BUCKET_RESPALDOS: ${{ vars.R2_BUCKET_RESPALDOS }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+      SG_DESTINO: ${{ inputs.destino }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Simular siempre primero
+        run: |
+          test -n "$DATABASE_URL"
+          npx supabase db push --db-url "$DATABASE_URL" --dry-run
+      - name: Preparar cifrado
+        if: inputs.solo_simular == false
+        run: sudo apt-get update && sudo apt-get install -y age
+      - name: Respaldar antes de aplicar
+        if: inputs.solo_simular == false
+        run: bash scripts/respaldo-ci.sh
+      - name: Aplicar cambios aprobados
+        if: inputs.solo_simular == false
+        run: npx supabase db push --db-url "$DATABASE_URL" --yes
