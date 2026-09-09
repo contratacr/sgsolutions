@@ -24,7 +24,7 @@ export function Entrada() {
       <div className="contenedor entrada-grid">
         <div className="entrada-presentacion">
           <p className="entrada-eyebrow"><span/>{t('etiqueta')}</p>
-          <h1 id="entrada-titulo">{t('titulo')}<br/><span>{t('acento')}</span></h1>
+          <h1 id="entrada-titulo">{t('titulo')}{' '}<br/><span>{t('acento')}</span></h1>
           <p className="entrada-descripcion">{t('descripcion')}</p>
         </div>
         <div className="entrada-destinos">

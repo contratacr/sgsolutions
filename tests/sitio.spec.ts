@@ -13,7 +13,8 @@ test('portada real, imágenes, cabeceras y tamaño de descarga', async ({page}, 
   const errores: string[] = [];
   page.on('pageerror', error => errores.push(error.message));
   const respuesta = await page.goto('/');
-  await expect(page.getByRole('heading', {level: 1})).toContainText('En buenas manos.');
+  await expect(page.getByRole('heading', {level: 1})).toHaveText('Somos su aliado tecnológico.');
+  await expect(page.locator('.escena-marca')).toContainText('SOLUCIONES INFORMÁTICAS');
   if (prueba.project.name === 'escritorio') await expect(page.locator('.escenario')).toHaveAttribute('data-escena', '3d', {timeout: 15000});
   await page.waitForLoadState('networkidle');
   expect(respuesta?.headers()['x-content-type-options']).toBe('nosniff');
@@ -71,7 +72,8 @@ test('cambio de idioma persistente y navegación', async ({page}, prueba) => {
   await page.goto('/');
   await page.getByRole('button', {name: 'Read this page in English'}).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.getByRole('heading', {level: 1})).toContainText('In good hands.');
+  await expect(page.getByRole('heading', {level: 1})).toHaveText('We are your technology partner.');
+  await expect(page.locator('.escena-marca')).toContainText('IT SOLUTIONS');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   if (prueba.project.name === 'movil') await page.getByRole('button', {name: 'Open menu'}).click();
@@ -95,7 +97,7 @@ test('panel sin sesión no revela datos y carrito ignora almacenamiento manipula
 
 test('entrada navega, carga 3D progresivo y permite pausarlo', async ({page}, prueba) => {
   await page.goto('/');
-  const menu = page.getByRole('navigation', {name: 'Elegí una solución'});
+  const menu = page.getByRole('navigation', {name: 'Elija una solución'});
   await expect(menu.getByRole('link')).toHaveCount(3);
   await expect(menu.getByRole('link', {name: /Soporte técnico/})).toHaveAttribute('href', '/soporte');
   await expect(menu.getByRole('link', {name: /Soluciones empresariales/})).toHaveAttribute('href', '/empresas');
@@ -121,7 +123,7 @@ test('entrada navega, carga 3D progresivo y permite pausarlo', async ({page}, pr
 test('movimiento reducido mantiene menú y versión estática', async ({page}) => {
   await page.emulateMedia({reducedMotion: 'reduce'});
   await page.goto('/');
-  await expect(page.getByRole('navigation', {name: 'Elegí una solución'})).toBeVisible();
+  await expect(page.getByRole('navigation', {name: 'Elija una solución'})).toBeVisible();
   await expect(page.locator('.escenario')).toHaveAttribute('data-escena', 'ilustracion');
   await expect(page.getByRole('button', {name: 'Pausar movimiento'})).toHaveCount(0);
   await expect(page.locator('.escenario canvas')).toHaveCount(0);
@@ -136,7 +138,7 @@ test('sin WebGL el respaldo conserva la navegación', async ({page}, prueba) => 
     } as typeof original;
   });
   await page.goto('/');
-  await expect(page.getByRole('navigation', {name: 'Elegí una solución'})).toBeVisible();
+  await expect(page.getByRole('navigation', {name: 'Elija una solución'})).toBeVisible();
   if (prueba.project.name === 'escritorio') await expect(page.locator('.escenario')).toHaveAttribute('data-respaldo', 'fallo', {timeout: 15000});
   await expect(page.locator('.escenario canvas')).toHaveCount(0);
   await expect(page.locator('.escena-respaldo')).toBeVisible();
@@ -149,7 +151,7 @@ test.describe('navegación sin JavaScript', () => {
   test.use({javaScriptEnabled: false});
   test('el menú inicial sigue permitiendo entrar a la tienda', async ({page}) => {
     await page.goto('/');
-    await expect(page.getByRole('navigation', {name: 'Elegí una solución'})).toBeVisible();
+    await expect(page.getByRole('navigation', {name: 'Elija una solución'})).toBeVisible();
     const tienda = await abrirPestana(page, page.getByRole('link', {name: /Explorar productos/}));
     await expect(tienda).toHaveURL(/\/tienda$/);
     await expect(tienda.getByRole('heading', {level: 1})).toBeVisible();

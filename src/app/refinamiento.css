@@ -190,3 +190,22 @@ h2 { font-weight: 550; }
 }
 @media (max-width: 520px) { .catalogo-grid { grid-template-columns: 1fr; } .producto-imagen, .producto:nth-child(-n+2) .producto-imagen { height: 285px; } }
 @media (prefers-reduced-motion: reduce) { .categorias-visuales button:hover .categoria-miniatura, .producto:hover .producto-imagen img { transform: none; } }
+
+/* Identidad de entrada: luz, ondas y marca. */
+.entrada-trama::before { display: none; }
+.entrada-trama { background: radial-gradient(ellipse at 24% 70%, #35597940, transparent 54%), linear-gradient(105deg, transparent 60%, #19324b55); }
+.entrada h1 > span { color: #c5dbeb; }
+.entrada-eyebrow { letter-spacing: .12em; }
+.escena-marca { position: absolute; inset: 0 0 35px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; pointer-events: none; }
+.escena-marca img { width: clamp(190px, 19vw, 270px); height: auto; filter: drop-shadow(0 8px 25px #071b2d); }
+.escena-marca > span { font-size: .57rem; letter-spacing: .27em; color: #c2d8e8; }
+@media (max-width: 899px) {
+  .entrada-eyebrow { font-size: .55rem; letter-spacing: .08em; }
+  .escena-marca img { width: 210px; }
+  .escena-marca > span { font-size: .52rem; }
+}
+.escena-canvas { mix-blend-mode: screen; }
+@media (max-width: 899px) {
+  .entrada-grid { row-gap: 18px; }
+  .destino { padding-block: 13px; }
+}
