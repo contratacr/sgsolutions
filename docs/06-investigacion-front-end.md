@@ -2,6 +2,8 @@
 
 Fecha de consulta: 9 de septiembre de 2026. Alcance: propuesta técnica y visual; las tecnologías nuevas descritas aquí todavía no están instaladas ni implementadas.
 
+> Actualización de implementación: ver [entrada interactiva](07-entrada-interactiva.md). Se utilizó Three.js directamente por la restricción de compatibilidad de Fiber con React 19.3.
+
 ## Recomendación
 
 Conservar Next.js, React, TypeScript y Tailwind. Añadir Motion para las transiciones de interfaz y usar Three.js mediante React Three Fiber para una única escena 3D de la portada, cargada por separado. La navegación, búsqueda y compra deben funcionar independientemente de esa escena. Esta es una recomendación para SG Solutions, derivada de las capacidades documentadas y del proyecto actual; no una comparación de rendimiento medida entre librerías.

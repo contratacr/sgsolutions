@@ -36,5 +36,30 @@
   "Pie": {"frase":"Thoughtful solutions. Technology you can rely on.", "derechos":"© {anio} SG Solutions.", "direccionTitulo":"Find us in Atenas", "contactoTitulo":"Let's talk", "privacidad":"Do not include sensitive information in WhatsApp inquiries."},
   "Acceso": {"etiqueta":"TEAM WORKSPACE", "titulo":"Welcome back.", "descripcion":"Sign in with your authorized SG Solutions account.", "correo":"Email address", "clave":"Password", "entrar":"Sign in", "entrando":"Signing in…", "noDisponible":"Team access is not yet available.", "error":"We couldn't sign you in. Check your details or contact the administrator.", "sinPermiso":"Your account does not have active team access.", "validacion":"Enter a valid email address and your password.", "nota":"Access is by invitation.", "salir":"Sign out"},
   "Panel": {"titulo":"Business workspace", "descripcion":"The team foundation is ready. Business modules will be enabled in upcoming releases.", "clientes":"Customers", "clientesDetalle":"Customer records and service history.", "cotizaciones":"Quotes", "cotizacionesDetalle":"Proposals, documents and follow-up.", "pedidos":"Orders", "pedidosDetalle":"Purchases and payment confirmations.", "pendiente":"In preparation", "productos":"Products", "productosDetalle":"Add, edit, publish and remove products.", "ajustes":"Settings", "ajustesDetalle":"Site content, contact details and brand identity."},
-  "Error": {"titulo":"We couldn't load this page.", "reintentar":"Try again", "noEncontrado":"This page is not available.", "volver":"Back to home"}
+  "Error": {"titulo":"We couldn't load this page.", "reintentar":"Try again", "noEncontrado":"This page is not available.", "volver":"Back to home"},
+  "Entrada": {
+    "identificador": "SG / 01",
+    "etiqueta": "TECHNOLOGY THAT CONNECTS",
+    "titulo": "Your next step.",
+    "acento": "In good hands.",
+    "descripcion": "Equipment, support and solutions that work with you. Choose where we start.",
+    "elegir": "What do you need today?",
+    "menu": "Choose a solution",
+    "tiendaTitulo": "Technology store",
+    "tiendaTexto": "Find the equipment for what’s next.",
+    "tiendaAccion": "Explore products",
+    "soporteTitulo": "Technical support",
+    "soporteTexto": "Your technology, working as it should.",
+    "soporteAccion": "Get support",
+    "empresasTitulo": "Business solutions",
+    "empresasTexto": "Connecting and protecting your business.",
+    "empresasAccion": "Explore solutions",
+    "ayuda": "Personal advice. Support from start to finish.",
+    "escena": "Everything connected. Everything covered.",
+    "visual": "Designed to connect",
+    "activar": "Enable motion",
+    "pausar": "Pause motion",
+    "explorar": "Discover SG Solutions",
+    "ubicacion": "Atenas, Costa Rica"
+  }
 }

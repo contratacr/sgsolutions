@@ -185,5 +185,30 @@
     "reintentar": "Volver a intentar",
     "noEncontrado": "Esta página no está disponible.",
     "volver": "Volver al inicio"
+  },
+  "Entrada": {
+    "identificador": "SG / 01",
+    "etiqueta": "TECNOLOGÍA QUE CONECTA",
+    "titulo": "Tu próximo paso.",
+    "acento": "En buenas manos.",
+    "descripcion": "Equipo, soporte y soluciones que trabajan con vos. Elegí por dónde empezamos.",
+    "elegir": "¿Qué necesitás hoy?",
+    "menu": "Elegí una solución",
+    "tiendaTitulo": "Tienda",
+    "tiendaTexto": "Encontrá el equipo para lo que viene.",
+    "tiendaAccion": "Explorar productos",
+    "soporteTitulo": "Soporte técnico",
+    "soporteTexto": "Tu tecnología, funcionando como debe.",
+    "soporteAccion": "Solicitar ayuda",
+    "empresasTitulo": "Soluciones empresariales",
+    "empresasTexto": "Conectamos y protegemos tu negocio.",
+    "empresasAccion": "Conocer soluciones",
+    "ayuda": "Asesoría cercana. Respaldo de principio a fin.",
+    "escena": "Todo conectado. Todo resuelto.",
+    "visual": "Diseñado para conectar",
+    "activar": "Activar movimiento",
+    "pausar": "Pausar movimiento",
+    "explorar": "Descubrí SG Solutions",
+    "ubicacion": "Atenas, Costa Rica"
   }
 }
