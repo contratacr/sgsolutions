@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { Cabecera } from '@/components/cabecera';
 import { Pie } from '@/components/pie';
 import './globals.css';
+import './refinamiento.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Marca');

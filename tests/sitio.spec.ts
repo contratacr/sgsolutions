@@ -209,3 +209,32 @@ for (const [ruta,tituloEs,tituloEn] of [
     expect(errores).toEqual([]);
   });
 }
+
+test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page}, prueba) => {
+  await page.goto('/tienda');
+  const buscar = page.getByRole('searchbox', {name:'Buscar equipo'});
+  await buscar.fill('PORTATILES');
+  await expect(page.getByRole('article')).toHaveCount(1);
+  await expect(page.getByRole('article')).toContainText('Portátiles para tu día a día');
+  await page.getByRole('button', {name:'Seguridad', exact:true}).click();
+  await expect(page.getByText('No encontramos esa opción.')).toBeVisible();
+  await page.getByRole('button', {name:'Ver todo el equipo', exact:true}).click();
+  await expect(page.getByRole('article')).toHaveCount(5);
+  await buscar.fill('camaras');
+  await expect(page.getByRole('article')).toHaveCount(1);
+  await page.getByRole('button', {name:'Read this page in English'}).click();
+  await expect(page.getByRole('searchbox', {name:'Search equipment'})).toHaveValue('');
+  await expect(page.getByRole('article')).toHaveCount(5);
+  await page.getByRole('searchbox', {name:'Search equipment'}).fill('network');
+  await expect(page.getByRole('article')).toHaveCount(1);
+  await page.getByRole('button', {name:'Clear search'}).click();
+  await expect(page.getByRole('article')).toHaveCount(5);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
+  await page.getByRole('button', {name:'Leer esta página en español'}).click();
+  for (const imagen of await page.locator('img').all()) {
+    await imagen.scrollIntoViewIfNeeded();
+    await imagen.evaluate(async elemento => { await (elemento as HTMLImageElement).decode(); });
+  }
+  await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
+  await page.screenshot({path:`evidencias/tienda-editorial-${prueba.project.name}.png`, fullPage:true, animations:'disabled', scale:'css'});
+});

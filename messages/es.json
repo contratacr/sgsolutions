@@ -29,6 +29,9 @@
     "otroIdioma": "EN"
   },
   "Inicio": {
+    "proyectoNegocioTitulo": "Tu operación, mejor equipada",
+    "proyectoNegocioTexto": "Equipo de punto de venta elegido para las necesidades de tu comercio.",
+    "proyectoNegocioAlt": "Equipo de punto de venta con monitor, teclado e impresora en SG Solutions",
     "etiqueta": "TECNOLOGÍA CON RESPALDO LOCAL",
     "titulo": "Tu tecnología.",
     "tituloAcento": "En buenas manos.",
@@ -93,6 +96,19 @@
     "tiendaAlt": "Portátil exhibida en SG Solutions"
   },
   "Tienda": {
+    "explorarEquipo": "Encontrá tu equipo",
+    "necesitoAyuda": "Necesito asesoría",
+    "respaldoLocal": "Asesoría y respaldo desde Atenas",
+    "seleccionEtiqueta": "TECNOLOGÍA PARA TU DÍA A DÍA",
+    "seleccionTitulo": "Tu siguiente idea empieza aquí.",
+    "catalogoEtiqueta": "EXPLORÁ NUESTRA SELECCIÓN",
+    "catalogoTitulo": "Elegí lo que te mueve.",
+    "catalogoTexto": "Del equipo de todos los días a la próxima solución para tu negocio.",
+    "buscar": "Buscar equipo",
+    "limpiarBusqueda": "Limpiar búsqueda",
+    "sinResultados": "No encontramos esa opción.",
+    "intentarBusqueda": "Probá con otro nombre o elegí una categoría diferente.",
+    "restablecer": "Ver todo el equipo",
     "etiqueta": "TECNOLOGÍA A TU MEDIDA",
     "titulo": "El equipo es el inicio.",
     "descripcion": "Elegí lo que necesitás. Nuestro equipo te ayuda con la configuración y el respaldo.",
@@ -252,6 +268,13 @@
     "respuesta2": "El tipo y modelo de equipo, una descripción del problema y cualquier mensaje de error. No compartás contraseñas por WhatsApp."
   },
   "Empresas": {
+    "necesidades": "Soluciones según tu necesidad",
+    "necesidad1": "Conectar",
+    "necesidad1Texto": "Redes para trabajar juntos.",
+    "necesidad2": "Proteger",
+    "necesidad2Texto": "Seguridad para tus espacios.",
+    "necesidad3": "Equipar",
+    "necesidad3Texto": "Herramientas para tu operación.",
     "etiqueta": "SOLUCIONES EMPRESARIALES",
     "titulo": "Tecnología que acompaña tu negocio.",
     "descripcion": "Redes, seguridad y equipo pensados para trabajar juntos. Desde la primera conversación hasta la instalación y el soporte.",

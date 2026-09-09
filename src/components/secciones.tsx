@@ -8,12 +8,12 @@ export async function Soluciones() {
   const t = await getTranslations('Inicio');
   const contacto = await getTranslations('Contacto');
   const iconos = [Headset, Network, ShieldCheck, Monitor];
-  return <section id="servicios" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('serviciosEtiqueta')}</p><h2>{t('serviciosTitulo')}</h2></div><p>{t('serviciosDescripcion')}</p></div><div className="servicios-grid">{iconos.map((Icono,i) => <a key={i} className="servicio" href={enlaceWhatsApp(contacto('servicioMensaje', {servicio: t(`servicio${i}Titulo`)}))} target="_blank" rel="noopener noreferrer"><div className="servicio-icono"><Icono size={28}/><span>{`0${i+1}`}</span></div><h3>{t(`servicio${i}Titulo`)}</h3><p>{t(`servicio${i}Texto`)}</p><ArrowUpRight className="servicio-flecha" size={24}/><span className="sr-only">{t('servicioAccion')}</span></a>)}</div></section>;
+  return <section id="servicios" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('serviciosEtiqueta')}</p><h2>{t('serviciosTitulo')}</h2></div><p>{t('serviciosDescripcion')}</p></div><div className="servicios-grid">{iconos.map((Icono,i) => <a key={i} className="servicio" id={`solucion-${i}`} href={enlaceWhatsApp(contacto('servicioMensaje', {servicio: t(`servicio${i}Titulo`)}))} target="_blank" rel="noopener noreferrer"><div className="servicio-icono"><Icono size={28}/><span>{`0${i+1}`}</span></div><h3>{t(`servicio${i}Titulo`)}</h3><p>{t(`servicio${i}Texto`)}</p><ArrowUpRight className="servicio-flecha" size={24}/><span className="sr-only">{t('servicioAccion')}</span></a>)}</div></section>;
 }
 
 export async function Proyectos() {
   const t = await getTranslations('Inicio');
-  return <section className="seccion proyectos"><div className="contenedor"><p className="etiqueta">{t('proyectosEtiqueta')}</p><h2>{t('proyectosTitulo')}</h2><div className="proyectos-grid">{['camaras', 'gamer'].map((imagen,i) => <article className="proyecto" key={imagen}><div className="proyecto-imagen"><Image src={`/imagenes/${imagen}.webp`} alt={t(`proyecto${i}Alt`)} fill sizes="(max-width: 760px) 100vw, 48vw"/></div><div><h3>{t(`proyecto${i}Titulo`)}</h3><p>{t(`proyecto${i}Texto`)}</p></div></article>)}</div></div></section>;
+  return <section className="seccion proyectos"><div className="contenedor"><p className="etiqueta">{t('proyectosEtiqueta')}</p><h2>{t('proyectosTitulo')}</h2><div className="proyectos-grid">{['camaras', 'pos'].map((imagen,i) => <article className="proyecto" key={imagen}><div className="proyecto-imagen"><Image src={`/imagenes/${imagen}.webp`} alt={t(i === 1 ? 'proyectoNegocioAlt' : 'proyecto0Alt')} fill sizes="(max-width: 760px) 100vw, 48vw"/></div><div><h3>{t(i === 1 ? 'proyectoNegocioTitulo' : 'proyecto0Titulo')}</h3><p>{t(i === 1 ? 'proyectoNegocioTexto' : 'proyecto0Texto')}</p></div></article>)}</div></div></section>;
 }
 
 export async function Planes() {

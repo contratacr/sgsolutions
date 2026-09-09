@@ -5,6 +5,9 @@
     "empresas": "Business",
     "nuevaPestana": "Opens in a new tab","principal":"Main navigation", "inicio":"Home", "servicios":"Services", "planes":"Support plans", "tienda":"Shop", "nosotros":"About us", "contacto":"Let's talk", "menu":"Open menu", "cerrar":"Close", "carrito":"Open cart", "acceso":"Team access", "saltar":"Skip to content", "volver":"Back to home", "cambiarIdioma":"Leer esta página en español", "otroIdioma":"ES"},
   "Inicio": {
+    "proyectoNegocioTitulo": "Better equipped for business",
+    "proyectoNegocioTexto": "Point-of-sale equipment selected for your store’s needs.",
+    "proyectoNegocioAlt": "Point-of-sale equipment with monitor, keyboard and printer at SG Solutions",
     "etiqueta":"TECHNOLOGY WITH LOCAL SUPPORT", "titulo":"Your technology.", "tituloAcento":"In good hands.", "descripcion":"We connect, protect and equip your business with solutions built around you. And we stay by your side to keep everything running.",
     "accion":"Tell us what you need", "secundaria":"Explore our solutions", "foto":"Network installation with organized cabling and connectivity equipment", "pieFoto":"NETWORKS THAT CONNECT YOUR BUSINESS", "pieDetalle":"Integration, installation and support.",
     "respaldo1":"Advice tailored to you", "respaldo2":"Remote and on-site support", "respaldo3":"From Atenas to your business",
@@ -26,6 +29,19 @@
     "contactoEtiqueta":"LET'S START A CONVERSATION", "contactoTitulo":"What can we solve together?", "contactoTexto":"Tell us about your business, your equipment or the project you have in mind.", "contactoAccion":"Message us on WhatsApp", "llamar":"Call 2446-7846", "mapa":"Get directions"
   },
   "Tienda": {
+    "explorarEquipo": "Find your equipment",
+    "necesitoAyuda": "I need advice",
+    "respaldoLocal": "Personal advice and support from Atenas",
+    "seleccionEtiqueta": "TECHNOLOGY FOR EVERY DAY",
+    "seleccionTitulo": "Your next idea starts here.",
+    "catalogoEtiqueta": "EXPLORE OUR SELECTION",
+    "catalogoTitulo": "Choose what moves you.",
+    "catalogoTexto": "From everyday equipment to the next solution for your business.",
+    "buscar": "Search equipment",
+    "limpiarBusqueda": "Clear search",
+    "sinResultados": "We couldn’t find that option.",
+    "intentarBusqueda": "Try another name or choose a different category.",
+    "restablecer": "View all equipment",
     "etiqueta":"TECHNOLOGY BUILT AROUND YOU", "titulo":"Equipment is just the start.", "descripcion":"Choose what you need. Our team helps you with configuration and support.", "aviso":"We are preparing online shopping. Prices and availability are subject to confirmation.",
     "todos":"All equipment", "computo":"Computers", "seguridad":"Security", "redes":"Networks", "negocio":"For your business", "filtro":"Filter by category", "agregar":"Add to cart", "agregado":"Added to cart", "precioPendiente":"Price to be confirmed", "detalle":"Configuration and availability to be confirmed", "resultados":"{cantidad} options", "continuar":"Keep exploring",
     "portatilNombre":"Laptops for your everyday needs", "portatilTexto":"Equipment for work and study, with advice on choosing your configuration.", "portatilAlt":"Laptop displayed at the SG Solutions office",
@@ -103,6 +119,13 @@
     "respuesta2": "The equipment type and model, a description of the issue and any error messages. Do not share passwords on WhatsApp."
   },
   "Empresas": {
+    "necesidades": "Solutions for your needs",
+    "necesidad1": "Connect",
+    "necesidad1Texto": "Networks that bring work together.",
+    "necesidad2": "Protect",
+    "necesidad2Texto": "Security for your spaces.",
+    "necesidad3": "Equip",
+    "necesidad3Texto": "Tools for your operation.",
     "etiqueta": "BUSINESS SOLUTIONS",
     "titulo": "Technology that works for your business.",
     "descripcion": "Networks, security and equipment designed to work together. From the first conversation to installation and support.",
