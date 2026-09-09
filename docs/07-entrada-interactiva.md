@@ -2,6 +2,8 @@
 
 9 de septiembre de 2026. Disponible en desarrollo local en http://127.0.0.1:3107. No publicada a producción.
 
+> Actualización: la navegación por secciones fue reemplazada por páginas independientes con pestañas nuevas. Ver [estructura actual](08-referentes-y-paginas.md).
+
 ## Resultado
 
 - Primera sección con tres enlaces reales: tienda (`/tienda`), soporte (`#contacto`) y empresas (`#servicios`). Los textos y etiquetas accesibles están en español e inglés.

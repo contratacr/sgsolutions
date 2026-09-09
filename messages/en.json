@@ -1,6 +1,9 @@
 {
   "Marca": {"nombre":"SG Solutions", "descripcion":"Tailored technology solutions in Atenas, Costa Rica. IT support, networks, security and equipment with professional advice.", "logo":"SG Solutions", "telefono":"2446-7846", "ubicacionCorta":"Atenas, Costa Rica", "direccion":"Plaza El Bosque Shopping Center, unit 9. Mercedes, Atenas, Alajuela, Costa Rica.", "correo":"lsanchez@sgsolutionscr.com"},
-  "Navegacion": {"principal":"Main navigation", "inicio":"Home", "servicios":"Services", "planes":"Support plans", "tienda":"Shop", "nosotros":"About us", "contacto":"Let's talk", "menu":"Open menu", "cerrar":"Close", "carrito":"Open cart", "acceso":"Team access", "saltar":"Skip to content", "volver":"Back to home", "cambiarIdioma":"Leer esta página en español", "otroIdioma":"ES"},
+  "Navegacion": {
+    "soporte": "Support",
+    "empresas": "Business",
+    "nuevaPestana": "Opens in a new tab","principal":"Main navigation", "inicio":"Home", "servicios":"Services", "planes":"Support plans", "tienda":"Shop", "nosotros":"About us", "contacto":"Let's talk", "menu":"Open menu", "cerrar":"Close", "carrito":"Open cart", "acceso":"Team access", "saltar":"Skip to content", "volver":"Back to home", "cambiarIdioma":"Leer esta página en español", "otroIdioma":"ES"},
   "Inicio": {
     "etiqueta":"TECHNOLOGY WITH LOCAL SUPPORT", "titulo":"Your technology.", "tituloAcento":"In good hands.", "descripcion":"We connect, protect and equip your business with solutions built around you. And we stay by your side to keep everything running.",
     "accion":"Tell us what you need", "secundaria":"Explore our solutions", "foto":"Network installation with organized cabling and connectivity equipment", "pieFoto":"NETWORKS THAT CONNECT YOUR BUSINESS", "pieDetalle":"Integration, installation and support.",
@@ -33,11 +36,13 @@
   },
   "Carrito": {"titulo":"Your cart", "descripcion":"Review the equipment and quantities you are interested in.", "vacio":"You haven't added any equipment yet.", "explorar":"Explore the shop", "quitar":"Remove {nombre}", "cantidad":"Quantity of {nombre}", "total":"Total", "pendiente":"To be confirmed", "nota":"Online shopping will be available soon. In the meantime, we can prepare a quote for your selection.", "cotizar":"Ask about your selection on WhatsApp", "pagar":"Online payment coming soon", "mensaje":"Hello, SG Solutions. I would like a quote for this selection:", "borrado":"Remove", "limite":"Maximum 99 units per option."},
   "Contacto": {"mensaje":"Hello, SG Solutions. I would like advice on a technology solution.", "planMensaje":"Hello, SG Solutions. I am interested in the {plan} plan.", "servicioMensaje":"Hello, SG Solutions. I am interested in {servicio}."},
-  "Pie": {"frase":"Thoughtful solutions. Technology you can rely on.", "derechos":"© {anio} SG Solutions.", "direccionTitulo":"Find us in Atenas", "contactoTitulo":"Let's talk", "privacidad":"Do not include sensitive information in WhatsApp inquiries."},
+  "Pie": {
+    "whatsapp": "Chat on WhatsApp","frase":"Thoughtful solutions. Technology you can rely on.", "derechos":"© {anio} SG Solutions.", "direccionTitulo":"Find us in Atenas", "contactoTitulo":"Let's talk", "privacidad":"Do not include sensitive information in WhatsApp inquiries."},
   "Acceso": {"etiqueta":"TEAM WORKSPACE", "titulo":"Welcome back.", "descripcion":"Sign in with your authorized SG Solutions account.", "correo":"Email address", "clave":"Password", "entrar":"Sign in", "entrando":"Signing in…", "noDisponible":"Team access is not yet available.", "error":"We couldn't sign you in. Check your details or contact the administrator.", "sinPermiso":"Your account does not have active team access.", "validacion":"Enter a valid email address and your password.", "nota":"Access is by invitation.", "salir":"Sign out"},
   "Panel": {"titulo":"Business workspace", "descripcion":"The team foundation is ready. Business modules will be enabled in upcoming releases.", "clientes":"Customers", "clientesDetalle":"Customer records and service history.", "cotizaciones":"Quotes", "cotizacionesDetalle":"Proposals, documents and follow-up.", "pedidos":"Orders", "pedidosDetalle":"Purchases and payment confirmations.", "pendiente":"In preparation", "productos":"Products", "productosDetalle":"Add, edit, publish and remove products.", "ajustes":"Settings", "ajustesDetalle":"Site content, contact details and brand identity."},
   "Error": {"titulo":"We couldn't load this page.", "reintentar":"Try again", "noEncontrado":"This page is not available.", "volver":"Back to home"},
   "Entrada": {
+    "nuevaPestana": "Opens in a new tab",
     "identificador": "SG / 01",
     "etiqueta": "TECHNOLOGY THAT CONNECTS",
     "titulo": "Your next step.",
@@ -61,5 +66,55 @@
     "pausar": "Pause motion",
     "explorar": "Discover SG Solutions",
     "ubicacion": "Atenas, Costa Rica"
+  },
+  "Soporte": {
+    "etiqueta": "TECHNICAL SUPPORT",
+    "titulo": "Back to what matters.",
+    "descripcion": "Tell us what is happening with your equipment. We help you find the next step, with remote or on-site assistance depending on your situation.",
+    "foto": "Our office at Plaza El Bosque, Atenas",
+    "accion": "Get support",
+    "mensaje": "Hello, SG Solutions. I need technical support for my equipment.",
+    "elegir": "LET’S START WITH YOUR EQUIPMENT",
+    "ayudaTitulo": "What do you need help with?",
+    "ayudaTexto": "Choose a topic and tell us the details on WhatsApp.",
+    "tema0": "Computers and equipment",
+    "texto0": "Diagnostics, maintenance and equipment issues.",
+    "tema1": "Networks and Wi-Fi",
+    "texto1": "Connectivity, coverage and network equipment.",
+    "tema2": "Cameras and security",
+    "texto2": "Questions about your surveillance or alarm system.",
+    "temaMensaje": "Hello, SG Solutions. I need help with: {tema}.",
+    "consultar": "Talk to our team",
+    "procesoEtiqueta": "HOW WE START",
+    "procesoTitulo": "A clear path forward.",
+    "paso0Titulo": "Tell us what’s happening",
+    "paso0Texto": "Describe the equipment, the issue and when you first noticed it.",
+    "paso1Titulo": "Choose the right assistance",
+    "paso1Texto": "We assess whether remote help, in-store service or a visit is appropriate.",
+    "paso2Titulo": "Agree on the next step",
+    "paso2Texto": "We confirm the scope and terms before carrying out the work.",
+    "preguntasEtiqueta": "BEFORE WE START",
+    "preguntasTitulo": "Frequently asked questions",
+    "pregunta0": "Can I request support without a plan?",
+    "respuesta0": "Yes. Tell us about your situation so we can review the scope and prepare a service proposal.",
+    "pregunta1": "Is remote assistance available?",
+    "respuesta1": "Depending on the issue, we can arrange remote or in-person assistance. Our team confirms the approach after reviewing your request.",
+    "pregunta2": "What information should I have ready?",
+    "respuesta2": "The equipment type and model, a description of the issue and any error messages. Do not share passwords on WhatsApp."
+  },
+  "Empresas": {
+    "etiqueta": "BUSINESS SOLUTIONS",
+    "titulo": "Technology that works for your business.",
+    "descripcion": "Networks, security and equipment designed to work together. From the first conversation to installation and support.",
+    "foto": "Network infrastructure installed by SG Solutions",
+    "accion": "Discuss your project",
+    "mensaje": "Hello, SG Solutions. I would like to discuss a technology project for my business."
+  },
+  "ContactoPagina": {
+    "whatsapp": "WhatsApp",
+    "escribir": "Message us",
+    "telefono": "Call us",
+    "correo": "Email",
+    "visita": "Visit us in Atenas"
   }
 }

@@ -4,8 +4,8 @@ Base de la plataforma web: Next.js 16, React 19, TypeScript, Tailwind 4, next-in
 
 ## Estado de esta entrega
 
-- Portada con fotos reales, servicios, planes, empresa y contacto/Maps.
-- Español e inglés con selector persistente y 167 claves traducidas.
+- Portada de entrada con Motion y escena 3D propia. Tienda, Soporte, Empresas, Nosotros y Contacto tienen páginas independientes; los accesos del menú abren pestañas nuevas.
+- Español e inglés con selector persistente y 239 claves traducidas.
 - Tienda inicial por categorías, filtros y carrito persistente con cantidades.
 - Base de acceso interno por Supabase Auth y perfil activo, sin registro público.
 - Configuración Supabase local y migración inicial de perfiles con RLS.
@@ -47,7 +47,10 @@ Las pruebas usan exclusivamente loopback y guardan capturas/mediciones en `evide
 - [Modelo de datos y RLS](docs/02-modelo-datos.md)
 - [Cuentas, secretos y operación](docs/03-cuentas-y-operacion.md)
 - [Tienda, pasarelas y administrador](docs/04-tienda-pagos-y-admin.md)
-- [Resultados de verificación](docs/05-verificacion.md)
+- [Resultados de verificación inicial](docs/05-verificacion.md)
+- [Investigación de frontend](docs/06-investigacion-front-end.md)
+- [Entrada interactiva](docs/07-entrada-interactiva.md)
+- [Referentes, páginas independientes y verificación actual](docs/08-referentes-y-paginas.md)
 
 La rama `main` representa producción, pero ningún push/merge publica automáticamente. GitHub rechazó la creación de `.github/workflows/` porque la conexión OAuth carece del permiso `workflow`; por eso los cuatro YAML están como plantillas en `docs/automatizaciones/` y **Actions todavía no está activo**. Después de que Isaac autorice `gh auth refresh -h github.com -s workflow`, moverlos a `.github/workflows/`, configurar los environments y subirlos. La rama local `codex/automatizaciones-preparadas` conserva la versión inicial con workflows en su ubicación ejecutable.
 

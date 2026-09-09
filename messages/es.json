@@ -9,6 +9,9 @@
     "correo": "lsanchez@sgsolutionscr.com"
   },
   "Navegacion": {
+    "soporte": "Soporte",
+    "empresas": "Empresas",
+    "nuevaPestana": "Se abre en una pestaña nueva",
     "principal": "Navegación principal",
     "inicio": "Inicio",
     "servicios": "Servicios",
@@ -144,6 +147,7 @@
     "servicioMensaje": "Hola, SG Solutions. Me interesa {servicio}."
   },
   "Pie": {
+    "whatsapp": "Conversar por WhatsApp",
     "frase": "Soluciones bien pensadas. Tecnología bien respaldada.",
     "derechos": "© {anio} SG Solutions.",
     "direccionTitulo": "Encontranos en Atenas",
@@ -187,6 +191,7 @@
     "volver": "Volver al inicio"
   },
   "Entrada": {
+    "nuevaPestana": "Se abre en una pestaña nueva",
     "identificador": "SG / 01",
     "etiqueta": "TECNOLOGÍA QUE CONECTA",
     "titulo": "Tu próximo paso.",
@@ -210,5 +215,55 @@
     "pausar": "Pausar movimiento",
     "explorar": "Descubrí SG Solutions",
     "ubicacion": "Atenas, Costa Rica"
+  },
+  "Soporte": {
+    "etiqueta": "SOPORTE TÉCNICO",
+    "titulo": "Volvé a lo que importa.",
+    "descripcion": "Contanos qué está pasando con tu equipo. Te ayudamos a definir el siguiente paso, con atención remota o en sitio según el caso.",
+    "foto": "Nuestra oficina en Plaza El Bosque, Atenas",
+    "accion": "Solicitar soporte",
+    "mensaje": "Hola, SG Solutions. Necesito soporte técnico para mi equipo.",
+    "elegir": "EMPECEMOS POR TU EQUIPO",
+    "ayudaTitulo": "¿Con qué necesitás ayuda?",
+    "ayudaTexto": "Elegí el tema y contanos los detalles por WhatsApp.",
+    "tema0": "Computadoras y equipo",
+    "texto0": "Diagnóstico, mantenimiento y problemas de funcionamiento.",
+    "tema1": "Redes y Wi-Fi",
+    "texto1": "Conexión, cobertura y equipos de tu red.",
+    "tema2": "Cámaras y seguridad",
+    "texto2": "Consultas sobre tu sistema de videovigilancia o alarma.",
+    "temaMensaje": "Hola, SG Solutions. Necesito ayuda con: {tema}.",
+    "consultar": "Consultar con el equipo",
+    "procesoEtiqueta": "ASÍ EMPEZAMOS",
+    "procesoTitulo": "Un camino claro para resolverlo.",
+    "paso0Titulo": "Contanos qué pasa",
+    "paso0Texto": "Indicá el equipo, el problema y desde cuándo lo notás.",
+    "paso1Titulo": "Definimos la atención",
+    "paso1Texto": "Revisamos si corresponde atención remota, en tienda o una visita.",
+    "paso2Titulo": "Acordamos el siguiente paso",
+    "paso2Texto": "Confirmamos el alcance y las condiciones antes de realizar el trabajo.",
+    "preguntasEtiqueta": "ANTES DE EMPEZAR",
+    "preguntasTitulo": "Preguntas frecuentes",
+    "pregunta0": "¿Puedo solicitar soporte sin tener un plan?",
+    "respuesta0": "Sí. Contanos tu caso para revisar el alcance y preparar una propuesta de atención.",
+    "pregunta1": "¿La atención puede ser remota?",
+    "respuesta1": "Según el problema, podemos coordinar soporte remoto o atención presencial. Nuestro equipo confirma la modalidad al revisar tu consulta.",
+    "pregunta2": "¿Qué información conviene tener a mano?",
+    "respuesta2": "El tipo y modelo de equipo, una descripción del problema y cualquier mensaje de error. No compartás contraseñas por WhatsApp."
+  },
+  "Empresas": {
+    "etiqueta": "SOLUCIONES EMPRESARIALES",
+    "titulo": "Tecnología que acompaña tu negocio.",
+    "descripcion": "Redes, seguridad y equipo pensados para trabajar juntos. Desde la primera conversación hasta la instalación y el soporte.",
+    "foto": "Infraestructura de red instalada por SG Solutions",
+    "accion": "Hablemos de tu proyecto",
+    "mensaje": "Hola, SG Solutions. Me gustaría conversar sobre un proyecto tecnológico para mi negocio."
+  },
+  "ContactoPagina": {
+    "whatsapp": "WhatsApp",
+    "escribir": "Escribinos",
+    "telefono": "Llamanos",
+    "correo": "Correo electrónico",
+    "visita": "Visitanos en Atenas"
   }
 }
