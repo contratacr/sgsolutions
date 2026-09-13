@@ -2134,15 +2134,1372 @@
       "precioManual": null,
       "publicado": true,
       "destacado": false
+    },
+    {
+      "id": "ic-b1d38e12554811f7ef1f7646",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Adaptador Wi-Fi 6 Mercusys MA14N AX300 Nano",
+        "en": "Mercusys MA14N AX300 Nano Wi-Fi 6 adapter"
+      },
+      "descripcion": {
+        "es": "Adaptador Wi-Fi 6 Mercusys MA14N AX300 Nano",
+        "en": "Mercusys MA14N AX300 Nano Wi-Fi 6 adapter"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NW005TPL87_xl1.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "MA14N",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 3000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-6f75d01fdcb25af3fc41af41",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Inyector PoE+ Omada POE160S",
+        "en": "Omada POE160S PoE+ injector"
+      },
+      "descripcion": {
+        "es": "Inyector PoE+ Omada POE160S",
+        "en": "Omada POE160S PoE+ injector"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/l4327.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "POE160S",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 10500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d41ffa76c7a2d6cf260aea3e",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Convertidor de medios gigabit MC210CS",
+        "en": "MC210CS gigabit media converter"
+      },
+      "descripcion": {
+        "es": "Convertidor de medios gigabit MC210CS",
+        "en": "MC210CS gigabit media converter"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/64/dc/64dcec9e-7c63-47fb-b5e6-47d384dd81ac.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "MC210CS",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 12000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-fa50fa5f6cd926ecba44fa2f",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Extensor Wi-Fi 6 Mercusys ME60X",
+        "en": "Mercusys ME60X Wi-Fi 6 range extender"
+      },
+      "descripcion": {
+        "es": "Extensor Wi-Fi 6 Mercusys ME60X",
+        "en": "Mercusys ME60X Wi-Fi 6 range extender"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NW005TPL81_EXTRA_LARGE.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "ME60X",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 13000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c633a0583f5837dbf22b17d2",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Extensor Wi-Fi AC1200 RE305",
+        "en": "RE305 AC1200 Wi-Fi range extender"
+      },
+      "descripcion": {
+        "es": "Extensor Wi-Fi AC1200 RE305",
+        "en": "RE305 AC1200 Wi-Fi range extender"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/TP_Link_RE305.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "RE305",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 17000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c8048fc0e4a962b70d11309d",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Router inalámbrico AC1200 NCM-C1200",
+        "en": "NCM-C1200 AC1200 wireless router"
+      },
+      "descripcion": {
+        "es": "Router inalámbrico AC1200 NCM-C1200",
+        "en": "NCM-C1200 AC1200 wireless router"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/xl3683.jpg",
+      "marca": "Nexxt Solutions Home",
+      "codigoFabricante": "NCM-C1200",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 17500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-0d3da2ded71709449fae692e",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Extensor Wi-Fi 6 AX1500 RE505X",
+        "en": "RE505X AX1500 Wi-Fi 6 range extender"
+      },
+      "descripcion": {
+        "es": "Extensor Wi-Fi 6 AX1500 RE505X",
+        "en": "RE505X AX1500 Wi-Fi 6 range extender"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/TP_Link_RE505X.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "RE505X",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 23000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-93e6fc299915e16a23460ffd",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara Wi-Fi inteligente EZVIZ H1c",
+        "en": "EZVIZ H1c smart Wi-Fi camera"
+      },
+      "descripcion": {
+        "es": "Cámara Wi-Fi inteligente EZVIZ H1c",
+        "en": "EZVIZ H1c smart Wi-Fi camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV06_l.jpg",
+      "marca": "EZVIZ",
+      "codigoFabricante": "CS-H1c-R101-1G2WR",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 12000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c224a10ef1968bcbee32e714",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara Wi-Fi con batería EZVIZ CB1",
+        "en": "EZVIZ CB1 battery Wi-Fi camera"
+      },
+      "descripcion": {
+        "es": "Cámara Wi-Fi con batería EZVIZ CB1",
+        "en": "EZVIZ CB1 battery Wi-Fi camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV10l.jpg",
+      "marca": "EZVIZ",
+      "codigoFabricante": "CS-CB1-R100-1K2WF",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 23000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-5099a4d49dd91ebbc0822e4f",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara domo Wi-Fi EZVIZ H4",
+        "en": "EZVIZ H4 Wi-Fi dome camera"
+      },
+      "descripcion": {
+        "es": "Cámara domo Wi-Fi EZVIZ H4",
+        "en": "EZVIZ H4 Wi-Fi dome camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV29_xl.jpg",
+      "marca": "EZVIZ",
+      "codigoFabricante": "CS-H4-R201-1H3WKFL(2.8mm)",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 26000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-1bf6e8ae7abe41fa7da3d4c1",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara UniFi Protect G5 Dome Ultra 2K PoE",
+        "en": "UniFi Protect G5 Dome Ultra 2K PoE camera"
+      },
+      "descripcion": {
+        "es": "Cámara UniFi Protect G5 Dome Ultra 2K PoE",
+        "en": "UniFi Protect G5 Dome Ultra 2K PoE camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/ES001UBQ33xl.jpg",
+      "marca": "Ubiquiti",
+      "codigoFabricante": "UVC-G5-Dome-Ultra",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 27500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f48674437d2149348c6e1a17",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara domo IP Hikvision 2 MP",
+        "en": "Hikvision 2 MP IP dome camera"
+      },
+      "descripcion": {
+        "es": "Cámara domo IP Hikvision 2 MP",
+        "en": "Hikvision 2 MP IP dome camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/063Q4ZXBRXE9E9ZJ4NCXPST9DC.jpg",
+      "marca": "Hikvision",
+      "codigoFabricante": "DS-2CD1123G2-LIU 2.8mm",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 28000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-5d16dc12c6f45e84f0ba7d81",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara Wi-Fi EZVIZ H7c",
+        "en": "EZVIZ H7c Wi-Fi camera"
+      },
+      "descripcion": {
+        "es": "Cámara Wi-Fi EZVIZ H7c",
+        "en": "EZVIZ H7c Wi-Fi camera"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/46/8d/468dff05-c9bb-467e-9505-97a0c16bc3b0.jpg",
+      "marca": "EZVIZ",
+      "codigoFabricante": "CS-H7c-R101-8H44WF",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 29000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-fa943a0fbd567b061076a86d",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara bala IP Hikvision ColorVu 2 MP",
+        "en": "Hikvision ColorVu 2 MP IP bullet camera"
+      },
+      "descripcion": {
+        "es": "Cámara bala IP Hikvision ColorVu 2 MP",
+        "en": "Hikvision ColorVu 2 MP IP bullet camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES226HIK06_l1.jpg",
+      "marca": "Hikvision",
+      "codigoFabricante": "DS-2CD1027G3-LIU(2.8mm)",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 31500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-91901d12a8d2e701e2c419a4",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP Smart Tank 580",
+        "en": "HP Smart Tank 580 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP Smart Tank 580",
+        "en": "HP Smart Tank 580 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/063Q4ZXBRYTJS2BJNP4R34XB8M.jpg",
+      "marca": "HP",
+      "codigoFabricante": "1F3Y2A#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 104000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-4544f21aca5680f8c52a3f4a",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP Smart Tank 585 Wi-Fi",
+        "en": "HP Smart Tank 585 wireless all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP Smart Tank 585 Wi-Fi",
+        "en": "HP Smart Tank 585 wireless all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/PT656HEW03xl.jpg",
+      "marca": "HP",
+      "codigoFabricante": "1F3Y4A#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 110000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c9dd2903f999d3f1e372f718",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP Smart Tank 530",
+        "en": "HP Smart Tank 530 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP Smart Tank 530",
+        "en": "HP Smart Tank 530 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_a027ad86_bd57_47eb_89b0_2f8a3a5267c6.jpg",
+      "marca": "HP",
+      "codigoFabricante": "4SB24A#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 131000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-7a563a98b464a546fbf1df9b",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP Smart Tank 720",
+        "en": "HP Smart Tank 720 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP Smart Tank 720",
+        "en": "HP Smart Tank 720 all-in-one printer"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/49/38/493895bc-e041-47ba-a2d1-d4c3a4a00e2a.jpg",
+      "marca": "HP",
+      "codigoFabricante": "6UU46A#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 133000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-2d0fc6cf9c318e6fec5e70a4",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP OfficeJet Pro 9130",
+        "en": "HP OfficeJet Pro 9130 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP OfficeJet Pro 9130",
+        "en": "HP OfficeJet Pro 9130 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/9130.png",
+      "marca": "HP",
+      "codigoFabricante": "404K5C#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 139000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-6501f1b30ba7217c9b0ee78f",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional Epson EcoTank L4360",
+        "en": "Epson EcoTank L4360 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional Epson EcoTank L4360",
+        "en": "Epson EcoTank L4360 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/PT338EPS39.jpg",
+      "marca": "Epson",
+      "codigoFabricante": "C11CL41301",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 158000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-a2512b62e7ba2583df2685b7",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP OfficeJet Pro 9730",
+        "en": "HP OfficeJet Pro 9730 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP OfficeJet Pro 9730",
+        "en": "HP OfficeJet Pro 9730 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/product_image_(18)_(2)_xl.jpg",
+      "marca": "HP",
+      "codigoFabricante": "537P5C#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 166000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-fc46ffc2c0d0715c53168352",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional Epson EcoTank L5590",
+        "en": "Epson EcoTank L5590 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional Epson EcoTank L5590",
+        "en": "Epson EcoTank L5590 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/0644M95X502T07NSR2V70NC3C8.jpg",
+      "marca": "Epson",
+      "codigoFabricante": "C11CK57301",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 197000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-4589b95403aa2af3f72374bf",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector de código de barras Zebra LI2208 USB",
+        "en": "Zebra LI2208 USB barcode scanner"
+      },
+      "descripcion": {
+        "es": "Lector de código de barras Zebra LI2208 USB",
+        "en": "Zebra LI2208 USB barcode scanner"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_77fc9e96_f119_4eb8_be29_cb43da9d3937.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "LI2208-SR7U2100SGW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 47000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ba31c7854ee2a8b31613763b",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector 2D Zebra DS2208 USB con base",
+        "en": "Zebra DS2208 USB 2D scanner with stand"
+      },
+      "descripcion": {
+        "es": "Lector 2D Zebra DS2208 USB con base",
+        "en": "Zebra DS2208 USB 2D scanner with stand"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/87/89/8789c07e-29aa-4b59-9bed-c5f0c29b31cc.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "DS2208-SR7U2100SGW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 54000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-4995c585cda50944ded83f25",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector de mostrador 2D Zebra DS9308",
+        "en": "Zebra DS9308 countertop 2D scanner"
+      },
+      "descripcion": {
+        "es": "Lector de mostrador 2D Zebra DS9308",
+        "en": "Zebra DS9308 countertop 2D scanner"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/3a/4a/3a4ad1a6-e60f-4092-8cb5-10ab244a11d1.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "DS9308-SR4U2100AZW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 92000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-afea1e43385087ae6f15e1a5",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector 2D Zebra DS4608 USB",
+        "en": "Zebra DS4608 USB 2D scanner"
+      },
+      "descripcion": {
+        "es": "Lector 2D Zebra DS4608 USB",
+        "en": "Zebra DS4608 USB 2D scanner"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/a6/8f/a68f0c06-6289-43e1-96e0-5742106a0c68.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "DS4608-SR7U2100SGW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 96000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b3824b8f22f0bff790d2dd0f",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector inalámbrico 2D Zebra DS2278",
+        "en": "Zebra DS2278 wireless 2D scanner"
+      },
+      "descripcion": {
+        "es": "Lector inalámbrico 2D Zebra DS2278",
+        "en": "Zebra DS2278 wireless 2D scanner"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Zebra_DS2278_SR7U2100PRW.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "DS2278-SR7U2100PRW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 106000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-19712f8331ee482efd808abe",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Gaveta de dinero Sewoo S415H",
+        "en": "Sewoo S415H cash drawer"
+      },
+      "descripcion": {
+        "es": "Gaveta de dinero Sewoo S415H",
+        "en": "Sewoo S415H cash drawer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/SEWOO_891400.jpg",
+      "marca": "SEWOO",
+      "codigoFabricante": "891400",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 27000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-321210f8b6f95587f6f2f984",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Gaveta de dinero Custom 20 pulgadas",
+        "en": "Custom 20-inch cash drawer"
+      },
+      "descripcion": {
+        "es": "Gaveta de dinero Custom 20 pulgadas",
+        "en": "Custom 20-inch cash drawer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Custom_971GF010000022.jpg",
+      "marca": "Custom",
+      "codigoFabricante": "971GF010000022",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 26500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-8a764ca618934c4383d9751a",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Impresora térmica de recibos Custom USB/serial",
+        "en": "Custom USB/serial thermal receipt printer"
+      },
+      "descripcion": {
+        "es": "Impresora térmica de recibos Custom USB/serial",
+        "en": "Custom USB/serial thermal receipt printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Custom_911MX010100733.jpg",
+      "marca": "Custom",
+      "codigoFabricante": "911MX010100733",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 54000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-a5c7065f28dfcd0c07757ff4",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Impresora térmica Sewoo SLK-TS100 USB/LAN",
+        "en": "Sewoo SLK-TS100 USB/LAN thermal receipt printer"
+      },
+      "descripcion": {
+        "es": "Impresora térmica Sewoo SLK-TS100 USB/LAN",
+        "en": "Sewoo SLK-TS100 USB/LAN thermal receipt printer"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/10/7b/107b1ba8-e600-420d-9e49-2f7e244168d2.jpg",
+      "marca": "SEWOO",
+      "codigoFabricante": "SLK-TS100",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 46500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-17e12a0cbcc4149d78f99b0a",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Impresora térmica Epson TM-m30III",
+        "en": "Epson TM-m30III thermal receipt printer"
+      },
+      "descripcion": {
+        "es": "Impresora térmica Epson TM-m30III",
+        "en": "Epson TM-m30III thermal receipt printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Epson_C31CK50052.jpg",
+      "marca": "Epson",
+      "codigoFabricante": "C31CK50052",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 154000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-1da412f8af25ea82acdf8a52",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft 365 Business Premium — 1 año",
+        "en": "Microsoft 365 Business Premium — 1 year"
+      },
+      "descripcion": {
+        "es": "Microsoft 365 Business Premium — 1 año",
+        "en": "Microsoft 365 Business Premium — 1 year"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/5e2e5141-601d-4313-a37a-a96927262d4d_AA_L.png",
+      "marca": "Microsoft",
+      "codigoFabricante": "KLQ-00219",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 94000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b86e4e1b67af9e0181a581cb",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft 365 Personal — 12 meses",
+        "en": "Microsoft 365 Personal — 12 months"
+      },
+      "descripcion": {
+        "es": "Microsoft 365 Personal — 12 meses",
+        "en": "Microsoft 365 Personal — 12 months"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_32316.jpg",
+      "marca": "Microsoft",
+      "codigoFabricante": "EP2-32316",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 42500,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ad90a007bdeca5e914ec907f",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft 365 Apps para empresas — 1 año",
+        "en": "Microsoft 365 Apps for business — 1 year"
+      },
+      "descripcion": {
+        "es": "Microsoft 365 Apps para empresas — 1 año",
+        "en": "Microsoft 365 Apps for business — 1 year"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/aa377c55-a43e-4855-9617-345856d3b3a0_l_ll.png",
+      "marca": "Microsoft",
+      "codigoFabricante": "SPP-00005",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 62000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d0dc44fb8a1098bcfb6c6e76",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft 365 Familia — 12 meses",
+        "en": "Microsoft 365 Family — 12 months"
+      },
+      "descripcion": {
+        "es": "Microsoft 365 Familia — 12 meses",
+        "en": "Microsoft 365 Family — 12 months"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_32295.jpg",
+      "marca": "Microsoft",
+      "codigoFabricante": "EP2-32295",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 53000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-e5d043124785c10ff1e1a408",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft Office Hogar 2024 — descarga",
+        "en": "Microsoft Office Home 2024 — download"
+      },
+      "descripcion": {
+        "es": "Microsoft Office Hogar 2024 — descarga",
+        "en": "Microsoft Office Home 2024 — download"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_06800.jpg",
+      "marca": "Microsoft",
+      "codigoFabricante": "EP2-06800",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 77000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-86bf2aafc36d000c2bc7c767",
+      "categoria": "software",
+      "nombre": {
+        "es": "ESET Home Security Premium — 3 dispositivos",
+        "en": "ESET Home Security Premium — 3 devices"
+      },
+      "descripcion": {
+        "es": "ESET Home Security Premium — 3 dispositivos",
+        "en": "ESET Home Security Premium — 3 devices"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/SE516ESE62l.jpg",
+      "marca": "ESET",
+      "codigoFabricante": "EHSP-ESD1-3D",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 46000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-94ea78a4e551d2d1485d46aa",
+      "categoria": "software",
+      "nombre": {
+        "es": "ESET Server Security — 1 servidor",
+        "en": "ESET Server Security — 1 server"
+      },
+      "descripcion": {
+        "es": "ESET Server Security — 1 servidor",
+        "en": "ESET Server Security — 1 server"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/EFS-ESD1-1S.jpg",
+      "marca": "ESET",
+      "codigoFabricante": "EFS-ESD1-1S",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 49000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c260f8621169bd3ebc596ee7",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Control inalámbrico Primus PMC-01BT",
+        "en": "Primus PMC-01BT wireless gaming controller"
+      },
+      "descripcion": {
+        "es": "Control inalámbrico Primus PMC-01BT",
+        "en": "Primus PMC-01BT wireless gaming controller"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PMC_01BT.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PMC-01BT",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 21000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-70e6190e8bafdddb8cd37e03",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Mouse pad Primus Arena XXL",
+        "en": "Primus Arena XXL gaming mouse pad"
+      },
+      "descripcion": {
+        "es": "Mouse pad Primus Arena XXL",
+        "en": "Primus Arena XXL gaming mouse pad"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/0634RQ7B3N4TPB3S3S6DWQ5RXR.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PMP-01XXL",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 12000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b6ee330bba0f29130b5125a5",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Lámpara inteligente RGBIC Primus",
+        "en": "Primus RGBIC smart gaming lamp"
+      },
+      "descripcion": {
+        "es": "Lámpara inteligente RGBIC Primus",
+        "en": "Primus RGBIC smart gaming lamp"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PLI_200FL.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PLI-200FL",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 39000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c7730da18abb57969d47f33b",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Mochila Primus para portátil de 17 pulgadas",
+        "en": "Primus 17-inch gaming laptop backpack"
+      },
+      "descripcion": {
+        "es": "Mochila Primus para portátil de 17 pulgadas",
+        "en": "Primus 17-inch gaming laptop backpack"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PGB_300BK.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PGB-300BK",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 34000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-83f2c83ff0ba420c4688dc6a",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Audífonos inalámbricos Primus PBH-360W",
+        "en": "Primus PBH-360W wireless gaming headset"
+      },
+      "descripcion": {
+        "es": "Audífonos inalámbricos Primus PBH-360W",
+        "en": "Primus PBH-360W wireless gaming headset"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PBH_360W.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PBH-360W",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 25000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-570e2002e13a443f9ce09380",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Mouse gaming Primus Gladius 12800",
+        "en": "Primus Gladius 12800 gaming mouse"
+      },
+      "descripcion": {
+        "es": "Mouse gaming Primus Gladius 12800",
+        "en": "Primus Gladius 12800 gaming mouse"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/xl3565.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PMO-103",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 9000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d8fe164e9c5dc26077a05af2",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Teclado gaming HyperX Alloy Rise",
+        "en": "HyperX Alloy Rise gaming keyboard"
+      },
+      "descripcion": {
+        "es": "Teclado gaming HyperX Alloy Rise",
+        "en": "HyperX Alloy Rise gaming keyboard"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/HyperX_7G7A3AA_ABM.jpg",
+      "marca": "HyperX",
+      "codigoFabricante": "7G7A3AA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 46000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-021c84bd212feaab06466c8b",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Monitor gaming Xiaomi 27 pulgadas 200 Hz",
+        "en": "Xiaomi 27-inch 200 Hz gaming monitor"
+      },
+      "descripcion": {
+        "es": "Monitor gaming Xiaomi 27 pulgadas 200 Hz",
+        "en": "Xiaomi 27-inch 200 Hz gaming monitor"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Xiaomi_68561.jpg",
+      "marca": "Xiaomi",
+      "codigoFabricante": "68561",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 84000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-2f61570c9bf204e208230a86",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "SSD Kingston NV3 NVMe 1 TB",
+        "en": "Kingston NV3 1 TB NVMe SSD"
+      },
+      "descripcion": {
+        "es": "SSD Kingston NV3 NVMe 1 TB",
+        "en": "Kingston NV3 1 TB NVMe SSD"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/069VCR2VCXHGJC7RE4N4C3A9RM.jpg",
+      "marca": "Kingston",
+      "codigoFabricante": "SNV3S/1000G",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 132000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-aa0f77bd9dd205871eeef9d0",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "SSD externo Kingston XS1000 1 TB",
+        "en": "Kingston XS1000 1 TB external SSD"
+      },
+      "descripcion": {
+        "es": "SSD externo Kingston XS1000 1 TB",
+        "en": "Kingston XS1000 1 TB external SSD"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/DH100KNG66xl.jpg",
+      "marca": "Kingston",
+      "codigoFabricante": "SXS1000R/1000G",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 149000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-57e19632186f568932266569",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Monitor Xiaomi A24i de 24 pulgadas",
+        "en": "Xiaomi A24i 24-inch monitor"
+      },
+      "descripcion": {
+        "es": "Monitor Xiaomi A24i de 24 pulgadas",
+        "en": "Xiaomi A24i 24-inch monitor"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/a2/4d/a24dbc37-5e3c-4969-b6f8-e6cedd0b4019.jpg",
+      "marca": "Xiaomi",
+      "codigoFabricante": "69672",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 49000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-99a78d01770adda81aa05b2f",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Monitor HP Series 3 Pro 23,8 pulgadas",
+        "en": "HP Series 3 Pro 23.8-inch monitor"
+      },
+      "descripcion": {
+        "es": "Monitor HP Series 3 Pro 23,8 pulgadas",
+        "en": "HP Series 3 Pro 23.8-inch monitor"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/324pf_l.jpg",
+      "marca": "HP",
+      "codigoFabricante": "9U5J5UT#ABA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 78000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-875e58e3424cdc63a0097b06",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Monitor HP Series 5 de 27 pulgadas",
+        "en": "HP Series 5 27-inch monitor"
+      },
+      "descripcion": {
+        "es": "Monitor HP Series 5 de 27 pulgadas",
+        "en": "HP Series 5 27-inch monitor"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/HP_94C50AA_ABA.jpg",
+      "marca": "HP",
+      "codigoFabricante": "94C50AA#ABA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 101000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f1f2e3b9cc05cb27cda1cd8d",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Memoria Kingston DDR5 16 GB 5600 MT/s DIMM",
+        "en": "Kingston 16 GB DDR5 5600 MT/s DIMM memory"
+      },
+      "descripcion": {
+        "es": "Memoria Kingston DDR5 16 GB 5600 MT/s DIMM",
+        "en": "Kingston 16 GB DDR5 5600 MT/s DIMM memory"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_ValueRam_KVR56U46BS8_16.jpg",
+      "marca": "Kingston ValueRam",
+      "codigoFabricante": "KVR56U46BS8-16",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 159000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-8959f351d3900d47746fe302",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Memoria Kingston DDR5 16 GB 5600 MT/s SODIMM",
+        "en": "Kingston 16 GB DDR5 5600 MT/s SODIMM memory"
+      },
+      "descripcion": {
+        "es": "Memoria Kingston DDR5 16 GB 5600 MT/s SODIMM",
+        "en": "Kingston 16 GB DDR5 5600 MT/s SODIMM memory"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_ValueRam_KVR56S46BS8_16.jpg",
+      "marca": "Kingston ValueRam",
+      "codigoFabricante": "KVR56S46BS8-16",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 206000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-05567b2eb700007a999c2a48",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Memoria Kingston DDR4 8 GB 3200 MHz SODIMM",
+        "en": "Kingston 8 GB DDR4 3200 MHz SODIMM memory"
+      },
+      "descripcion": {
+        "es": "Memoria Kingston DDR4 8 GB 3200 MHz SODIMM",
+        "en": "Kingston 8 GB DDR4 3200 MHz SODIMM memory"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_KVR32S22S8_8.jpg",
+      "marca": "Kingston ValueRam",
+      "codigoFabricante": "KVR32S22S8/8",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 74000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-786fc8d6a22827ea3b1e1560",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "UPS Xtech XTP-751 de 750 VA",
+        "en": "Xtech XTP-751 750 VA UPS"
+      },
+      "descripcion": {
+        "es": "UPS Xtech XTP-751 de 750 VA",
+        "en": "Xtech XTP-751 750 VA UPS"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Xtech_XTP_751.jpg",
+      "marca": "Xtech",
+      "codigoFabricante": "XTP-751",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 25500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-380453aeacabe0ec6daabf20",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "UPS Forza NT-511",
+        "en": "Forza NT-511 UPS"
+      },
+      "descripcion": {
+        "es": "UPS Forza NT-511",
+        "en": "Forza NT-511 UPS"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Forza_NT_511.jpg",
+      "marca": "Forza",
+      "codigoFabricante": "NT-511",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 26000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-fa24e583392d4a42118f3a32",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Fuente de poder ASUS Prime 750 W Gold",
+        "en": "ASUS Prime 750 W Gold power supply"
+      },
+      "descripcion": {
+        "es": "Fuente de poder ASUS Prime 750 W Gold",
+        "en": "ASUS Prime 750 W Gold power supply"
+      },
+      "imagen": "https://skucentral-experience-api-prod.us-e1.cloudhub.io/api/image/AC060ASU12_ASUSAP_850G_Prime850WGold_Primera.jpg",
+      "marca": "ASUS",
+      "codigoFabricante": "AP-750G",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 63000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-9176dadeb4dd102d0d83e794",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Fuente de poder ASUS Prime 850 W Gold",
+        "en": "ASUS Prime 850 W Gold power supply"
+      },
+      "descripcion": {
+        "es": "Fuente de poder ASUS Prime 850 W Gold",
+        "en": "ASUS Prime 850 W Gold power supply"
+      },
+      "imagen": "https://skucentral-experience-api-prod.us-e1.cloudhub.io/api/image/AC060ASU12_ASUSAP_850G_Prime850WGold_Primera.jpg",
+      "marca": "ASUS",
+      "codigoFabricante": "AP-850G",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 70000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
     }
   ],
   "sincronizacion": {
-    "fecha": "2026-09-13T07:46:30.582Z",
+    "fecha": "2026-09-13T16:14:28.051Z",
     "origen": "intcomex",
-    "nuevos": 82,
-    "actualizados": 3,
+    "nuevos": 59,
+    "actualizados": 0,
     "revisionPrecio": 0,
-    "sinImagen": 82,
+    "sinImagen": 0,
     "sinCodigo": 0,
     "fueraDeCategoria": 0
   },

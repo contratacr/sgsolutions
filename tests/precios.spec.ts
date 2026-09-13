@@ -24,7 +24,11 @@ test('tienda mantiene CRC en inglés y ordena precios',async({page},prueba)=>{
  await page.getByRole('button',{name:'Read this page in English'}).click();
  await expect(page.locator('html')).toHaveAttribute('lang','en');
  await page.getByRole('combobox').selectOption('menor');
- await expect(page.getByRole('article').first()).toContainText('Epson 544 Black');
+ await expect.poll(()=>page.getByRole('article').count()).toBeGreaterThan(1);
+ const precios=await page.locator('.shop-precio strong').allTextContents();
+ const valores=precios.map(precio=>Number(precio.replace(/\D/g,'')));
+ expect(valores.length).toBeGreaterThan(1);
+ expect(valores).toEqual([...valores].sort((a,b)=>a-b));
  for(const p of await page.locator('.shop-precio strong').all())await expect(p).toContainText('₡');
  for(const img of await page.locator('.shop-foto img').all()){await img.scrollIntoViewIfNeeded();await expect.poll(()=>img.evaluate((e:HTMLImageElement)=>e.complete&&e.naturalWidth>0)).toBe(true);}
  await page.evaluate(()=>window.scrollTo(0,0));

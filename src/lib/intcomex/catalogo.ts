@@ -52,7 +52,9 @@ export function fusionarProveedor(actual:CatalogoAdmin,filas:FilaProveedor[],fec
    p={id:idImportado,precioReferencia:null,disponibilidadReferencia:'consultar',categoria:f.categoria,nombre:{es:f.nombreEs,en:f.nombreEn},descripcion:{es:f.nombreEs,en:f.nombreEn},marca:f.marca,codigoFabricante:f.mpn,imagen:f.imagen||'/imagenes/producto-sin-imagen.svg',costoUsd:f.moneda==='USD'?f.costo:null,costoCrc:f.moneda==='CRC'?f.costo:null,precioManual:null,publicado:!!f.mpn,destacado:false,proveedor,revisionPrecio:false};
    siguiente.productos.push(p);indice.set(f.sku,p);informe.nuevos++;
   }else{
-   // Preservar contenido, categoría, imágenes y precios manuales editados por SG.
+   // Completar imágenes pendientes sin reemplazar imágenes personalizadas por SG.
+   if(f.imagen&&p.imagen==='/imagenes/producto-sin-imagen.svg')p.imagen=f.imagen;
+   // Preservar contenido, categoría y precios manuales editados por SG.
    const costoAnterior=f.moneda==='USD'?p.costoUsd:p.costoCrc;
    const salto=costoAnterior!==null&&costoAnterior!==undefined&&costoAnterior>0&&Math.abs(f.costo/costoAnterior-1)>.3;
    p.proveedor=proveedor;indice.set(f.sku,p);

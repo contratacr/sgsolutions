@@ -42,8 +42,10 @@ test('tienda filtra, conserva cantidades y no habilita cobros inexistentes', asy
   page.on('pageerror', error => errores.push(error.message));
   await page.goto('/tienda');
   await page.getByRole('button', {name: 'Seguridad', exact: true}).click();
-  await expect(page.getByRole('article')).toHaveCount(1);
-  await page.getByRole('button', {name: 'Agregar al carrito'}).click();
+  await expect.poll(() => page.getByRole('article').count()).toBeGreaterThan(1);
+  const camara = page.getByRole('article').filter({hasText:'UniFi Protect AI Pro'});
+  await expect(camara).toHaveCount(1);
+  await camara.getByRole('button', {name: 'Agregar al carrito'}).click();
   await page.getByRole('button', {name: 'Abrir carrito'}).click();
   const dialogo = page.getByRole('dialog');
   await expect(dialogo).toBeVisible();
@@ -226,7 +228,8 @@ test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page
   await page.getByRole('button', {name:'Ver todo el equipo', exact:true}).click();
   await expect(page.getByRole('article')).toHaveCount(24);
   await buscar.fill('CAMARA');
-  await expect(page.getByRole('article')).toHaveCount(1);
+  await expect.poll(() => page.getByRole('article').count()).toBeGreaterThan(1);
+  await expect(page.getByRole('article').first()).toContainText(/Cámara|Camara/);
   await page.getByRole('button', {name:'Read this page in English'}).click();
   await expect(page.getByRole('searchbox', {name:'Search equipment'})).toHaveValue('');
   await expect(page.getByRole('article')).toHaveCount(24);

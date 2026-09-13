@@ -17,7 +17,8 @@ test('marcas filtran productos y se combinan con categorías en ambos idiomas',a
  await page.getByRole('button',{name:'Read this page in English'}).click();
  await page.getByRole('button',{name:'Pause brand animation'}).click();
  await page.getByRole('button',{name:'View HP products',exact:true}).click();
- await expect(page.locator('.shop-producto')).toHaveCount(1);
+ await expect.poll(()=>page.locator('.shop-producto').count()).toBeGreaterThan(1);
+ for(const producto of await page.locator('.shop-producto').all())await expect(producto).toContainText('HP');
  await page.reload();
  await expect(page.locator('html')).toHaveAttribute('lang','en');
 });

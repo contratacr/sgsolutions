@@ -23,6 +23,18 @@ test('importación idempotente y cambios propios protegidos',()=>{
  expect(fusionarProveedor(primera.catalogo,[],fecha).catalogo.productos).toHaveLength(1);
 });
 
+test('las imágenes del proveedor completan marcadores y conservan imágenes propias',()=>{
+ const original=esquemaCatalogo.parse({...base,productos:[]});
+ const pendiente=fusionarProveedor(original,[fila],fecha).catalogo;
+ const imagen='https://example.com/producto-prueba.jpg';
+ const completo=fusionarProveedor(pendiente,[{...fila,imagen}],fecha);
+ expect(completo.catalogo.productos[0].imagen).toBe(imagen);
+ expect(completo.informe.sinImagen).toBe(0);
+ completo.catalogo.productos[0].imagen='/imagenes/foto-propia.jpg';
+ expect(fusionarProveedor(completo.catalogo,[{...fila,imagen}],fecha).catalogo.productos[0].imagen).toBe('/imagenes/foto-propia.jpg');
+ expect(fusionarProveedor(pendiente,[fila],fecha).informe.sinImagen).toBe(1);
+});
+
 test('saltos de costo se revisan, colones no se convierten y DTO no filtra costos',()=>{
  const original=esquemaCatalogo.parse({...base,productos:[]});
  const primera=fusionarProveedor(original,[fila],fecha).catalogo;
