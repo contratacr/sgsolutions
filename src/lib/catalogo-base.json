@@ -260,7 +260,7 @@
         "es": "Lenovo - Ratón - GY51P14335",
         "en": "Lenovo - Mouse - GY51P14335"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/f4/c5/f4c56b16-f58e-4061-9e7f-8498dff36001.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "GY51P14335",
       "costoUsd": null,
@@ -306,7 +306,7 @@
         "es": "Lenovo - Ratón - Inalámbrico - Abyss Blue",
         "en": "Lenovo - Mouse - Wireless - Abyss Blue"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/063VAG45D06WJYHEFD2G6BAS0W.JPG",
       "marca": "Lenovo",
       "codigoFabricante": "GY50Z18987",
       "costoUsd": null,
@@ -352,7 +352,7 @@
         "es": "Lenovo Yoga - Audífonos - Inalámbrico - GXD1P47518",
         "en": "Lenovo Yoga - Earphones - Wireless - GXD1P47518"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/8d/db/8ddbb3a0-e636-4549-b5d3-5d617ca71b4d.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "GXD1P47518",
       "costoUsd": null,
@@ -375,7 +375,7 @@
         "es": "Lenovo - Bloqueo de cable de seguridad - 1.8 m",
         "en": "Lenovo - Security cable lock - 1.8 m"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/a1/7e/a17efda9-c006-4356-8d5e-e7df2ed49e74.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4XE1F30278",
       "costoUsd": null,
@@ -398,7 +398,7 @@
         "es": "Lenovo Yoga - Ratón - Bluetooth - Luna Grey - GY51S61921",
         "en": "Lenovo Yoga - Mouse - Bluetooth - Luna Grey - GY51S61921"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://p3-ofp.static.pub/ShareResource/accessories_ecomm/2508_yoga_mouse/yoga-mouse-luna-grey-1-1286x1000-250925.png",
       "marca": "Lenovo",
       "codigoFabricante": "GY51S61921",
       "costoUsd": null,
@@ -421,7 +421,7 @@
         "es": "Lenovo IDEA TAB - android 15 - Dimensity",
         "en": "Lenovo IDEA TAB - android 15 - Dimensity"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAFR0881PA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "ZAFM0724PA",
       "costoUsd": null,
@@ -444,7 +444,7 @@
         "es": "Lenovo - E310 - Audífonos - Inalámbrico - True Inalámbrico Stereo - Blanco",
         "en": "Lenovo - E310 - Earbuds - Wireless - True Wireless Stereo - White"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://store.intcomex.com/images/products/GXD1Q65145%20m.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "GXD1Q65145",
       "costoUsd": null,
@@ -467,7 +467,7 @@
         "es": "Lenovo ThinkVision T24d-40 - 23.8\" - IPS - HDMI / DisplayPort / USB",
         "en": "Lenovo ThinkVision T24d-40 - 23.8\" - IPS - HDMI / DisplayPort / USB"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/MT656LEN09.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "64B9GAR1LA",
       "costoUsd": null,
@@ -490,7 +490,7 @@
         "es": "Lenovo Casual Backpack B210 - Mochila para transporte de portátil - 15.6\" - charcoal black",
         "en": "Lenovo Casual Backpack B210 - Laptop backpack - 15.6\" - charcoal black"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_GX40Q17225.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "GX40Q17225",
       "costoUsd": null,
@@ -513,7 +513,7 @@
         "es": "Lenovo Security Cable Lock - Bloqueo de cable de seguridad - 1.6 m",
         "en": "Lenovo Security Cable Lock - Security cable lock - 1.6 m"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/d6/34/d6342b50-afe1-478c-afe3-5908a9eb2a05.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "57Y4303",
       "costoUsd": null,
@@ -536,7 +536,7 @@
         "es": "Lenovo Essential - Ratón - diestro y zurdo - óptico - 3 botones - cableado - USB - negro",
         "en": "Lenovo Essential - Mouse - ambidextrous - optical - 3 buttons - wired - USB - black"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/19/29/1929ab7b-2c98-4d72-9aff-b7b03ac64d8a.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4Y50R20863",
       "costoUsd": null,
@@ -559,7 +559,7 @@
         "es": "Lenovo- ThinkVision M14t G2- 14in 2240x1400- Táctil- DP/USB-c- 3WTY",
         "en": "Lenovo- ThinkVision M14t G2- 14in 2240x1400- Touch- DP/USB-c- 3WTY"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/63FDUAR6US_l.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "63FDUAR6US",
       "costoUsd": null,
@@ -582,7 +582,7 @@
         "es": "Lenovo - Teclado - Inalámbrico - Español - Bluetooth - Diseño ergonómico - Negro",
         "en": "Lenovo - Keyboard - Wireless - Spanish - Bluetooth - Ergonomic Design - All black"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4Y41R64657.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4Y41R64657",
       "costoUsd": null,
@@ -605,7 +605,7 @@
         "es": "Lenovo Tab One - 8.7\" - LTE Android 14 - Helio G85 - + Folio Case",
         "en": "Lenovo Tab One - 8.7\" - LTE Android 14 - Helio G85 - + Folio Case"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "ZAF10147PA",
       "costoUsd": null,
@@ -628,7 +628,7 @@
         "es": "Lenovo ThinkVision T24-40 - 23.8\" - 1920 x 1080 - IPS - HDMI / VGA / DisplayPort",
         "en": "Lenovo ThinkVision T24-40 - 23.8\" - 1920 x 1080 - IPS - HDMI / VGA / DisplayPort"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64A4MARXLA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "64A4MARXLA",
       "costoUsd": null,
@@ -651,7 +651,7 @@
         "es": "Lenovo ThinkVision T27-40 - 27\" - 1920 x 1080 - IPS - HDMI / DisplayPort / VGA",
         "en": "Lenovo ThinkVision T27-40 - 27\" - 1920 x 1080 - IPS - HDMI / DisplayPort / VGA"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64A5MAR6LA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "64A5MAR6LA",
       "costoUsd": null,
@@ -674,7 +674,7 @@
         "es": "Lenovo ThinkPad Essential (Eco) - Mochila para transporte de portátil - 16\" - negro con toques rojos",
         "en": "Lenovo ThinkPad Essential (Eco) - Laptop backpack - 16\" - black with red accents"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/61/4b/614bfbee-310e-41e4-b8ba-e2bdb84b4600.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4X41C12468",
       "costoUsd": null,
@@ -720,7 +720,7 @@
         "es": "Lenovo - Ratón - Inalámbrico - 530 Cherry Red",
         "en": "Lenovo - Mouse - Wireless - 530 Cherry Red"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://store.intcomex.com/images/products/ID010LEN28.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "GY50Z18991",
       "costoUsd": null,
@@ -743,7 +743,7 @@
         "es": "Lenovo - Mochila de transporte - 15.4\" - Negro",
         "en": "Lenovo - Carrying backpack - 15.4\" - All black"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/Mochila6.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4X41M69794",
       "costoUsd": null,
@@ -766,7 +766,7 @@
         "es": "Lenovo - Lápiz digital - ZG38C05190",
         "en": "Lenovo - Digital pen - ZG38C05190"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://store.intcomex.com/images/products/ID000LEN80%20m.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "ZG38C05190",
       "costoUsd": null,
@@ -789,7 +789,7 @@
         "es": "Lenovo ThinkVision S24-4e - WLED - 23.8\" - FHD (1920x1080) - IPS - VGA / HDMI - Raven Black -3 años de garantía",
         "en": "Lenovo ThinkVision S24-4e - WLED - 23.8\" - FHD (1920x1080) - IPS - VGA / HDMI - Raven Black -3-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64B5KAR1LA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "64B5KAR1LA",
       "costoUsd": null,
@@ -812,7 +812,7 @@
         "es": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 o posterior - Helio G85 - 4GB LPDDR4x-128GB + Folio Case",
         "en": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 or Later - Helio G85 - 4GB LPDDR4x-128GB + Folio Case"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "ZAF00113PA",
       "costoUsd": null,
@@ -835,7 +835,7 @@
         "es": "Lenovo - Mochila de transporte - 17\" - Black - GX41U39299",
         "en": "Lenovo - Carrying backpack - 17\" - Black - GX41U39299"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_GX41U39299.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "GX41U39299",
       "costoUsd": null,
@@ -858,7 +858,7 @@
         "es": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 o posterior - Helio G85 - 4GB LPDDR4x-128GB + Folio Case",
         "en": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 or Later - Helio G85 - 4GB LPDDR4x-128GB + Folio Case"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "ZAF00113PA",
       "costoUsd": null,
@@ -881,7 +881,7 @@
         "es": "Lenovo Mirage Solo - Sistema de realidad virtual - 5.5\" - 2560 x 1440 QHD @ 75 Hz - 802.11ac - blanco luz de luna",
         "en": "Lenovo Mirage Solo - Virtual reality system - 5.5\" - 2560 x 1440 QHD @ 75 Hz - 802.11ac - moonlight white"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/4f/2a/4f2a1fc7-78d8-4017-80ec-f04367a9f55c.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "ZA3C0003US",
       "costoUsd": null,
@@ -904,7 +904,7 @@
         "es": "Lenovo ThinkPad T14 - Portátil - 14\" - Intel Core Ultra 5 255U / 1.2 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo ThinkPad T14 - Notebook - 14\" - Intel Core Ultra 5 255U / 1.2 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_T14_g6_black_l1.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21QC00BDFJ",
       "costoUsd": null,
@@ -927,7 +927,7 @@
         "es": "Lenovo ThinkBook G8 - 14\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - SSD - Gráficos integrados - Windows 11 Pro - 1 año de garantía",
         "en": "Lenovo ThinkBook G8 - 14\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - SSD - Integrated graphics - Windows 11 Pro - 1-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/xl4006.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21SG008RFJ",
       "costoUsd": null,
@@ -950,7 +950,7 @@
         "es": "Lenovo ThinkPad - Portátil - 14\" - Intel Core Ultra 7 255U / 5.2 GHz - 16 GB - DDR5 SDRAM - 1 TB SSD - Gráficos integrados - T14 Gen 6",
         "en": "Lenovo ThinkPad - Notebook - 14\" - Intel Core Ultra 7 255U / 5.2 GHz - 16 GB - DDR5 SDRAM - 1 TB SSD - Integrated graphics - T14 Gen 6"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_T14_g6_l.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21QC00BEFJ",
       "costoUsd": null,
@@ -973,7 +973,7 @@
         "es": "Lenovo - Teclado y alfombrilla de ratón - Essential Inalámbrico Combo",
         "en": "Lenovo - Keyboard and mouse pad - Essential Wireless Combo"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/AN004LEN22_l.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4X31R64500",
       "costoUsd": null,
@@ -996,7 +996,7 @@
         "es": "Lenovo - Teclado y ratón - Essential Con cable Combo",
         "en": "Lenovo - Keyboard and mouse set - Essential Wired Combo"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4X31R64424.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4X31R64424",
       "costoUsd": null,
@@ -1019,7 +1019,7 @@
         "es": "Lenovo ThinkVision S22-4e - 21.5\" - 1920 x 1080 - HDMI / VGA - 100Hz",
         "en": "Lenovo ThinkVision S22-4e - 21.5\" - 1920 x 1080 - HDMI / VGA - 100Hz"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64CBKAR6LA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "64CBKAR6LA",
       "costoUsd": null,
@@ -1042,7 +1042,7 @@
         "es": "Lenovo ThinkSmart - Formato compacto - Intel Core Ultra 5 135H / 3.6 GHz - DDR5 SDRAM - 256 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo ThinkSmart - Small form factor - Intel Core Ultra 5 135H / 3.6 GHz - DDR5 SDRAM - 256 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/12WA000FLS_xl.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "12WA000FLS",
       "costoUsd": null,
@@ -1065,7 +1065,7 @@
         "es": "Lenovo 65W Slim AC Adapter (USB Type-C) - Adaptador de corriente - CA 90-265 V - 65 vatios - negro",
         "en": "Lenovo 65W Slim AC Adapter (USB Type-C) - Power adapter - CA 90-265 V - 65 watts - black"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/f7/a2/f7a21226-d527-4f0c-b526-4f1742df0221.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4X20V24674",
       "costoUsd": null,
@@ -1111,7 +1111,7 @@
         "es": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Capacidad del disco duro - Intel UHD Graphics 770 - Windows 11 Pro",
         "en": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Intel UHD Graphics 770 - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_12TD0039FJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "12TD0039FJ",
       "costoUsd": null,
@@ -1157,7 +1157,7 @@
         "es": "Lenovo Casual Backpack B210 - Mochila para transporte de portátil - 15.6\" - para IdeaPad Flex 5 16; IdeaPad S340-14; ThinkPad E14 Gen 3; X1 Nano Gen 2; V15 IML",
         "en": "Lenovo Casual Backpack B210 - Laptop backpack - 15.6\" - for IdeaPad Flex 5 16; IdeaPad S340-14; ThinkPad E14 Gen 3; X1 Nano Gen 2; V15 IML"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4X40T84058.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4X40T84058",
       "costoUsd": null,
@@ -1180,7 +1180,7 @@
         "es": "Lenovo ThinkPad Thunderbolt 4 WorkStation Dock - Estación de conexión - Thunderbolt 4 - HDMI, 2 x DP, 2 x Thunderbolt - 1GbE - 300 vatios - Estados Unidos",
         "en": "Lenovo ThinkPad Thunderbolt 4 WorkStation Dock - Docking station - Thunderbolt 4 - HDMI, 2 x DP, 2 x Thunderbolt - 1GbE - 300 watts - United States"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/7e/a5/7ea5fd63-2ecb-448b-b9e6-7969ba4ecec3.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "40B00300US",
       "costoUsd": null,
@@ -1203,7 +1203,7 @@
         "es": "Lenovo Neo 50q Gen 5 - Intel Core 7 240H / 5.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo Neo 50q Gen 5 - Intel Core 7 240H / 5.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/l4473.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "13B90049FJ",
       "costoUsd": null,
@@ -1226,7 +1226,7 @@
         "es": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Capacidad del disco duro - Intel UHD Graphics 770 - Windows 11 Pro",
         "en": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Intel UHD Graphics 770 - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_12TD0039FJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "12TD0039FJ",
       "costoUsd": null,
@@ -1272,7 +1272,7 @@
         "es": "Lenovo- USB-c-Dual Display Travel Dock- con un adaptador USB-C adicional de 135W",
         "en": "Lenovo- USB-c-Dual Display Travel Dock- with an additional 135W USB-C adapter"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/AN004LEN23_l.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "40B90100LA",
       "costoUsd": null,
@@ -1295,7 +1295,7 @@
         "es": "Lenovo ThinkBook G8 - 14\" - Intel Core i5 210H / 2.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Gráficos integrados - Windows 11 Pro - 1 año de garantía",
         "en": "Lenovo ThinkBook G8 - 14\" - Intel Core i5 210H / 2.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Integrated graphics - Windows 11 Pro - 1-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_21SG008SFJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21SG008SFJ",
       "costoUsd": null,
@@ -1318,7 +1318,7 @@
         "es": "Lenovo IdeaPad Slim 3 15IRH10 - Portátil - 15.3\" - Intel Core 5 13420H / 4.6 GHz - 16 GB - DDR5 SDRAM - 1 TB - Gráficos integrados - Windows 11 Home - 1 año de garantía",
         "en": "Lenovo IdeaPad Slim 3 15IRH10 - Notebook - 15.3\" - Intel Core 5 13420H / 4.6 GHz - 16 GB - DDR5 SDRAM - 1 TB - Integrated graphics - Windows 11 Home - 1-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83K100RDGJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "83K100RDGJ",
       "costoUsd": null,
@@ -1341,7 +1341,7 @@
         "es": "Lenovo Tiny VESA Mount II - Abrazadera de montaje de sistema - para ThinkCentre M70q Gen 2; M70q Gen 3; M75t Gen 2; M90q Gen 2; M90q Gen 3; ThinkStation P360",
         "en": "Lenovo Tiny VESA Mount II - System mounting bracket - for ThinkCentre M70q Gen 2; M70q Gen 3; M75t Gen 2; M90q Gen 2; M90q Gen 3; ThinkStation P360"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/37/aa/37aa747f-ce90-42b2-ba2b-e0075439c23a.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "4XF0N03161",
       "costoUsd": null,
@@ -1364,7 +1364,7 @@
         "es": "Lenovo ThinkPad E16 Gen 3 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 5 225H / 4.9 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel Arc 130T - Windows 11 Pro",
         "en": "Lenovo ThinkPad E16 Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 5 225H / 4.9 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel Arc 130T - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/NT075LEN85XL.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21SR007HFJ",
       "costoUsd": null,
@@ -1387,7 +1387,7 @@
         "es": "Lenovo ThinkPad P14s - Portátil - 14\" - 1920 x 1200 - AMD Ryzen AI7 pro / 5.3 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - AMD radeon 860M - Windows 11 Pro - 3 años de garantía",
         "en": "Lenovo ThinkPad P14s - Notebook - 14\" - 1920 x 1200 - AMD Ryzen AI7 pro / 5.3 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - AMD radeon 860M - Windows 11 Pro - 3-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://store.intcomex.com/images/products/21QL006DFJ%20m.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21QL006DFJ",
       "costoUsd": null,
@@ -1410,7 +1410,7 @@
         "es": "Lenovo 15IRX11 - Portátil - 15.6\" - 1920 x 1080 - Intel Core i5 I5-13450HX / 2.4 GHz - 16 GB - DDR5 SDRAM - SSD - NVIDIA GeForce RTX 5050 - Windows 11 Home - Gris - Español",
         "en": "Lenovo 15IRX11 - Notebook - 15.6\" - 1920 x 1080 - Intel Core i5 I5-13450HX / 2.4 GHz - 16 GB - DDR5 SDRAM - SSD - NVIDIA GeForce RTX 5050 - Windows 11 Home - Gray - Spanish"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/7a/3d/7a3d1089-e491-4889-bc41-e3558601ecd1.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "83SC001QGJ",
       "costoUsd": null,
@@ -1433,7 +1433,7 @@
         "es": "Lenovo ThinkPad E16 Gen 3 - Ordenador portátil - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - Gráficos Intel Arc - Windows 11 Pro",
         "en": "Lenovo ThinkPad E16 Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/NT075LEN86xl.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21SR007JFJ",
       "costoUsd": null,
@@ -1456,7 +1456,7 @@
         "es": "Lenovo IdeaPad - Ordenador portátil - 15.6\" - 1920 x 1080 - Intel Core i3 / 3.8 GHz - LPDDR5 SDRAM - 8 GB - 256 GB SSD - Microsoft Windows 11 Home - Azul - 1 año de garantía",
         "en": "Lenovo IdeaPad - Notebook - 15.6\" - 1920 x 1080 - Intel Core i3 / 3.8 GHz - LPDDR5 SDRAM - 8 GB - 256 GB SSD - Microsoft Windows 11 Home - Blue - 1-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XB0081GJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "82XB0081GJ",
       "costoUsd": null,
@@ -1479,7 +1479,7 @@
         "es": "Lenovo IdeaPad Slim 3 15ABR8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 5624U / 4.3 GHz - 16 GB - DDR4 SDRAM - 512 GB SSD - AMD Radeon Graphics - Windows 11 Home - Español",
         "en": "Lenovo IdeaPad Slim 3 15ABR8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 5624U / 4.3 GHz - 16 GB - DDR4 SDRAM - 512 GB SSD - AMD Radeon Graphics - Windows 11 Home - Spanish"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://store.intcomex.com/images/products/NT081LEN10%20m.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "82XM016KGJ",
       "costoUsd": null,
@@ -1502,7 +1502,7 @@
         "es": "Lenovo IdeaPad Slim 3 15ABR8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 7 5825U / 4.5 GHz - 16 GB - DDR4 SDRAM - 1 TB SSD - AMD Radeon Graphics - Windows 11 Home - Español",
         "en": "Lenovo IdeaPad Slim 3 15ABR8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 7 5825U / 4.5 GHz - 16 GB - DDR4 SDRAM - 1 TB SSD - AMD Radeon Graphics - Windows 11 Home - Spanish"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://store.intcomex.com/images/products/NT081LEN09%20m.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "82XM016JGJ",
       "costoUsd": null,
@@ -1548,7 +1548,7 @@
         "es": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 23.8\" - AMD Radeon 780M - Windows 11 Home",
         "en": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 23.8\" - AMD Radeon 780M - Windows 11 Home"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_e6aba573_5d49_47c7_b1b7_875d02be7a3d.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "F0JC001ELD",
       "costoUsd": null,
@@ -1571,7 +1571,7 @@
         "es": "Lenovo - Intel Core Ultra 5 225T / 2.5 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados",
         "en": "Lenovo - Intel Core Ultra 5 225T / 2.5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/6b/8c/6b8c07db-adb4-4ffc-afa0-e8dccac139fc.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "13A4006XFJ",
       "costoUsd": null,
@@ -1594,7 +1594,7 @@
         "es": "Lenovo - AMD Ryzen 7 250 / 3.3 GHz - DDR5 SDRAM - 27\" - AMD Radeon 780M - Microsoft Windows 11 Home",
         "en": "Lenovo - AMD Ryzen 7 250 / 3.3 GHz - DDR5 SDRAM - 27\" - AMD Radeon 780M - Microsoft Windows 11 Home"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_6e70cf85_e1e5_4cee_b7ef_62a8731fbe9c.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "F0JE002ALD",
       "costoUsd": null,
@@ -1617,7 +1617,7 @@
         "es": "Lenovo LOQ 15ARP9 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7235HS / 4.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - NVIDIA GeForce RTX 3050 - Microsoft Windows 11 Home - Luna Grey - 1 año de garantía + Ratón",
         "en": "Lenovo LOQ 15ARP9 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7235HS / 4.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - NVIDIA GeForce RTX 3050 - Microsoft Windows 11 Home - Luna Grey - 1-year warranty + Mouse"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83JC003TGJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "83JC003TGJ",
       "costoUsd": null,
@@ -1640,7 +1640,7 @@
         "es": "Lenovo IdeaPad Slim 5 15ARP10 - Portátil - 15.3\" - 1920 x 1200 - AMD Ryzen 7 7735HS / 3.2 GHz - 16 GB - LPDDR5X SDRAM - 1 TB SSD - AMD Radeon 680M - Windows 11 Home - Cloud Grey",
         "en": "Lenovo IdeaPad Slim 5 15ARP10 - Notebook - 15.3\" - 1920 x 1200 - AMD Ryzen 7 7735HS / 3.2 GHz - 16 GB - LPDDR5X SDRAM - 1 TB SSD - AMD Radeon 680M - Windows 11 Home - Cloud Grey"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83J3003RGJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "83J3003RGJ",
       "costoUsd": null,
@@ -1663,7 +1663,7 @@
         "es": "Lenovo ThinkPad P16s Gen 4 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 500 - Windows 11 Pro - 3 años de garantía",
         "en": "Lenovo ThinkPad P16s Gen 4 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 500 - Windows 11 Pro - 3-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_P16s_black_l.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21QV0050FJ",
       "costoUsd": null,
@@ -1686,7 +1686,7 @@
         "es": "Lenovo ThinkPad P16v Gen 3 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 9 285H / 5.4 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 1000 - Windows 11 Pro - 3 años de garantía",
         "en": "Lenovo ThinkPad P16v Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 9 285H / 5.4 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 1000 - Windows 11 Pro - 3-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_P16v_g3_black_l.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21RS003VFJ",
       "costoUsd": null,
@@ -1709,7 +1709,7 @@
         "es": "Lenovo ThinkPad X9-15 G1 Aura Edition - Portátil - 15.3\" - Intel Core Ultra 7 258V / 5.3 GHz - 32 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc Graphics 140V - Windows 11 Pro - 3 años de garantía",
         "en": "Lenovo ThinkPad X9-15 G1 Aura Edition - Notebook - 15.3\" - Intel Core Ultra 7 258V / 5.3 GHz - 32 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc Graphics 140V - Windows 11 Pro - 3-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://store.intcomex.com/images/products/X9%20Imagen%201m.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21Q6005RFJ",
       "costoUsd": null,
@@ -1732,7 +1732,7 @@
         "es": "Lenovo ThinkPad P16v Gen 2 21KX0040FJ - Ordenador portátil - 16\" - 1920 x 1200 - Intel Core Ultra 9 185H - 32 GB - DDR5 SDRAM - 1 TB SSD - Windows 11 Pro - 3 años de garantía",
         "en": "Lenovo ThinkPad P16v Gen 2 21KX0040FJ - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 9 185H - 32 GB - DDR5 SDRAM - 1 TB SSD - Windows 11 Pro - 3-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NT069LEN11L.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21KX0040FJ",
       "costoUsd": null,
@@ -1755,7 +1755,7 @@
         "es": "Lenovo ThinkVision E22-40 - WLED - 21.5\" - 1920 x 1080 - IPS - VGA / HDMI / DisplayPort - Raven Black - 3 años de garantía",
         "en": "Lenovo ThinkVision E22-40 - WLED - 21.5\" - 1920 x 1080 - IPS - VGA / HDMI / DisplayPort - Raven Black - 3-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64C9MAR6LA.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "64C9MAR6LA",
       "costoUsd": null,
@@ -1778,7 +1778,7 @@
         "es": "Lenovo IdeaPad Slim 3 15IRH10 - Portátil - 15.3\" - 1920 x 1200 - Intel Core i5 13420H / 4.6 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel UHD Graphics - Microsoft Windows 11 Home - Gris - Español - 1 año de garantía",
         "en": "Lenovo IdeaPad Slim 3 15IRH10 - Notebook - 15.3\" - 1920 x 1200 - Intel Core i5 13420H / 4.6 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel UHD Graphics - Microsoft Windows 11 Home - Gray - Spanish - 1-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83K100PTGJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "83K100PTGJ",
       "costoUsd": null,
@@ -1801,7 +1801,7 @@
         "es": "Lenovo IdeaPad Slim 3 15AMN8 15AMN8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 40 / 4.3 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - AMD Radeon 610M Graphics - Windows 11 Home Single Language - Frost Blue",
         "en": "Lenovo IdeaPad Slim 3 15AMN8 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 40 / 4.3 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - AMD Radeon 610M Graphics - Windows 11 Home Single Language - Frost Blue"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://store.intcomex.com/images/products/82XQ014LGJ%20m.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "82XQ014LGJ",
       "costoUsd": null,
@@ -1824,7 +1824,7 @@
         "es": "Lenovo IdeaPad Slim 3 15AMN8 - Ordenador portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7520U / 4.3 GHz - LPDDR5 SDRAM - 16 GB - 512 GB SSD - Windows 11 Home Single Language + Maletín",
         "en": "Lenovo IdeaPad Slim 3 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7520U / 4.3 GHz - LPDDR5 SDRAM - 16 GB - 512 GB SSD - Windows 11 Home Single Language + Carrying case"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XQ00MKGJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "82XQ00MKGJ",
       "costoUsd": null,
@@ -1847,7 +1847,7 @@
         "es": "Lenovo IdeaPad Slim 3 15AMN8 - Ordenador portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 3 / 4.1 GHz - LPDDR5 SDRAM - 8 GB - 512 GB SSD - AMD Radeon 610M - Windows 11 Home Single Language + Maletín",
         "en": "Lenovo IdeaPad Slim 3 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 3 / 4.1 GHz - LPDDR5 SDRAM - 8 GB - 512 GB SSD - AMD Radeon 610M - Windows 11 Home Single Language + Carrying case"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XQ00M8GJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "82XQ00M8GJ",
       "costoUsd": null,
@@ -1870,7 +1870,7 @@
         "es": "Lenovo ThinkPad E14 - Portátil - 14\" - Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo ThinkPad E14 - Notebook - 14\" - Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/9e/b1/9eb11581-1d0e-4576-b463-1721e71b09ce.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21SX00D3FJ",
       "costoUsd": null,
@@ -1893,7 +1893,7 @@
         "es": "Lenovo Neo 50q - Intel Core 5 210H / 2.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo Neo 50q - Intel Core 5 210H / 2.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/47/e3/47e385b6-f5a8-4fc3-83cd-e9d815245e91.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "13B90048FK",
       "costoUsd": null,
@@ -1916,7 +1916,7 @@
         "es": "Lenovo Neo 55q - AMD Ryzen 5 220 / 3.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo Neo 55q - AMD Ryzen 5 220 / 3.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/db/39/db398cae-0f01-4fc3-95e7-9af682758ce8.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "13GN001KFJ",
       "costoUsd": null,
@@ -1939,7 +1939,7 @@
         "es": "Lenovo ThinkPad Hybrid USB-C with USB-A Dock - Estación de conexión - USB-C - 2 x HDMI, 2 x DP - 1GbE - 135 vatios - Estados Unidos",
         "en": "Lenovo ThinkPad Hybrid USB-C with USB-A Dock - Docking station - USB-C - 2 x HDMI, 2 x DP - 1GbE - 135 watts - United States"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/56/55/56558d48-c8f2-431d-b6d6-9be0d9462c82.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "40AF0135US",
       "costoUsd": null,
@@ -1962,7 +1962,7 @@
         "es": "Lenovo ThinkPad E14 - Portátil - 14\" - Intel Core Ultra 7 255H / 2.05 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo ThinkPad E14 - Notebook - 14\" - Intel Core Ultra 7 255H / 2.05 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/9e/b1/9eb11581-1d0e-4576-b463-1721e71b09ce.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21SX00D4FJ",
       "costoUsd": null,
@@ -1985,7 +1985,7 @@
         "es": "Lenovo ThinkPad E16 - Portátil - 16\" - Intel Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo ThinkPad E16 - Notebook - 16\" - Intel Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/e0/8b/e08b9045-c156-4ea3-a143-902262a33bde.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21SR00BEFJ",
       "costoUsd": null,
@@ -2008,7 +2008,7 @@
         "es": "Lenovo ThinkBook 16 G9 - Portátil - 16\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - 512 GB - Gráficos integrados - Windows 11 Pro",
         "en": "Lenovo ThinkBook 16 G9 - Notebook - 16\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - 512 GB - Integrated graphics - Windows 11 Pro"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_5ada050e_4617_4a47_845b_e5d558841e36.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "21US004PFJ",
       "costoUsd": null,
@@ -2077,7 +2077,7 @@
         "es": "Lenovo ThinkVision E20-30 - Monitor LED - 20\" (19.5\" visible) - 1600 x 900 @ 60 Hz - TN - 250 cd/m² - 1000:1 - 2 ms - HDMI, VGA - negro azabache",
         "en": "Lenovo ThinkVision E20-30 - Monitor LED - 20\" (19.5\" visible) - 1600 x 900 @ 60 Hz - TN - 250 cd/m² - 1000:1 - 2 ms - HDMI, VGA - raven black"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/2f/e7/2fe7449a-4af1-4aaa-b584-b0ccddeff93a.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "62F7KAR4LA",
       "costoUsd": null,
@@ -2100,7 +2100,7 @@
         "es": "Lenovo IdeaPad Slim 3 15IAH8 - Ordenador portátil - 15.6\" - FHD - 1920 x 1080 - Pantalla táctil - Intel Core i5 12450H / 4.4 GHz - LPDDR5 SDRAM - 16 GB - 1 TB SSD - Intel UHD Graphics - Windows 11 Home Single Language - Español - 1 año de garantía",
         "en": "Lenovo IdeaPad Slim 3 15IAH8 - Notebook - 15.6\" - FHD - 1920 x 1080 - Touchscreen - Intel Core i5 12450H / 4.4 GHz - LPDDR5 SDRAM - 16 GB - 1 TB SSD - Intel UHD Graphics - Windows 11 Home Single Language - Spanish - 1-year warranty"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83ER00BQGJ.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "83ER00BQGJ",
       "costoUsd": null,
@@ -2123,7 +2123,7 @@
         "es": "Lenovo ThinkVision M15 - Monitor LED - 15\" (15.6\" visible) - portátil - 1920 x 1080 Full HD (1080p) @ 60 Hz - IPS - 250 cd/m² - 1000:1 - 6 ms - 2xUSB-C - negro azabache - para ThinkCentre M70q Gen 3 11TY",
         "en": "Lenovo ThinkVision M15 - Monitor LED - 15\" (15.6\" visible) - portable - 1920 x 1080 Full HD (1080p) @ 60 Hz - IPS - 250 cd/m² - 1000:1 - 6 ms - 2xUSB-C - raven black - for ThinkCentre M70q Gen 3 11TY"
       },
-      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "imagen": "https://cdn.cs.1worldsync.com/a1/e4/a1e4b44b-70c6-4091-9e4b-016d7a9c2f17.jpg",
       "marca": "Lenovo",
       "codigoFabricante": "62CAUAR1US",
       "costoUsd": null,
