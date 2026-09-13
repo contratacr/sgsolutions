@@ -18,7 +18,10 @@
     "build:worker": "opennextjs-cloudflare build",
     "preview:worker": "opennextjs-cloudflare preview",
     "db:iniciar": "node scripts/supabase-local.mjs start",
-    "db:detener": "node scripts/supabase-local.mjs stop"
+    "db:detener": "node scripts/supabase-local.mjs stop",
+    "prebuild": "node scripts/preparar-catalogo.mjs",
+    "predev": "node scripts/preparar-catalogo.mjs",
+    "pretypecheck": "node scripts/preparar-catalogo.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.0",

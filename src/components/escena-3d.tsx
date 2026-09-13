@@ -18,28 +18,24 @@ const fragmentShader = `
   uniform float uArea;
   uniform vec2 uPointer;
   void main() {
-    vec2 p = vUv;
-    p += uPointer * vec2(.035, .025);
+    vec2 p = vUv + uPointer * vec2(.016,.012);
+    float t = uTime * .13;
     vec3 color = vec3(0.0);
-    float t = uTime * .16;
-    for (int i = 0; i < 7; i++) {
+    float center = .52 + p.y * .23 + .035 * sin(p.y * 6.0 - t);
+    for (int i = 0; i < 6; i++) {
       float n = float(i);
-      float curve = .26 + .16 * sin(p.x * 5.0 - .5 + t + n * .12)
-        + .13 * sin(p.x * 2.8 + t * .6) + n * .024;
-      float d = abs(p.y - curve);
-      float edge = exp(-d * (170.0 + n * 12.0));
-      float glow = exp(-d * 22.0) * .10;
-      vec3 blue = mix(vec3(.20,.39,.58), vec3(.52,.73,.89), n / 7.0);
-      color += blue * (edge * .38 + glow);
+      float ribbon = center + .045 * sin(p.y * 8.0 + t + n * 1.15) + n * .012;
+      float d = abs(p.x-ribbon);
+      float core = exp(-d*450.0) * .27;
+      float glow = exp(-d*35.0) * .1;
+      vec3 blue = mix(vec3(.15,.35,.60),vec3(.50,.77,1.0),n/6.0);
+      color += blue * (core+glow);
     }
-    float orangeCurve = .29 + .20 * sin(p.x * 4.5 + .65 + t * .75 + uArea * .12);
-    float orangeD = abs(p.y - orangeCurve);
-    color += vec3(.94,.35,.16) * (exp(-orangeD * 220.0) * .9 + exp(-orangeD * 32.0) * .15);
-    float halo = exp(-length((p - vec2(.49,.53)) * vec2(2.0,2.8)) * 3.0);
-    color += vec3(.15,.32,.48) * halo * .38;
-    float fade = smoothstep(0.0,.15,p.x) * (1.0 - smoothstep(.84,1.0,p.x))
-      * smoothstep(0.0,.12,p.y) * (1.0 - smoothstep(.84,1.0,p.y));
-    gl_FragColor = vec4(color * fade, fade);
+    float orange = abs(p.x-center-.065*sin(p.y*5.0-t*.6+uArea*.12)-.045);
+    color += vec3(.94,.36,.16)*(exp(-orange*360.0)*.55+exp(-orange*42.0)*.1);
+    color += vec3(.10,.23,.38)*exp(-abs(p.x-center)*9.0)*.24;
+    float fade = smoothstep(0.0,.2,p.y)*(1.0-smoothstep(.85,1.0,p.y));
+    gl_FragColor = vec4(color*fade,fade);
   }
 `;
 
@@ -58,7 +54,7 @@ export default function Escena3D({activo, punteroRef, invalidarRef, alCargar, al
     let anterior = 0;
     let transcurrido = 0;
     let listo = false;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.25));
     renderer.setClearColor(0x000000, 0);
     nodo.appendChild(renderer.domElement);
     const escena = new THREE.Scene();

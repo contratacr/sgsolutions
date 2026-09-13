@@ -4,19 +4,19 @@ Base de la plataforma web: Next.js 16, React 19, TypeScript, Tailwind 4, next-in
 
 ## Estado de esta entrega
 
-- Portada con slogan bilingüe, logo y ondas de luz interactivas propias con Motion/Three.js. Tienda, Soporte, Empresas, Nosotros y Contacto tienen páginas independientes; los accesos del menú abren pestañas nuevas.
-- Español e inglés con selector persistente y 263 claves traducidas.
-- Tienda con categorías visuales, búsqueda combinada con filtros y carrito persistente con cantidades.
+- Portada con slogan bilingüe, iluminación propia con Motion/Three.js y accesos fotográficos con profundidad. Logo oficial en navbar y footer. Tienda, Soporte, Empresas, Nosotros y Contacto tienen páginas independientes; los enlaces internos navegan en la misma pestaña.
+- Español e inglés con selector persistente y 508 claves traducidas.
+- Tienda con 90 productos, nueve categorías, búsqueda, paginación, orden por precio y carrito persistente. El último archivo de Intcomex aportó 85 productos Lenovo: 82 nuevos y tres actualizaciones. Precios siempre en CRC, también en inglés.
 - Soporte centrado en tareas de ayuda y Empresas organizado por necesidades, con fotografías reales de SG.
 - Base de acceso interno por Supabase Auth y perfil activo, sin registro público.
 - Configuración Supabase local y migración inicial de perfiles con RLS.
 - Plantillas de workflows de revisión, despliegue manual, migraciones con simulación/respaldo y respaldo diario cifrado en `docs/automatizaciones/`.
 
-**Todavía no es una tienda operativa:** faltan catálogo vendible con precios/stock, pasarela y pedidos. El pago se muestra deshabilitado. El administrador de productos/ajustes, clientes, cotizaciones/PDF/correo y telemetría están planificados, no implementados. La conexión Auth/RLS no se ha probado localmente por ausencia de Docker. No hay servicios de producción configurados ni desplegados por este bloque.
+**Todavía no es una tienda operativa:** falta confirmar disponibilidad propia, conectar la pasarela y gestionar pedidos. El pago se muestra deshabilitado. El editor de productos, categorías, textos bilingües y fórmula de precios está implementado; su guardado necesita Supabase y la segunda migración. Clientes, cotizaciones/PDF/correo y telemetría siguen pendientes. La conexión Auth/RLS no se ha probado localmente por ausencia de Docker. No hay servicios de producción configurados ni desplegados por este bloque.
 
 ## Desarrollo
 
-Requisitos: Node 22.14+ (CI usa 24), npm y Docker compatible para Supabase local.
+Requisitos: Node 22.18+ (CI usa 24), npm y Docker compatible para Supabase local.
 
 ```sh
 npm ci
@@ -58,3 +58,13 @@ Las pruebas usan exclusivamente loopback y guardan capturas/mediciones en `evide
 La rama `main` representa producción, pero ningún push/merge publica automáticamente. GitHub rechazó la creación de `.github/workflows/` porque la conexión OAuth carece del permiso `workflow`; por eso los cuatro YAML están como plantillas en `docs/automatizaciones/` y **Actions todavía no está activo**. Después de que Isaac autorice `gh auth refresh -h github.com -s workflow`, moverlos a `.github/workflows/`, configurar los environments y subirlos. La rama local `codex/automatizaciones-preparadas` conserva la versión inicial con workflows en su ubicación ejecutable.
 
 El despliegue requiere despacho manual, autorización actual de Isaac y environment protegido. No aplicar migraciones locales contra producción. Nunca versionar tokens, llaves, el documento comercial privado ni respaldos sin cifrar.
+
+- [Portal fotográfico e iluminación](docs/11-portal-inmersivo.md)
+
+- [Catálogo, precios y administrador](docs/12-tienda-catalogo.md)
+
+- [Revisión visual y lenguaje](docs/13-acabado-y-lenguaje.md)
+
+- [Integración automática de Intcomex: estado y activación](docs/15-integracion-intcomex.md)
+
+La sincronización de catálogo/precios diarios e inventario cada hora está implementada para las nueve categorías, pero desactivada. Necesita credenciales IWS, Supabase configurado y la migración de sincronización. El Excel disponible solo contiene Lenovo y no incluye imágenes; no representa todo Intcomex. El administrador conserva sus cambios de contenido y precios manuales.

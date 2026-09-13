@@ -4,6 +4,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const configuracion: NextConfig = {
   images: { unoptimized: true },
   poweredByHeader: false,
+  experimental: {serverActions: {bodySizeLimit: '32mb'}},
   async headers() {
     return [{ source: '/:path*', headers: [
       { key: 'X-Content-Type-Options', value: 'nosniff' },

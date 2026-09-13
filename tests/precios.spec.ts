@@ -1,0 +1,36 @@
+import {test,expect} from '@playwright/test';
+import {calcularPrecio,colones,publicarCatalogo,esquemaCatalogo,redondearPrecio} from '../src/lib/catalogo-modelo';
+import base from '../src/lib/catalogo-base.json';
+test('fórmula CRC, prioridad manual y costos privados',()=>{
+ const ajustes={cambio:450,adicional:50,iva:13,utilidad:20};
+ expect(calcularPrecio(100,ajustes)).toBe(68000);
+ expect(calcularPrecio(36.24,{...ajustes,cambio:455.56})).toBe(25000);
+ expect(calcularPrecio(100,ajustes,59900)).toBe(59900);
+ expect(calcularPrecio(null,ajustes)).toBeNull();
+ expect(redondearPrecio(49750)).toBe(50000);
+ expect(redondearPrecio(67800)).toBe(68000);
+ expect(redondearPrecio(251000)).toBe(255000);
+ expect(colones(68000)).toContain('₡');
+ const c=esquemaCatalogo.parse(base);c.productos[0].costoUsd=100;c.productos[1].publicado=false;
+ const publico=publicarCatalogo(c);
+ expect(publico.productos.some(p=>p.id===c.productos[1].id)).toBe(false);
+ expect(JSON.stringify(publico)).not.toMatch(/costoUsd|precioManual|utilidad|cambio/);
+ expect(esquemaCatalogo.safeParse({...c,ajustes:{...ajustes,cambio:-1}}).success).toBe(false);
+ expect(esquemaCatalogo.safeParse({...c,categorias:[]}).success).toBe(false);
+ expect(esquemaCatalogo.safeParse({...c,productos:[{...c.productos[0],imagen:'javascript:alert(1)'}]}).success).toBe(false);
+});
+test('tienda mantiene CRC en inglés y ordena precios',async({page},prueba)=>{
+ await page.goto('/tienda');
+ await page.getByRole('button',{name:'Read this page in English'}).click();
+ await expect(page.locator('html')).toHaveAttribute('lang','en');
+ await page.getByRole('combobox').selectOption('menor');
+ await expect(page.getByRole('article').first()).toContainText('Epson 544 Black');
+ for(const p of await page.locator('.shop-precio strong').all())await expect(p).toContainText('₡');
+ for(const img of await page.locator('.shop-foto img').all()){await img.scrollIntoViewIfNeeded();await expect.poll(()=>img.evaluate((e:HTMLImageElement)=>e.complete&&e.naturalWidth>0)).toBe(true);}
+ await page.evaluate(()=>window.scrollTo(0,0));
+ await page.screenshot({path:`evidencias/tienda-en-${prueba.project.name}.png`,fullPage:true,animations:'disabled',scale:'css'});
+ await page.getByRole('article').first().getByRole('button').click();
+ await page.getByRole('button',{name:'Open cart'}).click();
+ await expect(page.locator('.carrito-resumen')).toContainText('₡');
+ await page.goto('/panel/catalogo');await expect(page).toHaveURL(/\/acceso/);
+});

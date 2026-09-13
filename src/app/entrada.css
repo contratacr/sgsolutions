@@ -1,0 +1,101 @@
+/* Portal SG — fotografía inmersiva, iluminación y profundidad discreta. */
+.cabecera { background: #091725; }
+.barra-local { border-bottom-color: #ffffff0d; }
+.pie { background: #091725; border-top: 1px solid #ffffff10; }
+.pie .pie-firma { display: inline-block; margin-bottom: 20px; }
+.pie-firma img { width: 144px; height: auto; }
+.pie-identidad p { max-width: 245px; }
+.portal { background: #091725; position: relative; isolation: isolate; }
+.portal-atmosfera { position: absolute; top: -45px; inset-inline: 0; height: 560px; z-index: -1; pointer-events: none; }
+.portal .escenario { height: 100%; margin: 0; }
+.portal .escena-grafico { mix-blend-mode: screen; inset: 0; mask-image: linear-gradient(#000 65%,transparent); }
+.portal .escena-canvas { mix-blend-mode: screen; }
+.portal .escena-respaldo { object-fit: cover; }
+.portal .escenario-controles { bottom: auto; top: 69px; left: auto; right: max(48px,calc((100vw - 1240px)/2)); font-size: .6rem; }
+.portal .escenario-controles > span { display: none; }
+.portal .escenario-controles button { pointer-events: auto; background: #09172599; border: 1px solid #ffffff20; border-radius: 99px; padding: 7px 12px; color: #b9cddd; }
+.portal-interior { padding-top: 55px; position: relative; }
+.portal-presentacion { position: relative; display: grid; grid-template-columns: 1fr 310px; column-gap: 40px; padding-bottom: 48px; }
+.portal .entrada-eyebrow { grid-column: 1/-1; font-size: .62rem; letter-spacing: .23em; margin-bottom: 24px; color: #b1c9dd; }
+.portal .entrada-eyebrow > span { width: 5px; height: 5px; }
+.portal h1 { font-size: clamp(3.4rem,6.5vw,6rem); line-height: 1.01; letter-spacing: -.06em; font-weight: 500; }
+.portal h1 > span { background: linear-gradient(105deg,#f2f7fc 8%,#b8d6ee 45%,#779fc2 90%); color: transparent; background-clip: text; -webkit-background-clip: text; }
+.portal-introduccion { align-self: end; padding-bottom: 7px; }
+.portal-introduccion > p { font-size: .9rem; color: #bdcddc; line-height: 1.75; }
+.portal-introduccion > span { display: flex; gap: 8px; align-items: flex-start; font-size: .64rem; line-height: 1.55; color: #90adc5; margin-top: 20px; }
+.portal-introduccion svg { margin-top: 2px; color: #ee9878; }
+.portal-menu-cabecera { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ffffff18; padding-top: 20px; margin-bottom: 20px; font-size: .82rem; color: #d7e4ef; }
+.portal-menu-cabecera > span:last-child { display: flex; align-items: center; gap: 14px; font: .6rem ui-monospace,monospace; letter-spacing: .1em; color: #8facc2; }
+.portal-menu { display: grid; grid-template-columns: 1.12fr 1fr 1fr; gap: 18px; }
+.portal-tarjeta-marco { perspective: 1100px; min-width: 0; }
+.portal-tarjeta { display: flex; flex-direction: column; justify-content: space-between; position: relative; isolation: isolate; height: 350px; overflow: hidden; border-radius: 19px; border: 1px solid #a1c9e333; background: #173149; box-shadow: 0 12px 40px #00000020; transform-style: preserve-3d; transition: border-color .3s, box-shadow .3s; }
+.portal-tarjeta:focus-visible { outline: 3px solid #ff936c; outline-offset: 5px; }
+.portal-tarjeta:hover, .portal-tarjeta:focus-visible { border-color: #e3b195; box-shadow: 0 16px 45px #00000045,0 0 25px #f05a2810; }
+.portal-foto, .portal-velo, .portal-reflejo { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.portal-foto img { object-fit: cover; object-position: center 52%; filter: saturate(.65); transform: scale(1.025); transition: transform .65s cubic-bezier(.2,.7,.3,1),filter .65s; }
+.portal-tienda .portal-foto img { object-position: center 49%; }
+.portal-empresas .portal-foto img { object-position: 50% 50%; }
+.portal-tarjeta:hover .portal-foto img, .portal-tarjeta:focus-visible .portal-foto img { transform: scale(1.085); filter: saturate(1); }
+.portal-velo { background: linear-gradient(180deg,#07152225 0%,#07152205 22%,#071522aa 51%,#071522f5 82%,#071522 100%); }
+.portal-reflejo { z-index: 1; opacity: 0; mix-blend-mode: screen; transition: opacity .35s; }
+.portal-tarjeta:hover .portal-reflejo { opacity: 1; }
+.portal-tarjeta-cabecera { padding: 21px 23px; display: flex; justify-content: space-between; align-items: center; }
+.portal-icono { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 12px; background: #0c213aa6; border: 1px solid #ffffff35; color: #fff; backdrop-filter: blur(10px); }
+.portal-numero { font: .65rem ui-monospace,monospace; color: #fff; letter-spacing: .12em; text-shadow: 0 1px 8px #000; }
+.portal-tarjeta-contenido { padding: 0 25px 23px; }
+.portal-categoria { font-size: .55rem; letter-spacing: .15em; font-weight: 500; color: #c5d7e6; }
+.portal-tarjeta h2 { color: #f8fbfd; font-size: clamp(1.55rem,2.25vw,2.1rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.05; margin-top: 10px; max-width: 330px; }
+.portal-tarjeta p { color: #b7cddd; font-size: .75rem; line-height: 1.55; margin-top: 12px; }
+.portal-tarjeta-base { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ffffff22; margin-top: 20px; padding-top: 15px; font-size: .72rem; font-weight: 500; color: #f0f6fa; gap: 10px; }
+.portal-flecha { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #ffffff12; border: 1px solid #ffffff20; transition: background .25s,color .25s, transform .25s; }
+.portal-tienda .portal-flecha, .portal-tarjeta:hover .portal-flecha, .portal-tarjeta:focus-visible .portal-flecha { background: #f05a28; color: #101e2b; border-color: #f05a28; }
+.portal-tarjeta:hover .portal-flecha { transform: rotate(45deg); }
+.portal-base { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding-block: 24px 30px; font-size: .68rem; color: #a3bbcf; }
+.portal-base a, .portal-base > span { display: flex; gap: 9px; align-items: center; }
+.portal-base a { color: #dae6ef; }
+@media (min-width: 1600px) { .portal-interior { padding-top: 65px; } .portal-tarjeta { height: 380px; } }
+@media (max-width: 1100px) and (min-width: 900px) {
+  .portal-presentacion { grid-template-columns: 1fr 250px; gap: 20px; }
+  .portal h1 { font-size: 4rem; }
+  .portal-menu { gap: 13px; grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .portal-tarjeta-contenido { padding-inline: 19px; }
+  .portal-tarjeta h2 { font-size: 1.7rem; }
+  .portal-categoria { letter-spacing: .08em; font-size: .5rem; }
+}
+@media (max-width: 899px) {
+  .portal-interior { padding-top: 21px; }
+  .portal-presentacion { display: block; padding-bottom: 23px; }
+  .portal .entrada-eyebrow { font-size: .52rem; margin-bottom: 16px; letter-spacing: .2em; }
+  .portal h1 { font-size: clamp(2.3rem,9.8vw,4rem); line-height: 1.02; }
+  .portal-introduccion { display: none; }
+  .portal-atmosfera { top: -80px; height: 420px; opacity: .65; }
+  .portal .escenario-controles { display: none; }
+  .portal-menu-cabecera { border-top: 0; padding-top: 0; margin-bottom: 15px; font-size: .75rem; }
+  .portal-menu { grid-template-columns: 1fr; gap: 10px; }
+  .portal-tarjeta { height: 107px; border-radius: 13px; justify-content: center; }
+  .portal-foto { left: 35%; }
+  .portal-foto img { object-position: center 54%; filter: saturate(.65); }
+  .portal-tienda .portal-foto img { object-position: center 54%; }
+  .portal-velo { background: linear-gradient(90deg,#0c2136 0%,#0c2136f5 24%,#0c2136ad 66%,#0c213645 100%); }
+  .portal-tarjeta-cabecera { position: absolute; inset: 0; padding: 0; pointer-events: none; }
+  .portal-icono { position: absolute; top: 17px; left: 16px; width: 28px; height: 28px; background: #ffffff0c; border-radius: 8px; }
+  .portal-icono svg { width: 16px; height: 16px; }
+  .portal-numero { display: none; }
+  .portal-tarjeta-contenido { padding: 15px 58px 15px 59px; }
+  .portal-categoria, .portal-tarjeta p { display: none; }
+  .portal-tarjeta h2 { font-size: 1.14rem; line-height: 1.12; margin-top: 0; max-width: 245px; }
+  .portal-tarjeta-base { border: 0; padding: 0; margin-top: 10px; font-size: .64rem; color: #d6e4ef; }
+  .portal-flecha { position: absolute; right: 15px; top: calc(50% - 15px); width: 30px; height: 30px; background: #09172599; }
+  .portal-flecha svg { width: 18px; height: 18px; }
+  .portal-reflejo { display: none; }
+  .portal-base { padding-block: 20px 25px; font-size: .6rem; }
+}
+@media (max-width: 370px) { .portal h1 { font-size: 2.1rem; } .portal-base > span { display: none; } .portal-tarjeta-contenido { padding-left: 52px; } .portal-tarjeta h2 { font-size: 1.02rem; } }
+@media (prefers-reduced-motion: reduce) {
+  .portal-tarjeta { transform: none !important; }
+  .portal-tarjeta, .portal-foto img, .portal-flecha { transition: none; }
+  .portal-tarjeta:hover .portal-foto img, .portal-tarjeta:focus-visible .portal-foto img, .portal-tarjeta:hover .portal-flecha { transform: none; }
+}
+.portal-atmosfera { z-index: 0; }
+.portal-interior { pointer-events: none; }
+.portal-presentacion, .portal-menu-cabecera, .portal-menu, .portal-base { pointer-events: auto; }

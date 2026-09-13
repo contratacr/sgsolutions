@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import {SolicitudPlan} from './solicitud-plan';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { ArrowRight, ArrowUpRight, Headset, Network, ShieldCheck, Monitor, Check, MapPin, Phone } from 'lucide-react';
-import { enlaceWhatsApp, empresa } from '@/lib/empresa';
+import { enlaceCorreo, enlaceWhatsApp, empresa } from '@/lib/empresa';
 
 export async function Soluciones() {
   const t = await getTranslations('Inicio');
@@ -18,13 +19,12 @@ export async function Proyectos() {
 
 export async function Planes() {
   const t = await getTranslations('Inicio');
-  const contacto = await getTranslations('Contacto');
-  return <section id="planes" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('planesEtiqueta')}</p><h2>{t('planesTitulo')}</h2></div><p>{t('planesDescripcion')}</p></div><div className="planes-grid">{[0,1,2].map(i => <article className={`plan ${i===1 ? 'plan-destacado' : ''}`} key={i}><span className="plan-numero">{`0${i+1}`}</span><h3>{t(`plan${i}Nombre`)}</h3><p className="plan-frase">{t(`plan${i}Frase`)}</p><ul>{t(`plan${i}Detalle`).split(' · ').map(detalle => <li key={detalle}><Check size={17}/>{detalle}</li>)}</ul><a href={enlaceWhatsApp(contacto('planMensaje', {plan: t(`plan${i}Nombre`)}))} target="_blank" rel="noopener noreferrer" className={`boton ${i === 1 ? 'boton-naranja' : 'boton-contorno'}`}>{t('planAccion')}<ArrowUpRight size={18}/></a></article>)}</div><p className="nota-planes">{t('planesNota')}</p></section>;
+  return <section id="planes" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('planesEtiqueta')}</p><h2>{t('planesTitulo')}</h2></div><p>{t('planesDescripcion')}</p></div><div className="planes-grid">{[0,1,2].map(i => <article className={`plan ${i===1 ? 'plan-destacado' : ''}`} key={i}><span className="plan-numero">{`0${i+1}`}</span>{i===1&&<span className="plan-recomendado">{t('planRecomendado')}</span>}<h3>{t(`plan${i}Nombre`)}</h3><p className="plan-frase">{t(`plan${i}Frase`)}</p><ul>{t(`plan${i}Detalle`).split(' · ').map(detalle => <li key={detalle}><Check size={17}/>{detalle}</li>)}</ul><SolicitudPlan indice={i}/></article>)}</div><p className="nota-planes">{t('planesNota')}</p></section>;
 }
 
 export async function InvitacionTienda() {
   const t = await getTranslations('Inicio');
-  return <section className="tienda-invitacion"><div className="contenedor tienda-invitacion-grid"><div><p className="etiqueta etiqueta-clara">{t('tiendaEtiqueta')}</p><h2>{t('tiendaTitulo')}</h2><p>{t('tiendaTexto')}</p><Link className="boton boton-naranja" href="/tienda" target="_blank" rel="noopener noreferrer">{t('tiendaAccion')}<ArrowRight size={18}/></Link></div><div className="tienda-imagen"><Image src="/imagenes/portatil.webp" alt={t('tiendaAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div></div></section>;
+  return <section className="tienda-invitacion"><div className="contenedor tienda-invitacion-grid"><div><p className="etiqueta etiqueta-clara">{t('tiendaEtiqueta')}</p><h2>{t('tiendaTitulo')}</h2><p>{t('tiendaTexto')}</p><Link className="boton boton-naranja" href="/tienda">{t('tiendaAccion')}<ArrowRight size={18}/></Link></div><div className="tienda-imagen"><Image src="/imagenes/portatil.webp" alt={t('tiendaAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div></div></section>;
 }
 
 export async function Nosotros() {
@@ -32,11 +32,10 @@ export async function Nosotros() {
   return <section id="nosotros" className="seccion contenedor nosotros"><div className="nosotros-imagen"><Image src="/imagenes/oficina.webp" alt={t('nosotrosAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div><div><p className="etiqueta">{t('nosotrosEtiqueta')}</p><h2>{t('nosotrosTitulo')}</h2><p>{t('nosotrosTexto')}</p><a className="enlace-azul" href={empresa.mapa} target="_blank" rel="noopener noreferrer"><MapPin size={19}/>{t('visitanos')}<ArrowUpRight size={18}/></a></div></section>;
 }
 
-export async function Contacto() {
+export async function Contacto({porCorreo=false}:{porCorreo?:boolean}={}) {
   const t = await getTranslations('Inicio');
   const contacto = await getTranslations('Contacto');
   const whatsapp = enlaceWhatsApp(contacto('mensaje'));
   const marca = await getTranslations('Marca');
-  return <section id="contacto" className="contacto"><div className="contenedor contacto-grid"><div><p className="etiqueta">{t('contactoEtiqueta')}</p><h2>{t('contactoTitulo')}</h2><p>{t('contactoTexto')}</p></div><div className="contacto-acciones"><a className="boton boton-naranja" href={whatsapp} target="_blank" rel="noopener noreferrer">{t('contactoAccion')}<ArrowUpRight size={20}/></a><a className="enlace-azul" href={`tel:${empresa.telefono}`}><Phone size={18}/>{marca('telefono')}</a></div></div></section>;
+  return <section id="contacto" className="contacto"><div className="contenedor contacto-grid"><div><p className="etiqueta">{t('contactoEtiqueta')}</p><h2>{t('contactoTitulo')}</h2><p>{t('contactoTexto')}</p></div><div className="contacto-acciones"><a className="boton boton-naranja" href={porCorreo?enlaceCorreo():whatsapp} target="_blank" rel="noopener noreferrer">{t(porCorreo?'contactoCorreo':'contactoAccion')}<ArrowUpRight size={20}/></a><a className="enlace-azul" href={`tel:${empresa.telefono}`}><Phone size={18}/>{marca('telefono')}</a></div></div></section>;
 }
-

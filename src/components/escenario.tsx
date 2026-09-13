@@ -3,7 +3,6 @@
 import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { useReducedMotion } from 'motion/react';
-import Image from 'next/image';
 import { Waves, Pause, Play } from 'lucide-react';
 
 const Escena3D = lazy(() => import('./escena-3d'));
@@ -16,15 +15,15 @@ class RespaldoEscena extends Component<{children: ReactNode}, {fallo: boolean}> 
 
 // La composición permanece visible sin WebGL, sin JavaScript y con movimiento reducido.
 function Ilustracion() {
-  return <svg viewBox="0 0 600 330" fill="none" className="escena-respaldo" aria-hidden="true">
+  return <svg viewBox="0 0 1240 560" preserveAspectRatio="xMidYMid slice" fill="none" className="escena-respaldo" aria-hidden="true">
     <defs>
-      <linearGradient id="onda-sg"><stop stopColor="#4d6f91" stopOpacity="0"/><stop offset=".35" stopColor="#91b9d9"/><stop offset=".7" stopColor="#4d6f91"/><stop offset="1" stopColor="#4d6f91" stopOpacity="0"/></linearGradient>
-      <linearGradient id="luz-sg"><stop stopColor="#f05a28" stopOpacity="0"/><stop offset=".5" stopColor="#f58d66"/><stop offset="1" stopColor="#f05a28" stopOpacity="0"/></linearGradient>
-      <radialGradient id="halo-sg"><stop stopColor="#4d6f91" stopOpacity=".35"/><stop offset="1" stopColor="#4d6f91" stopOpacity="0"/></radialGradient>
+      <linearGradient id="portal-luz" x1="610" y1="560" x2="910" y2="0" gradientUnits="userSpaceOnUse"><stop stopColor="#4d6f91" stopOpacity="0"/><stop offset=".35" stopColor="#74b5e5"/><stop offset=".72" stopColor="#4d6f91"/><stop offset="1" stopColor="#4d6f91" stopOpacity="0"/></linearGradient>
+      <linearGradient id="portal-naranja" x1="620" y1="500" x2="970" y2="0" gradientUnits="userSpaceOnUse"><stop stopColor="#f05a28" stopOpacity="0"/><stop offset=".5" stopColor="#f05a28"/><stop offset="1" stopColor="#f05a28" stopOpacity="0"/></linearGradient>
+      <filter id="portal-difuso"><feGaussianBlur stdDeviation="17"/></filter>
     </defs>
-    <ellipse cx="300" cy="170" rx="245" ry="130" fill="url(#halo-sg)"/>
-    {Array.from({length: 7}, (_,i) => <path key={i} d={`M 0 ${240+i*6} C 130 ${65+i*8}, 270 ${300+i*7}, 600 ${125+i*8}`} stroke="url(#onda-sg)" strokeWidth={i === 3 ? 2 : .8} opacity={.25+i*.08}/>)}
-    <path d="M 0 180 C 180 290, 350 75, 600 205" stroke="url(#luz-sg)" strokeWidth="1.5"/>
+    <path d="M 600 560 C 870 340 680 240 960 -30" stroke="url(#portal-luz)" strokeWidth="95" opacity=".25" filter="url(#portal-difuso)"/>
+    {Array.from({length: 5},(_,i) => <path key={i} d={`M ${600+i*13} 560 C ${860+i*18} 340 ${670+i*22} 240 ${950+i*15} -30`} stroke="url(#portal-luz)" strokeWidth={i === 2 ? 3 : 1} opacity=".6"/>)}
+    <path d="M 655 560 C 885 270 750 240 960 -30" stroke="url(#portal-naranja)" strokeWidth="2" opacity=".7"/>
   </svg>;
 }
 
@@ -65,7 +64,6 @@ export function Escenario({activo}: {activo: number}) {
       <Ilustracion/>
       {habilitado && <RespaldoEscena><Suspense fallback={null}><Escena3D activo={activo} punteroRef={punteroRef} invalidarRef={invalidarRef} alCargar={alCargar} alFallar={alFallar}/></Suspense></RespaldoEscena>}
     </div>
-    <div className="escena-marca" aria-hidden="true"><Image src="/imagenes/logo-blanco.png" alt="" width={300} height={126} priority/><span>{t('descriptor')}</span></div>
     <div className="escenario-controles"><span><Waves size={13}/>{t('visual')}</span>{permitido && !fallo && <button type="button" onClick={() => { setPausado(!pausado); setListo(false); }} aria-label={pausado ? t('activar') : t('pausar')}>{pausado ? <Play size={13}/> : <Pause size={13}/>}<span>{pausado ? t('activar') : t('pausar')}</span></button>}</div>
   </div>;
 }
