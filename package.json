@@ -1,0 +1,61 @@
+{
+  "name": "sgsolutions",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1 --port 3107",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1 --port 3107",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "verificar:textos": "node scripts/verificar-textos.mjs",
+    "verificar:secretos": "node scripts/verificar-secretos.mjs",
+    "verificar": "npm run typecheck && npm run lint && npm run verificar:textos && npm run verificar:secretos",
+    "test:e2e": "playwright test",
+    "build:worker": "opennextjs-cloudflare build",
+    "preview:worker": "opennextjs-cloudflare preview",
+    "db:iniciar": "node scripts/supabase-local.mjs start",
+    "db:detener": "node scripts/supabase-local.mjs stop",
+    "prebuild": "node scripts/preparar-catalogo.mjs",
+    "predev": "node scripts/preparar-catalogo.mjs",
+    "pretypecheck": "node scripts/preparar-catalogo.mjs"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.0.0",
+    "@opennextjs/cloudflare": "1.20.6",
+    "@radix-ui/react-dialog": "^1.1.0",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "lucide-react": "^0.577.0",
+    "motion": "^13.2.0",
+    "next": "16.3.4",
+    "next-intl": "^4.0.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-hook-form": "^7.0.0",
+    "server-only": "^0.0.1",
+    "three": "^0.186.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.185.4",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.3.4",
+    "sharp": "0.35.4",
+    "supabase": "^2.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.9.0",
+    "wrangler": "4.130.0"
+  },
+  "overrides": {
+    "sharp": "$sharp"
+  }
+}

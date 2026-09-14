@@ -1,0 +1,23 @@
+node_modules/
+.next/
+.open-next/
+.wrangler/
+.env*
+!.env.example
+.dev.vars*
+*.tsbuildinfo
+playwright-report/
+test-results/
+evidencias/
+.privado/
+respaldos/
+supabase/.temp/
+supabase/.branches/
+.DS_Store
+*.pem
+*.key
+*.p12
+*.pfx
+*.sql.age
+# Costos de proveedor para la prueba local; nunca versionar.
+src/lib/catalogo-inicial.json

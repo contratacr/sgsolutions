@@ -1,0 +1,53 @@
+name: Actualizar catálogo Intcomex
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: Tipo de actualización
+        type: choice
+        options: [catalogo, inventario]
+        default: catalogo
+  schedule:
+    - cron: '17 0-7,9-23 * * *'
+    - cron: '17 8 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: intcomex-catalogo
+  cancel-in-progress: false
+jobs:
+  sincronizar:
+    if: vars.INTCOMEX_SYNC_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+          cache: npm
+      - run: npm ci
+      - name: Consultar Intcomex y guardar catálogo
+        env:
+          INTCOMEX_API_KEY: ${{ secrets.INTCOMEX_API_KEY }}
+          INTCOMEX_ACCESS_KEY: ${{ secrets.INTCOMEX_ACCESS_KEY }}
+          INTCOMEX_AMBIENTE: produccion
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          MODO_SOLICITADO: ${{ inputs.modo }}
+          EVENTO: ${{ github.event_name }}
+          PROGRAMACION: ${{ github.event.schedule }}
+        shell: bash
+        run: |
+          if [[ "$EVENTO" == "workflow_dispatch" ]]; then
+            modo="$MODO_SOLICITADO"
+          elif [[ "$PROGRAMACION" == "17 8 * * *" ]]; then
+            modo=catalogo
+          else
+            modo=inventario
+          fi
+          if [[ "$modo" == "inventario" ]]; then
+            node --experimental-strip-types scripts/sincronizar-intcomex.ts --inventario --aplicar
+          else
+            node --experimental-strip-types scripts/sincronizar-intcomex.ts --aplicar
+          fi

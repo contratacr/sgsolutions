@@ -1,0 +1,3526 @@
+{
+  "categorias": [
+    {
+      "id": "computo",
+      "nombre": {
+        "es": "Computadoras",
+        "en": "Computers"
+      }
+    },
+    {
+      "id": "redes",
+      "nombre": {
+        "es": "Redes",
+        "en": "Networking"
+      }
+    },
+    {
+      "id": "seguridad",
+      "nombre": {
+        "es": "Seguridad",
+        "en": "Security"
+      }
+    },
+    {
+      "id": "accesorios",
+      "nombre": {
+        "es": "Accesorios",
+        "en": "Accessories"
+      }
+    },
+    {
+      "id": "oficina",
+      "nombre": {
+        "es": "Oficina",
+        "en": "Office"
+      }
+    },
+    {
+      "id": "punto-de-venta",
+      "nombre": {
+        "es": "Punto de venta",
+        "en": "Point of sale"
+      }
+    },
+    {
+      "id": "software",
+      "nombre": {
+        "es": "Software",
+        "en": "Software"
+      }
+    },
+    {
+      "id": "gaming",
+      "nombre": {
+        "es": "Gaming",
+        "en": "Gaming"
+      }
+    },
+    {
+      "id": "componentes",
+      "nombre": {
+        "es": "Componentes informáticos",
+        "en": "Computer components"
+      }
+    }
+  ],
+  "productos": [
+    {
+      "id": "portatil",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad L14",
+        "en": "Lenovo ThinkPad L14"
+      },
+      "descripcion": {
+        "es": "Portátil de 14″, Core i5-1350P, 16 GB RAM, SSD de 512 GB y Windows 11 Pro.",
+        "en": "14″ laptop, Core i5-1350P, 16 GB RAM, 512 GB SSD and Windows 11 Pro."
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/8b/34/8b34fa45-ada9-4b23-a287-3c6c02c50f48.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21H2S1NH00",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 625000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": true
+    },
+    {
+      "id": "gamer",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "HP Victus 15-fa2014la",
+        "en": "HP Victus 15-fa2014la"
+      },
+      "descripcion": {
+        "es": "Pantalla de 15,6″, Core i5-13420H, 16 GB RAM, 512 GB y RTX 3050 de 6 GB.",
+        "en": "15.6″ display, Core i5-13420H, 16 GB RAM, 512 GB storage and 6 GB RTX 3050."
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/HP_BA1U5LA_ABM.jpg",
+      "marca": "HP",
+      "codigoFabricante": "BA1U5LA#ABM",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 690000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "monitor",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision S27-4e",
+        "en": "Lenovo ThinkVision S27-4e"
+      },
+      "descripcion": {
+        "es": "Monitor de 27″ Full HD, 100 Hz, conexiones HDMI y VGA.",
+        "en": "27″ Full HD monitor, 100 Hz, HDMI and VGA connectivity."
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/MT027LEN13.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "64BEKAR1LA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 88000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "red",
+      "categoria": "redes",
+      "nombre": {
+        "es": "UniFi Switch Flex Mini",
+        "en": "UniFi Switch Flex Mini"
+      },
+      "descripcion": {
+        "es": "Switch compacto de 5 puertos Gigabit para ampliar su red. Entrada de alimentación PoE.",
+        "en": "Compact 5-port Gigabit switch to expand your network. PoE power input."
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/c3/17/c3172c68-4643-4ecd-9634-ff6cff21061c.jpg",
+      "marca": "Ubiquiti",
+      "codigoFabricante": "USW-Flex-Mini",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 25000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": true
+    },
+    {
+      "id": "switch-24",
+      "categoria": "redes",
+      "nombre": {
+        "es": "UniFi Switch USW-24",
+        "en": "UniFi Switch USW-24"
+      },
+      "descripcion": {
+        "es": "Switch administrable de 24 puertos Gigabit y 2 puertos SFP.",
+        "en": "Managed switch with 24 Gigabit ports and 2 SFP ports."
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/19/6c/196c4892-8d49-49e1-a9c7-e0f586dfac41.jpg",
+      "marca": "Ubiquiti",
+      "codigoFabricante": "USW-24",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 172000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "camaras",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "UniFi Protect AI Pro",
+        "en": "UniFi Protect AI Pro"
+      },
+      "descripcion": {
+        "es": "Cámara de videovigilancia en red para interiores y exteriores, del ecosistema UniFi Protect.",
+        "en": "Indoor and outdoor network surveillance camera for the UniFi Protect ecosystem."
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/ES001UBQ39-4l.jpg",
+      "marca": "Ubiquiti",
+      "codigoFabricante": "UVC-AI-Pro",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 168000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "teclado",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo 510",
+        "en": "Lenovo 510"
+      },
+      "descripcion": {
+        "es": "Combo de teclado en español y mouse inalámbricos para su escritorio.",
+        "en": "Wireless Spanish-layout keyboard and mouse set for your desk."
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_GX30N81782.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GX30N81782",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 17000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "tinta",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Epson 544 Negro",
+        "en": "Epson 544 Black"
+      },
+      "descripcion": {
+        "es": "Botella de tinta negra original de 65 ml. Compatible con EcoTank L3250 y otros modelos de la serie 544.",
+        "en": "Original 65 ml black ink bottle. Compatible with EcoTank L3250 and other 544-series models."
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Epson_T544120_AL.jpg",
+      "marca": "Epson",
+      "codigoFabricante": "T544120-AL",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 6500,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f2460218a9fce8fc1bdca48a",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Ratón - GY51P14335",
+        "en": "Lenovo - Mouse - GY51P14335"
+      },
+      "descripcion": {
+        "es": "Lenovo - Ratón - GY51P14335",
+        "en": "Lenovo - Mouse - GY51P14335"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/f4/c5/f4c56b16-f58e-4061-9e7f-8498dff36001.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GY51P14335",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 22500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-7728f1456d24780088b1fe8a",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Ratón - Bluetooth - GY51S61915",
+        "en": "Lenovo - Mouse - Bluetooth - GY51S61915"
+      },
+      "descripcion": {
+        "es": "Lenovo - Ratón - Bluetooth - GY51S61915",
+        "en": "Lenovo - Mouse - Bluetooth - GY51S61915"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GY51S61915",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 9000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d6ac83d2291e0a600a5e42e8",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Ratón - Inalámbrico - Abyss Blue",
+        "en": "Lenovo - Mouse - Wireless - Abyss Blue"
+      },
+      "descripcion": {
+        "es": "Lenovo - Ratón - Inalámbrico - Abyss Blue",
+        "en": "Lenovo - Mouse - Wireless - Abyss Blue"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/063VAG45D06WJYHEFD2G6BAS0W.JPG",
+      "marca": "Lenovo",
+      "codigoFabricante": "GY50Z18987",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 10500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-e2550ccea5bd449b26b43701",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Ratón - Bluetooth - Grape - GY51S61912",
+        "en": "Lenovo - Mouse - Bluetooth - Grape - GY51S61912"
+      },
+      "descripcion": {
+        "es": "Lenovo - Ratón - Bluetooth - Grape - GY51S61912",
+        "en": "Lenovo - Mouse - Bluetooth - Grape - GY51S61912"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GY51S61912",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 9000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-51de92d6a5ab4e297e8ef3f5",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo Yoga - Audífonos - Inalámbrico - GXD1P47518",
+        "en": "Lenovo Yoga - Earphones - Wireless - GXD1P47518"
+      },
+      "descripcion": {
+        "es": "Lenovo Yoga - Audífonos - Inalámbrico - GXD1P47518",
+        "en": "Lenovo Yoga - Earphones - Wireless - GXD1P47518"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/8d/db/8ddbb3a0-e636-4549-b5d3-5d617ca71b4d.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GXD1P47518",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 43500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-1181c0f795a8d650023a1bb2",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Bloqueo de cable de seguridad - 1.8 m",
+        "en": "Lenovo - Security cable lock - 1.8 m"
+      },
+      "descripcion": {
+        "es": "Lenovo - Bloqueo de cable de seguridad - 1.8 m",
+        "en": "Lenovo - Security cable lock - 1.8 m"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/a1/7e/a17efda9-c006-4356-8d5e-e7df2ed49e74.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4XE1F30278",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 34500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-37dbc4d5dd3f2ecfaef49ce1",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo Yoga - Ratón - Bluetooth - Luna Grey - GY51S61921",
+        "en": "Lenovo Yoga - Mouse - Bluetooth - Luna Grey - GY51S61921"
+      },
+      "descripcion": {
+        "es": "Lenovo Yoga - Ratón - Bluetooth - Luna Grey - GY51S61921",
+        "en": "Lenovo Yoga - Mouse - Bluetooth - Luna Grey - GY51S61921"
+      },
+      "imagen": "https://p3-ofp.static.pub/ShareResource/accessories_ecomm/2508_yoga_mouse/yoga-mouse-luna-grey-1-1286x1000-250925.png",
+      "marca": "Lenovo",
+      "codigoFabricante": "GY51S61921",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 13500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-dddf86e7a502979affd2042d",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IDEA TAB - android 15 - Dimensity",
+        "en": "Lenovo IDEA TAB - android 15 - Dimensity"
+      },
+      "descripcion": {
+        "es": "Lenovo IDEA TAB - android 15 - Dimensity",
+        "en": "Lenovo IDEA TAB - android 15 - Dimensity"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAFR0881PA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "ZAFM0724PA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 249000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-10ceadced28097ecc8a464e8",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - E310 - Audífonos - Inalámbrico - True Inalámbrico Stereo - Blanco",
+        "en": "Lenovo - E310 - Earbuds - Wireless - True Wireless Stereo - White"
+      },
+      "descripcion": {
+        "es": "Lenovo - E310 - Audífonos - Inalámbrico - True Inalámbrico Stereo - Blanco",
+        "en": "Lenovo - E310 - Earbuds - Wireless - True Wireless Stereo - White"
+      },
+      "imagen": "https://store.intcomex.com/images/products/GXD1Q65145%20m.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GXD1Q65145",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 13500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-5161d9da9ce4c55c60519a0f",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision T24d-40 - 23.8\" - IPS - HDMI / DisplayPort / USB",
+        "en": "Lenovo ThinkVision T24d-40 - 23.8\" - IPS - HDMI / DisplayPort / USB"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkVision T24d-40 - 23.8\" - IPS - HDMI / DisplayPort / USB",
+        "en": "Lenovo ThinkVision T24d-40 - 23.8\" - IPS - HDMI / DisplayPort / USB"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/MT656LEN09.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "64B9GAR1LA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 221000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-549cc767855b5bdc88652879",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo Casual Backpack B210 - Mochila para transporte de portátil - 15.6\" - charcoal black",
+        "en": "Lenovo Casual Backpack B210 - Laptop backpack - 15.6\" - charcoal black"
+      },
+      "descripcion": {
+        "es": "Lenovo Casual Backpack B210 - Mochila para transporte de portátil - 15.6\" - charcoal black",
+        "en": "Lenovo Casual Backpack B210 - Laptop backpack - 15.6\" - charcoal black"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_GX40Q17225.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GX40Q17225",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 8500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-a1f04613642f16e11861a39f",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo Security Cable Lock - Bloqueo de cable de seguridad - 1.6 m",
+        "en": "Lenovo Security Cable Lock - Security cable lock - 1.6 m"
+      },
+      "descripcion": {
+        "es": "Lenovo Security Cable Lock - Bloqueo de cable de seguridad - 1.6 m",
+        "en": "Lenovo Security Cable Lock - Security cable lock - 1.6 m"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/d6/34/d6342b50-afe1-478c-afe3-5908a9eb2a05.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "57Y4303",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 17500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-3e475dfee1b40549c6bb3d08",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo Essential - Ratón - diestro y zurdo - óptico - 3 botones - cableado - USB - negro",
+        "en": "Lenovo Essential - Mouse - ambidextrous - optical - 3 buttons - wired - USB - black"
+      },
+      "descripcion": {
+        "es": "Lenovo Essential - Ratón - diestro y zurdo - óptico - 3 botones - cableado - USB - negro",
+        "en": "Lenovo Essential - Mouse - ambidextrous - optical - 3 buttons - wired - USB - black"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/19/29/1929ab7b-2c98-4d72-9aff-b7b03ac64d8a.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4Y50R20863",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 7000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-7f3493dfb8b7ae05305d8ee9",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo- ThinkVision M14t G2- 14in 2240x1400- Táctil- DP/USB-c- 3WTY",
+        "en": "Lenovo- ThinkVision M14t G2- 14in 2240x1400- Touch- DP/USB-c- 3WTY"
+      },
+      "descripcion": {
+        "es": "Lenovo- ThinkVision M14t G2- 14in 2240x1400- Táctil- DP/USB-c- 3WTY",
+        "en": "Lenovo- ThinkVision M14t G2- 14in 2240x1400- Touch- DP/USB-c- 3WTY"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/63FDUAR6US_l.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "63FDUAR6US",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 285000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f3039e75185b9d312295d1f6",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Teclado - Inalámbrico - Español - Bluetooth - Diseño ergonómico - Negro",
+        "en": "Lenovo - Keyboard - Wireless - Spanish - Bluetooth - Ergonomic Design - All black"
+      },
+      "descripcion": {
+        "es": "Lenovo - Teclado - Inalámbrico - Español - Bluetooth - Diseño ergonómico - Negro",
+        "en": "Lenovo - Keyboard - Wireless - Spanish - Bluetooth - Ergonomic Design - All black"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4Y41R64657.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4Y41R64657",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 10500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-7176625d8555357f11df3767",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo Tab One - 8.7\" - LTE Android 14 - Helio G85 - + Folio Case",
+        "en": "Lenovo Tab One - 8.7\" - LTE Android 14 - Helio G85 - + Folio Case"
+      },
+      "descripcion": {
+        "es": "Lenovo Tab One - 8.7\" - LTE Android 14 - Helio G85 - + Folio Case",
+        "en": "Lenovo Tab One - 8.7\" - LTE Android 14 - Helio G85 - + Folio Case"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "ZAF10147PA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 110000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-27530a8072e16d3d0c3c0c32",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision T24-40 - 23.8\" - 1920 x 1080 - IPS - HDMI / VGA / DisplayPort",
+        "en": "Lenovo ThinkVision T24-40 - 23.8\" - 1920 x 1080 - IPS - HDMI / VGA / DisplayPort"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkVision T24-40 - 23.8\" - 1920 x 1080 - IPS - HDMI / VGA / DisplayPort",
+        "en": "Lenovo ThinkVision T24-40 - 23.8\" - 1920 x 1080 - IPS - HDMI / VGA / DisplayPort"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64A4MARXLA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "64A4MARXLA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 154000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-31c26269360234b6a2eaa9df",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision T27-40 - 27\" - 1920 x 1080 - IPS - HDMI / DisplayPort / VGA",
+        "en": "Lenovo ThinkVision T27-40 - 27\" - 1920 x 1080 - IPS - HDMI / DisplayPort / VGA"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkVision T27-40 - 27\" - 1920 x 1080 - IPS - HDMI / DisplayPort / VGA",
+        "en": "Lenovo ThinkVision T27-40 - 27\" - 1920 x 1080 - IPS - HDMI / DisplayPort / VGA"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64A5MAR6LA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "64A5MAR6LA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 211000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-8d176a0308560a18fdc90e16",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo ThinkPad Essential (Eco) - Mochila para transporte de portátil - 16\" - negro con toques rojos",
+        "en": "Lenovo ThinkPad Essential (Eco) - Laptop backpack - 16\" - black with red accents"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad Essential (Eco) - Mochila para transporte de portátil - 16\" - negro con toques rojos",
+        "en": "Lenovo ThinkPad Essential (Eco) - Laptop backpack - 16\" - black with red accents"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/61/4b/614bfbee-310e-41e4-b8ba-e2bdb84b4600.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4X41C12468",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 21000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-477fa37b5a91014f91d31989",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Mochila de transporte - 15,6\" - Negro",
+        "en": "Lenovo - Carrying backpack - 15,6\" - Black"
+      },
+      "descripcion": {
+        "es": "Lenovo - Mochila de transporte - 15,6\" - Negro",
+        "en": "Lenovo - Carrying backpack - 15,6\" - Black"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4X40T84059",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 14000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-0fc209f6fb1164605b67f2c6",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Ratón - Inalámbrico - 530 Cherry Red",
+        "en": "Lenovo - Mouse - Wireless - 530 Cherry Red"
+      },
+      "descripcion": {
+        "es": "Lenovo - Ratón - Inalámbrico - 530 Cherry Red",
+        "en": "Lenovo - Mouse - Wireless - 530 Cherry Red"
+      },
+      "imagen": "https://store.intcomex.com/images/products/ID010LEN28.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GY50Z18991",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 9000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-3ede3343445fed2cb3fb1a4d",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Mochila de transporte - 15.4\" - Negro",
+        "en": "Lenovo - Carrying backpack - 15.4\" - All black"
+      },
+      "descripcion": {
+        "es": "Lenovo - Mochila de transporte - 15.4\" - Negro",
+        "en": "Lenovo - Carrying backpack - 15.4\" - All black"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/Mochila6.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4X41M69794",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 59000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-81b3250dda6973873914ca3e",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Lápiz digital - ZG38C05190",
+        "en": "Lenovo - Digital pen - ZG38C05190"
+      },
+      "descripcion": {
+        "es": "Lenovo - Lápiz digital - ZG38C05190",
+        "en": "Lenovo - Digital pen - ZG38C05190"
+      },
+      "imagen": "https://store.intcomex.com/images/products/ID000LEN80%20m.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "ZG38C05190",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 16000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-495a1dfccd12e604f3ed72b6",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision S24-4e - WLED - 23.8\" - FHD (1920x1080) - IPS - VGA / HDMI - Raven Black -3 años de garantía",
+        "en": "Lenovo ThinkVision S24-4e - WLED - 23.8\" - FHD (1920x1080) - IPS - VGA / HDMI - Raven Black -3-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkVision S24-4e - WLED - 23.8\" - FHD (1920x1080) - IPS - VGA / HDMI - Raven Black -3 años de garantía",
+        "en": "Lenovo ThinkVision S24-4e - WLED - 23.8\" - FHD (1920x1080) - IPS - VGA / HDMI - Raven Black -3-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64B5KAR1LA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "64B5KAR1LA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 83000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-015f8f911810adf3f1710786",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 o posterior - Helio G85 - 4GB LPDDR4x-128GB + Folio Case",
+        "en": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 or Later - Helio G85 - 4GB LPDDR4x-128GB + Folio Case"
+      },
+      "descripcion": {
+        "es": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 o posterior - Helio G85 - 4GB LPDDR4x-128GB + Folio Case",
+        "en": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 or Later - Helio G85 - 4GB LPDDR4x-128GB + Folio Case"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "ZAF00113PA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 55000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-a330a1827e75222a1b4bb907",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Mochila de transporte - 17\" - Black - GX41U39299",
+        "en": "Lenovo - Carrying backpack - 17\" - Black - GX41U39299"
+      },
+      "descripcion": {
+        "es": "Lenovo - Mochila de transporte - 17\" - Black - GX41U39299",
+        "en": "Lenovo - Carrying backpack - 17\" - Black - GX41U39299"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_GX41U39299.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "GX41U39299",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 45000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-cd23d6dec34e77fb02f000b4",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 o posterior - Helio G85 - 4GB LPDDR4x-128GB + Folio Case",
+        "en": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 or Later - Helio G85 - 4GB LPDDR4x-128GB + Folio Case"
+      },
+      "descripcion": {
+        "es": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 o posterior - Helio G85 - 4GB LPDDR4x-128GB + Folio Case",
+        "en": "Lenovo Tab ONE - 8.7\" - WIFI Android 14 or Later - Helio G85 - 4GB LPDDR4x-128GB + Folio Case"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "ZAF00113PA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 103000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ecfa5c44a33d5cb1a67e99c7",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo Mirage Solo - Sistema de realidad virtual - 5.5\" - 2560 x 1440 QHD @ 75 Hz - 802.11ac - blanco luz de luna",
+        "en": "Lenovo Mirage Solo - Virtual reality system - 5.5\" - 2560 x 1440 QHD @ 75 Hz - 802.11ac - moonlight white"
+      },
+      "descripcion": {
+        "es": "Lenovo Mirage Solo - Sistema de realidad virtual - 5.5\" - 2560 x 1440 QHD @ 75 Hz - 802.11ac - blanco luz de luna",
+        "en": "Lenovo Mirage Solo - Virtual reality system - 5.5\" - 2560 x 1440 QHD @ 75 Hz - 802.11ac - moonlight white"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/4f/2a/4f2a1fc7-78d8-4017-80ec-f04367a9f55c.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "ZA3C0003US",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 370000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c76057ae601a36f223123ba9",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad T14 - Portátil - 14\" - Intel Core Ultra 5 255U / 1.2 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkPad T14 - Notebook - 14\" - Intel Core Ultra 5 255U / 1.2 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad T14 - Portátil - 14\" - Intel Core Ultra 5 255U / 1.2 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkPad T14 - Notebook - 14\" - Intel Core Ultra 5 255U / 1.2 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_T14_g6_black_l1.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21QC00BDFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1005000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d9edebe3d1fd86d073ed8b10",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkBook G8 - 14\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - SSD - Gráficos integrados - Windows 11 Pro - 1 año de garantía",
+        "en": "Lenovo ThinkBook G8 - 14\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - SSD - Integrated graphics - Windows 11 Pro - 1-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkBook G8 - 14\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - SSD - Gráficos integrados - Windows 11 Pro - 1 año de garantía",
+        "en": "Lenovo ThinkBook G8 - 14\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - SSD - Integrated graphics - Windows 11 Pro - 1-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/xl4006.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21SG008RFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 800000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-79200a85774d9f9c905415bb",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad - Portátil - 14\" - Intel Core Ultra 7 255U / 5.2 GHz - 16 GB - DDR5 SDRAM - 1 TB SSD - Gráficos integrados - T14 Gen 6",
+        "en": "Lenovo ThinkPad - Notebook - 14\" - Intel Core Ultra 7 255U / 5.2 GHz - 16 GB - DDR5 SDRAM - 1 TB SSD - Integrated graphics - T14 Gen 6"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad - Portátil - 14\" - Intel Core Ultra 7 255U / 5.2 GHz - 16 GB - DDR5 SDRAM - 1 TB SSD - Gráficos integrados - T14 Gen 6",
+        "en": "Lenovo ThinkPad - Notebook - 14\" - Intel Core Ultra 7 255U / 5.2 GHz - 16 GB - DDR5 SDRAM - 1 TB SSD - Integrated graphics - T14 Gen 6"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_T14_g6_l.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21QC00BEFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1185000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-097fe474da0f0bb4e160c747",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Teclado y alfombrilla de ratón - Essential Inalámbrico Combo",
+        "en": "Lenovo - Keyboard and mouse pad - Essential Wireless Combo"
+      },
+      "descripcion": {
+        "es": "Lenovo - Teclado y alfombrilla de ratón - Essential Inalámbrico Combo",
+        "en": "Lenovo - Keyboard and mouse pad - Essential Wireless Combo"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/AN004LEN22_l.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4X31R64500",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 21000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b32eec53117e31f17af9161b",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo - Teclado y ratón - Essential Con cable Combo",
+        "en": "Lenovo - Keyboard and mouse set - Essential Wired Combo"
+      },
+      "descripcion": {
+        "es": "Lenovo - Teclado y ratón - Essential Con cable Combo",
+        "en": "Lenovo - Keyboard and mouse set - Essential Wired Combo"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4X31R64424.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4X31R64424",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 17500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-6ff75f809122fcdd994346b4",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision S22-4e - 21.5\" - 1920 x 1080 - HDMI / VGA - 100Hz",
+        "en": "Lenovo ThinkVision S22-4e - 21.5\" - 1920 x 1080 - HDMI / VGA - 100Hz"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkVision S22-4e - 21.5\" - 1920 x 1080 - HDMI / VGA - 100Hz",
+        "en": "Lenovo ThinkVision S22-4e - 21.5\" - 1920 x 1080 - HDMI / VGA - 100Hz"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64CBKAR6LA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "64CBKAR6LA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 66000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d178fab88ac6c9b02f7268d7",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkSmart - Formato compacto - Intel Core Ultra 5 135H / 3.6 GHz - DDR5 SDRAM - 256 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkSmart - Small form factor - Intel Core Ultra 5 135H / 3.6 GHz - DDR5 SDRAM - 256 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkSmart - Formato compacto - Intel Core Ultra 5 135H / 3.6 GHz - DDR5 SDRAM - 256 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkSmart - Small form factor - Intel Core Ultra 5 135H / 3.6 GHz - DDR5 SDRAM - 256 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/12WA000FLS_xl.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "12WA000FLS",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1665000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-dd433c82ee774a6840f3bee3",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo 65W Slim AC Adapter (USB Type-C) - Adaptador de corriente - CA 90-265 V - 65 vatios - negro",
+        "en": "Lenovo 65W Slim AC Adapter (USB Type-C) - Power adapter - CA 90-265 V - 65 watts - black"
+      },
+      "descripcion": {
+        "es": "Lenovo 65W Slim AC Adapter (USB Type-C) - Adaptador de corriente - CA 90-265 V - 65 vatios - negro",
+        "en": "Lenovo 65W Slim AC Adapter (USB Type-C) - Power adapter - CA 90-265 V - 65 watts - black"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/f7/a2/f7a21226-d527-4f0c-b526-4f1742df0221.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4X20V24674",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 26500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ef6d3d8f017f8e9f9549f3f7",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo Yoga 14AGP11 - Portátil - 14\" - AMD Ryzen AI 5 430 / 4.5 GHz - DDR5 SDRAM - 512 GB - AMD Radeon 840M Graphics - Windows 11 Home",
+        "en": "Lenovo Yoga 14AGP11 - Notebook - 14\" - AMD Ryzen AI 5 430 / 4.5 GHz - DDR5 SDRAM - 512 GB - AMD Radeon 840M Graphics - Windows 11 Home"
+      },
+      "descripcion": {
+        "es": "Lenovo Yoga 14AGP11 - Portátil - 14\" - AMD Ryzen AI 5 430 / 4.5 GHz - DDR5 SDRAM - 512 GB - AMD Radeon 840M Graphics - Windows 11 Home",
+        "en": "Lenovo Yoga 14AGP11 - Notebook - 14\" - AMD Ryzen AI 5 430 / 4.5 GHz - DDR5 SDRAM - 512 GB - AMD Radeon 840M Graphics - Windows 11 Home"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "83TD0039GJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 755000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f4a252022db4b5bbea7d69de",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Capacidad del disco duro - Intel UHD Graphics 770 - Windows 11 Pro",
+        "en": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Intel UHD Graphics 770 - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Capacidad del disco duro - Intel UHD Graphics 770 - Windows 11 Pro",
+        "en": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Intel UHD Graphics 770 - Windows 11 Pro"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_12TD0039FJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "12TD0039FJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1080000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-0367fe8784252bdfe2574e0a",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad T14s - Portátil - 14\" - Intel Core Ultra 5 235U / 4.90 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Gráficos integrados - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad T14s - Notebook - 14\" - Intel Core Ultra 5 235U / 4.90 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Integrated graphics - Windows 11 Pro - 3-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad T14s - Portátil - 14\" - Intel Core Ultra 5 235U / 4.90 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Gráficos integrados - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad T14s - Notebook - 14\" - Intel Core Ultra 5 235U / 4.90 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Integrated graphics - Windows 11 Pro - 3-year warranty"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21R2S4EB00",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1110000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-57d94152e54d87f1c61f14a5",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo Casual Backpack B210 - Mochila para transporte de portátil - 15.6\" - para IdeaPad Flex 5 16; IdeaPad S340-14; ThinkPad E14 Gen 3; X1 Nano Gen 2; V15 IML",
+        "en": "Lenovo Casual Backpack B210 - Laptop backpack - 15.6\" - for IdeaPad Flex 5 16; IdeaPad S340-14; ThinkPad E14 Gen 3; X1 Nano Gen 2; V15 IML"
+      },
+      "descripcion": {
+        "es": "Lenovo Casual Backpack B210 - Mochila para transporte de portátil - 15.6\" - para IdeaPad Flex 5 16; IdeaPad S340-14; ThinkPad E14 Gen 3; X1 Nano Gen 2; V15 IML",
+        "en": "Lenovo Casual Backpack B210 - Laptop backpack - 15.6\" - for IdeaPad Flex 5 16; IdeaPad S340-14; ThinkPad E14 Gen 3; X1 Nano Gen 2; V15 IML"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4X40T84058.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4X40T84058",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 14000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-04bb610a811af63656b7ab0c",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo ThinkPad Thunderbolt 4 WorkStation Dock - Estación de conexión - Thunderbolt 4 - HDMI, 2 x DP, 2 x Thunderbolt - 1GbE - 300 vatios - Estados Unidos",
+        "en": "Lenovo ThinkPad Thunderbolt 4 WorkStation Dock - Docking station - Thunderbolt 4 - HDMI, 2 x DP, 2 x Thunderbolt - 1GbE - 300 watts - United States"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad Thunderbolt 4 WorkStation Dock - Estación de conexión - Thunderbolt 4 - HDMI, 2 x DP, 2 x Thunderbolt - 1GbE - 300 vatios - Estados Unidos",
+        "en": "Lenovo ThinkPad Thunderbolt 4 WorkStation Dock - Docking station - Thunderbolt 4 - HDMI, 2 x DP, 2 x Thunderbolt - 1GbE - 300 watts - United States"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/7e/a5/7ea5fd63-2ecb-448b-b9e6-7969ba4ecec3.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "40B00300US",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 226000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b807a3049ce0019b2cf8b6b1",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo Neo 50q Gen 5 - Intel Core 7 240H / 5.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo Neo 50q Gen 5 - Intel Core 7 240H / 5.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo Neo 50q Gen 5 - Intel Core 7 240H / 5.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo Neo 50q Gen 5 - Intel Core 7 240H / 5.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/l4473.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "13B90049FJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 900000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-0ac6e1029c95ac1ae66f95c3",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Capacidad del disco duro - Intel UHD Graphics 770 - Windows 11 Pro",
+        "en": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Intel UHD Graphics 770 - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Capacidad del disco duro - Intel UHD Graphics 770 - Windows 11 Pro",
+        "en": "Lenovo ThinkCentre M70q - Tiny - Intel Core i7 i7-14700T / 5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Intel UHD Graphics 770 - Windows 11 Pro"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_12TD0039FJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "12TD0039FJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1000000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-5401f8ccf968cf2067fc04e8",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo Yoga 7 14AGP11 - Portátil - 14\" - AMD 445 - Ryzen AI 7 / 4.6 GHz - DDR5 SDRAM - 1 TB - AMD Radeon 840M Graphics - Windows 11 Home",
+        "en": "Lenovo Yoga 7 14AGP11 - Notebook - 14\" - AMD 445 - Ryzen AI 7 / 4.6 GHz - DDR5 SDRAM - 1 TB - AMD Radeon 840M Graphics - Windows 11 Home"
+      },
+      "descripcion": {
+        "es": "Lenovo Yoga 7 14AGP11 - Portátil - 14\" - AMD 445 - Ryzen AI 7 / 4.6 GHz - DDR5 SDRAM - 1 TB - AMD Radeon 840M Graphics - Windows 11 Home",
+        "en": "Lenovo Yoga 7 14AGP11 - Notebook - 14\" - AMD 445 - Ryzen AI 7 / 4.6 GHz - DDR5 SDRAM - 1 TB - AMD Radeon 840M Graphics - Windows 11 Home"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "83TD003AGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1015000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-994a0f952fa99240dc30b3cf",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo- USB-c-Dual Display Travel Dock- con un adaptador USB-C adicional de 135W",
+        "en": "Lenovo- USB-c-Dual Display Travel Dock- with an additional 135W USB-C adapter"
+      },
+      "descripcion": {
+        "es": "Lenovo- USB-c-Dual Display Travel Dock- con un adaptador USB-C adicional de 135W",
+        "en": "Lenovo- USB-c-Dual Display Travel Dock- with an additional 135W USB-C adapter"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/AN004LEN23_l.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "40B90100LA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 72000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b6255647aaa7b5ebbb3cedd1",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkBook G8 - 14\" - Intel Core i5 210H / 2.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Gráficos integrados - Windows 11 Pro - 1 año de garantía",
+        "en": "Lenovo ThinkBook G8 - 14\" - Intel Core i5 210H / 2.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Integrated graphics - Windows 11 Pro - 1-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkBook G8 - 14\" - Intel Core i5 210H / 2.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Gráficos integrados - Windows 11 Pro - 1 año de garantía",
+        "en": "Lenovo ThinkBook G8 - 14\" - Intel Core i5 210H / 2.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Integrated graphics - Windows 11 Pro - 1-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_21SG008SFJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21SG008SFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 730000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-75610a1bc883d909f5b55f08",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 3 15IRH10 - Portátil - 15.3\" - Intel Core 5 13420H / 4.6 GHz - 16 GB - DDR5 SDRAM - 1 TB - Gráficos integrados - Windows 11 Home - 1 año de garantía",
+        "en": "Lenovo IdeaPad Slim 3 15IRH10 - Notebook - 15.3\" - Intel Core 5 13420H / 4.6 GHz - 16 GB - DDR5 SDRAM - 1 TB - Integrated graphics - Windows 11 Home - 1-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 3 15IRH10 - Portátil - 15.3\" - Intel Core 5 13420H / 4.6 GHz - 16 GB - DDR5 SDRAM - 1 TB - Gráficos integrados - Windows 11 Home - 1 año de garantía",
+        "en": "Lenovo IdeaPad Slim 3 15IRH10 - Notebook - 15.3\" - Intel Core 5 13420H / 4.6 GHz - 16 GB - DDR5 SDRAM - 1 TB - Integrated graphics - Windows 11 Home - 1-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83K100RDGJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "83K100RDGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 535000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-cf78fe609f3d12cf216a2099",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo Tiny VESA Mount II - Abrazadera de montaje de sistema - para ThinkCentre M70q Gen 2; M70q Gen 3; M75t Gen 2; M90q Gen 2; M90q Gen 3; ThinkStation P360",
+        "en": "Lenovo Tiny VESA Mount II - System mounting bracket - for ThinkCentre M70q Gen 2; M70q Gen 3; M75t Gen 2; M90q Gen 2; M90q Gen 3; ThinkStation P360"
+      },
+      "descripcion": {
+        "es": "Lenovo Tiny VESA Mount II - Abrazadera de montaje de sistema - para ThinkCentre M70q Gen 2; M70q Gen 3; M75t Gen 2; M90q Gen 2; M90q Gen 3; ThinkStation P360",
+        "en": "Lenovo Tiny VESA Mount II - System mounting bracket - for ThinkCentre M70q Gen 2; M70q Gen 3; M75t Gen 2; M90q Gen 2; M90q Gen 3; ThinkStation P360"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/37/aa/37aa747f-ce90-42b2-ba2b-e0075439c23a.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "4XF0N03161",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 12500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ebdf06ba31c5ace32a7c6419",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad E16 Gen 3 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 5 225H / 4.9 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel Arc 130T - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E16 Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 5 225H / 4.9 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel Arc 130T - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad E16 Gen 3 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 5 225H / 4.9 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel Arc 130T - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E16 Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 5 225H / 4.9 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel Arc 130T - Windows 11 Pro"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/NT075LEN85XL.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21SR007HFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 980000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ddec780728412d8a3914fb6e",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad P14s - Portátil - 14\" - 1920 x 1200 - AMD Ryzen AI7 pro / 5.3 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - AMD radeon 860M - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad P14s - Notebook - 14\" - 1920 x 1200 - AMD Ryzen AI7 pro / 5.3 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - AMD radeon 860M - Windows 11 Pro - 3-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad P14s - Portátil - 14\" - 1920 x 1200 - AMD Ryzen AI7 pro / 5.3 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - AMD radeon 860M - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad P14s - Notebook - 14\" - 1920 x 1200 - AMD Ryzen AI7 pro / 5.3 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - AMD radeon 860M - Windows 11 Pro - 3-year warranty"
+      },
+      "imagen": "https://store.intcomex.com/images/products/21QL006DFJ%20m.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21QL006DFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1520000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-76ddbbcc2bb8a5a47feb3931",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo 15IRX11 - Portátil - 15.6\" - 1920 x 1080 - Intel Core i5 I5-13450HX / 2.4 GHz - 16 GB - DDR5 SDRAM - SSD - NVIDIA GeForce RTX 5050 - Windows 11 Home - Gris - Español",
+        "en": "Lenovo 15IRX11 - Notebook - 15.6\" - 1920 x 1080 - Intel Core i5 I5-13450HX / 2.4 GHz - 16 GB - DDR5 SDRAM - SSD - NVIDIA GeForce RTX 5050 - Windows 11 Home - Gray - Spanish"
+      },
+      "descripcion": {
+        "es": "Lenovo 15IRX11 - Portátil - 15.6\" - 1920 x 1080 - Intel Core i5 I5-13450HX / 2.4 GHz - 16 GB - DDR5 SDRAM - SSD - NVIDIA GeForce RTX 5050 - Windows 11 Home - Gris - Español",
+        "en": "Lenovo 15IRX11 - Notebook - 15.6\" - 1920 x 1080 - Intel Core i5 I5-13450HX / 2.4 GHz - 16 GB - DDR5 SDRAM - SSD - NVIDIA GeForce RTX 5050 - Windows 11 Home - Gray - Spanish"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/7a/3d/7a3d1089-e491-4889-bc41-e3558601ecd1.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "83SC001QGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 765000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-931b9b421bdd8d8595946090",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad E16 Gen 3 - Ordenador portátil - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - Gráficos Intel Arc - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E16 Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad E16 Gen 3 - Ordenador portátil - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - Gráficos Intel Arc - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E16 Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc graphics - Windows 11 Pro"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/NT075LEN86xl.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21SR007JFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1110000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-0019cbd63b975b2d3764944e",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad - Ordenador portátil - 15.6\" - 1920 x 1080 - Intel Core i3 / 3.8 GHz - LPDDR5 SDRAM - 8 GB - 256 GB SSD - Microsoft Windows 11 Home - Azul - 1 año de garantía",
+        "en": "Lenovo IdeaPad - Notebook - 15.6\" - 1920 x 1080 - Intel Core i3 / 3.8 GHz - LPDDR5 SDRAM - 8 GB - 256 GB SSD - Microsoft Windows 11 Home - Blue - 1-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad - Ordenador portátil - 15.6\" - 1920 x 1080 - Intel Core i3 / 3.8 GHz - LPDDR5 SDRAM - 8 GB - 256 GB SSD - Microsoft Windows 11 Home - Azul - 1 año de garantía",
+        "en": "Lenovo IdeaPad - Notebook - 15.6\" - 1920 x 1080 - Intel Core i3 / 3.8 GHz - LPDDR5 SDRAM - 8 GB - 256 GB SSD - Microsoft Windows 11 Home - Blue - 1-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XB0081GJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "82XB0081GJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 212000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b516ead2ace2c729796b2ccc",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 3 15ABR8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 5624U / 4.3 GHz - 16 GB - DDR4 SDRAM - 512 GB SSD - AMD Radeon Graphics - Windows 11 Home - Español",
+        "en": "Lenovo IdeaPad Slim 3 15ABR8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 5624U / 4.3 GHz - 16 GB - DDR4 SDRAM - 512 GB SSD - AMD Radeon Graphics - Windows 11 Home - Spanish"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 3 15ABR8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 5624U / 4.3 GHz - 16 GB - DDR4 SDRAM - 512 GB SSD - AMD Radeon Graphics - Windows 11 Home - Español",
+        "en": "Lenovo IdeaPad Slim 3 15ABR8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 5624U / 4.3 GHz - 16 GB - DDR4 SDRAM - 512 GB SSD - AMD Radeon Graphics - Windows 11 Home - Spanish"
+      },
+      "imagen": "https://store.intcomex.com/images/products/NT081LEN10%20m.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "82XM016KGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 440000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-7fe79f9dd6a2afdaa6f78d77",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 3 15ABR8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 7 5825U / 4.5 GHz - 16 GB - DDR4 SDRAM - 1 TB SSD - AMD Radeon Graphics - Windows 11 Home - Español",
+        "en": "Lenovo IdeaPad Slim 3 15ABR8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 7 5825U / 4.5 GHz - 16 GB - DDR4 SDRAM - 1 TB SSD - AMD Radeon Graphics - Windows 11 Home - Spanish"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 3 15ABR8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 7 5825U / 4.5 GHz - 16 GB - DDR4 SDRAM - 1 TB SSD - AMD Radeon Graphics - Windows 11 Home - Español",
+        "en": "Lenovo IdeaPad Slim 3 15ABR8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 7 5825U / 4.5 GHz - 16 GB - DDR4 SDRAM - 1 TB SSD - AMD Radeon Graphics - Windows 11 Home - Spanish"
+      },
+      "imagen": "https://store.intcomex.com/images/products/NT081LEN09%20m.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "82XM016JGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 550000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-e6289e1ca123cc96cfebffe8",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados",
+        "en": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics"
+      },
+      "descripcion": {
+        "es": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados",
+        "en": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "13GN0049FJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 775000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-42613449e93ae48e3816dec3",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 23.8\" - AMD Radeon 780M - Windows 11 Home",
+        "en": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 23.8\" - AMD Radeon 780M - Windows 11 Home"
+      },
+      "descripcion": {
+        "es": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 23.8\" - AMD Radeon 780M - Windows 11 Home",
+        "en": "Lenovo - AMD Ryzen 7 250 / 5.1 GHz - DDR5 SDRAM - 23.8\" - AMD Radeon 780M - Windows 11 Home"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_e6aba573_5d49_47c7_b1b7_875d02be7a3d.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "F0JC001ELD",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 710000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b446c4e014d3ee4fff2a6b0e",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo - Intel Core Ultra 5 225T / 2.5 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados",
+        "en": "Lenovo - Intel Core Ultra 5 225T / 2.5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics"
+      },
+      "descripcion": {
+        "es": "Lenovo - Intel Core Ultra 5 225T / 2.5 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados",
+        "en": "Lenovo - Intel Core Ultra 5 225T / 2.5 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/6b/8c/6b8c07db-adb4-4ffc-afa0-e8dccac139fc.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "13A4006XFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 925000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-7a417a11383a817c9b3f07ac",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo - AMD Ryzen 7 250 / 3.3 GHz - DDR5 SDRAM - 27\" - AMD Radeon 780M - Microsoft Windows 11 Home",
+        "en": "Lenovo - AMD Ryzen 7 250 / 3.3 GHz - DDR5 SDRAM - 27\" - AMD Radeon 780M - Microsoft Windows 11 Home"
+      },
+      "descripcion": {
+        "es": "Lenovo - AMD Ryzen 7 250 / 3.3 GHz - DDR5 SDRAM - 27\" - AMD Radeon 780M - Microsoft Windows 11 Home",
+        "en": "Lenovo - AMD Ryzen 7 250 / 3.3 GHz - DDR5 SDRAM - 27\" - AMD Radeon 780M - Microsoft Windows 11 Home"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_6e70cf85_e1e5_4cee_b7ef_62a8731fbe9c.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "F0JE002ALD",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 830000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-0f4b9fa30ec03fe0a13873d0",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Lenovo LOQ 15ARP9 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7235HS / 4.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - NVIDIA GeForce RTX 3050 - Microsoft Windows 11 Home - Luna Grey - 1 año de garantía + Ratón",
+        "en": "Lenovo LOQ 15ARP9 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7235HS / 4.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - NVIDIA GeForce RTX 3050 - Microsoft Windows 11 Home - Luna Grey - 1-year warranty + Mouse"
+      },
+      "descripcion": {
+        "es": "Lenovo LOQ 15ARP9 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7235HS / 4.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - NVIDIA GeForce RTX 3050 - Microsoft Windows 11 Home - Luna Grey - 1 año de garantía + Ratón",
+        "en": "Lenovo LOQ 15ARP9 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7235HS / 4.2 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - NVIDIA GeForce RTX 3050 - Microsoft Windows 11 Home - Luna Grey - 1-year warranty + Mouse"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83JC003TGJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "83JC003TGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 530000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-231cbc50f02a018e56c06123",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 5 15ARP10 - Portátil - 15.3\" - 1920 x 1200 - AMD Ryzen 7 7735HS / 3.2 GHz - 16 GB - LPDDR5X SDRAM - 1 TB SSD - AMD Radeon 680M - Windows 11 Home - Cloud Grey",
+        "en": "Lenovo IdeaPad Slim 5 15ARP10 - Notebook - 15.3\" - 1920 x 1200 - AMD Ryzen 7 7735HS / 3.2 GHz - 16 GB - LPDDR5X SDRAM - 1 TB SSD - AMD Radeon 680M - Windows 11 Home - Cloud Grey"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 5 15ARP10 - Portátil - 15.3\" - 1920 x 1200 - AMD Ryzen 7 7735HS / 3.2 GHz - 16 GB - LPDDR5X SDRAM - 1 TB SSD - AMD Radeon 680M - Windows 11 Home - Cloud Grey",
+        "en": "Lenovo IdeaPad Slim 5 15ARP10 - Notebook - 15.3\" - 1920 x 1200 - AMD Ryzen 7 7735HS / 3.2 GHz - 16 GB - LPDDR5X SDRAM - 1 TB SSD - AMD Radeon 680M - Windows 11 Home - Cloud Grey"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83J3003RGJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "83J3003RGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 575000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-aa4414e80ed1e897c14fd2c2",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad P16s Gen 4 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 500 - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad P16s Gen 4 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 500 - Windows 11 Pro - 3-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad P16s Gen 4 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 500 - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad P16s Gen 4 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 7 255H / 5.1 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 500 - Windows 11 Pro - 3-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_P16s_black_l.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21QV0050FJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 2620000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-db978e14bab29b983d72d7c7",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad P16v Gen 3 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 9 285H / 5.4 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 1000 - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad P16v Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 9 285H / 5.4 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 1000 - Windows 11 Pro - 3-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad P16v Gen 3 - Portátil - 16\" - 1920 x 1200 - Intel Core Ultra 9 285H / 5.4 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 1000 - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad P16v Gen 3 - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 9 285H / 5.4 GHz - DDR5 SDRAM - 32 GB - 1 TB SSD - NVIDIA RTX PRO 1000 - Windows 11 Pro - 3-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_P16v_g3_black_l.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21RS003VFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 3270000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d33bd6f132b4486c4b4dd417",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad X9-15 G1 Aura Edition - Portátil - 15.3\" - Intel Core Ultra 7 258V / 5.3 GHz - 32 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc Graphics 140V - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad X9-15 G1 Aura Edition - Notebook - 15.3\" - Intel Core Ultra 7 258V / 5.3 GHz - 32 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc Graphics 140V - Windows 11 Pro - 3-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad X9-15 G1 Aura Edition - Portátil - 15.3\" - Intel Core Ultra 7 258V / 5.3 GHz - 32 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc Graphics 140V - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad X9-15 G1 Aura Edition - Notebook - 15.3\" - Intel Core Ultra 7 258V / 5.3 GHz - 32 GB - DDR5 SDRAM - 512 GB SSD - Intel Arc Graphics 140V - Windows 11 Pro - 3-year warranty"
+      },
+      "imagen": "https://store.intcomex.com/images/products/X9%20Imagen%201m.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21Q6005RFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1475000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-cbf266c3a31005eb7f3a5479",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad P16v Gen 2 21KX0040FJ - Ordenador portátil - 16\" - 1920 x 1200 - Intel Core Ultra 9 185H - 32 GB - DDR5 SDRAM - 1 TB SSD - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad P16v Gen 2 21KX0040FJ - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 9 185H - 32 GB - DDR5 SDRAM - 1 TB SSD - Windows 11 Pro - 3-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad P16v Gen 2 21KX0040FJ - Ordenador portátil - 16\" - 1920 x 1200 - Intel Core Ultra 9 185H - 32 GB - DDR5 SDRAM - 1 TB SSD - Windows 11 Pro - 3 años de garantía",
+        "en": "Lenovo ThinkPad P16v Gen 2 21KX0040FJ - Notebook - 16\" - 1920 x 1200 - Intel Core Ultra 9 185H - 32 GB - DDR5 SDRAM - 1 TB SSD - Windows 11 Pro - 3-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NT069LEN11L.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21KX0040FJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1765000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-651f017ecda6f7ea723255a3",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision E22-40 - WLED - 21.5\" - 1920 x 1080 - IPS - VGA / HDMI / DisplayPort - Raven Black - 3 años de garantía",
+        "en": "Lenovo ThinkVision E22-40 - WLED - 21.5\" - 1920 x 1080 - IPS - VGA / HDMI / DisplayPort - Raven Black - 3-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkVision E22-40 - WLED - 21.5\" - 1920 x 1080 - IPS - VGA / HDMI / DisplayPort - Raven Black - 3 años de garantía",
+        "en": "Lenovo ThinkVision E22-40 - WLED - 21.5\" - 1920 x 1080 - IPS - VGA / HDMI / DisplayPort - Raven Black - 3-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64C9MAR6LA.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "64C9MAR6LA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 95000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-013fc4ff2b6d432a4bfdf4db",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 3 15IRH10 - Portátil - 15.3\" - 1920 x 1200 - Intel Core i5 13420H / 4.6 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel UHD Graphics - Microsoft Windows 11 Home - Gris - Español - 1 año de garantía",
+        "en": "Lenovo IdeaPad Slim 3 15IRH10 - Notebook - 15.3\" - 1920 x 1200 - Intel Core i5 13420H / 4.6 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel UHD Graphics - Microsoft Windows 11 Home - Gray - Spanish - 1-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 3 15IRH10 - Portátil - 15.3\" - 1920 x 1200 - Intel Core i5 13420H / 4.6 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel UHD Graphics - Microsoft Windows 11 Home - Gris - Español - 1 año de garantía",
+        "en": "Lenovo IdeaPad Slim 3 15IRH10 - Notebook - 15.3\" - 1920 x 1200 - Intel Core i5 13420H / 4.6 GHz - DDR5 SDRAM - 16 GB - 512 GB SSD - Intel UHD Graphics - Microsoft Windows 11 Home - Gray - Spanish - 1-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83K100PTGJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "83K100PTGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 495000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-bc8fc6f191ddb01ac4b2c767",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 3 15AMN8 15AMN8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 40 / 4.3 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - AMD Radeon 610M Graphics - Windows 11 Home Single Language - Frost Blue",
+        "en": "Lenovo IdeaPad Slim 3 15AMN8 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 40 / 4.3 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - AMD Radeon 610M Graphics - Windows 11 Home Single Language - Frost Blue"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 3 15AMN8 15AMN8 - Portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 40 / 4.3 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - AMD Radeon 610M Graphics - Windows 11 Home Single Language - Frost Blue",
+        "en": "Lenovo IdeaPad Slim 3 15AMN8 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 40 / 4.3 GHz - 16 GB - DDR5 SDRAM - 512 GB SSD - AMD Radeon 610M Graphics - Windows 11 Home Single Language - Frost Blue"
+      },
+      "imagen": "https://store.intcomex.com/images/products/82XQ014LGJ%20m.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "82XQ014LGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 415000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-41a8ff4de604bd0f48525bb4",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 3 15AMN8 - Ordenador portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7520U / 4.3 GHz - LPDDR5 SDRAM - 16 GB - 512 GB SSD - Windows 11 Home Single Language + Maletín",
+        "en": "Lenovo IdeaPad Slim 3 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7520U / 4.3 GHz - LPDDR5 SDRAM - 16 GB - 512 GB SSD - Windows 11 Home Single Language + Carrying case"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 3 15AMN8 - Ordenador portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7520U / 4.3 GHz - LPDDR5 SDRAM - 16 GB - 512 GB SSD - Windows 11 Home Single Language + Maletín",
+        "en": "Lenovo IdeaPad Slim 3 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 5 7520U / 4.3 GHz - LPDDR5 SDRAM - 16 GB - 512 GB SSD - Windows 11 Home Single Language + Carrying case"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XQ00MKGJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "82XQ00MKGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 340000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f41308e5cb83188c0c2c15d2",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 3 15AMN8 - Ordenador portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 3 / 4.1 GHz - LPDDR5 SDRAM - 8 GB - 512 GB SSD - AMD Radeon 610M - Windows 11 Home Single Language + Maletín",
+        "en": "Lenovo IdeaPad Slim 3 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 3 / 4.1 GHz - LPDDR5 SDRAM - 8 GB - 512 GB SSD - AMD Radeon 610M - Windows 11 Home Single Language + Carrying case"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 3 15AMN8 - Ordenador portátil - 15.6\" - 1920 x 1080 - AMD Ryzen 3 / 4.1 GHz - LPDDR5 SDRAM - 8 GB - 512 GB SSD - AMD Radeon 610M - Windows 11 Home Single Language + Maletín",
+        "en": "Lenovo IdeaPad Slim 3 15AMN8 - Notebook - 15.6\" - 1920 x 1080 - AMD Ryzen 3 / 4.1 GHz - LPDDR5 SDRAM - 8 GB - 512 GB SSD - AMD Radeon 610M - Windows 11 Home Single Language + Carrying case"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XQ00M8GJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "82XQ00M8GJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 172000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-863ff4be5afca8f17ac97f88",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad E14 - Portátil - 14\" - Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E14 - Notebook - 14\" - Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad E14 - Portátil - 14\" - Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E14 - Notebook - 14\" - Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/9e/b1/9eb11581-1d0e-4576-b463-1721e71b09ce.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21SX00D3FJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 915000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-4d7796754fa10609c490b6a5",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo Neo 50q - Intel Core 5 210H / 2.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo Neo 50q - Intel Core 5 210H / 2.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo Neo 50q - Intel Core 5 210H / 2.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo Neo 50q - Intel Core 5 210H / 2.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/47/e3/47e385b6-f5a8-4fc3-83cd-e9d815245e91.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "13B90048FK",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 820000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-8c41353cc5182283da9e3892",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo Neo 55q - AMD Ryzen 5 220 / 3.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo Neo 55q - AMD Ryzen 5 220 / 3.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo Neo 55q - AMD Ryzen 5 220 / 3.2 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo Neo 55q - AMD Ryzen 5 220 / 3.2 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/db/39/db398cae-0f01-4fc3-95e7-9af682758ce8.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "13GN001KFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 725000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-5931b96371e9c846652edbc7",
+      "categoria": "accesorios",
+      "nombre": {
+        "es": "Lenovo ThinkPad Hybrid USB-C with USB-A Dock - Estación de conexión - USB-C - 2 x HDMI, 2 x DP - 1GbE - 135 vatios - Estados Unidos",
+        "en": "Lenovo ThinkPad Hybrid USB-C with USB-A Dock - Docking station - USB-C - 2 x HDMI, 2 x DP - 1GbE - 135 watts - United States"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad Hybrid USB-C with USB-A Dock - Estación de conexión - USB-C - 2 x HDMI, 2 x DP - 1GbE - 135 vatios - Estados Unidos",
+        "en": "Lenovo ThinkPad Hybrid USB-C with USB-A Dock - Docking station - USB-C - 2 x HDMI, 2 x DP - 1GbE - 135 watts - United States"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/56/55/56558d48-c8f2-431d-b6d6-9be0d9462c82.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "40AF0135US",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 158000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ee4957057452020cd9450cd9",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad E14 - Portátil - 14\" - Intel Core Ultra 7 255H / 2.05 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E14 - Notebook - 14\" - Intel Core Ultra 7 255H / 2.05 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad E14 - Portátil - 14\" - Intel Core Ultra 7 255H / 2.05 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E14 - Notebook - 14\" - Intel Core Ultra 7 255H / 2.05 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/9e/b1/9eb11581-1d0e-4576-b463-1721e71b09ce.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21SX00D4FJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 1115000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-5e17943ba15d3f797b02a152",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkPad E16 - Portátil - 16\" - Intel Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E16 - Notebook - 16\" - Intel Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkPad E16 - Portátil - 16\" - Intel Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkPad E16 - Notebook - 16\" - Intel Core Ultra 5 225H / 1.7 GHz - 16 GB - DDR5 SDRAM - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/e0/8b/e08b9045-c156-4ea3-a143-902262a33bde.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21SR00BEFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 920000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-7bf8704bb8349a439f6915e3",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkBook 16 G9 - Portátil - 16\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkBook 16 G9 - Notebook - 16\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkBook 16 G9 - Portátil - 16\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - 512 GB - Gráficos integrados - Windows 11 Pro",
+        "en": "Lenovo ThinkBook 16 G9 - Notebook - 16\" - Intel Core i7 240H / 2.5 GHz - DDR5 SDRAM - 16 GB - 512 GB - Integrated graphics - Windows 11 Pro"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_5ada050e_4617_4a47_845b_e5d558841e36.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "21US004PFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 920000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f86c7cdfadd7e2ff31e563a5",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkCentre M75q - AMD Ryzen 5 Pro 8500GE / 3.4 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - AMD Radeon 740M - Windows 11 Pro",
+        "en": "Lenovo ThinkCentre M75q - AMD Ryzen 5 Pro 8500GE / 3.4 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - AMD Radeon 740M - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkCentre M75q - AMD Ryzen 5 Pro 8500GE / 3.4 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - AMD Radeon 740M - Windows 11 Pro",
+        "en": "Lenovo ThinkCentre M75q - AMD Ryzen 5 Pro 8500GE / 3.4 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - AMD Radeon 740M - Windows 11 Pro"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "12RQ003HFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 955000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-9738193915adbc990a1b8ce1",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo ThinkCentre M75q - AMD Ryzen 7 Pro 8700GE / 3.65 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - AMD Radeon 740M - Windows 11 Pro",
+        "en": "Lenovo ThinkCentre M75q - AMD Ryzen 7 Pro 8700GE / 3.65 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - AMD Radeon 740M - Windows 11 Pro"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkCentre M75q - AMD Ryzen 7 Pro 8700GE / 3.65 GHz - DDR5 SDRAM - 512 GB Capacidad de almacenamiento - AMD Radeon 740M - Windows 11 Pro",
+        "en": "Lenovo ThinkCentre M75q - AMD Ryzen 7 Pro 8700GE / 3.65 GHz - DDR5 SDRAM - 512 GB Hard Drive Capacity - AMD Radeon 740M - Windows 11 Pro"
+      },
+      "imagen": "/imagenes/producto-sin-imagen.svg",
+      "marca": "Lenovo",
+      "codigoFabricante": "12RQ003JFJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 830000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-548bb3528da7be7919e47b14",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision E20-30 - Monitor LED - 20\" (19.5\" visible) - 1600 x 900 @ 60 Hz - TN - 250 cd/m² - 1000:1 - 2 ms - HDMI, VGA - negro azabache",
+        "en": "Lenovo ThinkVision E20-30 - Monitor LED - 20\" (19.5\" visible) - 1600 x 900 @ 60 Hz - TN - 250 cd/m² - 1000:1 - 2 ms - HDMI, VGA - raven black"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkVision E20-30 - Monitor LED - 20\" (19.5\" visible) - 1600 x 900 @ 60 Hz - TN - 250 cd/m² - 1000:1 - 2 ms - HDMI, VGA - negro azabache",
+        "en": "Lenovo ThinkVision E20-30 - Monitor LED - 20\" (19.5\" visible) - 1600 x 900 @ 60 Hz - TN - 250 cd/m² - 1000:1 - 2 ms - HDMI, VGA - raven black"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/2f/e7/2fe7449a-4af1-4aaa-b584-b0ccddeff93a.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "62F7KAR4LA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 70000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-e0e53124f7d8bab1f99e7f08",
+      "categoria": "computo",
+      "nombre": {
+        "es": "Lenovo IdeaPad Slim 3 15IAH8 - Ordenador portátil - 15.6\" - FHD - 1920 x 1080 - Pantalla táctil - Intel Core i5 12450H / 4.4 GHz - LPDDR5 SDRAM - 16 GB - 1 TB SSD - Intel UHD Graphics - Windows 11 Home Single Language - Español - 1 año de garantía",
+        "en": "Lenovo IdeaPad Slim 3 15IAH8 - Notebook - 15.6\" - FHD - 1920 x 1080 - Touchscreen - Intel Core i5 12450H / 4.4 GHz - LPDDR5 SDRAM - 16 GB - 1 TB SSD - Intel UHD Graphics - Windows 11 Home Single Language - Spanish - 1-year warranty"
+      },
+      "descripcion": {
+        "es": "Lenovo IdeaPad Slim 3 15IAH8 - Ordenador portátil - 15.6\" - FHD - 1920 x 1080 - Pantalla táctil - Intel Core i5 12450H / 4.4 GHz - LPDDR5 SDRAM - 16 GB - 1 TB SSD - Intel UHD Graphics - Windows 11 Home Single Language - Español - 1 año de garantía",
+        "en": "Lenovo IdeaPad Slim 3 15IAH8 - Notebook - 15.6\" - FHD - 1920 x 1080 - Touchscreen - Intel Core i5 12450H / 4.4 GHz - LPDDR5 SDRAM - 16 GB - 1 TB SSD - Intel UHD Graphics - Windows 11 Home Single Language - Spanish - 1-year warranty"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83ER00BQGJ.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "83ER00BQGJ",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 375000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-76afd75012dd4bc7bc264031",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Lenovo ThinkVision M15 - Monitor LED - 15\" (15.6\" visible) - portátil - 1920 x 1080 Full HD (1080p) @ 60 Hz - IPS - 250 cd/m² - 1000:1 - 6 ms - 2xUSB-C - negro azabache - para ThinkCentre M70q Gen 3 11TY",
+        "en": "Lenovo ThinkVision M15 - Monitor LED - 15\" (15.6\" visible) - portable - 1920 x 1080 Full HD (1080p) @ 60 Hz - IPS - 250 cd/m² - 1000:1 - 6 ms - 2xUSB-C - raven black - for ThinkCentre M70q Gen 3 11TY"
+      },
+      "descripcion": {
+        "es": "Lenovo ThinkVision M15 - Monitor LED - 15\" (15.6\" visible) - portátil - 1920 x 1080 Full HD (1080p) @ 60 Hz - IPS - 250 cd/m² - 1000:1 - 6 ms - 2xUSB-C - negro azabache - para ThinkCentre M70q Gen 3 11TY",
+        "en": "Lenovo ThinkVision M15 - Monitor LED - 15\" (15.6\" visible) - portable - 1920 x 1080 Full HD (1080p) @ 60 Hz - IPS - 250 cd/m² - 1000:1 - 6 ms - 2xUSB-C - raven black - for ThinkCentre M70q Gen 3 11TY"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/a1/e4/a1e4b44b-70c6-4091-9e4b-016d7a9c2f17.jpg",
+      "marca": "Lenovo",
+      "codigoFabricante": "62CAUAR1US",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 162000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b1d38e12554811f7ef1f7646",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Adaptador Wi-Fi 6 Mercusys MA14N AX300 Nano",
+        "en": "Mercusys MA14N AX300 Nano Wi-Fi 6 adapter"
+      },
+      "descripcion": {
+        "es": "Adaptador Wi-Fi 6 Mercusys MA14N AX300 Nano",
+        "en": "Mercusys MA14N AX300 Nano Wi-Fi 6 adapter"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NW005TPL87_xl1.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "MA14N",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 3000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-6f75d01fdcb25af3fc41af41",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Inyector PoE+ Omada POE160S",
+        "en": "Omada POE160S PoE+ injector"
+      },
+      "descripcion": {
+        "es": "Inyector PoE+ Omada POE160S",
+        "en": "Omada POE160S PoE+ injector"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/l4327.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "POE160S",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 10500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d41ffa76c7a2d6cf260aea3e",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Convertidor de medios gigabit MC210CS",
+        "en": "MC210CS gigabit media converter"
+      },
+      "descripcion": {
+        "es": "Convertidor de medios gigabit MC210CS",
+        "en": "MC210CS gigabit media converter"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/64/dc/64dcec9e-7c63-47fb-b5e6-47d384dd81ac.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "MC210CS",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 12000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-fa50fa5f6cd926ecba44fa2f",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Extensor Wi-Fi 6 Mercusys ME60X",
+        "en": "Mercusys ME60X Wi-Fi 6 range extender"
+      },
+      "descripcion": {
+        "es": "Extensor Wi-Fi 6 Mercusys ME60X",
+        "en": "Mercusys ME60X Wi-Fi 6 range extender"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NW005TPL81_EXTRA_LARGE.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "ME60X",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 13000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c633a0583f5837dbf22b17d2",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Extensor Wi-Fi AC1200 RE305",
+        "en": "RE305 AC1200 Wi-Fi range extender"
+      },
+      "descripcion": {
+        "es": "Extensor Wi-Fi AC1200 RE305",
+        "en": "RE305 AC1200 Wi-Fi range extender"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/TP_Link_RE305.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "RE305",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 17000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c8048fc0e4a962b70d11309d",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Router inalámbrico AC1200 NCM-C1200",
+        "en": "NCM-C1200 AC1200 wireless router"
+      },
+      "descripcion": {
+        "es": "Router inalámbrico AC1200 NCM-C1200",
+        "en": "NCM-C1200 AC1200 wireless router"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/xl3683.jpg",
+      "marca": "Nexxt Solutions Home",
+      "codigoFabricante": "NCM-C1200",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 17500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-0d3da2ded71709449fae692e",
+      "categoria": "redes",
+      "nombre": {
+        "es": "Extensor Wi-Fi 6 AX1500 RE505X",
+        "en": "RE505X AX1500 Wi-Fi 6 range extender"
+      },
+      "descripcion": {
+        "es": "Extensor Wi-Fi 6 AX1500 RE505X",
+        "en": "RE505X AX1500 Wi-Fi 6 range extender"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/TP_Link_RE505X.jpg",
+      "marca": "TP-Link",
+      "codigoFabricante": "RE505X",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 23000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-93e6fc299915e16a23460ffd",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara Wi-Fi inteligente EZVIZ H1c",
+        "en": "EZVIZ H1c smart Wi-Fi camera"
+      },
+      "descripcion": {
+        "es": "Cámara Wi-Fi inteligente EZVIZ H1c",
+        "en": "EZVIZ H1c smart Wi-Fi camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV06_l.jpg",
+      "marca": "EZVIZ",
+      "codigoFabricante": "CS-H1c-R101-1G2WR",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 12000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c224a10ef1968bcbee32e714",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara Wi-Fi con batería EZVIZ CB1",
+        "en": "EZVIZ CB1 battery Wi-Fi camera"
+      },
+      "descripcion": {
+        "es": "Cámara Wi-Fi con batería EZVIZ CB1",
+        "en": "EZVIZ CB1 battery Wi-Fi camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV10l.jpg",
+      "marca": "EZVIZ",
+      "codigoFabricante": "CS-CB1-R100-1K2WF",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 23000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-5099a4d49dd91ebbc0822e4f",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara domo Wi-Fi EZVIZ H4",
+        "en": "EZVIZ H4 Wi-Fi dome camera"
+      },
+      "descripcion": {
+        "es": "Cámara domo Wi-Fi EZVIZ H4",
+        "en": "EZVIZ H4 Wi-Fi dome camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV29_xl.jpg",
+      "marca": "EZVIZ",
+      "codigoFabricante": "CS-H4-R201-1H3WKFL(2.8mm)",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 26000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-1bf6e8ae7abe41fa7da3d4c1",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara UniFi Protect G5 Dome Ultra 2K PoE",
+        "en": "UniFi Protect G5 Dome Ultra 2K PoE camera"
+      },
+      "descripcion": {
+        "es": "Cámara UniFi Protect G5 Dome Ultra 2K PoE",
+        "en": "UniFi Protect G5 Dome Ultra 2K PoE camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/ES001UBQ33xl.jpg",
+      "marca": "Ubiquiti",
+      "codigoFabricante": "UVC-G5-Dome-Ultra",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 27500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f48674437d2149348c6e1a17",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara domo IP Hikvision 2 MP",
+        "en": "Hikvision 2 MP IP dome camera"
+      },
+      "descripcion": {
+        "es": "Cámara domo IP Hikvision 2 MP",
+        "en": "Hikvision 2 MP IP dome camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/063Q4ZXBRXE9E9ZJ4NCXPST9DC.jpg",
+      "marca": "Hikvision",
+      "codigoFabricante": "DS-2CD1123G2-LIU 2.8mm",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 28000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-5d16dc12c6f45e84f0ba7d81",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara Wi-Fi EZVIZ H7c",
+        "en": "EZVIZ H7c Wi-Fi camera"
+      },
+      "descripcion": {
+        "es": "Cámara Wi-Fi EZVIZ H7c",
+        "en": "EZVIZ H7c Wi-Fi camera"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/46/8d/468dff05-c9bb-467e-9505-97a0c16bc3b0.jpg",
+      "marca": "EZVIZ",
+      "codigoFabricante": "CS-H7c-R101-8H44WF",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 29000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-fa943a0fbd567b061076a86d",
+      "categoria": "seguridad",
+      "nombre": {
+        "es": "Cámara bala IP Hikvision ColorVu 2 MP",
+        "en": "Hikvision ColorVu 2 MP IP bullet camera"
+      },
+      "descripcion": {
+        "es": "Cámara bala IP Hikvision ColorVu 2 MP",
+        "en": "Hikvision ColorVu 2 MP IP bullet camera"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES226HIK06_l1.jpg",
+      "marca": "Hikvision",
+      "codigoFabricante": "DS-2CD1027G3-LIU(2.8mm)",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 31500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-91901d12a8d2e701e2c419a4",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP Smart Tank 580",
+        "en": "HP Smart Tank 580 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP Smart Tank 580",
+        "en": "HP Smart Tank 580 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/063Q4ZXBRYTJS2BJNP4R34XB8M.jpg",
+      "marca": "HP",
+      "codigoFabricante": "1F3Y2A#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 104000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-4544f21aca5680f8c52a3f4a",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP Smart Tank 585 Wi-Fi",
+        "en": "HP Smart Tank 585 wireless all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP Smart Tank 585 Wi-Fi",
+        "en": "HP Smart Tank 585 wireless all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/PT656HEW03xl.jpg",
+      "marca": "HP",
+      "codigoFabricante": "1F3Y4A#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 110000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c9dd2903f999d3f1e372f718",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP Smart Tank 530",
+        "en": "HP Smart Tank 530 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP Smart Tank 530",
+        "en": "HP Smart Tank 530 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_a027ad86_bd57_47eb_89b0_2f8a3a5267c6.jpg",
+      "marca": "HP",
+      "codigoFabricante": "4SB24A#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 131000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-7a563a98b464a546fbf1df9b",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP Smart Tank 720",
+        "en": "HP Smart Tank 720 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP Smart Tank 720",
+        "en": "HP Smart Tank 720 all-in-one printer"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/49/38/493895bc-e041-47ba-a2d1-d4c3a4a00e2a.jpg",
+      "marca": "HP",
+      "codigoFabricante": "6UU46A#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 133000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-2d0fc6cf9c318e6fec5e70a4",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP OfficeJet Pro 9130",
+        "en": "HP OfficeJet Pro 9130 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP OfficeJet Pro 9130",
+        "en": "HP OfficeJet Pro 9130 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/9130.png",
+      "marca": "HP",
+      "codigoFabricante": "404K5C#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 139000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-6501f1b30ba7217c9b0ee78f",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional Epson EcoTank L4360",
+        "en": "Epson EcoTank L4360 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional Epson EcoTank L4360",
+        "en": "Epson EcoTank L4360 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/PT338EPS39.jpg",
+      "marca": "Epson",
+      "codigoFabricante": "C11CL41301",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 158000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-a2512b62e7ba2583df2685b7",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional HP OfficeJet Pro 9730",
+        "en": "HP OfficeJet Pro 9730 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional HP OfficeJet Pro 9730",
+        "en": "HP OfficeJet Pro 9730 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/product_image_(18)_(2)_xl.jpg",
+      "marca": "HP",
+      "codigoFabricante": "537P5C#AKY",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 166000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-fc46ffc2c0d0715c53168352",
+      "categoria": "oficina",
+      "nombre": {
+        "es": "Impresora multifuncional Epson EcoTank L5590",
+        "en": "Epson EcoTank L5590 all-in-one printer"
+      },
+      "descripcion": {
+        "es": "Impresora multifuncional Epson EcoTank L5590",
+        "en": "Epson EcoTank L5590 all-in-one printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/0644M95X502T07NSR2V70NC3C8.jpg",
+      "marca": "Epson",
+      "codigoFabricante": "C11CK57301",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 197000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-4589b95403aa2af3f72374bf",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector de código de barras Zebra LI2208 USB",
+        "en": "Zebra LI2208 USB barcode scanner"
+      },
+      "descripcion": {
+        "es": "Lector de código de barras Zebra LI2208 USB",
+        "en": "Zebra LI2208 USB barcode scanner"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_77fc9e96_f119_4eb8_be29_cb43da9d3937.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "LI2208-SR7U2100SGW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 47000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ba31c7854ee2a8b31613763b",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector 2D Zebra DS2208 USB con base",
+        "en": "Zebra DS2208 USB 2D scanner with stand"
+      },
+      "descripcion": {
+        "es": "Lector 2D Zebra DS2208 USB con base",
+        "en": "Zebra DS2208 USB 2D scanner with stand"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/87/89/8789c07e-29aa-4b59-9bed-c5f0c29b31cc.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "DS2208-SR7U2100SGW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 54000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-4995c585cda50944ded83f25",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector de mostrador 2D Zebra DS9308",
+        "en": "Zebra DS9308 countertop 2D scanner"
+      },
+      "descripcion": {
+        "es": "Lector de mostrador 2D Zebra DS9308",
+        "en": "Zebra DS9308 countertop 2D scanner"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/3a/4a/3a4ad1a6-e60f-4092-8cb5-10ab244a11d1.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "DS9308-SR4U2100AZW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 92000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-afea1e43385087ae6f15e1a5",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector 2D Zebra DS4608 USB",
+        "en": "Zebra DS4608 USB 2D scanner"
+      },
+      "descripcion": {
+        "es": "Lector 2D Zebra DS4608 USB",
+        "en": "Zebra DS4608 USB 2D scanner"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/a6/8f/a68f0c06-6289-43e1-96e0-5742106a0c68.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "DS4608-SR7U2100SGW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 96000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b3824b8f22f0bff790d2dd0f",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Lector inalámbrico 2D Zebra DS2278",
+        "en": "Zebra DS2278 wireless 2D scanner"
+      },
+      "descripcion": {
+        "es": "Lector inalámbrico 2D Zebra DS2278",
+        "en": "Zebra DS2278 wireless 2D scanner"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Zebra_DS2278_SR7U2100PRW.jpg",
+      "marca": "Zebra",
+      "codigoFabricante": "DS2278-SR7U2100PRW",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 106000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-19712f8331ee482efd808abe",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Gaveta de dinero Sewoo S415H",
+        "en": "Sewoo S415H cash drawer"
+      },
+      "descripcion": {
+        "es": "Gaveta de dinero Sewoo S415H",
+        "en": "Sewoo S415H cash drawer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/SEWOO_891400.jpg",
+      "marca": "SEWOO",
+      "codigoFabricante": "891400",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 27000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-321210f8b6f95587f6f2f984",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Gaveta de dinero Custom 20 pulgadas",
+        "en": "Custom 20-inch cash drawer"
+      },
+      "descripcion": {
+        "es": "Gaveta de dinero Custom 20 pulgadas",
+        "en": "Custom 20-inch cash drawer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Custom_971GF010000022.jpg",
+      "marca": "Custom",
+      "codigoFabricante": "971GF010000022",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 26500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-8a764ca618934c4383d9751a",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Impresora térmica de recibos Custom USB/serial",
+        "en": "Custom USB/serial thermal receipt printer"
+      },
+      "descripcion": {
+        "es": "Impresora térmica de recibos Custom USB/serial",
+        "en": "Custom USB/serial thermal receipt printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Custom_911MX010100733.jpg",
+      "marca": "Custom",
+      "codigoFabricante": "911MX010100733",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 54000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-a5c7065f28dfcd0c07757ff4",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Impresora térmica Sewoo SLK-TS100 USB/LAN",
+        "en": "Sewoo SLK-TS100 USB/LAN thermal receipt printer"
+      },
+      "descripcion": {
+        "es": "Impresora térmica Sewoo SLK-TS100 USB/LAN",
+        "en": "Sewoo SLK-TS100 USB/LAN thermal receipt printer"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/10/7b/107b1ba8-e600-420d-9e49-2f7e244168d2.jpg",
+      "marca": "SEWOO",
+      "codigoFabricante": "SLK-TS100",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 46500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-17e12a0cbcc4149d78f99b0a",
+      "categoria": "punto-de-venta",
+      "nombre": {
+        "es": "Impresora térmica Epson TM-m30III",
+        "en": "Epson TM-m30III thermal receipt printer"
+      },
+      "descripcion": {
+        "es": "Impresora térmica Epson TM-m30III",
+        "en": "Epson TM-m30III thermal receipt printer"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Epson_C31CK50052.jpg",
+      "marca": "Epson",
+      "codigoFabricante": "C31CK50052",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 154000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-1da412f8af25ea82acdf8a52",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft 365 Business Premium — 1 año",
+        "en": "Microsoft 365 Business Premium — 1 year"
+      },
+      "descripcion": {
+        "es": "Microsoft 365 Business Premium — 1 año",
+        "en": "Microsoft 365 Business Premium — 1 year"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/5e2e5141-601d-4313-a37a-a96927262d4d_AA_L.png",
+      "marca": "Microsoft",
+      "codigoFabricante": "KLQ-00219",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 94000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b86e4e1b67af9e0181a581cb",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft 365 Personal — 12 meses",
+        "en": "Microsoft 365 Personal — 12 months"
+      },
+      "descripcion": {
+        "es": "Microsoft 365 Personal — 12 meses",
+        "en": "Microsoft 365 Personal — 12 months"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_32316.jpg",
+      "marca": "Microsoft",
+      "codigoFabricante": "EP2-32316",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 42500,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-ad90a007bdeca5e914ec907f",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft 365 Apps para empresas — 1 año",
+        "en": "Microsoft 365 Apps for business — 1 year"
+      },
+      "descripcion": {
+        "es": "Microsoft 365 Apps para empresas — 1 año",
+        "en": "Microsoft 365 Apps for business — 1 year"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/aa377c55-a43e-4855-9617-345856d3b3a0_l_ll.png",
+      "marca": "Microsoft",
+      "codigoFabricante": "SPP-00005",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 62000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d0dc44fb8a1098bcfb6c6e76",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft 365 Familia — 12 meses",
+        "en": "Microsoft 365 Family — 12 months"
+      },
+      "descripcion": {
+        "es": "Microsoft 365 Familia — 12 meses",
+        "en": "Microsoft 365 Family — 12 months"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_32295.jpg",
+      "marca": "Microsoft",
+      "codigoFabricante": "EP2-32295",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 53000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-e5d043124785c10ff1e1a408",
+      "categoria": "software",
+      "nombre": {
+        "es": "Microsoft Office Hogar 2024 — descarga",
+        "en": "Microsoft Office Home 2024 — download"
+      },
+      "descripcion": {
+        "es": "Microsoft Office Hogar 2024 — descarga",
+        "en": "Microsoft Office Home 2024 — download"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_06800.jpg",
+      "marca": "Microsoft",
+      "codigoFabricante": "EP2-06800",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 77000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-86bf2aafc36d000c2bc7c767",
+      "categoria": "software",
+      "nombre": {
+        "es": "ESET Home Security Premium — 3 dispositivos",
+        "en": "ESET Home Security Premium — 3 devices"
+      },
+      "descripcion": {
+        "es": "ESET Home Security Premium — 3 dispositivos",
+        "en": "ESET Home Security Premium — 3 devices"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/SE516ESE62l.jpg",
+      "marca": "ESET",
+      "codigoFabricante": "EHSP-ESD1-3D",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 46000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-94ea78a4e551d2d1485d46aa",
+      "categoria": "software",
+      "nombre": {
+        "es": "ESET Server Security — 1 servidor",
+        "en": "ESET Server Security — 1 server"
+      },
+      "descripcion": {
+        "es": "ESET Server Security — 1 servidor",
+        "en": "ESET Server Security — 1 server"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/EFS-ESD1-1S.jpg",
+      "marca": "ESET",
+      "codigoFabricante": "EFS-ESD1-1S",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 49000,
+      "disponibilidadReferencia": "consultar",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c260f8621169bd3ebc596ee7",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Control inalámbrico Primus PMC-01BT",
+        "en": "Primus PMC-01BT wireless gaming controller"
+      },
+      "descripcion": {
+        "es": "Control inalámbrico Primus PMC-01BT",
+        "en": "Primus PMC-01BT wireless gaming controller"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PMC_01BT.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PMC-01BT",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 21000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-70e6190e8bafdddb8cd37e03",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Mouse pad Primus Arena XXL",
+        "en": "Primus Arena XXL gaming mouse pad"
+      },
+      "descripcion": {
+        "es": "Mouse pad Primus Arena XXL",
+        "en": "Primus Arena XXL gaming mouse pad"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/0634RQ7B3N4TPB3S3S6DWQ5RXR.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PMP-01XXL",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 12000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-b6ee330bba0f29130b5125a5",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Lámpara inteligente RGBIC Primus",
+        "en": "Primus RGBIC smart gaming lamp"
+      },
+      "descripcion": {
+        "es": "Lámpara inteligente RGBIC Primus",
+        "en": "Primus RGBIC smart gaming lamp"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PLI_200FL.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PLI-200FL",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 39000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-c7730da18abb57969d47f33b",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Mochila Primus para portátil de 17 pulgadas",
+        "en": "Primus 17-inch gaming laptop backpack"
+      },
+      "descripcion": {
+        "es": "Mochila Primus para portátil de 17 pulgadas",
+        "en": "Primus 17-inch gaming laptop backpack"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PGB_300BK.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PGB-300BK",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 34000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-83f2c83ff0ba420c4688dc6a",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Audífonos inalámbricos Primus PBH-360W",
+        "en": "Primus PBH-360W wireless gaming headset"
+      },
+      "descripcion": {
+        "es": "Audífonos inalámbricos Primus PBH-360W",
+        "en": "Primus PBH-360W wireless gaming headset"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PBH_360W.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PBH-360W",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 25000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-570e2002e13a443f9ce09380",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Mouse gaming Primus Gladius 12800",
+        "en": "Primus Gladius 12800 gaming mouse"
+      },
+      "descripcion": {
+        "es": "Mouse gaming Primus Gladius 12800",
+        "en": "Primus Gladius 12800 gaming mouse"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/xl3565.jpg",
+      "marca": "Primus Gaming",
+      "codigoFabricante": "PMO-103",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 9000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-d8fe164e9c5dc26077a05af2",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Teclado gaming HyperX Alloy Rise",
+        "en": "HyperX Alloy Rise gaming keyboard"
+      },
+      "descripcion": {
+        "es": "Teclado gaming HyperX Alloy Rise",
+        "en": "HyperX Alloy Rise gaming keyboard"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/HyperX_7G7A3AA_ABM.jpg",
+      "marca": "HyperX",
+      "codigoFabricante": "7G7A3AA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 46000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-021c84bd212feaab06466c8b",
+      "categoria": "gaming",
+      "nombre": {
+        "es": "Monitor gaming Xiaomi 27 pulgadas 200 Hz",
+        "en": "Xiaomi 27-inch 200 Hz gaming monitor"
+      },
+      "descripcion": {
+        "es": "Monitor gaming Xiaomi 27 pulgadas 200 Hz",
+        "en": "Xiaomi 27-inch 200 Hz gaming monitor"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Xiaomi_68561.jpg",
+      "marca": "Xiaomi",
+      "codigoFabricante": "68561",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 84000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-2f61570c9bf204e208230a86",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "SSD Kingston NV3 NVMe 1 TB",
+        "en": "Kingston NV3 1 TB NVMe SSD"
+      },
+      "descripcion": {
+        "es": "SSD Kingston NV3 NVMe 1 TB",
+        "en": "Kingston NV3 1 TB NVMe SSD"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/069VCR2VCXHGJC7RE4N4C3A9RM.jpg",
+      "marca": "Kingston",
+      "codigoFabricante": "SNV3S/1000G",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 132000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-aa0f77bd9dd205871eeef9d0",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "SSD externo Kingston XS1000 1 TB",
+        "en": "Kingston XS1000 1 TB external SSD"
+      },
+      "descripcion": {
+        "es": "SSD externo Kingston XS1000 1 TB",
+        "en": "Kingston XS1000 1 TB external SSD"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/DH100KNG66xl.jpg",
+      "marca": "Kingston",
+      "codigoFabricante": "SXS1000R/1000G",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 149000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-57e19632186f568932266569",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Monitor Xiaomi A24i de 24 pulgadas",
+        "en": "Xiaomi A24i 24-inch monitor"
+      },
+      "descripcion": {
+        "es": "Monitor Xiaomi A24i de 24 pulgadas",
+        "en": "Xiaomi A24i 24-inch monitor"
+      },
+      "imagen": "https://cdn.cs.1worldsync.com/a2/4d/a24dbc37-5e3c-4969-b6f8-e6cedd0b4019.jpg",
+      "marca": "Xiaomi",
+      "codigoFabricante": "69672",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 49000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-99a78d01770adda81aa05b2f",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Monitor HP Series 3 Pro 23,8 pulgadas",
+        "en": "HP Series 3 Pro 23.8-inch monitor"
+      },
+      "descripcion": {
+        "es": "Monitor HP Series 3 Pro 23,8 pulgadas",
+        "en": "HP Series 3 Pro 23.8-inch monitor"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/324pf_l.jpg",
+      "marca": "HP",
+      "codigoFabricante": "9U5J5UT#ABA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 78000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-875e58e3424cdc63a0097b06",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Monitor HP Series 5 de 27 pulgadas",
+        "en": "HP Series 5 27-inch monitor"
+      },
+      "descripcion": {
+        "es": "Monitor HP Series 5 de 27 pulgadas",
+        "en": "HP Series 5 27-inch monitor"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/HP_94C50AA_ABA.jpg",
+      "marca": "HP",
+      "codigoFabricante": "94C50AA#ABA",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 101000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-f1f2e3b9cc05cb27cda1cd8d",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Memoria Kingston DDR5 16 GB 5600 MT/s DIMM",
+        "en": "Kingston 16 GB DDR5 5600 MT/s DIMM memory"
+      },
+      "descripcion": {
+        "es": "Memoria Kingston DDR5 16 GB 5600 MT/s DIMM",
+        "en": "Kingston 16 GB DDR5 5600 MT/s DIMM memory"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_ValueRam_KVR56U46BS8_16.jpg",
+      "marca": "Kingston ValueRam",
+      "codigoFabricante": "KVR56U46BS8-16",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 159000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-8959f351d3900d47746fe302",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Memoria Kingston DDR5 16 GB 5600 MT/s SODIMM",
+        "en": "Kingston 16 GB DDR5 5600 MT/s SODIMM memory"
+      },
+      "descripcion": {
+        "es": "Memoria Kingston DDR5 16 GB 5600 MT/s SODIMM",
+        "en": "Kingston 16 GB DDR5 5600 MT/s SODIMM memory"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_ValueRam_KVR56S46BS8_16.jpg",
+      "marca": "Kingston ValueRam",
+      "codigoFabricante": "KVR56S46BS8-16",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 206000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-05567b2eb700007a999c2a48",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Memoria Kingston DDR4 8 GB 3200 MHz SODIMM",
+        "en": "Kingston 8 GB DDR4 3200 MHz SODIMM memory"
+      },
+      "descripcion": {
+        "es": "Memoria Kingston DDR4 8 GB 3200 MHz SODIMM",
+        "en": "Kingston 8 GB DDR4 3200 MHz SODIMM memory"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_KVR32S22S8_8.jpg",
+      "marca": "Kingston ValueRam",
+      "codigoFabricante": "KVR32S22S8/8",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 74000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-786fc8d6a22827ea3b1e1560",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "UPS Xtech XTP-751 de 750 VA",
+        "en": "Xtech XTP-751 750 VA UPS"
+      },
+      "descripcion": {
+        "es": "UPS Xtech XTP-751 de 750 VA",
+        "en": "Xtech XTP-751 750 VA UPS"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Xtech_XTP_751.jpg",
+      "marca": "Xtech",
+      "codigoFabricante": "XTP-751",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 25500,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-380453aeacabe0ec6daabf20",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "UPS Forza NT-511",
+        "en": "Forza NT-511 UPS"
+      },
+      "descripcion": {
+        "es": "UPS Forza NT-511",
+        "en": "Forza NT-511 UPS"
+      },
+      "imagen": "https://intcomexpim.blob.core.windows.net/assets/images/Forza_NT_511.jpg",
+      "marca": "Forza",
+      "codigoFabricante": "NT-511",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 26000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-fa24e583392d4a42118f3a32",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Fuente de poder ASUS Prime 750 W Gold",
+        "en": "ASUS Prime 750 W Gold power supply"
+      },
+      "descripcion": {
+        "es": "Fuente de poder ASUS Prime 750 W Gold",
+        "en": "ASUS Prime 750 W Gold power supply"
+      },
+      "imagen": "https://skucentral-experience-api-prod.us-e1.cloudhub.io/api/image/AC060ASU12_ASUSAP_850G_Prime850WGold_Primera.jpg",
+      "marca": "ASUS",
+      "codigoFabricante": "AP-750G",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 63000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    },
+    {
+      "id": "ic-9176dadeb4dd102d0d83e794",
+      "categoria": "componentes",
+      "nombre": {
+        "es": "Fuente de poder ASUS Prime 850 W Gold",
+        "en": "ASUS Prime 850 W Gold power supply"
+      },
+      "descripcion": {
+        "es": "Fuente de poder ASUS Prime 850 W Gold",
+        "en": "ASUS Prime 850 W Gold power supply"
+      },
+      "imagen": "https://skucentral-experience-api-prod.us-e1.cloudhub.io/api/image/AC060ASU12_ASUSAP_850G_Prime850WGold_Primera.jpg",
+      "marca": "ASUS",
+      "codigoFabricante": "AP-850G",
+      "costoUsd": null,
+      "costoCrc": null,
+      "precioReferencia": 70000,
+      "disponibilidadReferencia": "proveedor",
+      "revisionPrecio": false,
+      "precioManual": null,
+      "publicado": true,
+      "destacado": false
+    }
+  ],
+  "sincronizacion": {
+    "fecha": "2026-09-13T16:14:28.051Z",
+    "origen": "intcomex",
+    "nuevos": 59,
+    "actualizados": 0,
+    "revisionPrecio": 0,
+    "sinImagen": 0,
+    "sinCodigo": 0,
+    "fueraDeCategoria": 0
+  },
+  "ajustes": {
+    "cambio": 455.56,
+    "adicional": 50,
+    "iva": 13,
+    "utilidad": 20
+  },
+  "textos": {
+    "titulo": {
+      "es": "Tecnología que trabaja con usted.",
+      "en": "Technology that works with you."
+    },
+    "descripcion": {
+      "es": "Una selección esencial de computadoras, redes y seguridad, con asesoría de nuestro equipo.",
+      "en": "An essential selection of computers, networking and security, with advice from our team."
+    },
+    "aviso": {
+      "es": "Disponibilidad sujeta a confirmación.",
+      "en": "Availability subject to confirmation."
+    }
+  }
+}

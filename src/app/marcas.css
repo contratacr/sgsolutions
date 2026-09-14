@@ -1,0 +1,55 @@
+.marcas-cinta{margin:32px 0 36px;padding:28px 0 22px;border-block:1px solid #dce5ed;background:linear-gradient(115deg,#edf2f6,#f9fbfc 55%,#edf3f7);border-radius:18px;overflow:hidden}
+.marcas-encabezado{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 28px 22px}
+.marcas-encabezado .etiqueta{font-size:.62rem;letter-spacing:.16em;margin:0 0 9px}
+.marcas-encabezado h2{font-size:1.45rem;letter-spacing:-.035em;font-weight:500;margin:0}
+.marcas-descripcion{color:#607487;font-size:.82rem;margin:7px 0 0}
+.marcas-controles{display:flex;align-items:center;gap:18px}
+.marcas-controles button{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;background:transparent;color:#294b68;cursor:pointer}
+.marcas-ver{font-size:.82rem;white-space:nowrap}
+.marcas-controles .marcas-pausa{width:40px;height:40px;border:1px solid #ccd9e3;border-radius:50%;background:#ffffffa8;flex-shrink:0}
+.marcas-ventana{overflow:hidden;mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent)}
+.marcas-pista{display:flex;width:100%}
+.marcas-grupo{display:flex;gap:14px;min-width:100%;flex-shrink:0;justify-content:space-around;padding:5px 7px;animation:marcas-deslizar 30s linear infinite}
+.marca-ficha{flex:1 0 170px;max-width:260px;min-height:126px;display:flex;flex-direction:column;justify-content:space-between;gap:17px;background:#fff;border:1px solid #e2e9ef;border-radius:12px;padding:23px 22px 13px;color:#36556d;cursor:pointer;text-align:left;box-shadow:0 3px 9px #17334a03;transition:border-color .2s,background .2s}
+.marca-logo{display:flex;align-items:center;justify-content:center;height:50px}
+.marca-logo img{width:130px;height:50px;object-fit:contain}
+.marca-logo img[src$="lenovo.svg"],.marca-logo img[src$="epson.svg"]{transform:scale(1.8)}
+.marca-pie{display:flex;justify-content:space-between;align-items:center;font-size:.72rem;border-top:1px solid #eef2f5;padding-top:12px}
+.marca-pie svg{opacity:.5}
+.marca-ficha[aria-pressed=true]{border-color:#537896;background:#edf4fa}
+.marcas-cinta[data-pausa=true] .marcas-grupo{animation-play-state:paused}
+@media(hover:hover){.marcas-ventana:hover .marcas-grupo{animation-play-state:paused}.marca-ficha:hover{border-color:#9bb4c8}.marca-ficha:hover .marca-pie svg{opacity:1}}
+.marcas-ventana:focus-within{overflow-x:auto;mask-image:none}
+.marcas-ventana:focus-within .marcas-grupo{animation:none}
+.marcas-ventana:focus-within .marcas-grupo[aria-hidden=true]{display:none}
+@keyframes marcas-deslizar{to{transform:translateX(-100%)}}
+@media(max-width:650px){.marcas-cinta{padding-top:22px}.marcas-encabezado{padding:0 19px 18px;align-items:flex-start;flex-wrap:wrap;gap:15px}.marcas-encabezado h2{font-size:1.25rem}.marcas-controles{gap:14px}.marca-ficha{flex-basis:160px;padding:20px 17px 12px}.marcas-grupo{animation-duration:25s}.marcas-descripcion{font-size:.78rem}}
+@media(prefers-reduced-motion:reduce){.marcas-grupo{animation:none}.marcas-grupo[aria-hidden=true]{display:none}.marcas-ventana{overflow-x:auto;mask-image:none}.marcas-pausa{display:none!important}}
+
+/* La cinta se recorre manualmente, sin movimiento ni controles adicionales. */
+.marcas-ventana{overflow-x:auto;mask-image:none;scroll-snap-type:x proximity;scrollbar-width:thin;padding:0 16px 8px}
+.marcas-grupo{animation:none;justify-content:flex-start;min-width:100%;width:max-content}
+.marcas-grupo[aria-hidden=true]{display:none}
+.marca-ficha{flex:0 0 180px;scroll-snap-align:start}
+.shop-distribucion,.shop-resultados{min-width:0}
+.shop-grid{align-items:stretch}
+.shop-producto-info{display:grid;grid-template-rows:auto auto auto auto auto auto 44px;gap:0;flex:1;grid-template-rows:20px minmax(66px,auto) minmax(88px,auto) minmax(36px,auto) minmax(30px,auto) minmax(62px,auto) 44px}
+.shop-producto h3{margin:8px 0;line-height:1.4;overflow-wrap:anywhere}
+.shop-producto-info>.shop-descripcion{margin:0 0 14px;min-height:0;overflow-wrap:anywhere}
+.shop-producto-info>.shop-codigo{overflow-wrap:anywhere}
+.shop-producto .shop-precio{align-self:end;margin-bottom:16px}
+.shop-producto .boton{align-self:end;white-space:nowrap}
+@supports(grid-template-rows:subgrid){.shop-grid{grid-auto-rows:auto}.shop-producto{display:grid;grid-row:span 8;grid-template-rows:subgrid;row-gap:0}.shop-producto-info{display:grid;grid-row:span 7;grid-template-rows:subgrid;row-gap:0}}
+@media(max-width:650px){
+ .shop-grid{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-template-rows:auto;grid-auto-columns:min(82vw,330px);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:16px;gap:14px;scrollbar-width:thin}
+ .shop-producto{display:flex;grid-row:auto;scroll-snap-align:start}
+ .shop-producto-info{display:grid;grid-row:auto;grid-template-rows:20px auto auto auto auto auto 44px;padding:18px}
+ .shop-producto h3{font-size:1.05rem;line-height:1.4}
+ .shop-producto-info>p{font-size:.83rem;line-height:1.65}
+ .shop-producto-info>small{font-size:.7rem}
+ .shop-producto .boton{font-size:.78rem;padding:11px 13px}
+ .shop-foto{height:190px;padding:20px}
+ .shop-precio strong{font-size:1.15rem}
+ .shop-categorias{scroll-snap-type:x proximity;scrollbar-width:thin}.shop-categorias button{scroll-snap-align:start}
+ @supports(grid-template-rows:subgrid){.shop-grid{grid-template-rows:190px auto auto auto auto auto auto 62px}.shop-producto{display:grid;grid-row:1/9;grid-template-rows:subgrid}.shop-producto-info{grid-row:span 7;grid-template-rows:subgrid}}
+}
