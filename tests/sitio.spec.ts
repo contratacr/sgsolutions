@@ -249,7 +249,6 @@ test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page
   await page.getByRole('button', {name:'Leer esta página en español'}).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
   await expect(page.getByRole('article')).toHaveCount(24);
-  await page.getByRole('button', {name:'Pausar movimiento de marcas'}).click();
   for (const imagen of await page.locator('img').all()) {
     await imagen.scrollIntoViewIfNeeded();
     await imagen.evaluate(async elemento => { await (elemento as HTMLImageElement).decode(); });

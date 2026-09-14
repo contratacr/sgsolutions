@@ -2,7 +2,6 @@ import {test,expect} from '@playwright/test';
 
 test('marcas filtran productos y se combinan con categorías en ambos idiomas',async({page})=>{
  await page.goto('/tienda');
- await page.getByRole('button',{name:'Pausar movimiento de marcas'}).click();
  await expect(page.locator('.shop-producto').first()).toContainText('Código de fabricante');
  await expect(page.locator('main')).toContainText('21H2S1NH00');
  await expect(page.locator('main')).not.toContainText('NT083LEN02');
@@ -12,10 +11,9 @@ test('marcas filtran productos y se combinan con categorías en ambos idiomas',a
  await page.getByRole('button',{name:'Componentes informáticos',exact:true}).click();
  await expect(page.locator('.shop-producto')).toHaveCount(10);
  await expect(page.locator('.shop-producto').first()).toContainText('Lenovo');
- await page.getByRole('button',{name:'Ver todas',exact:true}).click();
+ await page.getByRole('button',{name:'Ver productos de Lenovo',exact:true}).click();
  await expect(page.locator('.shop-producto')).toHaveCount(24);
  await page.getByRole('button',{name:'Read this page in English'}).click();
- await page.getByRole('button',{name:'Pause brand animation'}).click();
  await page.getByRole('button',{name:'View HP products',exact:true}).click();
  await expect.poll(()=>page.locator('.shop-producto').count()).toBeGreaterThan(1);
  for(const producto of await page.locator('.shop-producto').all())await expect(producto).toContainText('HP');
