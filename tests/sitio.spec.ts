@@ -180,6 +180,14 @@ for (const [ruta,tituloEs,tituloEn] of [
     page.on('pageerror', error => errores.push(error.message));
     await page.goto(ruta);
     await expect(page.getByRole('heading', {level:1})).toHaveText(tituloEs);
+    if(ruta==='/casos-de-exito'){
+      await expect(page.getByRole('heading',{name:'Conectividad y sistema de cámaras IP'})).toBeVisible();
+      await expect(page.getByRole('heading',{name:'Servicentro San Juan',exact:true})).toBeVisible();
+      await expect(page.getByRole('heading',{name:'Puntos de venta y sistema de cámaras de vigilancia IP'})).toBeVisible();
+      await expect(page.getByRole('heading',{name:'Eco Mini Market',exact:true})).toBeVisible();
+      await expect(page.locator('.caso-galeria').nth(0).locator('img')).toHaveCount(2);
+      await expect(page.locator('.caso-galeria').nth(2).locator('img')).toHaveCount(3);
+    }
     await page.getByRole('button', {name:'Read this page in English'}).click();
     await expect(page.getByRole('heading', {level:1})).toHaveText(tituloEn);
     await expect(page).toHaveURL(`http://127.0.0.1:3107${ruta}`);
