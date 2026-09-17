@@ -21,7 +21,7 @@
 @media(hover:hover){.marca-ficha:hover{border-color:#9bb4c8}.marca-ficha:hover .marca-pie svg{opacity:1}}
 
 .marcas-pista[data-lista=true]{animation-play-state:running}
-.marcas-ventana:has(:focus-visible) .marcas-pista{animation-play-state:paused}
+.marcas-ventana:focus-within .marcas-pista,.marcas-ventana:hover .marcas-pista{animation-play-state:paused}
 @keyframes marcas-deslizar{to{transform:translate3d(-50%,0,0)}}
 @media(max-width:650px){.marcas-cinta{padding-top:22px}.marcas-encabezado{padding:0 19px 18px;align-items:flex-start;flex-wrap:wrap;gap:15px}.marcas-encabezado h2{font-size:1.25rem}.marcas-controles{gap:14px}.marca-ficha{flex-basis:160px;padding:20px 17px 12px}.marcas-grupo{animation-duration:25s}.marcas-descripcion{font-size:.78rem}}
 @media(prefers-reduced-motion:reduce){.marcas-pista{animation:none}.marcas-grupo[aria-hidden=true]{display:none}.marcas-ventana{overflow-x:auto;mask-image:none}.marcas-pausa{display:none!important}}

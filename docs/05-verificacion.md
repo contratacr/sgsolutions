@@ -6,19 +6,19 @@
 | --- | --- |
 | `tsc --noEmit` | Sin errores |
 | ESLint | Sin errores ni advertencias tras corregir exportación de configuración |
-| Catálogos | 167 claves en español e inglés; parámetros coincidentes |
+| Catálogos | 592 claves en español e inglés; parámetros coincidentes |
 | Detector de secretos | Sin coincidencias en archivos versionables; comprobación heurística |
 | `npm audit --audit-level=low` | 0 vulnerabilidades tras actualizar/unificar sharp 0.35.4 |
 | `next build` | Correcto, Next.js 16.3.4 / React 19.3.0 |
 | Build OpenNext | Correcto; generado `.open-next/worker.js` |
 | Worker local (Wrangler) | `/`, `/tienda`, `/acceso`: HTTP 200; `/panel`: 307 a `/acceso`; cabecera `nosniff` presente |
 | Interacción en Worker local | Cambio persistente a inglés y agregar/abrir carrito correctos, sin errores de página |
-| Playwright | 8 pruebas aprobadas en escritorio y móvil |
+| Playwright | 64 pruebas aprobadas en escritorio y móvil |
 | Capturas | Portada, página completa y carrito generados; portada/escritorio y portada/carrito móvil inspeccionados visualmente |
 | Transferencia inicial | Aproximadamente 961 KB escritorio / 603 KB móvil (bytes transferidos en loopback, incluida página/recursos) |
 | JavaScript e imágenes | Sin errores de página, sin desborde horizontal; imágenes cargadas/decodificadas antes de captura completa |
 
-Las pruebas de navegador cubren filtros, agregar/quitar productos, cantidades, persistencia tras recarga, WhatsApp con selección, pago deshabilitado, inglés/español persistente, navegación móvil, denegación de panel sin configuración/sesión y rechazo de carrito manipulado en almacenamiento local. Las cifras de transferencia son una medición local, no Lighthouse ni resultados de red móvil real. Las capturas y mediciones JSON están en `evidencias/`, ignorado por Git.
+Las pruebas de navegador cubren filtros, agregar/quitar productos, cantidades, persistencia tras recarga, solicitud de pedido y revisión antes de WhatsApp en español e inglés, entrega/retiro, códigos de fabricante, navegación móvil, denegación de panel sin configuración/sesión y rechazo de carrito manipulado en almacenamiento local. También verifican que la cinta de marcas se detenga al recibir foco. Las cifras de transferencia son una medición local, no Lighthouse ni resultados de red móvil real. Las capturas y mediciones JSON están en `evidencias/`, ignorado por Git.
 
 ## Fallos encontrados y tratamiento
 

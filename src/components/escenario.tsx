@@ -16,14 +16,8 @@ class RespaldoEscena extends Component<{children: ReactNode}, {fallo: boolean}> 
 // La composición permanece visible sin WebGL, sin JavaScript y con movimiento reducido.
 function Ilustracion() {
   return <svg viewBox="0 0 1240 560" preserveAspectRatio="xMidYMid slice" fill="none" className="escena-respaldo" aria-hidden="true">
-    <defs>
-      <linearGradient id="portal-luz" x1="610" y1="560" x2="910" y2="0" gradientUnits="userSpaceOnUse"><stop stopColor="#4d6f91" stopOpacity="0"/><stop offset=".35" stopColor="#74b5e5"/><stop offset=".72" stopColor="#4d6f91"/><stop offset="1" stopColor="#4d6f91" stopOpacity="0"/></linearGradient>
-      <linearGradient id="portal-naranja" x1="620" y1="500" x2="970" y2="0" gradientUnits="userSpaceOnUse"><stop stopColor="#f05a28" stopOpacity="0"/><stop offset=".5" stopColor="#f05a28"/><stop offset="1" stopColor="#f05a28" stopOpacity="0"/></linearGradient>
-      <filter id="portal-difuso"><feGaussianBlur stdDeviation="17"/></filter>
-    </defs>
-    <path d="M 600 560 C 870 340 680 240 960 -30" stroke="url(#portal-luz)" strokeWidth="95" opacity=".25" filter="url(#portal-difuso)"/>
-    {Array.from({length: 5},(_,i) => <path key={i} d={`M ${600+i*13} 560 C ${860+i*18} 340 ${670+i*22} 240 ${950+i*15} -30`} stroke="url(#portal-luz)" strokeWidth={i === 2 ? 3 : 1} opacity=".6"/>)}
-    <path d="M 655 560 C 885 270 750 240 960 -30" stroke="url(#portal-naranja)" strokeWidth="2" opacity=".7"/>
+    <defs><linearGradient id="orbita-azul" x1="760" y1="100" x2="1110" y2="420" gradientUnits="userSpaceOnUse"><stop stopColor="#d2e8ff"/><stop offset=".5" stopColor="#32608a"/><stop offset="1" stopColor="#82baf0"/></linearGradient><radialGradient id="nucleo"><stop stopColor="#e7f4ff"/><stop offset="1" stopColor="#39658c"/></radialGradient></defs>
+    <g transform="translate(910 250)"><ellipse rx="158" ry="64" stroke="url(#orbita-azul)" strokeWidth="8" transform="rotate(-35)"/><ellipse rx="158" ry="64" stroke="#eb8148" strokeWidth="6" transform="rotate(40)"/><ellipse rx="158" ry="64" stroke="url(#orbita-azul)" strokeWidth="7" transform="rotate(100)"/><path d="M0 -55 49 -22 44 34 0 57 -48 24 -45 -30Z" fill="url(#nucleo)"/><path d="M0 -55 0 7 49 -22M0 7 44 34M0 7 -48 24M0 7 0 57" stroke="#c8e0f6" strokeOpacity=".5"/>{[[-120,80],[125,-80],[-66,-120],[76,116]].map(([cx,cy],i)=><circle key={i} cx={cx} cy={cy} r="9" fill={i%2?'#ec8956':'#b7d7ef'}/>)}</g>
   </svg>;
 }
 

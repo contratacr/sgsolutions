@@ -1,7 +1,9 @@
 import {test,expect} from '@playwright/test';
-import {calcularPrecio,colones,publicarCatalogo,esquemaCatalogo,redondearPrecio} from '../src/lib/catalogo-modelo';
+import {calcularPrecio,colones,publicarCatalogo,esquemaCatalogo,redondearPrecio,politicaPrecios} from '../src/lib/catalogo-modelo';
 import base from '../src/lib/catalogo-base.json';
 test('fórmula CRC, prioridad manual y costos privados',()=>{
+ expect(calcularPrecio(100,politicaPrecios)).toBe(64000);
+ expect(calcularPrecio(10,politicaPrecios)).toBe(6500);
  const ajustes={cambio:450,adicional:50,iva:13,utilidad:20};
  expect(calcularPrecio(100,ajustes)).toBe(68000);
  expect(calcularPrecio(36.24,{...ajustes,cambio:455.56})).toBe(25000);

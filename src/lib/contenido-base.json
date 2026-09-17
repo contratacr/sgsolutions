@@ -1,0 +1,236 @@
+{
+  "casos": [
+    {
+      "id": "caso-1",
+      "publicado": true,
+      "cliente": "Servicentro San Juan",
+      "categoria": {
+        "es": "CONECTIVIDAD Y SEGURIDAD",
+        "en": "CONNECTIVITY AND SECURITY"
+      },
+      "titulo": {
+        "es": "Conectividad y sistema de cámaras IP",
+        "en": "Connectivity and IP camera system"
+      },
+      "descripcion": {
+        "es": "Conectividad y videovigilancia en un mismo proyecto. En Servicentro San Juan, SG Solutions integró la infraestructura de red y el sistema de cámaras IP, con los equipos organizados en gabinetes y una pantalla para visualizar las áreas vigiladas.",
+        "en": "Connectivity and video surveillance in one project. At Servicentro San Juan, SG Solutions integrated the network infrastructure and IP camera system, with equipment organized in cabinets and a screen to view the monitored areas."
+      },
+      "solucion": {
+        "es": "Conectividad · Cámaras IP · Gabinete de comunicaciones",
+        "en": "Connectivity · IP cameras · Communications cabinet"
+      },
+      "fotos": [
+        {
+          "src": "/imagenes/casos/servicentro-san-juan-exterior.webp",
+          "alt": {
+            "es": "Exterior de Servicentro San Juan con el vehículo de soporte técnico de SG Solutions.",
+            "en": "Exterior of Servicentro San Juan with the SG Solutions technical support vehicle."
+          },
+          "caption": {
+            "es": "Servicentro San Juan",
+            "en": "Servicentro San Juan"
+          }
+        },
+        {
+          "src": "/imagenes/casos/servicentro-san-juan-infraestructura.webp",
+          "alt": {
+            "es": "Gabinete de comunicaciones y monitor con las cámaras IP instaladas en Servicentro San Juan.",
+            "en": "Communications cabinet and monitor showing the IP cameras installed at Servicentro San Juan."
+          },
+          "caption": {
+            "es": "Red y monitoreo de cámaras",
+            "en": "Network and camera monitoring"
+          }
+        }
+      ]
+    },
+    {
+      "id": "caso-2",
+      "publicado": true,
+      "cliente": "ECOFARMA",
+      "categoria": {
+        "es": "PUNTOS DE VENTA E INFRAESTRUCTURA",
+        "en": "POINT OF SALE AND INFRASTRUCTURE"
+      },
+      "titulo": {
+        "es": "Puntos de venta e infraestructura tecnológica para farmacias",
+        "en": "Point-of-sale stations and technology infrastructure for pharmacies"
+      },
+      "descripcion": {
+        "es": "Tecnología para la atención en las farmacias de ECOFARMA. El proyecto integra estaciones de punto de venta con lectores de códigos, impresoras de recibos y gavetas de dinero, junto con gabinetes para organizar y proteger la infraestructura tecnológica de cada establecimiento.",
+        "en": "Technology for customer service across ECOFARMA pharmacies. The project integrates point-of-sale stations with barcode scanners, receipt printers and cash drawers, along with cabinets that organize and protect the technology infrastructure at each location."
+      },
+      "solucion": {
+        "es": "Puntos de venta · Impresoras y periféricos · Infraestructura tecnológica",
+        "en": "Point-of-sale stations · Printers and peripherals · Technology infrastructure"
+      },
+      "fotos": [
+        {
+          "src": "/imagenes/casos/ecofarma-exterior.webp",
+          "alt": {
+            "es": "Fachada de ECOFARMA con el vehículo de soporte técnico de SG Solutions.",
+            "en": "ECOFARMA storefront with the SG Solutions technical support vehicle."
+          },
+          "caption": {
+            "es": "ECOFARMA",
+            "en": "ECOFARMA"
+          }
+        },
+        {
+          "src": "/imagenes/casos/ecofarma-pos.webp",
+          "alt": {
+            "es": "Punto de venta de ECOFARMA con monitor, lector de códigos, impresora de recibos y gaveta.",
+            "en": "ECOFARMA point-of-sale station with monitor, barcode scanner, receipt printer and cash drawer."
+          },
+          "caption": {
+            "es": "Estaciones de punto de venta",
+            "en": "Point-of-sale stations"
+          }
+        },
+        {
+          "src": "/imagenes/casos/ecofarma-gabinete.webp",
+          "alt": {
+            "es": "Gabinete tecnológico de pared instalado en ECOFARMA.",
+            "en": "Wall-mounted equipment cabinet installed at ECOFARMA."
+          },
+          "caption": {
+            "es": "Infraestructura tecnológica",
+            "en": "Technology infrastructure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "caso-3",
+      "publicado": true,
+      "cliente": "Eco Mini Market",
+      "categoria": {
+        "es": "PUNTO DE VENTA Y SEGURIDAD",
+        "en": "POINT OF SALE AND SECURITY"
+      },
+      "titulo": {
+        "es": "Puntos de venta y sistema de cámaras de vigilancia IP",
+        "en": "Point-of-sale stations and IP surveillance camera system"
+      },
+      "descripcion": {
+        "es": "Puntos de venta y vigilancia IP para Eco Mini Market. Nuestro equipo trabajó en la instalación de las estaciones de atención y en el sistema de cámaras del local, reuniendo los equipos y periféricos que forman parte de la operación del comercio.",
+        "en": "Point-of-sale stations and IP surveillance for Eco Mini Market. Our team worked on installing the service stations and the store’s camera system, bringing together the equipment and peripherals used in the business’s operations."
+      },
+      "solucion": {
+        "es": "Puntos de venta · Periféricos · Videovigilancia IP",
+        "en": "Point-of-sale stations · Peripherals · IP video surveillance"
+      },
+      "fotos": [
+        {
+          "src": "/imagenes/casos/eco-mini-market-instalacion.webp",
+          "alt": {
+            "es": "Equipo de SG Solutions instalando estaciones de punto de venta en Eco Mini Market.",
+            "en": "SG Solutions team installing point-of-sale stations at Eco Mini Market."
+          },
+          "caption": {
+            "es": "Instalación en el comercio",
+            "en": "In-store installation"
+          }
+        },
+        {
+          "src": "/imagenes/casos/eco-mini-market-exterior.webp",
+          "alt": {
+            "es": "Exterior de Eco Mini Market con el vehículo de soporte técnico de SG Solutions frente al establecimiento.",
+            "en": "Exterior of Eco Mini Market with the SG Solutions technical support vehicle in front of the store."
+          },
+          "caption": {
+            "es": "Eco Mini Market",
+            "en": "Eco Mini Market"
+          }
+        },
+        {
+          "src": "/imagenes/casos/eco-mini-market-camaras.webp",
+          "alt": {
+            "es": "Cámaras IP preparadas para su instalación en Eco Mini Market.",
+            "en": "IP cameras prepared for installation at Eco Mini Market."
+          },
+          "caption": {
+            "es": "Preparación de cámaras IP",
+            "en": "IP camera preparation"
+          }
+        }
+      ]
+    },
+    {
+      "id": "caso-4",
+      "publicado": true,
+      "cliente": "Hospital Veterinario de Occidente",
+      "categoria": {
+        "es": "INTEGRACIÓN TECNOLÓGICA",
+        "en": "TECHNOLOGY INTEGRATION"
+      },
+      "titulo": {
+        "es": "Conectividad, seguridad y operación integradas",
+        "en": "Integrated connectivity, security and operations"
+      },
+      "descripcion": {
+        "es": "Una solución tecnológica integral diseñada para conectar y proteger las distintas áreas del hospital. SG Solutions implementó la infraestructura de red, videovigilancia, control de asistencia, equipos de cómputo, central telefónica y sistema de alarma, desde el diseño hasta la puesta en funcionamiento.",
+        "en": "A comprehensive technology solution designed to connect and protect the hospital’s different areas. SG Solutions implemented its network infrastructure, video surveillance, attendance control, computer equipment, telephone system and alarm system, from design through commissioning."
+      },
+      "solucion": {
+        "es": "Conectividad · Cámaras IP · Control de asistencia · Cómputo · Central telefónica · Alarma",
+        "en": "Connectivity · IP cameras · Attendance control · Computing · Telephone system · Alarm"
+      },
+      "fotos": [
+        {
+          "src": "/imagenes/casos/hospital-veterinario-occidente-exterior.webp",
+          "alt": {
+            "es": "Exterior del Hospital Veterinario de Occidente con el vehículo de SG Solutions frente a las instalaciones.",
+            "en": "Exterior of Hospital Veterinario de Occidente with the SG Solutions vehicle in front of the facility."
+          },
+          "caption": {
+            "es": "Hospital Veterinario de Occidente",
+            "en": "Hospital Veterinario de Occidente"
+          }
+        },
+        {
+          "src": "/imagenes/casos/hospital-veterinario-occidente-infraestructura.webp",
+          "alt": {
+            "es": "Gabinete principal con la infraestructura de red y los equipos tecnológicos del Hospital Veterinario de Occidente.",
+            "en": "Main cabinet housing the network infrastructure and technology equipment at Hospital Veterinario de Occidente."
+          },
+          "caption": {
+            "es": "Infraestructura centralizada",
+            "en": "Centralized infrastructure"
+          }
+        },
+        {
+          "src": "/imagenes/casos/hospital-veterinario-occidente-conectividad.webp",
+          "alt": {
+            "es": "Punto de acceso inalámbrico instalado en el Hospital Veterinario de Occidente.",
+            "en": "Wireless access point installed at Hospital Veterinario de Occidente."
+          },
+          "caption": {
+            "es": "Cobertura de red inalámbrica",
+            "en": "Wireless network coverage"
+          }
+        }
+      ]
+    }
+  ],
+  "textos": {},
+  "pagos": {
+    "titular": "3101951810 Sociedad Anónima",
+    "sinpe": "64399417",
+    "cuentas": [
+      {
+        "banco": "Banco Nacional",
+        "iban": "CR71015102120010448776"
+      },
+      {
+        "banco": "Banco de Costa Rica",
+        "iban": "CR49015202001424646172"
+      },
+      {
+        "banco": "BAC",
+        "iban": "CR84010200009721479951"
+      }
+    ]
+  }
+}

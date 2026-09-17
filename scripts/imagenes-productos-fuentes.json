@@ -1,0 +1,562 @@
+{
+  "portatil": {
+    "mpn": "21H2S1NH00",
+    "origen": "https://cdn.cs.1worldsync.com/8b/34/8b34fa45-ada9-4b23-a287-3c6c02c50f48.jpg"
+  },
+  "gamer": {
+    "mpn": "BA1U5LA#ABM",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/HP_BA1U5LA_ABM.jpg"
+  },
+  "monitor": {
+    "mpn": "64BEKAR1LA",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/MT027LEN13.jpg"
+  },
+  "red": {
+    "mpn": "USW-Flex-Mini",
+    "origen": "https://cdn.cs.1worldsync.com/c3/17/c3172c68-4643-4ecd-9634-ff6cff21061c.jpg"
+  },
+  "switch-24": {
+    "mpn": "USW-24",
+    "origen": "https://cdn.cs.1worldsync.com/19/6c/196c4892-8d49-49e1-a9c7-e0f586dfac41.jpg"
+  },
+  "camaras": {
+    "mpn": "UVC-AI-Pro",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/ES001UBQ39-4l.jpg"
+  },
+  "teclado": {
+    "mpn": "GX30N81782",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_GX30N81782.jpg"
+  },
+  "tinta": {
+    "mpn": "T544120-AL",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Epson_T544120_AL.jpg"
+  },
+  "ic-f2460218a9fce8fc1bdca48a": {
+    "mpn": "GY51P14335",
+    "origen": "https://cdn.cs.1worldsync.com/f4/c5/f4c56b16-f58e-4061-9e7f-8498dff36001.jpg"
+  },
+  "ic-d6ac83d2291e0a600a5e42e8": {
+    "mpn": "GY50Z18987",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/063VAG45D06WJYHEFD2G6BAS0W.JPG"
+  },
+  "ic-51de92d6a5ab4e297e8ef3f5": {
+    "mpn": "GXD1P47518",
+    "origen": "https://cdn.cs.1worldsync.com/8d/db/8ddbb3a0-e636-4549-b5d3-5d617ca71b4d.jpg"
+  },
+  "ic-1181c0f795a8d650023a1bb2": {
+    "mpn": "4XE1F30278",
+    "origen": "https://cdn.cs.1worldsync.com/a1/7e/a17efda9-c006-4356-8d5e-e7df2ed49e74.jpg"
+  },
+  "ic-37dbc4d5dd3f2ecfaef49ce1": {
+    "mpn": "GY51S61921",
+    "origen": "https://p3-ofp.static.pub/ShareResource/accessories_ecomm/2508_yoga_mouse/yoga-mouse-luna-grey-1-1286x1000-250925.png"
+  },
+  "ic-dddf86e7a502979affd2042d": {
+    "mpn": "ZAFM0724PA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAFR0881PA.jpg"
+  },
+  "ic-10ceadced28097ecc8a464e8": {
+    "mpn": "GXD1Q65145",
+    "origen": "https://store.intcomex.com/images/products/GXD1Q65145%20m.jpg"
+  },
+  "ic-5161d9da9ce4c55c60519a0f": {
+    "mpn": "64B9GAR1LA",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/MT656LEN09.jpg"
+  },
+  "ic-549cc767855b5bdc88652879": {
+    "mpn": "GX40Q17225",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_GX40Q17225.jpg"
+  },
+  "ic-a1f04613642f16e11861a39f": {
+    "mpn": "57Y4303",
+    "origen": "https://cdn.cs.1worldsync.com/d6/34/d6342b50-afe1-478c-afe3-5908a9eb2a05.jpg"
+  },
+  "ic-3e475dfee1b40549c6bb3d08": {
+    "mpn": "4Y50R20863",
+    "origen": "https://cdn.cs.1worldsync.com/19/29/1929ab7b-2c98-4d72-9aff-b7b03ac64d8a.jpg"
+  },
+  "ic-7f3493dfb8b7ae05305d8ee9": {
+    "mpn": "63FDUAR6US",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/63FDUAR6US_l.jpg"
+  },
+  "ic-f3039e75185b9d312295d1f6": {
+    "mpn": "4Y41R64657",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4Y41R64657.jpg"
+  },
+  "ic-7176625d8555357f11df3767": {
+    "mpn": "ZAF10147PA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg"
+  },
+  "ic-27530a8072e16d3d0c3c0c32": {
+    "mpn": "64A4MARXLA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64A4MARXLA.jpg"
+  },
+  "ic-31c26269360234b6a2eaa9df": {
+    "mpn": "64A5MAR6LA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64A5MAR6LA.jpg"
+  },
+  "ic-8d176a0308560a18fdc90e16": {
+    "mpn": "4X41C12468",
+    "origen": "https://cdn.cs.1worldsync.com/61/4b/614bfbee-310e-41e4-b8ba-e2bdb84b4600.jpg"
+  },
+  "ic-0fc209f6fb1164605b67f2c6": {
+    "mpn": "GY50Z18991",
+    "origen": "https://store.intcomex.com/images/products/ID010LEN28.jpg"
+  },
+  "ic-3ede3343445fed2cb3fb1a4d": {
+    "mpn": "4X41M69794",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/Mochila6.jpg"
+  },
+  "ic-81b3250dda6973873914ca3e": {
+    "mpn": "ZG38C05190",
+    "origen": "https://store.intcomex.com/images/products/ID000LEN80%20m.jpg"
+  },
+  "ic-495a1dfccd12e604f3ed72b6": {
+    "mpn": "64B5KAR1LA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64B5KAR1LA.jpg"
+  },
+  "ic-015f8f911810adf3f1710786": {
+    "mpn": "ZAF00113PA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg"
+  },
+  "ic-a330a1827e75222a1b4bb907": {
+    "mpn": "GX41U39299",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_GX41U39299.jpg"
+  },
+  "ic-cd23d6dec34e77fb02f000b4": {
+    "mpn": "ZAF00113PA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_ZAF00113PA.jpg"
+  },
+  "ic-ecfa5c44a33d5cb1a67e99c7": {
+    "mpn": "ZA3C0003US",
+    "origen": "https://cdn.cs.1worldsync.com/4f/2a/4f2a1fc7-78d8-4017-80ec-f04367a9f55c.jpg"
+  },
+  "ic-c76057ae601a36f223123ba9": {
+    "mpn": "21QC00BDFJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_T14_g6_black_l1.jpg"
+  },
+  "ic-d9edebe3d1fd86d073ed8b10": {
+    "mpn": "21SG008RFJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/xl4006.jpg"
+  },
+  "ic-79200a85774d9f9c905415bb": {
+    "mpn": "21QC00BEFJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_T14_g6_l.jpg"
+  },
+  "ic-097fe474da0f0bb4e160c747": {
+    "mpn": "4X31R64500",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/AN004LEN22_l.jpg"
+  },
+  "ic-b32eec53117e31f17af9161b": {
+    "mpn": "4X31R64424",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4X31R64424.jpg"
+  },
+  "ic-6ff75f809122fcdd994346b4": {
+    "mpn": "64CBKAR6LA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64CBKAR6LA.jpg"
+  },
+  "ic-d178fab88ac6c9b02f7268d7": {
+    "mpn": "12WA000FLS",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/12WA000FLS_xl.jpg"
+  },
+  "ic-dd433c82ee774a6840f3bee3": {
+    "mpn": "4X20V24674",
+    "origen": "https://cdn.cs.1worldsync.com/f7/a2/f7a21226-d527-4f0c-b526-4f1742df0221.jpg"
+  },
+  "ic-f4a252022db4b5bbea7d69de": {
+    "mpn": "12TD0039FJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_12TD0039FJ.jpg"
+  },
+  "ic-57d94152e54d87f1c61f14a5": {
+    "mpn": "4X40T84058",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_4X40T84058.jpg"
+  },
+  "ic-04bb610a811af63656b7ab0c": {
+    "mpn": "40B00300US",
+    "origen": "https://cdn.cs.1worldsync.com/7e/a5/7ea5fd63-2ecb-448b-b9e6-7969ba4ecec3.jpg"
+  },
+  "ic-b807a3049ce0019b2cf8b6b1": {
+    "mpn": "13B90049FJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/l4473.jpg"
+  },
+  "ic-0ac6e1029c95ac1ae66f95c3": {
+    "mpn": "12TD0039FJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_12TD0039FJ.jpg"
+  },
+  "ic-994a0f952fa99240dc30b3cf": {
+    "mpn": "40B90100LA",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/AN004LEN23_l.jpg"
+  },
+  "ic-b6255647aaa7b5ebbb3cedd1": {
+    "mpn": "21SG008SFJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_21SG008SFJ.jpg"
+  },
+  "ic-75610a1bc883d909f5b55f08": {
+    "mpn": "83K100RDGJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83K100RDGJ.jpg"
+  },
+  "ic-cf78fe609f3d12cf216a2099": {
+    "mpn": "4XF0N03161",
+    "origen": "https://cdn.cs.1worldsync.com/37/aa/37aa747f-ce90-42b2-ba2b-e0075439c23a.jpg"
+  },
+  "ic-ebdf06ba31c5ace32a7c6419": {
+    "mpn": "21SR007HFJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/NT075LEN85XL.jpg"
+  },
+  "ic-ddec780728412d8a3914fb6e": {
+    "mpn": "21QL006DFJ",
+    "origen": "https://store.intcomex.com/images/products/21QL006DFJ%20m.jpg"
+  },
+  "ic-76ddbbcc2bb8a5a47feb3931": {
+    "mpn": "83SC001QGJ",
+    "origen": "https://cdn.cs.1worldsync.com/7a/3d/7a3d1089-e491-4889-bc41-e3558601ecd1.jpg"
+  },
+  "ic-931b9b421bdd8d8595946090": {
+    "mpn": "21SR007JFJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/NT075LEN86xl.jpg"
+  },
+  "ic-0019cbd63b975b2d3764944e": {
+    "mpn": "82XB0081GJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XB0081GJ.jpg"
+  },
+  "ic-b516ead2ace2c729796b2ccc": {
+    "mpn": "82XM016KGJ",
+    "origen": "https://store.intcomex.com/images/products/NT081LEN10%20m.jpg"
+  },
+  "ic-7fe79f9dd6a2afdaa6f78d77": {
+    "mpn": "82XM016JGJ",
+    "origen": "https://store.intcomex.com/images/products/NT081LEN09%20m.jpg"
+  },
+  "ic-42613449e93ae48e3816dec3": {
+    "mpn": "F0JC001ELD",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_e6aba573_5d49_47c7_b1b7_875d02be7a3d.jpg"
+  },
+  "ic-b446c4e014d3ee4fff2a6b0e": {
+    "mpn": "13A4006XFJ",
+    "origen": "https://cdn.cs.1worldsync.com/6b/8c/6b8c07db-adb4-4ffc-afa0-e8dccac139fc.jpg"
+  },
+  "ic-7a417a11383a817c9b3f07ac": {
+    "mpn": "F0JE002ALD",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_6e70cf85_e1e5_4cee_b7ef_62a8731fbe9c.jpg"
+  },
+  "ic-0f4b9fa30ec03fe0a13873d0": {
+    "mpn": "83JC003TGJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83JC003TGJ.jpg"
+  },
+  "ic-231cbc50f02a018e56c06123": {
+    "mpn": "83J3003RGJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83J3003RGJ.jpg"
+  },
+  "ic-aa4414e80ed1e897c14fd2c2": {
+    "mpn": "21QV0050FJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_P16s_black_l.jpg"
+  },
+  "ic-db978e14bab29b983d72d7c7": {
+    "mpn": "21RS003VFJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/TP_P16v_g3_black_l.jpg"
+  },
+  "ic-d33bd6f132b4486c4b4dd417": {
+    "mpn": "21Q6005RFJ",
+    "origen": "https://store.intcomex.com/images/products/X9%20Imagen%201m.jpg"
+  },
+  "ic-cbf266c3a31005eb7f3a5479": {
+    "mpn": "21KX0040FJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NT069LEN11L.jpg"
+  },
+  "ic-651f017ecda6f7ea723255a3": {
+    "mpn": "64C9MAR6LA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_64C9MAR6LA.jpg"
+  },
+  "ic-013fc4ff2b6d432a4bfdf4db": {
+    "mpn": "83K100PTGJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83K100PTGJ.jpg"
+  },
+  "ic-bc8fc6f191ddb01ac4b2c767": {
+    "mpn": "82XQ014LGJ",
+    "origen": "https://store.intcomex.com/images/products/82XQ014LGJ%20m.jpg"
+  },
+  "ic-41a8ff4de604bd0f48525bb4": {
+    "mpn": "82XQ00MKGJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XQ00MKGJ.jpg"
+  },
+  "ic-f41308e5cb83188c0c2c15d2": {
+    "mpn": "82XQ00M8GJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_82XQ00M8GJ.jpg"
+  },
+  "ic-863ff4be5afca8f17ac97f88": {
+    "mpn": "21SX00D3FJ",
+    "origen": "https://cdn.cs.1worldsync.com/9e/b1/9eb11581-1d0e-4576-b463-1721e71b09ce.jpg"
+  },
+  "ic-4d7796754fa10609c490b6a5": {
+    "mpn": "13B90048FK",
+    "origen": "https://cdn.cs.1worldsync.com/47/e3/47e385b6-f5a8-4fc3-83cd-e9d815245e91.jpg"
+  },
+  "ic-8c41353cc5182283da9e3892": {
+    "mpn": "13GN001KFJ",
+    "origen": "https://cdn.cs.1worldsync.com/db/39/db398cae-0f01-4fc3-95e7-9af682758ce8.jpg"
+  },
+  "ic-5931b96371e9c846652edbc7": {
+    "mpn": "40AF0135US",
+    "origen": "https://cdn.cs.1worldsync.com/56/55/56558d48-c8f2-431d-b6d6-9be0d9462c82.jpg"
+  },
+  "ic-ee4957057452020cd9450cd9": {
+    "mpn": "21SX00D4FJ",
+    "origen": "https://cdn.cs.1worldsync.com/9e/b1/9eb11581-1d0e-4576-b463-1721e71b09ce.jpg"
+  },
+  "ic-5e17943ba15d3f797b02a152": {
+    "mpn": "21SR00BEFJ",
+    "origen": "https://cdn.cs.1worldsync.com/e0/8b/e08b9045-c156-4ea3-a143-902262a33bde.jpg"
+  },
+  "ic-7bf8704bb8349a439f6915e3": {
+    "mpn": "21US004PFJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_5ada050e_4617_4a47_845b_e5d558841e36.jpg"
+  },
+  "ic-548bb3528da7be7919e47b14": {
+    "mpn": "62F7KAR4LA",
+    "origen": "https://cdn.cs.1worldsync.com/2f/e7/2fe7449a-4af1-4aaa-b584-b0ccddeff93a.jpg"
+  },
+  "ic-e0e53124f7d8bab1f99e7f08": {
+    "mpn": "83ER00BQGJ",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Lenovo_83ER00BQGJ.jpg"
+  },
+  "ic-76afd75012dd4bc7bc264031": {
+    "mpn": "62CAUAR1US",
+    "origen": "https://cdn.cs.1worldsync.com/a1/e4/a1e4b44b-70c6-4091-9e4b-016d7a9c2f17.jpg"
+  },
+  "ic-b1d38e12554811f7ef1f7646": {
+    "mpn": "MA14N",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NW005TPL87_xl1.jpg"
+  },
+  "ic-6f75d01fdcb25af3fc41af41": {
+    "mpn": "POE160S",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/l4327.jpg"
+  },
+  "ic-d41ffa76c7a2d6cf260aea3e": {
+    "mpn": "MC210CS",
+    "origen": "https://cdn.cs.1worldsync.com/64/dc/64dcec9e-7c63-47fb-b5e6-47d384dd81ac.jpg"
+  },
+  "ic-fa50fa5f6cd926ecba44fa2f": {
+    "mpn": "ME60X",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/NW005TPL81_EXTRA_LARGE.jpg"
+  },
+  "ic-c633a0583f5837dbf22b17d2": {
+    "mpn": "RE305",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/TP_Link_RE305.jpg"
+  },
+  "ic-c8048fc0e4a962b70d11309d": {
+    "mpn": "NCM-C1200",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/xl3683.jpg"
+  },
+  "ic-0d3da2ded71709449fae692e": {
+    "mpn": "RE505X",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/TP_Link_RE505X.jpg"
+  },
+  "ic-93e6fc299915e16a23460ffd": {
+    "mpn": "CS-H1c-R101-1G2WR",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV06_l.jpg"
+  },
+  "ic-c224a10ef1968bcbee32e714": {
+    "mpn": "CS-CB1-R100-1K2WF",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV10l.jpg"
+  },
+  "ic-5099a4d49dd91ebbc0822e4f": {
+    "mpn": "CS-H4-R201-1H3WKFL(2.8mm)",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES002EZV29_xl.jpg"
+  },
+  "ic-1bf6e8ae7abe41fa7da3d4c1": {
+    "mpn": "UVC-G5-Dome-Ultra",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/ES001UBQ33xl.jpg"
+  },
+  "ic-f48674437d2149348c6e1a17": {
+    "mpn": "DS-2CD1123G2-LIU 2.8mm",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/063Q4ZXBRXE9E9ZJ4NCXPST9DC.jpg"
+  },
+  "ic-5d16dc12c6f45e84f0ba7d81": {
+    "mpn": "CS-H7c-R101-8H44WF",
+    "origen": "https://cdn.cs.1worldsync.com/46/8d/468dff05-c9bb-467e-9505-97a0c16bc3b0.jpg"
+  },
+  "ic-fa943a0fbd567b061076a86d": {
+    "mpn": "DS-2CD1027G3-LIU(2.8mm)",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/ES226HIK06_l1.jpg"
+  },
+  "ic-91901d12a8d2e701e2c419a4": {
+    "mpn": "1F3Y2A#AKY",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/063Q4ZXBRYTJS2BJNP4R34XB8M.jpg"
+  },
+  "ic-4544f21aca5680f8c52a3f4a": {
+    "mpn": "1F3Y4A#AKY",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/PT656HEW03xl.jpg"
+  },
+  "ic-c9dd2903f999d3f1e372f718": {
+    "mpn": "4SB24A#AKY",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_a027ad86_bd57_47eb_89b0_2f8a3a5267c6.jpg"
+  },
+  "ic-7a563a98b464a546fbf1df9b": {
+    "mpn": "6UU46A#AKY",
+    "origen": "https://cdn.cs.1worldsync.com/49/38/493895bc-e041-47ba-a2d1-d4c3a4a00e2a.jpg"
+  },
+  "ic-2d0fc6cf9c318e6fec5e70a4": {
+    "mpn": "404K5C#AKY",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/9130.png"
+  },
+  "ic-6501f1b30ba7217c9b0ee78f": {
+    "mpn": "C11CL41301",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/PT338EPS39.jpg"
+  },
+  "ic-a2512b62e7ba2583df2685b7": {
+    "mpn": "537P5C#AKY",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/product_image_(18)_(2)_xl.jpg"
+  },
+  "ic-fc46ffc2c0d0715c53168352": {
+    "mpn": "C11CK57301",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/0644M95X502T07NSR2V70NC3C8.jpg"
+  },
+  "ic-4589b95403aa2af3f72374bf": {
+    "mpn": "LI2208-SR7U2100SGW",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/1ws_77fc9e96_f119_4eb8_be29_cb43da9d3937.jpg"
+  },
+  "ic-ba31c7854ee2a8b31613763b": {
+    "mpn": "DS2208-SR7U2100SGW",
+    "origen": "https://cdn.cs.1worldsync.com/87/89/8789c07e-29aa-4b59-9bed-c5f0c29b31cc.jpg"
+  },
+  "ic-4995c585cda50944ded83f25": {
+    "mpn": "DS9308-SR4U2100AZW",
+    "origen": "https://cdn.cs.1worldsync.com/3a/4a/3a4ad1a6-e60f-4092-8cb5-10ab244a11d1.jpg"
+  },
+  "ic-afea1e43385087ae6f15e1a5": {
+    "mpn": "DS4608-SR7U2100SGW",
+    "origen": "https://cdn.cs.1worldsync.com/a6/8f/a68f0c06-6289-43e1-96e0-5742106a0c68.jpg"
+  },
+  "ic-b3824b8f22f0bff790d2dd0f": {
+    "mpn": "DS2278-SR7U2100PRW",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Zebra_DS2278_SR7U2100PRW.jpg"
+  },
+  "ic-19712f8331ee482efd808abe": {
+    "mpn": "891400",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/SEWOO_891400.jpg"
+  },
+  "ic-321210f8b6f95587f6f2f984": {
+    "mpn": "971GF010000022",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Custom_971GF010000022.jpg"
+  },
+  "ic-8a764ca618934c4383d9751a": {
+    "mpn": "911MX010100733",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Custom_911MX010100733.jpg"
+  },
+  "ic-a5c7065f28dfcd0c07757ff4": {
+    "mpn": "SLK-TS100",
+    "origen": "https://cdn.cs.1worldsync.com/10/7b/107b1ba8-e600-420d-9e49-2f7e244168d2.jpg"
+  },
+  "ic-17e12a0cbcc4149d78f99b0a": {
+    "mpn": "C31CK50052",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Epson_C31CK50052.jpg"
+  },
+  "ic-1da412f8af25ea82acdf8a52": {
+    "mpn": "KLQ-00219",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/5e2e5141-601d-4313-a37a-a96927262d4d_AA_L.png"
+  },
+  "ic-b86e4e1b67af9e0181a581cb": {
+    "mpn": "EP2-32316",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_32316.jpg"
+  },
+  "ic-ad90a007bdeca5e914ec907f": {
+    "mpn": "SPP-00005",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/aa377c55-a43e-4855-9617-345856d3b3a0_l_ll.png"
+  },
+  "ic-d0dc44fb8a1098bcfb6c6e76": {
+    "mpn": "EP2-32295",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_32295.jpg"
+  },
+  "ic-e5d043124785c10ff1e1a408": {
+    "mpn": "EP2-06800",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Microsoft_EP2_06800.jpg"
+  },
+  "ic-86bf2aafc36d000c2bc7c767": {
+    "mpn": "EHSP-ESD1-3D",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/SE516ESE62l.jpg"
+  },
+  "ic-94ea78a4e551d2d1485d46aa": {
+    "mpn": "EFS-ESD1-1S",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/EFS-ESD1-1S.jpg"
+  },
+  "ic-c260f8621169bd3ebc596ee7": {
+    "mpn": "PMC-01BT",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PMC_01BT.jpg"
+  },
+  "ic-70e6190e8bafdddb8cd37e03": {
+    "mpn": "PMP-01XXL",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/0634RQ7B3N4TPB3S3S6DWQ5RXR.jpg"
+  },
+  "ic-b6ee330bba0f29130b5125a5": {
+    "mpn": "PLI-200FL",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PLI_200FL.jpg"
+  },
+  "ic-c7730da18abb57969d47f33b": {
+    "mpn": "PGB-300BK",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PGB_300BK.jpg"
+  },
+  "ic-83f2c83ff0ba420c4688dc6a": {
+    "mpn": "PBH-360W",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Primus_Gaming_PBH_360W.jpg"
+  },
+  "ic-570e2002e13a443f9ce09380": {
+    "mpn": "PMO-103",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/xl3565.jpg"
+  },
+  "ic-d8fe164e9c5dc26077a05af2": {
+    "mpn": "7G7A3AA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/HyperX_7G7A3AA_ABM.jpg"
+  },
+  "ic-021c84bd212feaab06466c8b": {
+    "mpn": "68561",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Xiaomi_68561.jpg"
+  },
+  "ic-2f61570c9bf204e208230a86": {
+    "mpn": "SNV3S/1000G",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/069VCR2VCXHGJC7RE4N4C3A9RM.jpg"
+  },
+  "ic-aa0f77bd9dd205871eeef9d0": {
+    "mpn": "SXS1000R/1000G",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/DH100KNG66xl.jpg"
+  },
+  "ic-57e19632186f568932266569": {
+    "mpn": "69672",
+    "origen": "https://cdn.cs.1worldsync.com/a2/4d/a24dbc37-5e3c-4969-b6f8-e6cedd0b4019.jpg"
+  },
+  "ic-99a78d01770adda81aa05b2f": {
+    "mpn": "9U5J5UT#ABA",
+    "origen": "https://intcomexpim.blob.core.windows.net/akeneo-live/images/324pf_l.jpg"
+  },
+  "ic-875e58e3424cdc63a0097b06": {
+    "mpn": "94C50AA#ABA",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/HP_94C50AA_ABA.jpg"
+  },
+  "ic-f1f2e3b9cc05cb27cda1cd8d": {
+    "mpn": "KVR56U46BS8-16",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_ValueRam_KVR56U46BS8_16.jpg"
+  },
+  "ic-8959f351d3900d47746fe302": {
+    "mpn": "KVR56S46BS8-16",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_ValueRam_KVR56S46BS8_16.jpg"
+  },
+  "ic-05567b2eb700007a999c2a48": {
+    "mpn": "KVR32S22S8/8",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Kingston_KVR32S22S8_8.jpg"
+  },
+  "ic-786fc8d6a22827ea3b1e1560": {
+    "mpn": "XTP-751",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Xtech_XTP_751.jpg"
+  },
+  "ic-380453aeacabe0ec6daabf20": {
+    "mpn": "NT-511",
+    "origen": "https://intcomexpim.blob.core.windows.net/assets/images/Forza_NT_511.jpg"
+  },
+  "ic-fa24e583392d4a42118f3a32": {
+    "mpn": "AP-750G",
+    "origen": "https://skucentral-experience-api-prod.us-e1.cloudhub.io/api/image/AC060ASU12_ASUSAP_850G_Prime850WGold_Primera.jpg"
+  },
+  "ic-9176dadeb4dd102d0d83e794": {
+    "mpn": "AP-850G",
+    "origen": "https://skucentral-experience-api-prod.us-e1.cloudhub.io/api/image/AC060ASU12_ASUSAP_850G_Prime850WGold_Primera.jpg"
+  }
+}

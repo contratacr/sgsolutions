@@ -1,6 +1,7 @@
 import {test,expect} from '@playwright/test';
 
 test('una foto remota fallida muestra respaldo accesible en ES y EN',async({page})=>{
+ await page.route('**/imagenes/productos/**',route=>route.abort());
  await page.route('https://store.intcomex.com/**',route=>route.abort());
  await page.route('https://p3-ofp.static.pub/**',route=>route.abort());
  await page.goto('/tienda');

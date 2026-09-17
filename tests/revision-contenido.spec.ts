@@ -6,15 +6,21 @@ test('marcas filtran productos y se combinan con categorías en ambos idiomas',a
  await expect(page.locator('main')).toContainText('21H2S1NH00');
  await expect(page.locator('main')).not.toContainText('NT083LEN02');
  for(const nombre of ['Computadoras','Punto de venta','Software','Gaming','Componentes informáticos']) await expect(page.getByRole('button',{name:nombre,exact:true})).toBeVisible();
- await page.getByRole('button',{name:'Ver productos de Lenovo',exact:true}).click();
+ const seleccionarMarca=async(nombre:string)=>{
+  const boton=page.getByRole('button',{name:nombre,exact:true});
+  await boton.focus();
+  await expect(page.locator('.marcas-pista')).toHaveCSS('animation-play-state','paused');
+  await boton.press('Enter');
+ };
+ await seleccionarMarca('Ver productos de Lenovo');
  await expect(page.locator('.shop-producto')).toHaveCount(24);
  await page.getByRole('button',{name:'Componentes informáticos',exact:true}).click();
  await expect(page.locator('.shop-producto')).toHaveCount(10);
  await expect(page.locator('.shop-producto').first()).toContainText('Lenovo');
- await page.getByRole('button',{name:'Ver productos de Lenovo',exact:true}).click();
+ await seleccionarMarca('Ver productos de Lenovo');
  await expect(page.locator('.shop-producto')).toHaveCount(24);
  await page.getByRole('button',{name:'Read this page in English'}).click();
- await page.getByRole('button',{name:'View HP products',exact:true}).click();
+ await seleccionarMarca('View HP products');
  await expect.poll(()=>page.locator('.shop-producto').count()).toBeGreaterThan(1);
  for(const producto of await page.locator('.shop-producto').all())await expect(producto).toContainText('HP');
  await page.reload();

@@ -5,14 +5,14 @@ Base de la plataforma web: Next.js 16, React 19, TypeScript, Tailwind 4, next-in
 ## Estado de esta entrega
 
 - Portada con slogan bilingüe, iluminación propia con Motion/Three.js y accesos fotográficos con profundidad. Logo oficial en navbar y footer. Tienda, Soporte, Empresas, Nosotros y Contacto tienen páginas independientes; los enlaces internos navegan en la misma pestaña.
-- Español e inglés con selector persistente y 508 claves traducidas.
-- Tienda con 90 productos, nueve categorías, búsqueda, paginación, orden por precio y carrito persistente. El último archivo de Intcomex aportó 85 productos Lenovo: 82 nuevos y tres actualizaciones. Precios siempre en CRC, también en inglés.
+- Español e inglés con selector persistente y 592 claves traducidas.
+- Tienda con 149 productos, nueve categorías, búsqueda, paginación, orden por precio y carrito persistente. Incluye solicitud de pedido con datos de contacto, retiro o entrega, revisión de códigos de fabricante y confirmación por WhatsApp. Precios siempre en CRC, también en inglés.
 - Soporte centrado en tareas de ayuda y Empresas organizado por necesidades, con fotografías reales de SG.
 - Base de acceso interno por Supabase Auth y perfil activo, sin registro público.
 - Configuración Supabase local y migración inicial de perfiles con RLS.
 - Plantillas de workflows de revisión, despliegue manual, migraciones con simulación/respaldo y respaldo diario cifrado en `docs/automatizaciones/`.
 
-**Todavía no es una tienda operativa:** falta confirmar disponibilidad propia, conectar la pasarela y gestionar pedidos. El pago se muestra deshabilitado. El editor de productos, categorías, textos bilingües y fórmula de precios está implementado; su guardado necesita Supabase y la segunda migración. Clientes, cotizaciones/PDF/correo y telemetría siguen pendientes. La conexión Auth/RLS no se ha probado localmente por ausencia de Docker. No hay servicios de producción configurados ni desplegados por este bloque.
+**La solicitud asistida ya puede utilizarse, pero todavía no es una tienda con cobro automático:** SG Solutions recibe por WhatsApp una selección estructurada y confirma disponibilidad, entrega y total antes del pago. Falta conectar la pasarela y convertir las solicitudes en pedidos persistentes. El editor de productos, categorías, textos bilingües y fórmula de precios está implementado; su guardado necesita Supabase y la segunda migración. Clientes, cotizaciones/PDF/correo y telemetría siguen pendientes. La conexión Auth/RLS no se ha probado localmente por ausencia de Docker.
 
 ## Desarrollo
 

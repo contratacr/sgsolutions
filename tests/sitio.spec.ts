@@ -37,34 +37,6 @@ test('portada real, imágenes, cabeceras y tamaño de descarga', async ({page}, 
   await page.screenshot({path: `evidencias/inicio-${prueba.project.name}.png`, fullPage: true, animations: 'disabled', scale: 'css'});
 });
 
-test('tienda filtra, conserva cantidades y no habilita cobros inexistentes', async ({page}, prueba) => {
-  const errores: string[] = [];
-  page.on('pageerror', error => errores.push(error.message));
-  await page.goto('/tienda');
-  await page.getByRole('button', {name: 'Seguridad', exact: true}).click();
-  await expect.poll(() => page.getByRole('article').count()).toBeGreaterThan(1);
-  const camara = page.getByRole('article').filter({hasText:'UniFi Protect AI Pro'});
-  await expect(camara).toHaveCount(1);
-  await camara.getByRole('button', {name: 'Agregar al carrito'}).click();
-  await page.getByRole('button', {name: 'Abrir carrito'}).click();
-  const dialogo = page.getByRole('dialog');
-  await expect(dialogo).toBeVisible();
-  await dialogo.getByRole('spinbutton').fill('3');
-  await expect(dialogo.getByRole('button', {name: 'Pago en línea próximamente'})).toBeDisabled();
-  const enlace = await dialogo.getByRole('link', {name: 'Consultar selección por WhatsApp'}).getAttribute('href');
-  expect(decodeURIComponent(enlace!)).toContain('3 × UniFi Protect AI Pro');
-  await page.screenshot({path: `evidencias/carrito-${prueba.project.name}.png`, animations: 'disabled', scale: 'css'});
-  await page.reload();
-  await page.getByRole('button', {name: 'Abrir carrito'}).click();
-  await expect(page.getByRole('spinbutton')).toHaveValue('3');
-  await page.keyboard.press('Escape');
-  await expect(dialogo).not.toBeVisible();
-  await page.getByRole('button', {name: 'Abrir carrito'}).click();
-  await page.getByRole('button', {name: 'Quitar UniFi Protect AI Pro'}).click();
-  await expect(page.getByText('Todavía no ha agregado equipo.')).toBeVisible();
-  expect(errores).toEqual([]);
-});
-
 test('cambio de idioma persistente y navegación', async ({page}, prueba) => {
   await page.goto('/');
   await page.getByRole('button', {name: 'Read this page in English'}).click();
@@ -269,7 +241,7 @@ test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page
   await page.getByRole('button', {name:'Leer esta página en español'}).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
   await expect(page.getByRole('article')).toHaveCount(24);
-  for (const imagen of await page.locator('img').all()) {
+  for (const imagen of await page.locator('img:not(.marcas-pista img)').all()) {
     await imagen.scrollIntoViewIfNeeded();
     await imagen.evaluate(async elemento => { await (elemento as HTMLImageElement).decode(); });
   }

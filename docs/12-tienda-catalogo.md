@@ -25,7 +25,7 @@ Precio CRC = costo USD × (cambio + adicional) × (1 + IVA/100) × (1 + utilidad
 
 Valores iniciales: cambio 455,56 observado en Intcomex; adicional 50; IVA 13%; recargo de utilidad 20%. El 20% es recargo sobre costo, no margen bruto sobre venta. Ejemplo solicitado: USD100 × (450+50) × 1,13 × 1,20 = CRC67.800 antes de redondeo, y CRC68.000 como precio publicado.
 
-Se redondea hacia arriba con tramos comerciales: ₡500 para precios menores a ₡50.000, ₡1.000 para precios menores a ₡250.000 y ₡5.000 para equipos de mayor valor. Un precio manual CRC tiene prioridad y se respeta como precio exacto. Español e inglés muestran siempre CRC. El carrito guarda identificadores y cantidades, y vuelve a tomar precios actuales del catálogo.
+Se redondea hacia arriba con tramos comerciales: ₡500 para precios menores a ₡50.000, ₡1.000 para precios menores a ₡250.000 y ₡5.000 para equipos de mayor valor. Un precio manual CRC tiene prioridad y se respeta como precio exacto. Español e inglés muestran siempre CRC. El carrito guarda identificadores y cantidades, y vuelve a tomar precios actuales del catálogo. La solicitud de pedido no guarda datos personales: construye una revisión local y abre WhatsApp únicamente al confirmar la acción externa.
 
 Los costos y la política comercial se conservan en el archivo local ignorado src/lib/catalogo-inicial.json y, una vez conectado, en la tabla privada de Supabase. El DTO público incluye solamente precios de venta y campos visibles. La base versionable tiene precios de venta manuales y costos nulos; los scripts previos a desarrollo, build y typecheck restauran el archivo inicial desde esa base si falta.
 
@@ -43,6 +43,6 @@ Pendiente de infraestructura: Supabase no está funcionando en este entorno y Do
 
 - TypeScript, ESLint, 325 claves ES/EN y comprobación heurística de secretos: aprobados.
 - Build Next.js y bundle OpenNext/Cloudflare: aprobados.
-- 34 pruebas Playwright de escritorio/móvil: aprobadas, con fórmula, prioridad manual, exclusión de costos públicos, búsqueda, idioma, carrito y redirección del administrador sin sesión.
+- 64 pruebas Playwright de escritorio/móvil: aprobadas, con fórmula, prioridad manual, exclusión de costos públicos, búsqueda, idioma, carrito, solicitud asistida y redirección del administrador sin sesión.
 - Capturas revisadas en evidencias/tienda-editorial-* y tienda-en-*.
 - No se activaron cobros, se modificaron pedidos de Intcomex, se desplegó ni se hizo push.
