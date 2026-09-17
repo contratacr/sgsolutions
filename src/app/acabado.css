@@ -18,6 +18,7 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
 .pie h3{font-size:.92rem;letter-spacing:0}.pie p,.pie a{line-height:1.8}
 .pie-explorar{display:flex;flex-wrap:wrap;gap:5px 18px;margin-top:20px;max-width:330px}
 .pie-explorar a{font-size:.8rem;color:#c3d0dc}.pie-base{padding-block:24px}
+.pie-redes{margin-top:25px}.pie-redes>span{display:block;margin-bottom:10px;color:#91a9ba;font-size:.68rem;font-weight:650;letter-spacing:.12em;text-transform:uppercase}.pie-redes>div{display:flex;gap:9px}.pie-redes a{display:grid;width:38px;height:38px;place-items:center;border:1px solid #ffffff2b;border-radius:50%;color:#dce8f0;transition:background .18s,border-color .18s,color .18s}.pie-redes a:hover{background:#ffffff12;border-color:#ffffff5c;color:#fff}
 .portal-presentacion{gap:45px}.portal-introduccion>p{max-width:425px;line-height:1.8}
 .portal-menu-cabecera{border-top:1px solid #ffffff20;padding-top:22px}
 .portal-tarjeta{border-radius:16px;border-color:#ffffff30}
@@ -79,6 +80,7 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
 .contactos-grid>a:first-child{background:#173b55;color:#fff;border-color:#173b55}
 .contactos-grid>a:first-child>svg,.contactos-grid>a:first-child>span{color:#d6e7f4}
 .contactos-grid strong{font-size:1.15rem}.contactos-grid span{overflow-wrap:anywhere}
+.contacto-redes{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.9fr);gap:48px;align-items:center;margin:-20px 0 60px;padding:34px 36px;border:1px solid #dbe5ec;border-radius:16px;background:#f6f8fa}.contacto-redes .etiqueta{margin-bottom:14px}.contacto-redes h2{font-size:clamp(1.55rem,2.6vw,2.2rem);letter-spacing:-.035em}.contacto-redes>div>p:last-child{max-width:490px;margin-top:11px;color:#60778a;line-height:1.7}.contacto-redes-enlaces{display:grid;grid-template-columns:1fr 1fr;gap:10px}.contacto-redes-enlaces>a{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;min-width:0;padding:16px;border:1px solid #d6e1e9;border-radius:12px;background:#fff;color:#1f405a;transition:transform .18s,border-color .18s,box-shadow .18s}.contacto-redes-enlaces>a:hover{transform:translateY(-2px);border-color:#9db3c4;box-shadow:0 10px 22px #1a385211}.contacto-redes-enlaces span{display:flex;min-width:0;flex-direction:column}.contacto-redes-enlaces strong{font-size:.9rem}.contacto-redes-enlaces small{overflow:hidden;color:#6b8091;font-size:.72rem;text-overflow:ellipsis;white-space:nowrap}
 .ubicacion-grid{background:#f3f6f9;border-radius:18px;overflow:hidden;gap:0}
 .ubicacion-grid>div:last-child{padding:45px}.ubicacion-foto{border-radius:0;min-height:400px}
 .acceso{background:radial-gradient(ellipse at 20% 0,#e6eef4,transparent 65%),#f6f8fa}
@@ -91,7 +93,7 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
 .admin-editor input,.admin-editor select{min-height:44px}
 .admin-editor input[type=checkbox]{min-height:18px;width:18px;height:18px;accent-color:#244867}
 .admin-editor textarea{min-height:100px;resize:vertical}.admin-actions{box-shadow:0 8px 30px #17334c18;border:1px solid #c9d8e4}
-@media(max-width:1050px){.navegacion{gap:16px}.nav-escritorio{gap:12px}.nav-escritorio a{font-size:.72rem}.nav-acciones{gap:7px}.contacto-nav{padding-inline:13px}.nosotros-pagina .area-hero-grid{gap:35px}}
+@media(max-width:1050px){.navegacion{gap:16px}.nav-escritorio{gap:12px}.nav-escritorio a{font-size:.72rem}.nav-acciones{gap:7px}.contacto-nav{padding-inline:13px}.nosotros-pagina .area-hero-grid{gap:35px}.contacto-redes{grid-template-columns:1fr;gap:24px}}
 @media(max-width:760px){
  .pie-grid{grid-template-columns:1fr;gap:30px;padding-block:38px}.pie-explorar{max-width:none}.pie-base{gap:15px}
  .portal-presentacion{gap:23px}.portal-introduccion>p{font-size:.95rem}.portal-menu-cabecera{margin-top:22px}
@@ -106,11 +108,11 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
  .plan{padding:27px}.casos-cta{padding:25px;margin-bottom:40px}
  .nosotros-pagina .area-foto{min-height:340px}.nosotros-principios>div{grid-template-columns:1fr;gap:15px}
  .nosotros-principios article{padding:25px}.nosotros-principios article>span{margin-bottom:20px}
- .contactos-grid{gap:13px;margin-block:28px 35px}.contactos-grid>a{padding:24px}
+ .contactos-grid{gap:13px;margin-block:28px 35px}.contactos-grid>a{padding:24px}.contacto-redes{margin:0 0 38px;padding:25px 22px}.contacto-redes-enlaces{grid-template-columns:1fr}
  .ubicacion-grid>div:last-child{padding:27px}.ubicacion-foto{min-height:290px}
  .acceso-tarjeta{padding:28px}.admin-item{padding:20px}.admin-tabs{width:100%}
 }
-@media(prefers-reduced-motion:reduce){.boton,.contactos-grid>a{transition:none}}
+@media(prefers-reduced-motion:reduce){.boton,.contactos-grid>a,.contacto-redes-enlaces>a,.pie-redes a{transition:none}.contacto-redes-enlaces>a:hover{transform:none}}
 
 /* Revisión de contenido SG: lectura, contacto y catálogo de marcas. */
 .portal .entrada-eyebrow{font-size:.78rem;letter-spacing:.16em}

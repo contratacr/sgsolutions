@@ -195,7 +195,10 @@
     "contactoTitulo": "Conversemos",
     "privacidad": "No ingrese información sensible en consultas por WhatsApp.",
     "googleMaps": "Google Maps",
-    "waze": "Waze"
+    "waze": "Waze",
+    "redesTitulo": "Síganos",
+    "instagram": "Instagram",
+    "facebook": "Facebook"
   },
   "Acceso": {
     "etiqueta": "ESPACIO DEL EQUIPO",
@@ -328,7 +331,14 @@
     "correo": "Correo electrónico",
     "visita": "Visítenos en Atenas",
     "googleMaps": "Google Maps",
-    "waze": "Waze"
+    "waze": "Waze",
+    "redesEtiqueta": "REDES SOCIALES",
+    "redesTitulo": "Conozca nuestro trabajo más de cerca.",
+    "redesTexto": "Vea proyectos, instalaciones y novedades de SG Solutions.",
+    "instagram": "Instagram",
+    "instagramCuenta": "@sgsolutionscr",
+    "facebook": "Facebook",
+    "facebookCuenta": "SG Solutions CR"
   },
   "Comercio": {
     "asesoria": "¿Le ayudamos a elegir?",
@@ -503,7 +513,7 @@
     "respuesta2": "Se instalaron y configuraron los equipos de punto de venta, junto con las cámaras IP destinadas a la vigilancia del local.",
     "valorado2": "Equipos listos para operar y una solución de vigilancia preparada de acuerdo con las necesidades del establecimiento.",
     "alt2_0": "Equipo de SG Solutions instalando estaciones de punto de venta en Eco Mini Market.",
-    "alt2_1": "Estación de punto de venta con monitor, impresora, lector y gaveta en Eco Mini Market.",
+    "alt2_1": "Exterior de Eco Mini Market con el vehículo de soporte técnico de SG Solutions frente al establecimiento.",
     "alt2_2": "Cámaras IP preparadas para su instalación en Eco Mini Market.",
     "categoria3": "INTEGRACIÓN TECNOLÓGICA",
     "titulo3": "Conectividad, seguridad y operación integradas",
@@ -533,7 +543,7 @@
     "pie1_1": "Estaciones de punto de venta",
     "pie1_2": "Infraestructura tecnológica",
     "pie2_0": "Instalación en el comercio",
-    "pie2_1": "Equipo de punto de venta",
+    "pie2_1": "Eco Mini Market",
     "pie2_2": "Preparación de cámaras IP",
     "pie3_0": "Hospital Veterinario de Occidente",
     "pie3_1": "Infraestructura centralizada",

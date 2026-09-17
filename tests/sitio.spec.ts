@@ -192,11 +192,23 @@ for (const [ruta,tituloEs,tituloEn] of [
       await expect(page.locator('.caso-galeria').nth(2).locator('img')).toHaveCount(3);
       await expect(page.locator('.caso-galeria').nth(3).locator('img')).toHaveCount(3);
     }
+    if(ruta==='/contacto'){
+      await expect(page.getByRole('heading',{name:'Conozca nuestro trabajo más de cerca.'})).toBeVisible();
+      for(const href of ['https://www.instagram.com/sgsolutionscr/?hl=es-la','https://www.facebook.com/sgsolutionscr?locale=es_LA']){
+        const enlace=page.locator(`main a[href="${href}"]`);
+        await expect(enlace).toBeVisible();
+        await expect(enlace).toHaveAttribute('target','_blank');
+        await expect(enlace).toHaveAttribute('rel','noopener noreferrer');
+      }
+      await expect(page.locator('footer a[href="https://www.instagram.com/sgsolutionscr/?hl=es-la"]')).toHaveCount(1);
+      await expect(page.locator('footer a[href="https://www.facebook.com/sgsolutionscr?locale=es_LA"]')).toHaveCount(1);
+    }
     await page.getByRole('button', {name:'Read this page in English'}).click();
     await expect(page.getByRole('heading', {level:1})).toHaveText(tituloEn);
     if(ruta==='/casos-de-exito'){
       await expect(page.getByRole('heading',{name:'Point-of-sale stations and technology infrastructure for pharmacies'})).toBeVisible();
     }
+    if(ruta==='/contacto') await expect(page.getByRole('heading',{name:'See our work up close.'})).toBeVisible();
     await expect(page).toHaveURL(`http://127.0.0.1:3107${ruta}`);
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('lang','en');

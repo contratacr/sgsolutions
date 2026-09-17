@@ -195,7 +195,10 @@
     "contactoTitulo": "Let's talk",
     "privacidad": "Do not include sensitive information in WhatsApp inquiries.",
     "googleMaps": "Google Maps",
-    "waze": "Waze"
+    "waze": "Waze",
+    "redesTitulo": "Follow us",
+    "instagram": "Instagram",
+    "facebook": "Facebook"
   },
   "Acceso": {
     "etiqueta": "TEAM WORKSPACE",
@@ -328,7 +331,14 @@
     "correo": "Email",
     "visita": "Visit us in Atenas",
     "googleMaps": "Google Maps",
-    "waze": "Waze"
+    "waze": "Waze",
+    "redesEtiqueta": "SOCIAL MEDIA",
+    "redesTitulo": "See our work up close.",
+    "redesTexto": "Explore projects, installations and updates from SG Solutions.",
+    "instagram": "Instagram",
+    "instagramCuenta": "@sgsolutionscr",
+    "facebook": "Facebook",
+    "facebookCuenta": "SG Solutions CR"
   },
   "Comercio": {
     "asesoria": "Need help choosing?",
@@ -503,7 +513,7 @@
     "respuesta2": "The point-of-sale equipment was installed and configured along with the IP cameras intended for store surveillance.",
     "valorado2": "Equipment ready for operation and a surveillance solution prepared according to the establishment’s needs.",
     "alt2_0": "SG Solutions team installing point-of-sale stations at Eco Mini Market.",
-    "alt2_1": "Point-of-sale station with monitor, printer, scanner and cash drawer at Eco Mini Market.",
+    "alt2_1": "Exterior of Eco Mini Market with the SG Solutions technical support vehicle in front of the store.",
     "alt2_2": "IP cameras prepared for installation at Eco Mini Market.",
     "categoria3": "TECHNOLOGY INTEGRATION",
     "titulo3": "Integrated connectivity, security and operations",
@@ -533,7 +543,7 @@
     "pie1_1": "Point-of-sale stations",
     "pie1_2": "Technology infrastructure",
     "pie2_0": "In-store installation",
-    "pie2_1": "Point-of-sale equipment",
+    "pie2_1": "Eco Mini Market",
     "pie2_2": "IP camera preparation",
     "pie3_0": "Hospital Veterinario de Occidente",
     "pie3_1": "Centralized infrastructure",
