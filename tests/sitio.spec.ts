@@ -183,13 +183,20 @@ for (const [ruta,tituloEs,tituloEn] of [
     if(ruta==='/casos-de-exito'){
       await expect(page.getByRole('heading',{name:'Conectividad y sistema de cámaras IP'})).toBeVisible();
       await expect(page.getByRole('heading',{name:'Servicentro San Juan',exact:true})).toBeVisible();
+      await expect(page.locator('.historia-categoria').nth(1)).toContainText('PUNTOS DE VENTA E INFRAESTRUCTURA');
+      await expect(page.getByRole('heading',{name:'Puntos de venta e infraestructura tecnológica para farmacias'})).toBeVisible();
       await expect(page.getByRole('heading',{name:'Puntos de venta y sistema de cámaras de vigilancia IP'})).toBeVisible();
       await expect(page.getByRole('heading',{name:'Eco Mini Market',exact:true})).toBeVisible();
+      await expect(page.getByRole('heading',{name:'Hospital Veterinario de Occidente',exact:true})).toBeVisible();
       await expect(page.locator('.caso-galeria').nth(0).locator('img')).toHaveCount(2);
       await expect(page.locator('.caso-galeria').nth(2).locator('img')).toHaveCount(3);
+      await expect(page.locator('.caso-galeria').nth(3).locator('img')).toHaveCount(3);
     }
     await page.getByRole('button', {name:'Read this page in English'}).click();
     await expect(page.getByRole('heading', {level:1})).toHaveText(tituloEn);
+    if(ruta==='/casos-de-exito'){
+      await expect(page.getByRole('heading',{name:'Point-of-sale stations and technology infrastructure for pharmacies'})).toBeVisible();
+    }
     await expect(page).toHaveURL(`http://127.0.0.1:3107${ruta}`);
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('lang','en');
@@ -201,6 +208,7 @@ for (const [ruta,tituloEs,tituloEn] of [
     if (ruta === '/soporte') {
       await expect(page.locator('#planes')).toHaveCount(0);
       await expect(page.locator('.servicio-grupo')).toHaveCount(5);
+      await expect(page.locator('.servicio-grupo a')).toHaveCount(0);
       await expect(page.locator('.servicio-grupo[open]')).toHaveCount(0);
       await page.getByRole('heading',{name:'Networks and connectivity',exact:true}).click();
       await expect(page.locator('.servicio-grupo[open]')).toHaveCount(1);

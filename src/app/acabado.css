@@ -50,7 +50,6 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
 .servicio-grupo summary:hover{background:#f3f6f9}
 .servicio-grupo[open] summary{background:#edf3f7;margin-bottom:8px}
 .servicio-grupo ul{padding:0 16px 24px 59px;column-gap:40px}
-.servicio-grupo li a{min-height:38px;font-weight:550}
 .soporte-empresa{border:1px solid #dce7ef}.preguntas-editorial details{padding-inline:15px}
 .preguntas-editorial details[open]{background:#f6f8fa;border-radius:8px}
 .empresa-portada-contenido{padding-bottom:75px}.empresa-portada h1{max-width:720px}

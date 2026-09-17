@@ -1,0 +1,101 @@
+{
+  "Lenovo": {
+    "archivo": "lenovo.webp",
+    "fuente": "https://p3-ofp.static.pub/fes/cms/2023/03/22/8hjmcte754uauw07ypikjkjtx0m5ib450914.svg",
+    "paginaOficial": "https://www.lenovo.com/us/en/"
+  },
+  "HP": {
+    "archivo": "hp.webp",
+    "fuente": "https://www.hp.com/us-en/home.html",
+    "paginaOficial": "https://www.hp.com/us-en/home.html"
+  },
+  "Ubiquiti": {
+    "archivo": "ubiquiti.webp",
+    "fuente": "https://cdn.simpleicons.org/ubiquiti"
+  },
+  "Epson": {
+    "archivo": "epson.webp",
+    "fuente": "https://epson.com/global/common/images/logo.png"
+  },
+  "TP-Link": {
+    "archivo": "tp-link.webp",
+    "fuente": "https://static.tp-link.com/assets/images/icon/logo.svg",
+    "paginaOficial": "https://www.tp-link.com/us/"
+  },
+  "Nexxt Solutions Home": {
+    "archivo": "nexxt-solutions-home.webp",
+    "fuente": "https://nexxt-connectivity-frontend.s3.amazonaws.com/media/img/logo_new_nexxt_home_2.svg",
+    "paginaOficial": "https://www.nexxtsolutions.com/connectivity/"
+  },
+  "EZVIZ": {
+    "archivo": "ezviz.webp",
+    "fuente": "https://sgpmall-statics.ezvizlife.com/ovs_mall/web/img/index/EZVIZ_logo.png",
+    "paginaOficial": "https://www.ezviz.com/"
+  },
+  "Hikvision": {
+    "archivo": "hikvision.webp",
+    "fuente": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Hikvision_logo.svg"
+  },
+  "Zebra": {
+    "archivo": "zebra.webp",
+    "fuente": "https://www.zebra.com/content/experience-fragments/zebra1/us/en/header/master/_jcr_content/root/image.coreimg.svg/1757099569592/zebra-logo-horizontal.svg",
+    "paginaOficial": "https://www.zebra.com/us/en.html"
+  },
+  "SEWOO": {
+    "archivo": "sewoo.webp",
+    "fuente": "https://www.miniprinter.com/theme/design/img/new/main/logo_small2.png",
+    "paginaOficial": "https://www.miniprinter.com/"
+  },
+  "Custom": {
+    "archivo": "custom.webp",
+    "fuente": "https://store.intcomex.com/images/brands/Custom-logo.jpg",
+    "nota": "Se conserva temporalmente el archivo previo; el sitio oficial no respondió durante la revisión."
+  },
+  "Microsoft": {
+    "archivo": "microsoft.webp",
+    "fuente": "https://uhf.microsoft.com/images/microsoft/RE1Mu3b.png"
+  },
+  "ESET": {
+    "archivo": "eset.webp",
+    "fuente": "https://web-assets.eset.com/typo3conf/ext/eset_base/Resources/Public/img/svg/eset-logo-print.svg",
+    "paginaOficial": "https://www.eset.com/us/"
+  },
+  "Primus Gaming": {
+    "archivo": "primus-gaming.webp",
+    "fuente": "https://api.primusgaming.com/images/menu/logo_primus.svg"
+  },
+  "HyperX": {
+    "archivo": "hyperx.webp",
+    "fuente": "https://hyperx.com/cdn/shop/files/hx-full-logo-black-wag.png?v=1751303789&width=600",
+    "paginaOficial": "https://hyperx.com/"
+  },
+  "Xiaomi": {
+    "archivo": "xiaomi.webp",
+    "fuente": "https://i01.appmifile.com/webfile/globalimg/logo/pwa-mi/72x72.png",
+    "paginaOficial": "https://www.mi.com/global/"
+  },
+  "Kingston": {
+    "archivo": "kingston.webp",
+    "fuente": "https://store.intcomex.com/images/brands/kingstonSmall.png",
+    "nota": "Pendiente obtener archivo directo del fabricante; su sitio bloqueó la descarga."
+  },
+  "Kingston ValueRam": {
+    "archivo": "kingston-valueram.webp",
+    "fuente": "https://store.intcomex.com/images/brands/kingstonSmall.png",
+    "nota": "Pendiente obtener archivo directo del fabricante; su sitio bloqueó la descarga."
+  },
+  "Xtech": {
+    "archivo": "xtech.webp",
+    "fuente": "https://www.xtechamericas.com/"
+  },
+  "Forza": {
+    "archivo": "forza.webp",
+    "fuente": "https://forza-ups-frontend.s3.amazonaws.com/media/img/logo_forza_menu_2.svg",
+    "paginaOficial": "https://www.forzaups.com/"
+  },
+  "ASUS": {
+    "archivo": "asus.webp",
+    "fuente": "https://www.asus.com/media/img/2017/images/n-logo-asus.svg",
+    "paginaOficial": "https://www.asus.com/"
+  }
+}

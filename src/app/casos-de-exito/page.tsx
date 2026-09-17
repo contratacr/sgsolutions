@@ -14,7 +14,8 @@ export default async function Casos(){
  const casos=[
   {clave:0,imagenes:['servicentro-san-juan-exterior','servicentro-san-juan-infraestructura']},
   {clave:1,imagenes:['ecofarma-exterior','ecofarma-pos','ecofarma-gabinete']},
-  {clave:2,imagenes:['eco-mini-market-instalacion','eco-mini-market-pos','eco-mini-market-camaras']}
+  {clave:2,imagenes:['eco-mini-market-instalacion','eco-mini-market-pos','eco-mini-market-camaras']},
+  {clave:3,imagenes:['hospital-veterinario-occidente-exterior','hospital-veterinario-occidente-infraestructura','hospital-veterinario-occidente-conectividad']}
  ];
  return <main id="contenido" className="casos-pagina historias">
   <header className="contenedor casos-intro"><p className="etiqueta">{t('etiqueta')}</p><h1>{t('titulo')}</h1><p>{t('descripcion')}</p></header>
