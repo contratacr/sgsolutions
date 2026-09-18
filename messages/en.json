@@ -18,7 +18,7 @@
     "planes": "Support plans",
     "tienda": "Shop",
     "nosotros": "About us",
-    "contacto": "Let's talk",
+    "contacto": "Contact us",
     "menu": "Open menu",
     "cerrar": "Close",
     "carrito": "Open cart",
@@ -56,7 +56,7 @@
     "servicio2Texto": "Cameras and alarms tailored to the needs of your home or business.",
     "servicio3Titulo": "Equipment & solutions",
     "servicio3Texto": "Computers, point-of-sale systems and accessories selected with professional advice.",
-    "servicioAccion": "Let's talk about your project",
+    "servicioAccion": "Contact us about your project",
     "proyectosEtiqueta": "TECHNOLOGY IN ACTION",
     "proyectosTitulo": "From the right equipment to a complete solution.",
     "proyecto0Titulo": "Your business, connected and protected",
@@ -229,13 +229,15 @@
     "frase": "Thoughtful solutions. Technology you can rely on.",
     "derechos": "© {anio} SG Solutions.",
     "direccionTitulo": "Find us in Atenas",
-    "contactoTitulo": "Let's talk",
-    "privacidad": "Do not include sensitive information in WhatsApp inquiries.",
+    "contactoTitulo": "Contact us",
+    "privacidad": "Privacy Policy",
     "googleMaps": "Google Maps",
     "waze": "Waze",
     "redesTitulo": "Follow us",
     "instagram": "Instagram",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "terminos": "Terms and Conditions",
+    "legal": "Legal information"
   },
   "Acceso": {
     "etiqueta": "TEAM WORKSPACE",
@@ -253,8 +255,11 @@
     "salir": "Sign out"
   },
   "Panel": {
-    "titulo": "Business workspace",
-    "descripcion": "The team foundation is ready. Business modules will be enabled in upcoming releases.",
+    "titulo": "Administration",
+    "descripcion": "Manage SG Solutions products, prices and content in one place.",
+    "pruebaLocal": "Local test environment. Changes are saved on this computer and do not affect the published website.",
+    "contenidoDetalle": "Success stories, photos, Spanish and English copy, and bank transfer details.",
+    "verSitio": "View the website",
     "clientes": "Customers",
     "clientesDetalle": "Customer records and service history.",
     "cotizaciones": "Quotes",
@@ -269,6 +274,12 @@
     "contenido": "Content and success stories"
   },
   "Error": {
+    "etiqueta": "LET’S STAY CONNECTED",
+    "descripcion404": "The link may have changed or the page may no longer exist. Return home or explore our store.",
+    "descripcion": "There was a problem loading this content. Please try again in a moment.",
+    "tienda": "Explore the store",
+    "cargando": "We’re getting this page ready",
+    "espera": "You’ll be able to continue shortly.",
     "titulo": "We couldn't load this page.",
     "reintentar": "Try again",
     "noEncontrado": "This page is not available.",
@@ -304,7 +315,7 @@
     "explorar": "Discover SG Solutions",
     "ubicacion": "Atenas, Costa Rica",
     "encontrarnos": "Find us",
-    "conversemos": "Let’s talk",
+    "conversemos": "Contact us",
     "maps": "Google Maps",
     "waze": "Waze"
   },
@@ -393,7 +404,8 @@
     "iva": "VAT incl.",
     "marca": "SG SOLUTIONS",
     "moneda": "CRC ₡",
-    "codigoFabricante": "Manufacturer code"
+    "codigoFabricante": "Manufacturer code",
+    "asesoriaMensaje": "Hello, I would like advice on choosing a product from the SG Solutions store."
   },
   "AdminCatalogo": {
     "titulo": "Manage store",
@@ -453,7 +465,8 @@
     "galeria": "Gallery: one URL per line",
     "fichaTecnica": "Technical datasheet URL",
     "nuevaEspecificacion": "Add specification",
-    "valor": "Value"
+    "valor": "Value",
+    "quitarEspecificacion": "Remove specification"
   },
   "ServiciosSoporte": {
     "etiqueta": "OUR SERVICES",
@@ -745,5 +758,124 @@
     "sinpe": "SINPE number",
     "banco": "Bank",
     "iban": "IBAN"
+  },
+  "Legal": {
+    "etiqueta": "Legal information",
+    "indice": "On this page",
+    "actualizado": "Updated September 18, 2026",
+    "contacto": "Questions and requests",
+    "correo": "soporte@sgsolutionscr.com",
+    "direccion": "Plaza El Bosque, Atenas, Costa Rica.",
+    "nota": "Prepared for review before publication.",
+    "terminos": {
+      "titulo": "Terms and Conditions",
+      "descripcion": "Conditions for browsing products, requesting services and arranging orders with SG Solutions.",
+      "secciones": {
+        "0": {
+          "titulo": "Who we are and how to contact us",
+          "texto": "SG Solutions provides technology equipment, advice and services in Costa Rica. Contact us at soporte@sgsolutionscr.com, 2446-7846 or WhatsApp +506 8939-5256. Our office is at Plaza El Bosque, Atenas."
+        },
+        "1": {
+          "titulo": "Catalog, prices and availability",
+          "texto": "Published prices are in Costa Rican colones and include VAT where indicated. Supplier availability requires confirmation. Images may show regional variants; check the manufacturer part number and product specifications. Before confirming a purchase, we will provide the product, total price, taxes, delivery and any additional costs. If a discrepancy or error is found, we will inform you before payment so you can decide. We will not substitute products without your authorization."
+        },
+        "2": {
+          "titulo": "Requests and order confirmation",
+          "texto": "Adding products to the cart or reviewing a form does not constitute payment or a reservation. The site prepares a request for you to review and send through the indicated channel. SG Solutions will confirm availability and conditions before arranging the purchase. Do not pay until you receive that confirmation. These steps do not limit any rights arising from an offer or contract under applicable law."
+        },
+        "3": {
+          "titulo": "Payments, invoicing and delivery",
+          "texto": "Payments are currently arranged by SINPE Móvil or bank transfer after confirming the order and recipient. Card payments on the site are not yet enabled, and we do not request card numbers or security codes. Delivery or collection, costs and timing are agreed before payment. Billing details must be accurate. A transfer receipt requires verification of funds and does not, by itself, confirm delivery."
+        },
+        "4": {
+          "titulo": "Warranties, returns and complaints",
+          "texto": "Products and services carry the warranty rights established by Costa Rican law. Specific warranty conditions will be provided before purchase and in the relevant documents. To report a defect, an incorrect delivery or request a return, email us with the order reference and a description. Applicable withdrawal, repair, replacement or refund rights will be honored. These conditions do not exclude statutory rights or require complaints to be handled solely by the manufacturer. You may submit a request through the channel used to enter into the transaction."
+        },
+        "5": {
+          "titulo": "Support and business plans",
+          "texto": "An inquiry or plan request does not automatically activate a service or subscription. Diagnosis, scope, price, hours, response times, visits, term and cancellation conditions will be detailed in the accepted proposal. Response time is not a resolution deadline. Authorization and necessary data handling will be arranged before work on equipment or remote access. We recommend keeping current backups; this does not release SG Solutions from its legal responsibilities."
+        },
+        "6": {
+          "titulo": "Use of the site and content",
+          "texto": "Use forms with accurate information and only when authorized to provide it. Do not use the site for impersonation, unauthorized access or interference with the service. Trademarks, photographs and content belong to their respective owners; their presence does not imply any affiliation beyond what is expressly stated. External links are also subject to their providers’ terms."
+        },
+        "7": {
+          "titulo": "Changes and applicable law",
+          "texto": "These conditions are interpreted under Costa Rican law. Updates will show their date and will not retroactively change agreed conditions. Nothing here waives consumer rights or prevents recourse to competent authorities. Data handling is explained in the Privacy Policy."
+        }
+      }
+    },
+    "privacidad": {
+      "titulo": "Privacy Policy",
+      "descripcion": "How information is used when browsing, viewing products or requesting assistance from SG Solutions.",
+      "secciones": {
+        "0": {
+          "titulo": "Responsible business and contact",
+          "texto": "SG Solutions receives and manages sales and support inquiries through its service channels. For privacy questions or requests about your data, email soporte@sgsolutionscr.com. Our office is at Plaza El Bosque, Atenas, Costa Rica."
+        },
+        "1": {
+          "titulo": "Information you provide",
+          "texto": "Depending on the form and request, we may receive your name, email, phone, company, billing details, identification, delivery address, selected products and messages about the required service. Provide only necessary and authorized information. Do not include passwords, full card numbers, security codes or sensitive data in messages or forms."
+        },
+        "2": {
+          "titulo": "How information is used",
+          "texto": "We use information to answer inquiries, prepare quotes, arrange orders and delivery, invoice, handle support, warranties and complaints, and meet legal obligations. Required fields support the request; some actions cannot be completed without them. Sending an inquiry does not authorize unrelated advertising. Any additional purpose requiring consent must be explained separately."
+        },
+        "3": {
+          "titulo": "Forms and external services",
+          "texto": "Current forms let you review a request before opening WhatsApp or email with a prepared message. Opening these links shares the message data with the channel provider; you must complete sending there for SG Solutions to receive the request. WhatsApp, Microsoft Outlook, maps and social networks apply their own policies and may process data outside Costa Rica. Card payments are not active on this site. If a payment gateway is enabled, its provider and data handling will be disclosed before use."
+        },
+        "4": {
+          "titulo": "Cookies and browser storage",
+          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in your browser’s local storage under sg-carrito-v1 until you empty it or clear site data. Form fields are retained during interaction with the page. Private staff access may use authentication cookies. You can remove data through your browser, but preferences or sessions will be lost. The current version does not embed third-party advertising or analytics tools."
+        },
+        "5": {
+          "titulo": "Access, providers and retention",
+          "texto": "Request information is intended for staff handling it and, when needed to fulfill it, delivery, support, email or infrastructure providers. Hosting may process technical connection data such as IP addresses and security logs. This does not itself authorize other commercial uses. Information is retained as necessary for the request and applicable legal obligations; deletion requests take those duties into account. Communications are also subject to the retention practices of your chosen channel."
+        },
+        "6": {
+          "titulo": "Your rights and how to exercise them",
+          "texto": "You may request information about your data, access, correction, updating, deletion or withdrawal of consent as applicable under Law 8968. Email the privacy contact with your request and a reply address. We may ask for the minimum verification needed to avoid disclosing data to others. Withdrawal does not remove statutory retention duties. You may also contact Costa Rica’s data protection authority, PRODHAB."
+        },
+        "7": {
+          "titulo": "Security and updates",
+          "texto": "Processing must be limited to the stated purpose and the access needed to fulfill it. No Internet channel is risk-free; avoid sharing unnecessary information. This policy will be updated when services or data use change, with a revision date. New processing requiring consent is not authorized merely by publishing an update."
+        }
+      }
+    }
+  },
+  "AdminImagenes": {
+    "titulo": "Images",
+    "ayuda": "Up to {maximo} photos. The first is the cover. Use the arrows to reorder them.",
+    "portada": "Cover",
+    "foto": "Photo {numero}",
+    "verNumero": "View photo {numero}",
+    "ver": "View image",
+    "cambiar": "Replace",
+    "quitar": "Remove",
+    "usarPortada": "Set as cover",
+    "antes": "Move photo {numero} earlier",
+    "despues": "Move photo {numero} later",
+    "describir": "Photo description",
+    "caption": "Caption",
+    "alt": "Accessible description",
+    "vacio": "No photos yet. Add one from your computer or phone.",
+    "agregar": "Add photos",
+    "deshacer": "Undo",
+    "usarUrl": "Add from a link",
+    "url": "Image link",
+    "agregarUrl": "Add image",
+    "cargando": "Uploading photos…",
+    "guardarNota": "JPG, PNG or WebP · Up to 8 MB per photo. Save changes to apply them. Removing a photo takes it out of this gallery.",
+    "vistaCompleta": "Full image preview",
+    "cerrar": "Close",
+    "limite": "You can add up to {maximo} photos. To replace a photo, select just one file.",
+    "archivoInvalido": "Choose a JPG, PNG or WebP image up to 8 MB.",
+    "urlInvalida": "Use a valid HTTPS link or a site image path.",
+    "errorCarga": "The image could not be uploaded. Try again. Production storage must be configured.",
+    "sinPermiso": "Your session expired or you do not have permission. Sign in again.",
+    "masFotos": "View all {total} photos",
+    "pendientes": "You have unsaved changes.",
+    "salirSinGuardar": "You have unsaved changes. Leave and discard them?"
   }
 }

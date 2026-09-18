@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { configuracionSupabase } from '@/lib/supabase/configuracion';
 export async function proxy(solicitud: NextRequest) {
   let respuesta = NextResponse.next({request: solicitud});
+  respuesta.headers.set('Cache-Control', 'private, no-store');
   const configuracion = configuracionSupabase();
   if (!configuracion) return respuesta;
   const cliente = createServerClient(configuracion.url, configuracion.llave, {cookies: {
@@ -17,4 +18,4 @@ export async function proxy(solicitud: NextRequest) {
   respuesta.headers.set('Cache-Control', 'private, no-store');
   return respuesta;
 }
-export const config = {matcher: ['/panel/:path*', '/acceso']};
+export const config = {matcher: ['/panel/:path*', '/acceso', '/admin']};

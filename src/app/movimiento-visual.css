@@ -1,0 +1,22 @@
+/* Secondary pages: quiet dimensional accents and clear interactive response. */
+.shop-intro,.soporte-bienvenida,.casos-intro{position:relative}
+.shop-intro::after,.soporte-bienvenida::after,.casos-intro::after{content:'';display:block;position:absolute;bottom:0;left:0;width:90px;height:3px;border-radius:5px;background:linear-gradient(90deg,#2774a9,#ed824b);transform-origin:left;animation:trazo-entrada 1s ease both}
+@keyframes trazo-entrada{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+body:has(main .shop-intro) .boton{transition:transform .25s,box-shadow .25s,background .25s}
+@media(hover:hover){body:has(main .shop-intro) .boton:hover{transform:translateY(-2px);box-shadow:0 8px 20px #18395018}.shop-producto{transition:box-shadow .3s,border-color .3s}.shop-producto:hover{box-shadow:0 16px 36px #21436512;border-color:#b0cce0}}
+
+@media(prefers-reduced-motion:reduce){.shop-intro::after,.soporte-bienvenida::after,.casos-intro::after{animation:none!important}}
+
+/* One consistent interaction rhythm across public sections. */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+ .empresa-necesidades > a,.nosotros-principios article,.servicio,.plan{transition:translate .28s ease,box-shadow .28s ease,border-color .28s ease}
+ .empresa-necesidades > a:hover,.servicio:hover{translate:0 -3px}
+ .historia-foto img,.proyecto-imagen img,.area-foto img{transition:transform .65s cubic-bezier(.22,1,.36,1)}
+ .historia-foto:hover img,.proyecto:hover img{transform:scale(1.025)}
+ main .boton svg,.empresa-necesidades > a > svg{transition:translate .25s ease}
+ main .boton:hover svg,.empresa-necesidades > a:hover > svg{translate:3px 0}
+}
+
+/* Prepare only offscreen elements after hydration, before they enter view. */
+@media(prefers-reduced-motion:no-preference){[data-revelar-pendiente]{opacity:0}}
+@media(prefers-reduced-motion:no-preference){[data-revelando]{will-change:transform,opacity}}

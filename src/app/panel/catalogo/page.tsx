@@ -4,10 +4,13 @@ import {crearClienteServidor} from '@/lib/supabase/servidor';
 import {catalogoInicial} from '@/lib/catalogo-servidor';
 import {esquemaCatalogo} from '@/lib/catalogo-modelo';
 import {EditorCatalogo} from '@/components/editor-catalogo';
+import {sesionLocal,leerLocal} from '@/lib/admin-local';
 export const metadata={robots:{index:false,follow:false}};
 export default async function Administrar(){
- const cliente=await crearClienteServidor();if(!cliente)redirect('/acceso');
- const {data:{user}}=await cliente.auth.getUser();if(!user)redirect('/acceso');
+ const local=await sesionLocal();
+ if(local){const guardado=await leerLocal('catalogo');const t=await getTranslations('AdminCatalogo');return <main id="contenido" className="contenedor seccion"><h1>{t('titulo')}</h1><EditorCatalogo inicial={guardado?esquemaCatalogo.parse(guardado.contenido):catalogoInicial} revisionInicial={guardado?.revision??0}/></main>;}
+ const cliente=await crearClienteServidor();if(!cliente)redirect('/admin');
+ const {data:{user}}=await cliente.auth.getUser();if(!user)redirect('/admin');
  const {data:perfil}=await cliente.from('perfiles').select('rol').eq('id',user.id).eq('activo',true).maybeSingle();
  if(perfil?.rol!=='administrador')redirect('/panel');
  const {data,error}=await cliente.from('catalogo_privado').select('contenido,revision').eq('id',1).maybeSingle();

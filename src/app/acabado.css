@@ -14,17 +14,17 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
 .navegacion{gap:25px}.nav-escritorio a{padding-block:14px;white-space:nowrap}
 .nav-acciones{gap:12px}.boton-icono{min-width:42px;min-height:42px;border-radius:8px}
 .nav-movil{box-shadow:0 16px 30px #10283d20}.nav-movil a{padding-block:15px}
-.pie{border-top:1px solid #ffffff12}.pie-grid{padding-block:52px;grid-template-columns:1.15fr 1fr 1fr}
+.pie{padding-top:0;border-top:1px solid #ffffff20}.pie-grid{padding-block:52px;grid-template-columns:1.15fr 1fr 1fr}
 .pie h3{font-size:.92rem;letter-spacing:0}.pie p,.pie a{line-height:1.8}
 .pie-explorar{display:flex;flex-wrap:wrap;gap:5px 18px;margin-top:20px;max-width:330px}
 .pie-explorar a{font-size:.8rem;color:#c3d0dc}.pie-base{padding-block:24px}
 .pie-redes{margin-top:25px}.pie-redes>span{display:block;margin-bottom:10px;color:#91a9ba;font-size:.68rem;font-weight:650;letter-spacing:.12em;text-transform:uppercase}.pie-redes>div{display:flex;gap:9px}.pie-redes a{display:grid;width:38px;height:38px;place-items:center;border:1px solid #ffffff2b;border-radius:50%;color:#dce8f0;transition:background .18s,border-color .18s,color .18s}.pie-redes a:hover{background:#ffffff12;border-color:#ffffff5c;color:#fff}
-.portal-presentacion{gap:45px}.portal-introduccion>p{max-width:425px;line-height:1.8}
+.portal-presentacion{row-gap:45px}.portal-introduccion>p{max-width:425px;line-height:1.8}
 .portal-menu-cabecera{border-top:1px solid #ffffff20;padding-top:22px}
-.portal-tarjeta{border-radius:16px;border-color:#ffffff30}
+.portal-tarjeta{border-radius:20px;border-color:#ffffff30}
 .portal-tarjeta-contenido p{line-height:1.6;color:#e0e9f1}
 .portal-tarjeta-base{min-height:48px}.portal-flecha{background:#ffffff12;border:1px solid #ffffff35;border-radius:50%}
-.portal-categoria{letter-spacing:.1em}.portal-base{padding-top:25px}
+.portal-categoria{letter-spacing:.1em}
 .shop-intro{margin-bottom:35px}.shop-intro h1{max-width:700px}
 .shop-intro p:not(.etiqueta){font-size:1rem}
 .shop-buscador{padding-block:12px;box-shadow:0 6px 24px #163a5005}
@@ -121,9 +121,6 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
 .portal-categoria{font-size:.72rem;letter-spacing:.08em}
 .portal-tarjeta p{font-size:.9rem}
 .portal-tarjeta-base{font-size:.87rem}
-.portal-base{flex-wrap:wrap;font-size:.88rem;gap:25px}
-.portal-base small{display:block;font-size:.78rem;line-height:1.6;color:#afc4d6;margin-top:3px;overflow-wrap:anywhere}
-.portal-base svg{flex-shrink:0}
 .pie-mapa span{display:block;font-size:.83rem;margin-top:10px;color:#c7d9e8}
 .portal-ubicacion{display:flex;align-items:flex-start;gap:8px}.portal-ubicacion>span>small{display:block}.portal-mapas{display:flex;gap:12px;margin-top:6px}.portal-mapas a,.pie-mapas a{display:inline-flex;align-items:center;gap:5px}.portal-mapas a{font-size:.69rem;color:#d7e6f1}.pie-direccion{max-width:280px;color:#c7d9e8;font-size:.83rem;line-height:1.55}.pie-mapas{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.pie-mapas a{border:1px solid #ffffff2b;border-radius:999px;padding:7px 10px;font-size:.72rem}.ubicacion-acciones{display:flex;flex-wrap:wrap;gap:10px}
 .plan{position:relative}.plan-recomendado{display:block;font-size:.72rem;border:1px solid #ffffff55;border-radius:30px;padding:5px 10px;margin:-12px 0 15px;color:#fbd3b8}.plan li svg{flex-shrink:0}.nota-planes{max-width:900px;line-height:1.8}
@@ -131,5 +128,236 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
 .shop-marcas-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.shop-marcas-grid button{background:white;border:1px solid #dce5eb;border-radius:12px;min-height:135px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;padding:18px;color:#2f4e73;transition:border-color .2s,background .2s}.shop-marcas-grid button img{width:110px;height:46px;object-fit:contain;opacity:.8}.shop-marcas-grid button span{font-size:.8rem}.shop-marcas-grid button:hover,.shop-marcas-grid button[aria-pressed=true]{border-color:#2f4e73;background:#edf3f8}.shop-marcas button:focus-visible{outline:3px solid #f05a28;outline-offset:3px}
 .caso-identidad{display:flex;gap:18px;align-items:center;margin:22px 0;padding:18px 0;border-block:1px solid #dce4eb}.caso-logo-ejemplo{width:76px;height:76px;flex-shrink:0;border:1px dashed #9eb0c0;border-radius:12px;background:#edf2f6;display:grid;place-items:center;font-size:1.6rem;color:#2f4e73;letter-spacing:-.04em}.caso-identidad small{font-size:.75rem;color:#64798c}.caso-identidad .caso-cliente{margin:4px 0;font-size:1.08rem}
 .casos-lista{gap:80px}.caso-galeria{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(120px,.72fr);grid-template-rows:repeat(2,210px);gap:10px;min-width:0}.caso-galeria .caso-foto{min-height:0}.caso-galeria .caso-foto:first-child{grid-row:1/-1}.caso-galeria[data-cantidad="1"]{display:block;height:430px}.caso-galeria[data-cantidad="1"] .caso-foto{height:100%}.caso-galeria[data-cantidad="2"] .caso-foto:nth-child(2){grid-row:1/-1}.caso:nth-child(even) .caso-galeria{order:2}.caso:nth-child(even) .caso-galeria .caso-foto{order:0}
-@media(max-width:899px){.portal-introduccion{display:block;margin-top:20px;max-width:550px}.portal-introduccion>p{font-size:1rem}.portal-introduccion>span{font-size:.8rem;margin-top:10px}.portal-categoria{font-size:.65rem}.portal-tarjeta{min-height:160px;height:auto}.portal-tarjeta p{font-size:.83rem}.portal-tarjeta-base{font-size:.8rem}.portal-base{align-items:flex-start}.portal-base>a{min-width:0}.portal .entrada-eyebrow{font-size:.7rem}.shop-marcas-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.shop-marcas-grid button{min-height:115px}.portal-tarjeta-contenido{padding-bottom:16px}}
+@media(max-width:899px){.portal-introduccion{display:block;margin-top:22px;max-width:550px}.portal-introduccion>p{font-size:1rem;line-height:1.68}.portal-categoria{font-size:.65rem}.portal-tarjeta{min-height:154px;height:auto;border-radius:16px}.portal-tarjeta p{font-size:.83rem}.portal-tarjeta-base{font-size:.8rem}.portal .entrada-eyebrow{font-size:.7rem}.shop-marcas-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.shop-marcas-grid button{min-height:115px}.portal-tarjeta-contenido{padding-bottom:16px}}
 @media(max-width:760px){.caso:nth-child(even) .caso-galeria{order:0}.caso-galeria{grid-template-columns:1fr 1fr;grid-template-rows:260px 130px}.caso-galeria .caso-foto:first-child{grid-column:1/-1;grid-row:auto}.caso-galeria[data-cantidad="1"]{height:300px}.caso-galeria[data-cantidad="2"] .caso-foto:nth-child(2){grid-column:1/-1;grid-row:auto}.casos-lista{gap:55px}}
+
+/* Cabecera y pie: transición limpia, contacto prioritario y acceso interno fuera de navegación pública. */
+body:has(.portal) .cabecera{position:relative;z-index:5;border-bottom:0;box-shadow:0 12px 30px #020a1229}
+body:has(.portal) .portal{box-shadow:none}
+.pie-grid{grid-template-columns:1.12fr .88fr 1fr;align-items:start;gap:clamp(42px,6vw,88px)}
+.pie-contacto,.pie-ubicacion{display:flex;flex-direction:column;align-items:flex-start}
+.pie-contacto>a:not(.pie-whatsapp){margin-top:3px}
+.pie-base{justify-content:flex-start}
+.pie-redes .pie-whatsapp-icono{color:#dce8f0;border-color:#ffffff2b}
+.pie-redes .pie-whatsapp-icono:hover{color:#fff;background:#ffffff12;border-color:#ffffff5c}
+.whatsapp-flotante{position:fixed;right:22px;bottom:22px;z-index:60;display:grid;place-items:center;width:56px;height:56px;border:1px solid #ffffff70;border-radius:50%;background:#25d366;color:#fff;box-shadow:0 14px 34px #071b1245;font-size:.78rem;font-weight:650;transition:transform .22s,background .22s,box-shadow .22s}
+.whatsapp-flotante span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.whatsapp-flotante:hover,.whatsapp-flotante:focus-visible{transform:translateY(-3px) scale(1.04);background:#20bd5a;box-shadow:0 18px 38px #071b1250}
+@media(max-width:899px){.pie-grid{grid-template-columns:1fr 1fr;gap:34px}.pie-identidad{grid-column:1/-1}}
+@media(max-width:600px){.pie-grid{grid-template-columns:1fr}.pie-identidad{grid-column:auto}.whatsapp-flotante{right:16px;bottom:16px;width:52px;height:52px}}
+
+/* Soporte: jerarquía y superficies, sin alterar el contenido. */
+.soporte-editorial{background:linear-gradient(#f1f5f8 0,#fff 750px);padding-top:28px}
+.soporte-editorial .soporte-bienvenida{max-width:1240px;padding:42px 36px;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:center;border:1px solid #dfe7ed;border-radius:24px;background:#ffffffbc;box-shadow:0 12px 32px #17344a06}
+.soporte-editorial .soporte-bienvenida::after{display:none}
+.soporte-editorial .soporte-bienvenida h1{font-size:clamp(2.3rem,4vw,3.65rem);line-height:1.08;letter-spacing:-.045em;max-width:730px}
+.soporte-editorial .soporte-bienvenida>div>p:not(.etiqueta){font-size:1rem;line-height:1.8;margin:20px 0 26px;max-width:590px}
+.soporte-editorial .soporte-bienvenida .boton{border-radius:11px;min-height:50px;background:#17364c;box-shadow:0 5px 14px #17364c15;padding-inline:22px}
+.soporte-editorial .soporte-resumen{position:relative;overflow:hidden;border:1px solid #294a62;border-radius:20px;background:radial-gradient(ellipse at top right,#2c536c,transparent 80%),#142e42;padding:16px 23px;box-shadow:0 12px 28px #142e4212}
+.soporte-editorial .soporte-resumen li{grid-template-columns:35px 1fr;gap:15px;padding:24px 0;border-bottom:1px solid #ffffff20;color:#f3f7fa;font-size:.9rem;line-height:1.6;font-weight:500}
+.soporte-editorial .soporte-resumen li:last-child{border:0}
+.soporte-editorial .soporte-resumen span{display:grid;place-items:center;width:35px;height:35px;border:1px solid #aec5d438;border-radius:10px;color:#ffb08c;background:#ffffff07;font-size:.7rem}
+.soporte-editorial .servicios-soporte{padding-block:56px}
+.soporte-editorial .encabezado-seccion{margin-bottom:28px;gap:40px;align-items:end}
+.soporte-editorial .encabezado-seccion h2{font-size:clamp(1.8rem,3vw,2.6rem);letter-spacing:-.04em}
+.soporte-editorial .encabezado-seccion>p{font-size:.92rem;line-height:1.8;max-width:430px}
+.soporte-editorial .servicios-grupos{border:0;display:grid;gap:12px}
+.soporte-editorial .servicio-grupo{border:1px solid #dde6ed;border-radius:16px;background:#fff;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.soporte-editorial .servicio-grupo summary{padding:22px 25px;gap:20px;border-radius:0;min-height:85px}
+.soporte-editorial .servicio-indice{display:grid;place-items:center;width:42px;height:42px;flex-shrink:0;border-radius:12px;background:#eef3f7;color:#4c6a80;font-size:.75rem}
+.soporte-editorial .servicio-grupo summary h3{font-size:clamp(1.05rem,1.8vw,1.35rem);line-height:1.4;letter-spacing:-.02em}
+.soporte-editorial .servicio-grupo summary>svg{box-sizing:content-box;flex-shrink:0;padding:9px;border:1px solid #dce6ed;border-radius:50%;color:#42627a;transition:transform .2s,background .2s}
+.soporte-editorial .servicio-grupo[open]{border-color:#a6bdce;box-shadow:0 10px 26px #19384f08}
+.soporte-editorial .servicio-grupo[open] summary{background:#f0f5f8;margin-bottom:0}
+.soporte-editorial .servicio-grupo[open] .servicio-indice{background:#18384f;color:white}
+.soporte-editorial .servicio-grupo[open] summary>svg{background:#fff;border-color:#a6bdce}
+.soporte-editorial .servicio-grupo ul{padding:8px 28px 20px 87px;gap:0 40px}
+.soporte-editorial .servicio-grupo li{padding:20px 0;border-color:#e6edf2}
+.soporte-editorial .servicio-grupo h4{font-size:1rem;line-height:1.5;color:#203f56;margin-bottom:7px}
+.soporte-editorial .servicio-grupo li p{font-size:.88rem;line-height:1.75;color:#607487}
+.soporte-editorial .soporte-empresa{padding:28px 30px;margin-top:24px;border-radius:16px;background:#eef4f8;border-color:#dce6ed;box-shadow:inset 4px 0 #e77849}
+.soporte-editorial .soporte-empresa p{margin-bottom:0;line-height:1.75}
+.soporte-editorial .soporte-empresa .boton{border-radius:10px;background:#17364c}
+.soporte-editorial .soporte-cercano{gap:60px;padding-block:12px 50px;align-items:stretch}
+.soporte-editorial .soporte-cercano figure{border-radius:22px;min-height:490px;box-shadow:0 14px 35px #18384f10}
+.soporte-editorial .soporte-cercano figcaption{padding:70px 28px 26px;font-size:.83rem;line-height:1.6;background:linear-gradient(transparent,#0c2535ee)}
+.soporte-editorial .soporte-cercano>div{padding-block:18px}
+.soporte-editorial .soporte-cercano h2{font-size:clamp(1.9rem,3vw,2.6rem);letter-spacing:-.04em;line-height:1.15}
+.soporte-editorial .soporte-pasos{margin-top:28px}
+.soporte-editorial .soporte-pasos li{position:relative;border:0;padding:0 0 28px;gap:18px}
+.soporte-editorial .soporte-pasos li:not(:last-child)::before{content:"";position:absolute;left:20px;top:42px;bottom:0;width:1px;background:#dce6ee}
+.soporte-editorial .soporte-pasos li>span{display:grid;place-items:center;flex:0 0 42px;height:42px;padding:0;background:#edf3f7;border:1px solid #dce7ef;border-radius:50%;color:#375b76;font-size:.75rem}
+.soporte-editorial .soporte-pasos h3{font-size:1.05rem;line-height:1.5;margin-top:6px}
+.soporte-editorial .soporte-pasos p{font-size:.9rem;line-height:1.75;margin-top:7px;max-width:430px}
+.soporte-editorial .preguntas-editorial{padding-block:38px 65px;gap:60px;border-top:1px solid #e2e9ee}
+.soporte-editorial .preguntas-editorial h2{font-size:clamp(1.8rem,3vw,2.5rem);letter-spacing:-.04em}
+.soporte-editorial .preguntas-editorial details{border:1px solid #dfe7ee;border-radius:13px;padding:0 22px;margin-bottom:12px;background:#f8fafb}
+.soporte-editorial .preguntas-editorial summary{padding-block:22px;gap:18px;line-height:1.6;font-size:.95rem}
+.soporte-editorial .preguntas-editorial summary svg{flex-shrink:0}
+.soporte-editorial .preguntas-editorial details[open]{background:white;border-color:#adc2d2}
+.soporte-editorial .preguntas-editorial details p{padding-bottom:22px;font-size:.9rem;line-height:1.8;color:#607487}
+@media(hover:hover){.soporte-editorial .servicio-grupo:hover{border-color:#a6bdce}.soporte-editorial .servicio-grupo summary:hover{background:#f4f7fa}}
+@media(max-width:1050px){.soporte-editorial .soporte-bienvenida{grid-template-columns:minmax(0,1fr) 290px;gap:25px;padding:30px}.soporte-editorial .soporte-cercano{gap:35px}}
+@media(max-width:760px){
+ .soporte-editorial{padding-top:18px}
+ .soporte-editorial .soporte-bienvenida{display:block;padding:26px 22px;border-radius:18px}
+ .soporte-editorial .soporte-bienvenida h1{font-size:2.35rem}
+ .soporte-editorial .soporte-bienvenida>div>p:not(.etiqueta){font-size:.92rem;line-height:1.75}
+ .soporte-editorial .soporte-bienvenida .boton{width:100%;justify-content:space-between}
+ .soporte-editorial .soporte-resumen{margin-top:26px;padding:6px 18px;border-radius:14px}
+ .soporte-editorial .soporte-resumen li{padding:17px 0;font-size:.85rem}
+ .soporte-editorial .servicios-soporte{padding-block:38px}
+ .soporte-editorial .encabezado-seccion{gap:16px;margin-bottom:22px}
+ .soporte-editorial .encabezado-seccion>p{font-size:.88rem}
+ .soporte-editorial .servicio-grupo{border-radius:13px}
+ .soporte-editorial .servicio-grupo summary{padding:17px 14px;gap:12px;min-height:80px}
+ .soporte-editorial .servicio-indice{width:32px;height:36px;border-radius:9px;font-size:.66rem}
+ .soporte-editorial .servicio-grupo summary>svg{width:16px;height:16px;padding:6px}
+ .soporte-editorial .servicio-grupo ul{padding:2px 20px 14px;grid-template-columns:1fr}
+ .soporte-editorial .soporte-empresa{padding:23px;gap:18px;align-items:stretch}
+ .soporte-editorial .soporte-cercano{grid-template-columns:1fr;gap:24px;padding-block:0 32px}
+ .soporte-editorial .soporte-cercano figure{min-height:310px;border-radius:17px}
+ .soporte-editorial .soporte-cercano>div{padding-block:0}
+ .soporte-editorial .preguntas-editorial{padding-block:32px 45px;gap:25px}
+ .soporte-editorial .preguntas-editorial details{padding-inline:17px}
+}
+@media(prefers-reduced-motion:reduce){.soporte-editorial .servicio-grupo,.soporte-editorial .servicio-grupo summary>svg{transition:none}}
+
+/* Empresas: presentación consistente de planes y soluciones. */
+.empresas-editorial{background:#f5f7f9;padding-top:26px}
+.empresas-editorial .empresa-portada{width:min(1240px,calc(100% - 40px));margin-inline:auto;border-radius:24px;box-shadow:0 16px 38px #102a4012}
+.empresas-editorial .empresa-portada-contenido{width:100%;padding:26px 40px 46px}
+.empresas-editorial .empresa-volver{margin-bottom:32px}
+.empresas-editorial .empresa-portada h1{font-size:clamp(2.4rem,4.1vw,3.8rem);max-width:690px;line-height:1.08}
+.empresas-editorial .empresa-descripcion{line-height:1.8;max-width:490px;font-size:.97rem}
+.empresas-editorial .empresa-portada .boton{border-radius:11px}
+.empresas-editorial .empresa-necesidades{gap:14px;border:0;margin-top:20px}
+.empresas-editorial .empresa-necesidades a{background:#fff;border:1px solid #dfe7ee;border-radius:14px;padding:22px;gap:15px;transition:background .2s,border-color .2s}
+.empresas-editorial .empresa-necesidades a>span{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;border-radius:10px;background:#eef4f8;color:#53748b;font-size:.7rem}
+.empresas-editorial .empresa-necesidades a>svg{flex-shrink:0;width:17px}
+.empresas-editorial .empresa-necesidades p{line-height:1.6}
+.empresas-editorial #planes{padding-block:55px 36px}
+.empresas-editorial .encabezado-seccion{gap:36px;margin-bottom:30px;align-items:end}
+.empresas-editorial .encabezado-seccion h2{font-size:clamp(1.9rem,3vw,2.7rem);letter-spacing:-.04em}
+.empresas-editorial .encabezado-seccion>p{font-size:.93rem;line-height:1.8}
+.empresas-editorial .planes-grid{gap:20px;align-items:stretch}
+.empresas-editorial .plan{position:relative;border:1px solid #dce5ed;border-radius:20px;padding:30px;background:#fff;box-shadow:0 6px 20px #18364b05}
+.empresas-editorial .plan-numero{display:grid;place-items:center;width:36px;height:36px;background:#edf3f7;border-radius:10px;color:#496a81;opacity:1;font-size:.68rem;letter-spacing:.06em;margin-bottom:26px}
+.empresas-editorial .plan-recomendado{position:absolute;top:34px;right:25px;margin:0;border:1px solid #ffffff40;background:#ffffff0c;color:#fff;padding:6px 10px;font-size:.66rem;line-height:1.4;border-radius:999px}
+.empresas-editorial .plan h3{font-size:1.9rem;line-height:1.2}
+.empresas-editorial .plan-frase{font-size:.88rem;line-height:1.65;min-height:30px;margin-top:10px;opacity:1;color:#61768a}
+.empresas-editorial .plan ul{padding:20px 0;margin-top:20px;border-color:#e1e9ef}
+.empresas-editorial .plan li{font-size:.88rem;line-height:1.65;margin:0;padding:10px 0;border-bottom:1px solid #edf2f5;gap:11px}
+.empresas-editorial .plan li:last-child{border:0}
+.empresas-editorial .plan li svg{flex-shrink:0;width:16px;height:16px;color:#4b718c;margin-top:4px}
+.empresas-editorial .plan .boton{border-radius:10px;min-height:48px;font-size:.83rem;padding:13px 16px;background:#edf3f7;border-color:#d4e1ea;color:#213f56}
+.empresas-editorial .plan-destacado{background:radial-gradient(ellipse at top right,#345b74,transparent 70%),#142e42;color:white;border-color:#274c66;box-shadow:0 14px 32px #18364b16}
+.empresas-editorial .plan-destacado .plan-numero{color:#ffd0b4;background:#ffffff10;border:1px solid #ffffff25}
+.empresas-editorial .plan-destacado .plan-frase{color:#c5d8e5}
+.empresas-editorial .plan-destacado ul,.empresas-editorial .plan-destacado li{border-color:#ffffff20}
+.empresas-editorial .plan-destacado li svg{color:#ffb792}
+.empresas-editorial .plan-destacado .boton{background:#ff8759;border-color:#ff8759;color:#142b3b}
+.empresas-editorial .nota-planes{font-size:.85rem;line-height:1.8;padding:18px 22px;background:#eaf1f6;border-radius:12px;border-left:3px solid #54778f;color:#486478;margin-top:22px}
+.empresas-editorial #servicios{padding-block:36px 60px}
+.empresas-editorial .servicios-grid{gap:18px}
+.empresas-editorial .servicio{background:#fff;border:1px solid #dde6ed;border-radius:18px;padding:28px 26px;min-height:185px;display:grid;grid-template-columns:46px minmax(0,1fr) 22px;grid-template-rows:auto auto;column-gap:22px;align-content:center}
+.empresas-editorial .servicio-icono{position:static;width:46px;height:46px;display:grid;place-items:center;place-content:center;justify-content:center;align-content:center;background:#edf3f7;border-radius:13px;color:#345c79;grid-column:1;grid-row:1/3;align-self:center}
+.empresas-editorial .servicio-icono svg{display:block;width:24px;height:24px;margin:0}
+.empresas-editorial .servicio-flecha{position:static;width:19px;height:19px;grid-column:3;grid-row:1;align-self:center;justify-self:end}
+.empresas-editorial .servicio h3{font-size:1.2rem;line-height:1.4;letter-spacing:-.02em;grid-column:2;grid-row:1;align-self:center}
+.empresas-editorial .servicio p{font-size:.9rem;line-height:1.8;grid-column:2/4;grid-row:2;margin-top:10px}
+.empresas-editorial .proyectos{background:#edf2f6;padding-block:48px 35px}
+.empresas-editorial .proyectos h2{font-size:clamp(1.9rem,3vw,2.7rem);letter-spacing:-.04em}
+.empresas-editorial .proyectos-grid{gap:24px;margin-top:28px}
+.empresas-editorial .proyecto{background:#fff;border:1px solid #dfe7ed;border-radius:20px;overflow:hidden}
+.empresas-editorial .proyecto-imagen{border-radius:0;height:290px}
+.empresas-editorial .proyecto>div:last-child{padding:26px 28px}
+.empresas-editorial .proyecto h3{font-size:1.25rem;line-height:1.4}
+.empresas-editorial .proyecto p{font-size:.9rem;line-height:1.8}
+.empresas-editorial .casos-enlace{padding-block:22px 44px}
+.empresas-editorial .casos-enlace .boton{border-radius:10px;background:white}
+.empresas-editorial .contacto{background:#fff;padding-block:48px;border-color:#dfe7ed}
+.empresas-editorial .contacto-grid{gap:36px}
+.empresas-editorial .contacto h2{font-size:clamp(1.8rem,3vw,2.5rem);letter-spacing:-.04em}
+.empresas-editorial .contacto .boton{border-radius:11px}
+@media(hover:hover){.empresas-editorial .empresa-necesidades a:hover,.empresas-editorial .servicio:hover{background:#f9fbfd;border-color:#9eb8cb}.empresas-editorial .plan .boton:hover{background:#dfeaf2}.empresas-editorial .plan-destacado .boton:hover{background:#ff9d76}}
+@media(max-width:1050px){.empresas-editorial .plan{padding:23px}.empresas-editorial .plan-recomendado{right:18px;font-size:.6rem}.empresas-editorial .plan h3{font-size:1.6rem}.empresas-editorial .empresa-necesidades a{padding:17px;gap:10px}.empresas-editorial .empresa-necesidades a>span{display:none}}
+@media(max-width:760px){
+ .empresas-editorial{padding-top:18px}
+ .empresas-editorial .empresa-portada{border-radius:18px}
+ .empresas-editorial .empresa-portada-contenido{padding:24px 23px 32px}
+ .empresas-editorial .empresa-volver{margin-bottom:28px}
+ .empresas-editorial .empresa-portada h1{font-size:2.35rem}
+ .empresas-editorial .empresa-descripcion{font-size:.9rem;line-height:1.75;margin-block:20px 24px}
+ .empresas-editorial .empresa-necesidades{gap:10px;margin-top:15px;padding-block:0}
+ .empresas-editorial .empresa-necesidades a{padding:18px;border:1px solid #dfe7ee}
+ .empresas-editorial .empresa-necesidades a>span{display:grid}
+ .empresas-editorial #planes{padding-block:38px 24px}
+ .empresas-editorial .encabezado-seccion{gap:15px;margin-bottom:24px}
+ .empresas-editorial .planes-grid{grid-template-columns:1fr;gap:18px}
+ .empresas-editorial .plan{padding:25px;border-radius:17px}
+ .empresas-editorial .plan h3{font-size:1.85rem}
+ .empresas-editorial .plan-recomendado{top:30px;right:24px;font-size:.68rem}
+ .empresas-editorial .plan-frase{min-height:0}
+ .empresas-editorial .plan ul{margin-top:18px;padding-block:14px 22px}
+ .empresas-editorial .nota-planes{padding:17px;font-size:.81rem}
+ .empresas-editorial #servicios{padding-block:24px 38px}
+ .empresas-editorial .servicios-grid{grid-template-columns:1fr;gap:13px}
+ .empresas-editorial .servicio{padding:22px 18px;min-height:0;border-radius:15px;grid-template-columns:40px minmax(0,1fr) 20px;column-gap:15px}
+ .empresas-editorial .servicio-icono{width:40px;height:40px}
+ .empresas-editorial .servicio-flecha{right:16px;top:25px}
+ .empresas-editorial .proyectos{padding-block:32px 20px}
+ .empresas-editorial .proyecto-imagen{height:245px}
+ .empresas-editorial .proyecto>div:last-child{padding:22px}
+ .empresas-editorial .contacto{padding-block:35px}
+}
+
+/* Nosotros: identidad y proceso con el contenido existente. */
+.nosotros-pagina{background:#f4f7f9}
+.nosotros-pagina .area-hero{background:transparent;padding-bottom:0}
+.nosotros-pagina .area-ruta{padding-block:25px;font-size:.73rem;gap:13px}
+.nosotros-pagina .area-hero-grid{gap:0;grid-template-columns:1fr 1fr;align-items:stretch;background:#fff;border:1px solid #dfe7ed;border-radius:24px;overflow:hidden;box-shadow:0 12px 30px #17344a06}
+.nosotros-pagina .area-hero-grid>div{padding:46px 40px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.nosotros-pagina .area-hero h1{font-size:clamp(2.3rem,4vw,3.7rem);line-height:1.08;letter-spacing:-.045em}
+.nosotros-pagina .area-descripcion{font-size:.97rem;line-height:1.9;color:#587085;margin-block:24px 28px;max-width:510px}
+.nosotros-pagina .area-hero .boton{border-radius:11px;font-size:.85rem;padding:15px 19px}
+.nosotros-pagina .area-foto{height:auto;min-height:510px;border-radius:0;margin:0;box-shadow:none}
+.nosotros-pagina .area-foto img{object-position:56% center}
+.nosotros-pagina .area-foto figcaption{padding:70px 28px 25px;background:linear-gradient(transparent,#102b3de8);font-size:.8rem;line-height:1.6}
+.nosotros-pagina .nosotros-principios{padding-block:55px}
+.nosotros-pagina .nosotros-principios>h2{font-size:clamp(1.9rem,3.2vw,2.8rem);letter-spacing:-.04em;line-height:1.15;margin:18px 0 32px;max-width:650px}
+.nosotros-pagina .nosotros-principios>div{gap:20px}
+.nosotros-pagina .nosotros-principios article{position:relative;padding:28px;background:#fff;border:1px solid #dce6ee;border-radius:18px;box-shadow:0 5px 18px #17344a04}
+.nosotros-pagina .nosotros-principios article>span{display:grid;place-items:center;width:44px;height:44px;border:1px solid #cfdde7;border-radius:13px;background:#edf3f7;color:#406079;font-size:.77rem;margin-bottom:25px}
+.nosotros-pagina .nosotros-principios article:not(:last-child)::after{content:"";position:absolute;top:50px;left:calc(100% + 1px);width:20px;height:1px;background:#bacddb}
+.nosotros-pagina .nosotros-principios h3{font-size:1.22rem;line-height:1.45;letter-spacing:-.02em;margin-bottom:13px}
+.nosotros-pagina .nosotros-principios article p{font-size:.9rem;line-height:1.85;color:#587085;margin:0}
+.nosotros-pagina .contacto{background:transparent;border:0;padding-block:0 45px}
+.nosotros-pagina .contacto-grid{background:radial-gradient(ellipse at top right,#2b516b,transparent 65%),#142f43;border:1px solid #284c65;border-radius:22px;padding:35px 38px;gap:38px;color:white}
+.nosotros-pagina .contacto .etiqueta{color:#c3d5e2}
+.nosotros-pagina .contacto h2{font-size:clamp(1.9rem,3vw,2.6rem);line-height:1.15;letter-spacing:-.04em}
+.nosotros-pagina .contacto p:not(.etiqueta){color:#c2d3df;font-size:.94rem;line-height:1.8;margin-top:16px}
+.nosotros-pagina .contacto .enlace-azul{color:#e1ebf2}
+.nosotros-pagina .contacto .boton{border-radius:11px}
+@media(max-width:1050px){.nosotros-pagina .area-hero-grid>div{padding:32px 27px}.nosotros-pagina .area-foto{min-height:480px}.nosotros-pagina .nosotros-principios article{padding:23px}}
+@media(max-width:760px){
+ .nosotros-pagina .area-ruta{padding-block:19px;font-size:.67rem}
+ .nosotros-pagina .area-hero-grid{grid-template-columns:1fr;border-radius:18px}
+ .nosotros-pagina .area-hero-grid>div{padding:28px 23px}
+ .nosotros-pagina .area-hero h1{font-size:2.4rem}
+ .nosotros-pagina .area-descripcion{font-size:.9rem;line-height:1.85;margin-block:20px 24px}
+ .nosotros-pagina .area-hero .boton{width:100%;justify-content:space-between;font-size:.78rem;padding-inline:15px}
+ .nosotros-pagina .area-foto{min-height:330px}
+ .nosotros-pagina .area-foto figcaption{padding:65px 22px 22px;font-size:.76rem}
+ .nosotros-pagina .nosotros-principios{padding-block:36px}
+ .nosotros-pagina .nosotros-principios>h2{margin-bottom:25px}
+ .nosotros-pagina .nosotros-principios>div{grid-template-columns:1fr;gap:16px}
+ .nosotros-pagina .nosotros-principios article{padding:23px;border-radius:15px}
+ .nosotros-pagina .nosotros-principios article>span{margin-bottom:19px;width:38px;height:38px;border-radius:11px}
+ .nosotros-pagina .nosotros-principios article:not(:last-child)::after{top:100%;left:42px;width:1px;height:17px}
+ .nosotros-pagina .contacto{padding-bottom:30px}
+ .nosotros-pagina .contacto-grid{padding:26px 23px;gap:26px;border-radius:18px}
+ .nosotros-pagina .contacto .boton{width:100%;justify-content:space-between}
+}
+
+.pie-legales{display:flex;gap:22px;flex-wrap:wrap}.pie-legales a{font-size:.75rem;color:inherit;text-decoration:underline;text-underline-offset:4px}.pie-base{gap:20px;flex-wrap:wrap}@media(max-width:600px){.pie-legales{gap:12px 20px}}

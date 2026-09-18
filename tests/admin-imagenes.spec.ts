@@ -1,0 +1,24 @@
+import {test,expect} from '@playwright/test';
+test.describe.configure({mode:'serial'});
+for(const idioma of ['es','en'])test(`galería administrativa ${idioma}`,async({page,context})=>{
+ test.skip(!process.env.SG_PRUEBA_CLAVE,'Requiere cuenta local');
+ await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ await page.goto('/admin');await page.locator('[name=correo]').fill('lsanchez@sgsolutionscr.com');await page.locator('[name=clave]').fill(process.env.SG_PRUEBA_CLAVE!);await page.locator('main form button').click();await expect(page).toHaveURL(/\/panel$/);
+ await page.goto('/panel/contenido');await page.locator('.admin-item>summary').first().click();
+ const gestor=page.locator('.gestor-imagenes:visible').first();const fotos=gestor.locator('.gestor-foto');const inicial=await fotos.count();
+ await gestor.locator('input[type=file]').setInputFiles({name:'invalida.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg/>')});await expect(gestor.getByRole('alert')).toBeVisible();await expect(fotos).toHaveCount(inicial);
+ await gestor.locator('input[type=file]').evaluate((e:HTMLInputElement)=>{e.multiple=true;});
+ await gestor.locator('input[type=file]').setInputFiles(['public/imagenes/logo-principal.png','public/imagenes/logo-principal.png']);await expect(fotos).toHaveCount(inicial+2);
+ await fotos.last().getByRole('button',{name:idioma==='es'?'Usar de portada':'Set as cover',exact:true}).click();
+ await fotos.first().getByRole('button',{name:idioma==='es'?'Ver imagen':'View image',exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible();await page.getByRole('dialog').getByRole('button',{name:idioma==='es'?'Cerrar':'Close',exact:true}).click();
+ await gestor.getByRole('button',{name:idioma==='es'?'Deshacer':'Undo',exact:true}).click();
+ await fotos.last().getByRole('button',{name:idioma==='es'?'Quitar':'Remove',exact:true}).click();await expect(fotos).toHaveCount(inicial+1);
+ await gestor.getByRole('button',{name:idioma==='es'?'Deshacer':'Undo',exact:true}).click();await expect(fotos).toHaveCount(inicial+2);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();await gestor.scrollIntoViewIfNeeded();await page.screenshot({path:`evidencias/imagenes-${idioma}-${page.viewportSize()?.width}.png`});
+ await page.locator('.admin-actions button').first().click();await expect(page.locator('.admin-actions:visible [role=status]')).toHaveText(idioma==='es'?/guardad/i:/saved/i);
+ const publico=await context.newPage();await publico.goto('/casos-de-exito');await expect(publico.locator('.caso-galeria').first().locator('button')).toHaveCount(3);await publico.locator('.caso-galeria').first().locator('button').last().click();await expect(publico.getByRole('dialog')).toContainText(String(inicial+2));await publico.close();
+ await page.reload();await page.locator('.admin-item>summary').first().click();await expect(fotos).toHaveCount(inicial+2);
+ for(let i=0;i<2;i++)await fotos.last().getByRole('button',{name:idioma==='es'?'Quitar':'Remove',exact:true}).click();
+ await page.locator('.admin-actions button').first().click();await expect(page.locator('.admin-actions:visible [role=status]')).toHaveText(idioma==='es'?/guardad/i:/saved/i);
+ await page.goto('/panel/catalogo');await page.locator('.admin-item>summary').first().click();await expect(page.locator('.gestor-imagenes:visible').first()).toBeVisible();
+});

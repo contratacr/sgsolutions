@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import type { Contenido } from "@/lib/contenido-modelo";
 import { guardarContenido } from "@/app/panel/contenido/acciones";
+import {useCambiosAdmin} from '@/components/use-cambios-admin';
+import {GestorImagenes} from '@/components/gestor-imagenes';
 type Texto = { es: string; en: string };
 export function EditorContenido({
   inicial,
@@ -23,6 +25,9 @@ export function EditorContenido({
   const t = useTranslations("AdminContenido"),
     a = useTranslations("AdminCatalogo"),
     router = useRouter();
+  const [cargandoImagenes,setCargandoImagenes]=useState(false);
+ const {pendientes,confirmarGuardado}=useCambiosAdmin(datos);
+  const m=useTranslations('AdminImagenes');
   function bilingue(titulo: string, valor: Texto, cambiar: (v: Texto) => void) {
     return (["es", "en"] as const).map((l) => (
       <label key={l}>
@@ -47,6 +52,7 @@ export function EditorContenido({
         const r = await guardarContenido(datos, revision);
         if (r.error) setEstado(r.error);
         else {
+          confirmarGuardado();
           setRevision(r.revision!);
           setEstado("guardado");
           router.refresh();
@@ -66,7 +72,7 @@ export function EditorContenido({
           </button>
         ))}
       </div>
-      <fieldset disabled={ocupado} style={{ border: 0, padding: 0 }}>
+      <fieldset disabled={ocupado||cargandoImagenes} style={{ border: 0, padding: 0 }}>
         {tab === "casos" && (
           <>
             <button
@@ -119,63 +125,7 @@ export function EditorContenido({
                     </div>
                   ))}
                 </div>
-                {c.fotos.map((f, j) => (
-                  <div className="admin-item" key={j}>
-                    <label>
-                      {t("imagen")}
-                      <input
-                        value={f.src}
-                        onChange={(e) =>
-                          caso(i, {
-                            fotos: c.fotos.map((x, k) =>
-                              k === j ? { ...x, src: e.target.value } : x,
-                            ),
-                          })
-                        }
-                      />
-                    </label>
-                    <div className="admin-fields">
-                      {bilingue(t("alt"), f.alt, (v) =>
-                        caso(i, {
-                          fotos: c.fotos.map((x, k) =>
-                            k === j ? { ...x, alt: v } : x,
-                          ),
-                        }),
-                      )}
-                      {bilingue(t("caption"), f.caption, (v) =>
-                        caso(i, {
-                          fotos: c.fotos.map((x, k) =>
-                            k === j ? { ...x, caption: v } : x,
-                          ),
-                        }),
-                      )}
-                    </div>
-                    <button
-                      onClick={() =>
-                        caso(i, { fotos: c.fotos.filter((_, k) => k !== j) })
-                      }
-                    >
-                      {a("quitar")}
-                    </button>
-                  </div>
-                ))}
-                <button
-                  className="boton boton-contorno"
-                  onClick={() =>
-                    caso(i, {
-                      fotos: [
-                        ...c.fotos,
-                        {
-                          src: "",
-                          alt: { es: "", en: "" },
-                          caption: { es: "", en: "" },
-                        },
-                      ],
-                    })
-                  }
-                >
-                  {t("nuevaFoto")}
-                </button>
+                <GestorImagenes onBusy={setCargandoImagenes} fotos={c.fotos} descripciones cambiar={fotos=>caso(i,{fotos:fotos.map(f=>({src:f.src,alt:{es:f.alt?.es||c.cliente,en:f.alt?.en||c.cliente},caption:{es:f.caption?.es||c.cliente,en:f.caption?.en||c.cliente}}))})}/>
                 <button
                   className="boton boton-contorno"
                   onClick={() =>
@@ -268,12 +218,12 @@ export function EditorContenido({
       <div className="admin-actions">
         <button
           className="boton boton-azul"
-          disabled={ocupado}
+          disabled={ocupado||cargandoImagenes}
           onClick={guardar}
         >
           {a(ocupado ? "guardando" : "guardar")}
         </button>
-        <span role="status">{estado ? a(estado) : a("notaGuardar")}</span>
+        <span role="status">{estado && estado !== "guardado" ? a(estado) : pendientes ? m("pendientes") : estado ? a(estado) : a("notaGuardar")}</span>
       </div>
     </div>
   );

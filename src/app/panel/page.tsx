@@ -3,16 +3,17 @@ import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { crearClienteServidor } from '@/lib/supabase/servidor';
 import { cerrarSesion } from '@/app/acceso/acciones';
+import {sesionLocal} from '@/lib/admin-local';
 export const metadata = {robots: {index: false, follow: false}};
 export default async function Panel() {
   const cliente = await crearClienteServidor();
-  if (!cliente) redirect('/acceso');
-  const {data: {user}} = await cliente.auth.getUser();
-  if (!user) redirect('/acceso');
-  const {data: perfil} = await cliente.from('perfiles').select('id,rol,activo').eq('id', user.id).eq('activo', true).maybeSingle();
+  const local=await sesionLocal();
+  if (!cliente&&!local) redirect('/admin');
+  const {data: {user}} = cliente?await cliente.auth.getUser():{data:{user:null}};
+  if (!user&&!local) redirect('/admin');
+  const {data: perfil} = local?{data:local}:await cliente!.from('perfiles').select('id,rol,activo').eq('id', user!.id).eq('activo', true).maybeSingle();
   const acceso = await getTranslations('Acceso');
   if (!perfil) return <main id="contenido" className="contenedor seccion"><h1>{acceso('sinPermiso')}</h1><form action={cerrarSesion}><button className="boton boton-azul">{acceso('salir')}</button></form></main>;
   const t = await getTranslations('Panel');
-  const modulos = perfil.rol === 'administrador' ? ['clientes','cotizaciones','pedidos','productos','ajustes'] : ['clientes','cotizaciones','pedidos'];
-  return <main id="contenido" className="contenedor seccion"><div className="panel-cabecera"><h1>{t('titulo')}</h1><form action={cerrarSesion}><button className="boton boton-contorno">{acceso('salir')}</button></form></div><p>{t('descripcion')}</p>{perfil.rol==='administrador' && <Link className="boton boton-azul" href="/panel/catalogo">{t('productos')}</Link>}{perfil.rol==='administrador' && <Link className="boton boton-contorno" href="/panel/contenido">{t('contenido')}</Link>}<div className="panel-grid">{modulos.map(modulo => <article key={modulo}><h2>{t(modulo)}</h2><p>{t(`${modulo}Detalle`)}</p><span>{t('pendiente')}</span></article>)}</div></main>;
+  return <main id="contenido" className="contenedor seccion panel-inicio"><div className="panel-cabecera"><div><p className="etiqueta">{acceso('etiqueta')}</p><h1>{t('titulo')}</h1><p>{local?.correo??user?.email}</p></div></div><p className="panel-descripcion">{t('descripcion')}</p>{local&&<p className="panel-aviso" role="status">{t('pruebaLocal')}</p>}{perfil.rol==='administrador'&&<div className="panel-modulos"><Link href="/panel/catalogo"><h2>{t('productos')}</h2><p>{t('productosDetalle')}</p></Link><Link href="/panel/contenido"><h2>{t('contenido')}</h2><p>{t('contenidoDetalle')}</p></Link></div>}<Link className="boton boton-contorno" href="/">{t('verSitio')}</Link></main>;
 }

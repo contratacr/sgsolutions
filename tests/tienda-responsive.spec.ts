@@ -11,6 +11,9 @@ test('tarjetas alineadas y desplazamiento móvil en ambos idiomas',async({page},
   // También deben cargar los logos fuera de pantalla antes de entrar en la cinta.
   await expect.poll(()=>page.locator('.marca-logo img').evaluateAll(imgs=>imgs.every(img=>(img as HTMLImageElement).complete&&(img as HTMLImageElement).naturalWidth>0))).toBe(true);
   await expect(page.locator('.marcas-pista')).toHaveCSS('animation-name','marcas-deslizar');
+  // Measure final geometry, rather than the staggered scroll entrance frames.
+  await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();
+  await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);
   const posiciones=await page.locator('.shop-producto').evaluateAll(es=>es.slice(0,3).map(e=>({precio:e.querySelector('.shop-precio')!.getBoundingClientRect().y,boton:e.querySelector('button')!.getBoundingClientRect().y})));
   for(const posicion of posiciones){expect(Math.abs(posicion.precio-posiciones[0].precio)).toBeLessThan(1);expect(Math.abs(posicion.boton-posiciones[0].boton)).toBeLessThan(1);}
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

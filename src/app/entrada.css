@@ -103,3 +103,86 @@
 .portal{background:radial-gradient(ellipse at 82% 12%,#204a724a,transparent 46%),#081725}.portal-atmosfera{height:510px!important;top:0!important;opacity:1!important}.portal .escena-canvas{mix-blend-mode:normal}.portal-presentacion{grid-template-columns:minmax(0,760px);min-height:330px;padding-bottom:36px}.portal h1{max-width:800px;font-size:clamp(3rem,5.5vw,5.1rem)}.portal-introduccion{max-width:560px;margin-top:26px}.portal-introduccion>p{font-size:1rem}.portal-introduccion>span{font-size:.78rem;margin-top:14px}.portal-menu{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.portal-tarjeta{border-radius:24px;background:linear-gradient(140deg,#244665,#0c2033);box-shadow:0 3px 0 #ffffff08 inset,0 18px 36px #0003}.portal-tarjeta-base{font-size:.85rem}.portal-tarjeta p{font-size:.85rem}.portal-categoria{font-size:.65rem}.portal-flecha{width:40px;height:40px}.portal-flecha:hover{box-shadow:0 0 26px #ff813444}
 @media(max-width:899px){.portal-presentacion{min-height:0;padding-bottom:30px}.portal h1{font-size:clamp(2.45rem,9vw,4.4rem)}.portal-introduccion{display:block;margin-top:20px;max-width:90%}.portal-introduccion>p{font-size:.9rem}.portal-introduccion>span{display:none}.portal-atmosfera{opacity:.42!important;right:-20%;width:120%}.portal-menu{grid-template-columns:1fr;gap:13px}.portal-tarjeta{height:135px;border-radius:18px}.portal-tarjeta p{display:block;font-size:.75rem;margin-top:8px;max-width:240px}.portal-tarjeta h2{font-size:1.3rem}.portal-tarjeta-base{font-size:.72rem;margin-top:8px}.portal-flecha{width:32px;height:32px}.portal-base{flex-wrap:wrap}.portal-tarjeta-contenido{padding-right:54px}}
 .portal-presentacion{pointer-events:none}
+
+/* Menú de acceso: consola compacta con tres destinos equivalentes. */
+.portal .escenario-controles { display: none; }
+.portal .portal-atmosfera { top:-92px!important; bottom:0; height:auto!important; }
+.portal .escena-grafico { inset:-4% -9% -10% -8%; mask-image:linear-gradient(to bottom,#000 0,#000 82%,transparent 100%); }
+.lazos-respaldo { transform-box:fill-box; transform-origin:center; animation:lazos-inmediatos 4.8s ease-in-out infinite alternate; }
+.lazos-respaldo path { animation:luz-en-lazos 2.8s ease-in-out infinite alternate; }
+.lazos-respaldo .lazo-naranja { animation-duration:2.2s; }
+@keyframes lazos-inmediatos { from { transform:translate3d(-4px,3px,0) skewX(-.35deg); } to { transform:translate3d(6px,-5px,0) skewX(.45deg); } }
+@keyframes luz-en-lazos { from { opacity:.42; } to { opacity:.78; } }
+.portal-interior { padding-bottom: 68px; }
+.portal-presentacion { grid-template-columns: minmax(0,1fr) 310px; min-height: 0; padding-bottom: 48px; pointer-events: none; }
+.portal-menu-cabecera { justify-content: flex-start; gap: 12px; font-weight: 520; }
+.portal-menu-cabecera::before { content: ""; width: 25px; height: 2px; border-radius: 2px; background: #f05a28; box-shadow: 0 0 14px #f05a2866; }
+.portal-menu { position: relative; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1px; overflow: hidden; padding: 1px; border: 1px solid #9fc3dc32; border-radius: 22px; background: #b7d6eb24; box-shadow: 0 24px 60px #0003, inset 0 1px #fff1; }
+.portal-tarjeta-marco { perspective: none; }
+.portal-menu .portal-tarjeta { height: 232px; border: 0; border-radius: 0; background: #0a1d2d; box-shadow: none; transform: none !important; transition: background .4s cubic-bezier(.2,.8,.2,1); }
+.portal-menu .portal-tarjeta::after { content: ""; position: absolute; inset: auto 24px 0; height: 2px; z-index: 4; background: linear-gradient(90deg,#f05a28,#ffab87); transform: scaleX(0); transform-origin: left; transition: transform .42s cubic-bezier(.2,.8,.2,1); }
+.portal-menu .portal-tarjeta:hover,.portal-menu .portal-tarjeta:focus-visible { background: #10283d; box-shadow: none; }
+.portal-menu .portal-tarjeta:hover::after,.portal-menu .portal-tarjeta:focus-visible::after,.portal-menu .portal-tarjeta[data-activa="true"]::after { transform: scaleX(1); }
+.portal-menu .portal-foto { left: 48%; opacity: .52; transition: opacity .5s,transform .65s cubic-bezier(.2,.8,.2,1); }
+.portal-menu .portal-foto img { filter: saturate(.6) contrast(1.04); transform: scale(1.02); }
+.portal-menu .portal-tarjeta:hover .portal-foto,.portal-menu .portal-tarjeta:focus-visible .portal-foto { opacity: .88; transform: translateX(-4%); }
+.portal-menu .portal-tarjeta:hover .portal-foto img,.portal-menu .portal-tarjeta:focus-visible .portal-foto img { transform: scale(1.065); filter: saturate(.95) contrast(1.04); }
+.portal-menu .portal-velo { background: linear-gradient(90deg,#091c2d 0%,#091c2df6 38%,#091c2db9 67%,#091c2d50 100%); }
+.portal-menu .portal-tarjeta-cabecera { padding: 22px 24px; }
+.portal-menu .portal-icono { width: 40px; height: 40px; border-radius: 12px; background: #102b43d9; border-color: #a7d5f14a; box-shadow: inset 0 1px #fff2,0 8px 24px #0004; }
+.portal-menu .portal-numero { color: #c5d7e6; }
+.portal-menu .portal-tarjeta-contenido { padding: 0 24px 22px; }
+.portal-menu .portal-categoria { font-size: .54rem; }
+.portal-menu .portal-tarjeta h2 { margin-top: 8px; font-size: clamp(1.35rem,2vw,1.72rem); white-space: nowrap; }
+.portal-menu .portal-tarjeta p { max-width: 270px; margin-top: 9px; font-size: .72rem; }
+.portal-menu .portal-tarjeta-base { margin-top: 15px; padding-top: 13px; min-height: 44px; font-size: .7rem; }
+.portal-menu .portal-flecha { width: 34px; height: 34px; background: #ffffff0c; }
+.portal-menu .portal-tienda .portal-flecha { background: #ffffff0c; color: #f0f6fa; border-color: #ffffff20; }
+ .portal-menu .portal-tarjeta[data-activa="true"] .portal-flecha,.portal-menu .portal-tarjeta:hover .portal-flecha,.portal-menu .portal-tarjeta:focus-visible .portal-flecha { background: #f05a28; color: #101e2b; border-color: #f05a28; transform:translate(4px,-4px) rotate(45deg); }
+@media (max-width:1100px) and (min-width:900px) {
+ .portal-menu { gap:1px; }
+ .portal-menu .portal-tarjeta-contenido { padding-inline:18px; }
+ .portal-menu .portal-tarjeta-cabecera { padding-inline:18px; }
+ .portal-menu .portal-tarjeta h2 { font-size:1.35rem; }
+}
+@media (max-width:899px) {
+ .portal-presentacion { min-height:0; padding-bottom:26px; }
+ .portal-introduccion { display:block; margin-top:20px; }
+ .portal-menu { display:grid; grid-template-columns:1fr; gap:1px; padding:1px; border-radius:18px; background:#b7d6eb24; }
+ .portal-menu .portal-tarjeta { height:126px; border-radius:0; }
+ .portal-menu .portal-tarjeta-marco:first-child .portal-tarjeta { border-radius:16px 16px 0 0; }
+ .portal-menu .portal-tarjeta-marco:last-child .portal-tarjeta { border-radius:0 0 16px 16px; }
+ .portal-menu .portal-foto { left:38%; }
+ .portal-menu .portal-tarjeta-contenido { padding:15px 58px 15px 62px; }
+ .portal-menu .portal-tarjeta h2 { font-size:1.16rem; white-space:nowrap; }
+ .portal-menu .portal-tarjeta p,.portal-menu .portal-categoria { display:none; }
+ .portal-menu .portal-tarjeta-base { margin-top:8px; padding:0; min-height:0; border:0; }
+ .portal-menu .portal-tarjeta-cabecera { inset:0; padding:0; }
+ .portal-menu .portal-icono { left:16px; top:18px; width:30px; height:30px; }
+ .portal-menu .portal-numero { display:none; }
+ .portal-menu .portal-flecha { right:15px; top:calc(50% - 16px); }
+ .portal-menu .portal-tarjeta::after { inset-inline:16px; }
+}
+
+/* Cada destino muestra la fotografía completa y separa claramente la acción. */
+@media (min-width:900px) {
+ .portal-menu { overflow:visible; gap:14px; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+ .portal-menu .portal-tarjeta { height:264px; overflow:hidden; border:1px solid #a7cce338; border-radius:19px; background:#0a1d2d; box-shadow:0 14px 38px #0003,inset 0 1px #fff1; }
+ .portal-menu .portal-tarjeta::after { inset-inline:22px; }
+ .portal-menu .portal-foto { inset:0 0 auto; height:116px; opacity:.88; transform:none; }
+ .portal-menu .portal-foto img { object-fit:cover; object-position:center; filter:saturate(.78) contrast(1.04); transform:scale(1.015); }
+ .portal-menu .portal-tarjeta:hover .portal-foto,.portal-menu .portal-tarjeta:focus-visible .portal-foto { opacity:1; transform:none; }
+ .portal-menu .portal-tarjeta:hover .portal-foto img,.portal-menu .portal-tarjeta:focus-visible .portal-foto img { transform:scale(1.05); filter:saturate(1) contrast(1.04); }
+ .portal-menu .portal-velo { background:linear-gradient(180deg,#07152218 0,#07152225 70px,#0a1d2d 116px,#0a1d2d 100%); }
+ .portal-menu .portal-tarjeta-cabecera { position:absolute; inset:0; z-index:2; padding:18px 20px; align-items:flex-start; pointer-events:none; }
+ .portal-menu .portal-icono { background:#091d31dd; }
+ .portal-menu .portal-tarjeta-contenido { position:relative; z-index:2; display:flex; flex-direction:column; justify-content:flex-end; height:100%; padding:126px 22px 18px; }
+ .portal-menu .portal-categoria { display:none; }
+ .portal-menu .portal-tarjeta h2 { margin:0; font-size:clamp(1.28rem,1.7vw,1.58rem); }
+ .portal-menu .portal-tarjeta p { min-height:36px; margin-top:7px; line-height:1.45; }
+ .portal-menu .portal-tarjeta-base { min-height:38px; margin-top:8px; padding-top:10px; }
+}
+
+
+/* Original luminous shader, drawn immediately after canvas sizing. */
+.escena-original .escena-canvas{opacity:1;transition:none}

@@ -2,3 +2,58 @@
 @media(max-width:900px){.historia-cabecera{gap:30px}.historia-foto{height:360px}.historia-foto-pie{padding:45px 15px 18px;font-size:.78rem}}
 @media(max-width:600px){.historia-cabecera{grid-template-columns:1fr;gap:16px;margin-bottom:20px}.historia-descripcion{font-size:.9rem}.historias .historia-fotos,.historias .historia-fotos[data-total="2"]{grid-template-columns:1fr 1fr;gap:9px}.historia-foto:first-child{grid-column:1/-1;height:350px}.historia-foto{height:225px}.historia-fotos[data-total="2"] .historia-foto:last-child{grid-column:1/-1;height:300px}.historia-foto-pie{font-size:.76rem}.historia-cierre{flex-direction:column;align-items:start;gap:20px}.historias .casos-lista{gap:48px}.historia-visor{inset:3dvh 4vw}.historia-visor-pie p{font-size:.8rem}.historia-categoria{font-size:.62rem}}
 @media(prefers-reduced-motion:reduce){.historia-foto img{transition:none}.historia-foto:hover img{transform:none}}
+
+/* Fichas editoriales: mismas fotografías y contenido. */
+.historias{background:#f2f5f7;padding-top:28px}
+.historias .casos-intro{position:relative;padding:36px 40px;margin-bottom:32px;background:#fff;border:1px solid #dde6ed;border-radius:22px;display:grid;grid-template-columns:1.2fr 1fr;gap:18px 55px;align-items:end}
+.historias .casos-intro::after{display:none}
+.historias .casos-intro .etiqueta{grid-column:1/-1;margin:0}
+.historias .casos-intro h1{font-size:clamp(2.4rem,4.3vw,3.8rem);line-height:1.08;letter-spacing:-.05em;margin:0}
+.historias .casos-intro>p:last-child{font-size:.97rem;line-height:1.8;color:#607589;margin:0;max-width:510px}
+.historias .casos-lista{gap:32px;padding-bottom:38px}
+.historias .caso{background:#fff;border:1px solid #dce5ec;border-radius:22px;padding:32px;box-shadow:0 8px 25px #17364d05;overflow:hidden}
+.historias .historia-cabecera{grid-template-columns:1fr 1fr;gap:42px;align-items:start;margin-bottom:26px}
+.historias .historia-categoria{font-size:.63rem;letter-spacing:.12em;gap:12px;line-height:1.6;margin:0;color:#567087}
+.historias .historia-categoria>span{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;border-radius:10px;background:#edf3f7;color:#b9512b;font-size:.72rem}
+.historias .historia-cabecera h2{font-size:clamp(1.9rem,3vw,2.8rem);letter-spacing:-.045em;line-height:1.12;margin:18px 0 12px}
+.historias .historia-cabecera h3{font-size:1rem;line-height:1.65;color:#426078;max-width:490px}
+.historias .historia-descripcion{font-size:.93rem;line-height:1.85;margin:4px 0 0;padding-left:26px;border-left:2px solid #e7eef3;color:#607487;max-width:none}
+.historias .historia-fotos{gap:12px;grid-template-columns:1fr 1fr 1fr}
+.historias .historia-fotos[data-total="2"]{grid-template-columns:1fr 1fr}
+.historias .historia-foto{height:410px;border-radius:13px;background:#e9eef2;box-shadow:none}
+.historias .historia-foto-pie{padding:65px 20px 20px;background:linear-gradient(transparent,#071c2bdd);font-size:.83rem;line-height:1.55;align-items:center}
+.historias .historia-foto-pie>svg{box-sizing:content-box;padding:9px;border:1px solid #ffffff65;border-radius:50%;background:#ffffff12}
+.historias .historia-cierre{margin-top:18px;padding:20px 22px;background:#f1f5f8;border:1px solid #e3ebf0;border-radius:12px;gap:25px}
+.historias .historia-cierre p{margin:0;font-size:.62rem;letter-spacing:.12em}
+.historias .historia-cierre p span{margin-top:7px;font-size:.88rem;line-height:1.7;color:#34536b}
+.historias .historia-cierre a{padding:11px 14px;border:1px solid #d1dfe9;border-radius:9px;background:white;font-size:.8rem;min-height:44px;color:#23465f}
+.historias .casos-cta{padding:32px 36px;margin-bottom:45px;background:#173449;color:white;border-color:#284c65;border-radius:20px;gap:30px}
+.historias .casos-cta h2{font-size:clamp(1.8rem,3vw,2.5rem);line-height:1.2;margin-bottom:12px}
+.historias .casos-cta p{color:#c2d3df;line-height:1.8;font-size:.95rem}
+.historias .casos-cta .boton{border-radius:10px;flex-shrink:0}
+.historia-visor-cabecera{padding:12px 16px;background:#ffffff08;border:1px solid #ffffff16;border-radius:14px}
+.historia-visor-pie{padding:10px 16px;background:#ffffff08;border:1px solid #ffffff16;border-radius:14px}
+@media(hover:hover){.historias .historia-cierre a:hover{background:#e6eff5;border-color:#a3bccd}}
+@media(max-width:900px){.historias .casos-intro{gap:22px;padding:28px}.historias .caso{padding:24px}.historias .historia-cabecera{gap:25px}.historias .historia-foto{height:330px}.historias .historia-cierre{align-items:start;flex-direction:column;gap:15px}}
+@media(max-width:600px){
+ .historias{padding-top:18px}
+ .historias .casos-intro{display:block;padding:26px 23px;border-radius:18px;margin-bottom:22px}
+ .historias .casos-intro h1{font-size:2.35rem;margin:18px 0}
+ .historias .casos-intro>p:last-child{font-size:.9rem;line-height:1.75}
+ .historias .casos-lista{gap:22px;padding-bottom:28px}
+ .historias .caso{padding:19px;border-radius:17px}
+ .historias .historia-cabecera{grid-template-columns:1fr;gap:18px;margin-bottom:20px}
+ .historias .historia-categoria{font-size:.59rem;letter-spacing:.08em}
+ .historias .historia-cabecera h2{font-size:1.95rem}
+ .historias .historia-cabecera h3{font-size:.92rem}
+ .historias .historia-descripcion{padding:0;border:0;margin:0;font-size:.88rem;line-height:1.8}
+ .historias .historia-fotos,.historias .historia-fotos[data-total="2"]{grid-template-columns:1fr;gap:12px}
+ .historias .historia-foto,.historias .historia-foto:first-child,.historias .historia-fotos[data-total="2"] .historia-foto:last-child{grid-column:auto;height:320px;border-radius:11px}
+ .historias .historia-foto-pie{font-size:.8rem;padding:55px 15px 16px}
+ .historias .historia-cierre{padding:17px;margin-top:15px}
+ .historias .historia-cierre a{white-space:normal;width:100%;justify-content:space-between;font-size:.78rem}
+ .historias .historia-cierre p span{font-size:.84rem}
+ .historias .casos-cta{padding:26px 23px;border-radius:17px;margin-bottom:30px}
+ .historias .casos-cta .boton{width:100%;justify-content:space-between}
+ .historia-visor-cabecera,.historia-visor-pie{padding:10px;gap:10px}
+}

@@ -69,7 +69,7 @@ test("contenido valida imágenes y protege administrador", async ({ page }) => {
   malo.casos[0].fotos[0].src = "javascript:alert(1)";
   expect(esquemaContenido.safeParse(malo).success).toBe(false);
   await page.goto("/panel/contenido");
-  await expect(page).toHaveURL(/\/acceso/);
+  await expect(page).toHaveURL(/\/admin/);
   await page.goto("/tienda/no-existe");
   await expect(page.locator("main")).toBeVisible();
 });

@@ -6,23 +6,25 @@ import { esquemaContenido } from "@/lib/contenido-modelo";
 import { EditorContenido } from "@/components/editor-contenido";
 import es from "../../../../messages/es.json";
 import en from "../../../../messages/en.json";
+import {sesionLocal,leerLocal} from '@/lib/admin-local';
 export const metadata = { robots: { index: false, follow: false } };
 export default async function Pagina() {
+  const local=await sesionLocal();
   const c = await crearClienteServidor();
-  if (!c) redirect("/acceso");
+  if (!local && !c) redirect("/admin");
   const {
     data: { user },
-  } = await c.auth.getUser();
-  if (!user) redirect("/acceso");
-  const { data: perfil } = await c
+  } = c?await c.auth.getUser():{data:{user:null}};
+  if (!local && !user) redirect("/admin");
+  const { data: perfil } = c&&user?await c
     .from("perfiles")
     .select("rol")
     .eq("id", user.id)
     .eq("activo", true)
-    .maybeSingle();
+    .maybeSingle():{data:local};
   if (perfil?.rol !== "administrador") redirect("/panel");
   const t = await getTranslations("AdminContenido");
-  const { data, error } = await c
+  const { data, error } = local?{data:await leerLocal('contenido'),error:null}:await c!
     .from("contenido_privado")
     .select("contenido,revision")
     .eq("id", 1)

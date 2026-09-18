@@ -1,0 +1,15 @@
+.estado-pagina{width:100%;display:grid;place-items:center;padding:64px 24px 80px;background:radial-gradient(ellipse at 50% 10%,#e7f0f7,transparent 60%),#f7f9fb;min-height:560px}
+.estado-panel{max-width:700px;text-align:center;margin:auto}
+.estado-ilustracion{height:148px;position:relative;display:grid;place-items:center;margin-bottom:28px}
+.estado-orbita{position:absolute;width:138px;height:138px;border:1px solid #aec5d6;border-radius:50%;box-shadow:0 0 0 18px #dae6ee50}
+.estado-simbolo{display:grid;place-items:center;width:94px;height:94px;background:#fff;border:1px solid #d8e4ed;border-radius:28px;color:#365d7a;box-shadow:0 15px 35px #23415b14;transform:rotate(-6deg)}
+.estado-codigo{position:absolute;bottom:1px;left:calc(50% + 25px);padding:6px 12px;background:#f05a28;color:#fff;border-radius:9px;font:600 16px ui-monospace,monospace;box-shadow:0 5px 12px #f05a2825}
+.estado-etiqueta{font-size:.72rem;letter-spacing:.19em;color:#58758d;font-weight:600;margin-bottom:17px}
+.estado-pagina h1{font-size:clamp(2rem,4vw,3.4rem);line-height:1.12;letter-spacing:-.045em;color:#173149;margin:0 auto;max-width:660px}
+.estado-descripcion{color:#647b8d;font-size:1rem;line-height:1.8;max-width:510px;margin:22px auto 0}
+.estado-acciones{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:32px}.estado-acciones .boton{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px}
+.estado-carga{display:block;width:42px;height:42px;border:3px solid #dae5ed;border-top-color:#3b6686;border-radius:50%;margin:0 auto 30px;animation:estado-girar 1.1s linear infinite}
+.estado-inline{text-align:center;border:1px solid #d7e3ec;background:#fff;border-radius:18px;padding:40px 24px;margin:20px 0}.estado-inline p{margin-bottom:20px}.estado-inline .boton{justify-content:center}
+@keyframes estado-girar{to{transform:rotate(360deg)}}
+@media(max-width:600px){.estado-pagina{padding:45px 22px 55px;min-height:490px}.estado-acciones{flex-direction:column}.estado-acciones .boton{width:100%}.estado-descripcion{font-size:.94rem}}
+@media(prefers-reduced-motion:reduce){.estado-carga{animation:none}}

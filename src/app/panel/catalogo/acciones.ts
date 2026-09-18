@@ -2,7 +2,12 @@
 import {revalidatePath} from 'next/cache';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
 import {esquemaCatalogo,publicarCatalogo} from '@/lib/catalogo-modelo';
+import {adminLocalDisponible,guardarLocal} from '@/lib/admin-local';
 export async function guardarCatalogo(datos:unknown,revision:number){
+ if(await adminLocalDisponible()){
+  const p=esquemaCatalogo.safeParse(datos);if(!p.success||!Number.isInteger(revision)||revision<0)return {error:'validacion'};
+  const r=await guardarLocal('catalogo',p.data,revision);if(!r.error)revalidatePath('/','layout');return r;
+ }
  const cliente=await crearClienteServidor();
  if(!cliente) return {error:'noDisponible'};
  const {data:{user}}=await cliente.auth.getUser();

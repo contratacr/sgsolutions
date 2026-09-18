@@ -18,7 +18,7 @@
     "planes": "Planes de soporte",
     "tienda": "Tienda",
     "nosotros": "Nosotros",
-    "contacto": "Hablemos",
+    "contacto": "Contáctenos",
     "menu": "Abrir menú",
     "cerrar": "Cerrar",
     "carrito": "Abrir carrito",
@@ -56,7 +56,7 @@
     "servicio2Texto": "Cámaras y alarmas integradas a las necesidades de su casa o negocio.",
     "servicio3Titulo": "Equipo y soluciones",
     "servicio3Texto": "Computadoras, puntos de venta y accesorios elegidos con asesoría profesional.",
-    "servicioAccion": "Hablemos de su proyecto",
+    "servicioAccion": "Contáctenos para su proyecto",
     "proyectosEtiqueta": "TECNOLOGÍA EN ACCIÓN",
     "proyectosTitulo": "Del equipo correcto a una solución completa.",
     "proyecto0Titulo": "Su negocio, conectado y protegido",
@@ -229,13 +229,15 @@
     "frase": "Soluciones bien pensadas. Tecnología bien respaldada.",
     "derechos": "© {anio} SG Solutions.",
     "direccionTitulo": "Encuéntrenos en Atenas",
-    "contactoTitulo": "Conversemos",
-    "privacidad": "No ingrese información sensible en consultas por WhatsApp.",
+    "contactoTitulo": "Contáctenos",
+    "privacidad": "Política de Privacidad",
     "googleMaps": "Google Maps",
     "waze": "Waze",
     "redesTitulo": "Síganos",
     "instagram": "Instagram",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "terminos": "Términos y Condiciones",
+    "legal": "Información legal"
   },
   "Acceso": {
     "etiqueta": "ESPACIO DEL EQUIPO",
@@ -253,8 +255,11 @@
     "salir": "Cerrar sesión"
   },
   "Panel": {
-    "titulo": "Espacio comercial",
-    "descripcion": "La base del equipo está lista. Los módulos comerciales se habilitarán en las siguientes entregas.",
+    "titulo": "Administración",
+    "descripcion": "Administre los productos, los precios y el contenido de SG Solutions desde un solo lugar.",
+    "pruebaLocal": "Entorno de prueba local. Los cambios se guardan en este equipo y no modifican el sitio publicado.",
+    "contenidoDetalle": "Casos de éxito, fotografías, textos en español e inglés y datos para transferencias.",
+    "verSitio": "Ver el sitio",
     "clientes": "Clientes",
     "clientesDetalle": "Fichas e historial de atención.",
     "cotizaciones": "Cotizaciones",
@@ -269,6 +274,12 @@
     "contenido": "Contenido y casos de éxito"
   },
   "Error": {
+    "etiqueta": "SIGAMOS CONECTADOS",
+    "descripcion404": "El enlace puede haber cambiado o la página ya no existe. Puede volver al inicio o explorar nuestra tienda.",
+    "descripcion": "Ocurrió un problema al cargar el contenido. Intente de nuevo en unos momentos.",
+    "tienda": "Explorar la tienda",
+    "cargando": "Estamos preparando esta página",
+    "espera": "En un momento podrá continuar.",
     "titulo": "No pudimos cargar esta página.",
     "reintentar": "Volver a intentar",
     "noEncontrado": "Esta página no está disponible.",
@@ -304,7 +315,7 @@
     "explorar": "Descubra SG Solutions",
     "ubicacion": "Atenas, Costa Rica",
     "encontrarnos": "Encuéntrenos",
-    "conversemos": "Conversemos",
+    "conversemos": "Contáctenos",
     "maps": "Google Maps",
     "waze": "Waze"
   },
@@ -393,7 +404,8 @@
     "iva": "IVA incl.",
     "marca": "SG SOLUTIONS",
     "moneda": "CRC ₡",
-    "codigoFabricante": "Código de fabricante"
+    "codigoFabricante": "Código de fabricante",
+    "asesoriaMensaje": "Hola, me gustaría recibir asesoría para elegir un producto de la tienda SG Solutions."
   },
   "AdminCatalogo": {
     "titulo": "Administrar tienda",
@@ -453,7 +465,8 @@
     "galeria": "Galería: una URL por línea",
     "fichaTecnica": "URL de ficha técnica",
     "nuevaEspecificacion": "Agregar especificación",
-    "valor": "Valor"
+    "valor": "Valor",
+    "quitarEspecificacion": "Quitar especificación"
   },
   "ServiciosSoporte": {
     "etiqueta": "NUESTROS SERVICIOS",
@@ -591,7 +604,7 @@
     "pie3_1": "Infraestructura centralizada",
     "pie3_2": "Cobertura de red inalámbrica",
     "ctaTitulo": "¿Tiene un proyecto similar?",
-    "ctaTexto": "Conversemos sobre su espacio, su equipo y lo que necesita resolver.",
+    "ctaTexto": "Contáctenos para revisar su espacio, su equipo y lo que necesita resolver.",
     "cta": "Conversar sobre mi proyecto",
     "mensaje": "Hola, quisiera conversar sobre un proyecto similar a los que muestran en Casos de éxito.",
     "ver": "Ver casos de éxito",
@@ -745,5 +758,124 @@
     "sinpe": "Número SINPE",
     "banco": "Banco",
     "iban": "IBAN"
+  },
+  "Legal": {
+    "etiqueta": "Información legal",
+    "indice": "En esta página",
+    "actualizado": "Actualizado el 18 de septiembre de 2026",
+    "contacto": "Consultas y solicitudes",
+    "correo": "soporte@sgsolutionscr.com",
+    "direccion": "Plaza El Bosque, Atenas, Costa Rica.",
+    "nota": "Versión preparada para revisión antes de su publicación.",
+    "terminos": {
+      "titulo": "Términos y Condiciones",
+      "descripcion": "Condiciones para consultar productos, solicitar servicios y coordinar pedidos con SG Solutions.",
+      "secciones": {
+        "0": {
+          "titulo": "Quiénes somos y cómo contactarnos",
+          "texto": "SG Solutions ofrece equipos, asesoría y servicios tecnológicos en Costa Rica. Puede comunicarse con nosotros en soporte@sgsolutionscr.com, al 2446-7846 o por WhatsApp al +506 8939-5256. Nuestra atención presencial se encuentra en Plaza El Bosque, Atenas."
+        },
+        "1": {
+          "titulo": "Catálogo, precios y disponibilidad",
+          "texto": "Los precios publicados se expresan en colones costarricenses e incluyen IVA cuando así se indica. La disponibilidad con proveedor requiere confirmación. Las imágenes pueden mostrar variantes regionales; revise el código de fabricante y la ficha del producto. Antes de confirmar una compra, le comunicaremos el producto, precio total, impuestos, entrega y cualquier costo adicional. Si detectamos una diferencia o error, se lo informaremos para que decida antes de pagar; no sustituiremos el producto sin su autorización."
+        },
+        "2": {
+          "titulo": "Solicitudes y confirmación de pedidos",
+          "texto": "Agregar productos al carrito o revisar un formulario no constituye un pago ni una reserva. El sitio prepara una solicitud que usted revisa y envía por el canal indicado. SG Solutions confirmará disponibilidad y condiciones antes de coordinar la compra. No realice un pago hasta recibir esa confirmación. Estos pasos no limitan los derechos que puedan corresponderle por una oferta o contratación conforme a la legislación aplicable."
+        },
+        "3": {
+          "titulo": "Pagos, facturación y entrega",
+          "texto": "Actualmente se coordinan pagos mediante SINPE Móvil o transferencia bancaria, previa confirmación del pedido y del destinatario. El cobro con tarjeta en el sitio todavía no está habilitado y no solicitamos números de tarjeta ni códigos de seguridad. La forma de entrega o retiro, costo y plazo se acuerdan antes del pago. Los datos de facturación deben ser correctos. Un comprobante de transferencia requiere verificación del ingreso; no equivale por sí solo a confirmar la entrega."
+        },
+        "4": {
+          "titulo": "Garantías, devoluciones y reclamos",
+          "texto": "Los productos y servicios cuentan con los derechos de garantía que establece la legislación costarricense. Las condiciones específicas de garantía se informarán antes de la compra y en los documentos correspondientes. Para reportar un defecto, una entrega incorrecta o solicitar una devolución, escriba al correo de contacto con la referencia del pedido y una descripción del caso. Se aplicarán los derechos de retracto, reparación, sustitución o devolución que correspondan; estas condiciones no excluyen derechos legales ni obligan a tramitar el reclamo únicamente con el fabricante. Podrá presentar su solicitud por el canal utilizado para la contratación."
+        },
+        "5": {
+          "titulo": "Soporte y planes empresariales",
+          "texto": "Una consulta o solicitud de plan no activa automáticamente un servicio ni una suscripción. El diagnóstico, alcance, precio, horario, tiempos de respuesta, visitas, vigencia y condiciones de cancelación se detallarán en la propuesta aceptada. Un tiempo de respuesta no equivale a un plazo de resolución. Antes de intervenir equipos o acceder de forma remota se coordinará la autorización y el tratamiento de la información necesaria. Recomendamos mantener respaldos actualizados; esto no exime a SG Solutions de sus responsabilidades legales."
+        },
+        "6": {
+          "titulo": "Uso del sitio y contenidos",
+          "texto": "Utilice los formularios con información veraz y únicamente cuando tenga autorización para proporcionarla. No emplee el sitio para suplantación, acceso no autorizado o interferencia con el servicio. Las marcas, fotografías y contenidos pertenecen a sus respectivos titulares; su presencia no implica una afiliación adicional a la expresamente indicada. Los enlaces externos se rigen también por las condiciones de sus proveedores."
+        },
+        "7": {
+          "titulo": "Cambios y legislación aplicable",
+          "texto": "Estas condiciones se interpretan conforme a la legislación de Costa Rica. Las actualizaciones mostrarán su fecha y no modificarán retroactivamente las condiciones ya acordadas. Ninguna disposición supone renunciar a derechos del consumidor ni impide acudir a las autoridades competentes. El tratamiento de datos se explica en la Política de Privacidad."
+        }
+      }
+    },
+    "privacidad": {
+      "titulo": "Política de Privacidad",
+      "descripcion": "Cómo se utiliza la información al navegar, consultar productos o solicitar atención a SG Solutions.",
+      "secciones": {
+        "0": {
+          "titulo": "Responsable y contacto",
+          "texto": "SG Solutions recibe y gestiona las consultas comerciales y de soporte realizadas por sus canales de atención. Para consultas sobre privacidad o solicitudes relacionadas con sus datos, escriba a soporte@sgsolutionscr.com. Nuestra ubicación de atención es Plaza El Bosque, Atenas, Costa Rica."
+        },
+        "1": {
+          "titulo": "Información que usted proporciona",
+          "texto": "Según el formulario y su solicitud, podemos recibir nombre, correo, teléfono, empresa, datos de facturación, identificación, dirección de entrega, productos seleccionados y mensajes sobre el servicio requerido. Proporcione únicamente información necesaria y autorizada. No incluya contraseñas, números completos de tarjeta, códigos de seguridad ni datos sensibles en mensajes o formularios."
+        },
+        "2": {
+          "titulo": "Para qué se utiliza",
+          "texto": "Utilizamos la información para responder consultas, preparar cotizaciones, coordinar pedidos y entregas, facturar, atender soporte, garantías y reclamos, y cumplir obligaciones legales. Los campos obligatorios permiten atender la solicitud; si no los proporciona, algunas gestiones no podrán completarse. El envío de una consulta no constituye autorización para publicidad ajena a esa gestión. Cualquier finalidad adicional que requiera consentimiento deberá informarse por separado."
+        },
+        "3": {
+          "titulo": "Formularios y servicios externos",
+          "texto": "Los formularios actuales permiten revisar la solicitud antes de abrir WhatsApp o el correo con el mensaje preparado. Abrir esos enlaces comunica los datos del mensaje al proveedor del canal; debe completar el envío allí para que SG Solutions reciba la solicitud. WhatsApp, Microsoft Outlook, los mapas y las redes sociales aplican sus propias políticas y pueden tratar datos fuera de Costa Rica. No hay cobros con tarjeta activos en este sitio. Si se habilita una pasarela, se informará el proveedor y el tratamiento correspondiente antes de usarla."
+        },
+        "4": {
+          "titulo": "Cookies y almacenamiento del navegador",
+          "texto": "La cookie sg-idioma recuerda su idioma durante un máximo de un año. El carrito guarda identificadores y cantidades de productos en el almacenamiento local de su navegador, bajo sg-carrito-v1, hasta que lo vacíe o borre los datos del sitio. Los campos de los formularios se mantienen durante la interacción con la página. El acceso privado del equipo puede utilizar cookies de autenticación. Puede eliminar los datos desde su navegador, aunque perderá preferencias o sesiones. En la versión actual no se incorporan herramientas de publicidad o analítica de terceros al sitio."
+        },
+        "5": {
+          "titulo": "Acceso, proveedores y conservación",
+          "texto": "La información de una solicitud está destinada al personal que la atiende y, cuando sea necesario para cumplirla, a proveedores de entrega, soporte, correo o infraestructura. El alojamiento puede procesar datos técnicos de conexión, como dirección IP y registros de seguridad. No autoriza por sí mismo otros usos comerciales. La información se conserva mientras sea necesaria para la gestión y las obligaciones legales aplicables; las solicitudes de eliminación se valoran teniendo en cuenta esos deberes. Las comunicaciones quedan sujetas también a la conservación del canal que usted utilice."
+        },
+        "6": {
+          "titulo": "Sus derechos y cómo ejercerlos",
+          "texto": "Puede solicitar información sobre sus datos, acceso, rectificación, actualización, eliminación o revocación del consentimiento, según corresponda conforme a la Ley 8968. Escriba al correo de privacidad indicando su solicitud y un medio de respuesta. Podemos pedir la verificación mínima necesaria para evitar entregar datos a terceros. La revocación no elimina obligaciones legales de conservación. También puede acudir a la Agencia de Protección de Datos de los Habitantes (PRODHAB)."
+        },
+        "7": {
+          "titulo": "Seguridad y actualizaciones",
+          "texto": "El tratamiento debe limitarse a la finalidad informada y al acceso necesario para atenderla. Ningún canal de Internet está libre de riesgos; evite compartir información que no sea necesaria. Esta política se actualizará cuando cambien los servicios o el uso de los datos, mostrando la fecha de revisión. Los nuevos tratamientos que requieran consentimiento no se entenderán autorizados únicamente por publicar una actualización."
+        }
+      }
+    }
+  },
+  "AdminImagenes": {
+    "titulo": "Imágenes",
+    "ayuda": "Hasta {maximo} fotos. La primera es la portada. Puede cambiar el orden con las flechas.",
+    "portada": "Portada",
+    "foto": "Foto {numero}",
+    "verNumero": "Ver foto {numero}",
+    "ver": "Ver imagen",
+    "cambiar": "Cambiar",
+    "quitar": "Quitar",
+    "usarPortada": "Usar de portada",
+    "antes": "Mover foto {numero} antes",
+    "despues": "Mover foto {numero} después",
+    "describir": "Descripción de la foto",
+    "caption": "Texto bajo la foto",
+    "alt": "Descripción accesible",
+    "vacio": "Todavía no hay fotos. Agregue una desde su computadora o celular.",
+    "agregar": "Agregar fotos",
+    "deshacer": "Deshacer",
+    "usarUrl": "Agregar desde un enlace",
+    "url": "Enlace de la imagen",
+    "agregarUrl": "Agregar imagen",
+    "cargando": "Subiendo fotos…",
+    "guardarNota": "JPG, PNG o WebP · Máximo 8 MB por foto. Guarde los cambios para aplicarlos. Quitar una foto la retira de esta galería.",
+    "vistaCompleta": "Vista completa de la imagen",
+    "cerrar": "Cerrar",
+    "limite": "Puede agregar hasta {maximo} fotos. Para cambiar una foto, seleccione un solo archivo.",
+    "archivoInvalido": "Seleccione una imagen JPG, PNG o WebP de hasta 8 MB.",
+    "urlInvalida": "Use un enlace HTTPS válido o una ruta de imágenes del sitio.",
+    "errorCarga": "No se pudo subir la imagen. Intente nuevamente. En producción, el almacenamiento debe estar configurado.",
+    "sinPermiso": "Su sesión expiró o no tiene permiso. Ingrese nuevamente.",
+    "masFotos": "Ver las {total} fotos",
+    "pendientes": "Tiene cambios sin guardar.",
+    "salirSinGuardar": "Tiene cambios sin guardar. ¿Desea salir y perderlos?"
   }
 }

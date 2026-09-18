@@ -4,19 +4,22 @@ import { crearClienteServidor } from "@/lib/supabase/servidor";
 import es from "../../../../messages/es.json";
 import en from "../../../../messages/en.json";
 import { esquemaContenido } from "@/lib/contenido-modelo";
+import {adminLocalDisponible,sesionLocal,guardarLocal} from '@/lib/admin-local';
 export async function guardarContenido(datos: unknown, revision: number) {
+  const local=await adminLocalDisponible();
+  if(local&&!await sesionLocal())return {error:'sinPermiso'};
   const c = await crearClienteServidor();
-  if (!c) return { error: "noDisponible" };
+  if (!local&&!c) return { error: "noDisponible" };
   const {
     data: { user },
-  } = await c.auth.getUser();
-  if (!user) return { error: "sinPermiso" };
-  const { data: perfil } = await c
+  } = c?await c.auth.getUser():{data:{user:null}};
+  if (!local&&!user) return { error: "sinPermiso" };
+  const { data: perfil } = c&&user?await c
     .from("perfiles")
     .select("rol")
     .eq("id", user.id)
     .eq("activo", true)
-    .maybeSingle();
+    .maybeSingle():{data:local?{rol:'administrador'}:null};
   if (perfil?.rol !== "administrador") return { error: "sinPermiso" };
   const p = esquemaContenido.safeParse(datos);
   if (!p.success || !Number.isInteger(revision) || revision < 0)
@@ -40,7 +43,8 @@ export async function guardarContenido(datos: unknown, revision: number) {
         return { error: "validacion" };
     }
   }
-  const { data, error } = await c.rpc("guardar_contenido", {
+  if(local){const resultado=await guardarLocal('contenido',p.data,revision);if(!resultado.error)revalidatePath('/','layout');return resultado;}
+  const { data, error } = await c!.rpc("guardar_contenido", {
     privado: p.data,
     visible: { ...p.data, casos: p.data.casos.filter((x) => x.publicado) },
     revision_esperada: revision,

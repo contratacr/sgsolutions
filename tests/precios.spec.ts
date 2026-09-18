@@ -38,5 +38,5 @@ test('tienda mantiene CRC en inglés y ordena precios',async({page},prueba)=>{
  await page.getByRole('article').first().getByRole('button').click();
  await page.getByRole('button',{name:'Open cart'}).click();
  await expect(page.locator('.carrito-resumen')).toContainText('₡');
- await page.goto('/panel/catalogo');await expect(page).toHaveURL(/\/acceso/);
+ await page.goto('/panel/catalogo');await expect(page).toHaveURL(/\/admin/);
 });

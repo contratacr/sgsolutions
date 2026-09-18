@@ -558,5 +558,59 @@
   "ic-9176dadeb4dd102d0d83e794": {
     "mpn": "AP-850G",
     "origen": "https://skucentral-experience-api-prod.us-e1.cloudhub.io/api/image/AC060ASU12_ASUSAP_850G_Prime850WGold_Primera.jpg"
+  },
+  "ic-7728f1456d24780088b1fe8a": {
+    "mpn": "GY51S61915",
+    "origen": "https://p4-ofp.static.pub/ShareResource/560x450/SSNP/GY51S61914/GY51S61914-560x450-01.png",
+    "pagina": "https://support.lenovo.com/us/en/accessories/acc500418",
+    "verificacion": "Mismo ratón y color Breeze Moss; variante regional sin batería."
+  },
+  "ic-e2550ccea5bd449b26b43701": {
+    "mpn": "GY51S61912",
+    "origen": "https://p2-ofp.static.pub/ShareResource/560x450/SSNP/GY51S61911/GY51S61911-560x450-01.png",
+    "pagina": "https://support.lenovo.com/us/en/accessories/acc500418",
+    "verificacion": "Mismo ratón y color Meta Grape; variante regional sin batería."
+  },
+  "ic-477fa37b5a91014f91d31989": {
+    "mpn": "4X40T84059",
+    "origen": "https://p3-ofp.static.pub//fes/cms/2024/09/09/zjg3tpa1ysz28ce26z6zy97db56n5g145282.png",
+    "pagina": "https://www.lenovo.com/gb/en/p/accessories-and-software/cases-and-bags/backpacks/4x40t84059",
+    "verificacion": "MPN exacto."
+  },
+  "ic-0367fe8784252bdfe2574e0a": {
+    "mpn": "21R2S4EB00",
+    "origen": "https://p2-ofp.static.pub//fes/cms/2025/05/05/s48lfxhqg6n6x5vn6u0iooxkphewif382302.png",
+    "pagina": "https://www.lenovo.com/us/en/p/laptops/thinkpad/thinkpadt/lenovo-thinkpad-t14s-gen-6-14-inch-intel/21r1002vus",
+    "verificacion": "Imagen de familia ThinkPad T14s Gen 6 Intel, tipos 21R1/21R2; teclado regional puede variar."
+  },
+  "ic-e6289e1ca123cc96cfebffe8": {
+    "mpn": "13GN0049FJ",
+    "origen": "https://p1-ofp.static.pub//fes/cms/2025/08/14/4qy3htn01o2mxvddeufpfc3btg3wlz590166.png",
+    "pagina": "https://www.lenovo.com/us/en/p/desktops/thinkcentre/thinkcentre-neo-series/lenovo-thinkcentre-neo-55q-gen-6-amd-tiny-pc/len102c0077",
+    "verificacion": "Imagen oficial ThinkCentre neo 55q Gen 6; familia 13GN confirmada por Lenovo PSREF."
+  },
+  "ic-ef6d3d8f017f8e9f9549f3f7": {
+    "mpn": "83TD0039GJ",
+    "origen": "https://cdn.shopify.com/s/files/1/0656/1149/7709/files/1475940.webp?v=1788797481",
+    "pagina": "https://smart.cr/products/laptop-lenovo-yoga-14-amd-ryzen-ai-5-83td0039gj",
+    "verificacion": "MPN exacto en ficha de distribuidor."
+  },
+  "ic-5401f8ccf968cf2067fc04e8": {
+    "mpn": "83TD003AGJ",
+    "origen": "https://cdn.shopify.com/s/files/1/0656/1149/7709/files/1476051.webp?v=1788797483",
+    "pagina": "https://smart.cr/products/laptop-lenovo-yoga-7-14-pulgadas-ryzen-ai-7-83td003agj",
+    "verificacion": "MPN exacto en ficha de distribuidor."
+  },
+  "ic-f86c7cdfadd7e2ff31e563a5": {
+    "mpn": "12RQ003HFJ",
+    "origen": "https://cdn.shopify.com/s/files/1/0656/1149/7709/files/845405.jpg?v=1785429057",
+    "pagina": "https://www.unimart.com/products/lenovo-computadora-desktop-thinkcentre-m75q-gen-5-12rq003hfj",
+    "verificacion": "Mismo chasis M75q Gen 5, confirmado por MPN; imagen de variante Ryzen 7."
+  },
+  "ic-9738193915adbc990a1b8ce1": {
+    "mpn": "12RQ003JFJ",
+    "origen": "https://cdn.shopify.com/s/files/1/0656/1149/7709/files/845405.jpg?v=1785429057",
+    "pagina": "https://smart.cr/products/lenovo-thinkcentre-m75q-ryzen-7-pro-8700ge-512gb",
+    "verificacion": "MPN exacto en ficha de distribuidor."
   }
 }
