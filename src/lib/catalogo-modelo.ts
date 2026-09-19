@@ -1,5 +1,5 @@
 import {z} from 'zod';
-export const politicaPrecios = {cambio:500,adicional:0,iva:13,utilidad:12};
+export const politicaPrecios = {cambio:500,adicional:0,iva:13,utilidad:20};
 const texto = z.object({es:z.string().trim().min(1).max(2000),en:z.string().trim().min(1).max(2000)});
 const id = z.string().regex(/^[a-z0-9][a-z0-9-]{0,59}$/);
 const imagen = z.string().max(1000).refine(v => /^\/imagenes\/[a-zA-Z0-9._/-]+$/.test(v) || /^https:\/\/[^\s]+$/.test(v), 'imagen');
@@ -17,8 +17,7 @@ export type CatalogoAdmin=z.infer<typeof esquemaCatalogo>;
 export type Texto=CatalogoAdmin['textos']['titulo'];
 export function traducir(texto:Texto,idioma:string){return idioma==='en'?texto.en:texto.es;}
 export function redondearPrecio(precio:number){
-  const paso = precio < 50000 ? 500 : precio < 250000 ? 1000 : 5000;
-  return Math.ceil(precio / paso) * paso;
+  return Math.ceil(precio / 1000) * 1000;
 }
 export function calcularPrecio(costo:number|null,ajustes:CatalogoAdmin['ajustes'],manual:number|null=null,costoCrc:number|null=null){
   if(manual!==null) return Math.round(manual);

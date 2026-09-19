@@ -438,7 +438,7 @@
     "adicional": "Exchange adjustment (CRC)",
     "iva": "VAT (%)",
     "utilidad": "Markup on cost (%)",
-    "formula": "USD cost × (exchange rate + buffer) × (1 + VAT/100) × (1 + markup/100). Initial policy: 500 × 1.13 × 1.12. Round upward to ₡500 / ₡1,000 / ₡5,000 depending on range.",
+    "formula": "USD cost × (exchange rate + buffer) × (1 + VAT/100) × (1 + markup/100). Initial policy: 500 × 1.13 × 1.20. Round upward to the next multiple of ₡1,000.",
     "ejemplo": "Example with a $100 cost",
     "manualNota": "A manual price overrides the formula and is respected as the exact final price. Leave blank to calculate automatically.",
     "tituloTienda": "Store title",

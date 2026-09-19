@@ -438,7 +438,7 @@
     "adicional": "Adicional al cambio (CRC)",
     "iva": "IVA (%)",
     "utilidad": "Recargo sobre el costo (%)",
-    "formula": "Costo USD × (tipo de cambio + adicional) × (1 + IVA/100) × (1 + recargo/100). Política inicial: 500 × 1,13 × 1,12. Redondeo hacia arriba: ₡500 / ₡1.000 / ₡5.000 según el rango.",
+    "formula": "Costo USD × (tipo de cambio + adicional) × (1 + IVA/100) × (1 + recargo/100). Política inicial: 500 × 1,13 × 1,20. Redondeo hacia arriba al siguiente múltiplo de ₡1.000.",
     "ejemplo": "Ejemplo con costo de $100",
     "manualNota": "El precio manual sustituye la fórmula y se respeta como precio exacto. Dejar vacío para calcular automáticamente.",
     "tituloTienda": "Título de tienda",

@@ -188,6 +188,20 @@
 .escena-original .escena-canvas{opacity:1;transition:none}
 /* Keep the original ribbons in the narrow viewport instead of dimming/cropping them. */
 @media(max-width:899px){
- .portal .portal-atmosfera{opacity:.9!important;inset-inline:0;width:100%;bottom:auto;height:760px!important}
+ .portal .portal-atmosfera{opacity:.9!important;inset-inline:0;width:100%;bottom:-140px;height:auto!important}
  .portal .escena-grafico{inset:0 -4% 0 -16%;mask-image:linear-gradient(#000 70%,transparent)}
+}
+/* A single continuous scene remains visible through the menu surfaces. */
+.portal-menu{background:transparent}
+.portal-menu .portal-tarjeta{background:#0a1d2d70}
+.portal-menu .portal-tarjeta:hover,.portal-menu .portal-tarjeta:focus-visible{background:#10283d85}
+@media(min-width:900px){
+ .portal .portal-atmosfera{bottom:-120px}
+ .portal-menu .portal-velo{background:linear-gradient(180deg,#07152218 0,#07152225 70px,#0a1d2d75 116px,#0a1d2d55 100%)}
+}
+@media(max-width:899px){
+ .portal-menu{border-color:#9fc3dc40;gap:10px;overflow:visible;padding:0;border:0;box-shadow:none}
+ .portal-menu .portal-tarjeta,.portal-menu .portal-tarjeta-marco:first-child .portal-tarjeta,.portal-menu .portal-tarjeta-marco:last-child .portal-tarjeta{border:1px solid #9fc3dc40;border-radius:16px}
+ .portal-menu .portal-velo{background:linear-gradient(90deg,#091c2dc9 0%,#091c2d75 50%,#091c2d30 100%)}
+ .portal-menu .portal-foto{opacity:.28}
 }
