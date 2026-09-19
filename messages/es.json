@@ -101,6 +101,9 @@
     "contactoCorreo": "Consultar por correo"
   },
   "Tienda": {
+    "vistaCatalogo": "Vista del catálogo",
+    "vistaCuadricula": "Cuadrícula",
+    "vistaLista": "Lista",
     "explorarEquipo": "Encuentre su equipo",
     "necesitoAyuda": "Necesito asesoría",
     "respaldoLocal": "Asesoría y respaldo profesional",

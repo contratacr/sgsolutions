@@ -129,10 +129,27 @@
  .tienda-compacta .shop-categorias button[aria-pressed=true]{box-shadow:none;border-color:#142e42}
  .tienda-compacta .shop-resultados h2{font-size:1.2rem}
  .tienda-compacta .shop-orden select{font-size:.7rem;max-width:138px}
- .tienda-compacta .shop-grid{grid-auto-columns:min(84vw,340px);column-gap:14px;scroll-padding-inline:0}
- .tienda-compacta .shop-foto{height:205px;padding:26px}
- .tienda-compacta .shop-producto-info{padding:18px}
- .tienda-compacta .shop-producto h3{font-size:1.05rem}
- @supports(grid-template-rows:subgrid){.tienda-compacta .shop-grid{grid-template-rows:215px auto auto auto auto auto auto 62px}}
+ .tienda-compacta .shop-grid{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-columns:auto;gap:16px 10px;overflow:visible;scroll-snap-type:none}
+ .tienda-compacta .shop-producto{min-width:0;grid-row:span 8;border-radius:14px}
+ .tienda-compacta .shop-foto{height:145px;padding:15px;margin:0}
+ .tienda-compacta .shop-foto>span{font-size:9px;padding:4px 6px;left:8px;top:8px}
+ .tienda-compacta .shop-producto-info{padding:12px;min-width:0}
+ .tienda-compacta .shop-producto h3{font-size:14px;line-height:1.4;min-height:0;margin:7px 0 10px;overflow-wrap:anywhere}
+ .tienda-compacta .shop-producto-info>.shop-descripcion{font-size:12px;line-height:1.5;min-height:0;margin-bottom:12px}
+ .tienda-compacta .shop-producto-info>.shop-codigo{font-size:10px;overflow-wrap:anywhere}
+ .tienda-compacta .shop-producto-info>small{font-size:11px;line-height:1.5;min-height:0}
+ .tienda-compacta .shop-precio{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-bottom:12px;padding-top:12px}
+ .tienda-compacta .shop-precio strong{font-size:16px;overflow-wrap:anywhere}
+ .tienda-compacta .shop-producto .boton{font-size:12px;padding:10px 8px;min-height:44px;gap:4px;justify-content:center}
+ .tienda-compacta .shop-producto .boton svg{display:none}
 }
 @media(prefers-reduced-motion:reduce){.tienda-compacta .shop-foto img,.tienda-compacta .shop-producto,.tienda-compacta .shop-producto .boton{transition:none}.tienda-compacta .shop-producto:hover .shop-foto img{transform:none}}
+.shop-vistas{display:flex;justify-content:flex-end;gap:4px;margin:-6px 0 18px}
+.shop-vistas button{min-height:44px;padding:8px 14px;border:1px solid #cfdae4;border-radius:8px;background:white;color:#294a62;font:inherit;font-size:13px;cursor:pointer}
+.shop-vistas button[aria-pressed=true]{background:#142e42;color:white;border-color:#142e42}
+.tienda-compacta .shop-grid[data-vista=lista]{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
+.tienda-compacta .shop-grid[data-vista=lista] .shop-producto{display:grid;grid-template-columns:minmax(110px,28%) minmax(0,1fr);grid-template-rows:auto;grid-row:auto;align-items:start}
+.tienda-compacta .shop-grid[data-vista=lista] .shop-producto-info{display:flex;grid-row:auto;gap:5px}
+.tienda-compacta .shop-grid[data-vista=lista] .shop-descripcion,.tienda-compacta .shop-grid[data-vista=lista] h3{display:block;-webkit-line-clamp:unset;min-height:0}
+.tienda-compacta .shop-grid[data-vista=lista] .shop-foto{height:170px}
+.tienda-compacta .shop-grid[data-vista=lista] .shop-precio,.tienda-compacta .shop-grid[data-vista=lista] .boton{align-self:stretch}

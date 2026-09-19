@@ -186,3 +186,8 @@
 
 /* Original luminous shader, drawn immediately after canvas sizing. */
 .escena-original .escena-canvas{opacity:1;transition:none}
+/* Keep the original ribbons in the narrow viewport instead of dimming/cropping them. */
+@media(max-width:899px){
+ .portal .portal-atmosfera{opacity:.9!important;inset-inline:0;width:100%;bottom:auto;height:760px!important}
+ .portal .escena-grafico{inset:0 -4% 0 -16%;mask-image:linear-gradient(#000 70%,transparent)}
+}

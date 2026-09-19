@@ -101,6 +101,9 @@
     "contactoCorreo": "Enquire by email"
   },
   "Tienda": {
+    "vistaCatalogo": "Catalog view",
+    "vistaCuadricula": "Grid",
+    "vistaLista": "List",
     "explorarEquipo": "Find your equipment",
     "necesitoAyuda": "I need advice",
     "respaldoLocal": "Professional advice and support",
