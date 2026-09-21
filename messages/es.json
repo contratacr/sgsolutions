@@ -880,5 +880,22 @@
     "masFotos": "Ver las {total} fotos",
     "pendientes": "Tiene cambios sin guardar.",
     "salirSinGuardar": "Tiene cambios sin guardar. ¿Desea salir y perderlos?"
+  },
+  "Activacion": {
+    "titulo": "Cree su contraseña",
+    "descripcion": "Defina una contraseña para acceder al panel de SG Solutions.",
+    "validando": "Validando su enlace…",
+    "invalido": "Este enlace venció, ya se utilizó o no es válido. Solicite un enlace nuevo al administrador del sitio.",
+    "clave": "Nueva contraseña",
+    "confirmacion": "Confirme su contraseña",
+    "longitud": "Utilice entre 12 y 128 caracteres. Puede usar una frase larga y única.",
+    "coincidencia": "Las contraseñas no coinciden.",
+    "error": "No se pudo guardar la contraseña. Inténtelo de nuevo con una contraseña diferente.",
+    "guardar": "Guardar contraseña",
+    "guardando": "Guardando…",
+    "listo": "Su contraseña quedó guardada. Ya puede iniciar sesión con su correo y su nueva contraseña.",
+    "volver": "Volver al acceso",
+    "entrar": "Iniciar sesión",
+    "marca": "SG Solutions"
   }
 }

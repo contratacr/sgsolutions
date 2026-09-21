@@ -880,5 +880,22 @@
     "masFotos": "View all {total} photos",
     "pendientes": "You have unsaved changes.",
     "salirSinGuardar": "You have unsaved changes. Leave and discard them?"
+  },
+  "Activacion": {
+    "titulo": "Create your password",
+    "descripcion": "Choose a password to access the SG Solutions admin panel.",
+    "validando": "Validating your link…",
+    "invalido": "This link has expired, has already been used, or is invalid. Request a new link from the site administrator.",
+    "clave": "New password",
+    "confirmacion": "Confirm your password",
+    "longitud": "Use between 12 and 128 characters. You can use a long, unique passphrase.",
+    "coincidencia": "The passwords do not match.",
+    "error": "Your password could not be saved. Try again with a different password.",
+    "guardar": "Save password",
+    "guardando": "Saving…",
+    "listo": "Your password has been saved. You can now sign in with your email and new password.",
+    "volver": "Back to sign in",
+    "entrar": "Sign in",
+    "marca": "SG Solutions"
   }
 }

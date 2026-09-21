@@ -18,4 +18,4 @@ export async function proxy(solicitud: NextRequest) {
   respuesta.headers.set('Cache-Control', 'private, no-store');
   return respuesta;
 }
-export const config = {matcher: ['/panel/:path*', '/acceso', '/admin']};
+export const config = {matcher: ['/panel/:path*', '/acceso', '/admin/:path*']};
