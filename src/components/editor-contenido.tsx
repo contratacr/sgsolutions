@@ -2,10 +2,11 @@
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import type { Contenido } from "@/lib/contenido-modelo";
+import { esquemaContenido, type Contenido } from "@/lib/contenido-modelo";
 import { guardarContenido } from "@/app/panel/contenido/acciones";
 import {useCambiosAdmin} from '@/components/use-cambios-admin';
 import {GestorImagenes} from '@/components/gestor-imagenes';
+import {ErroresAdmin,enfocarRegistro,type CampoAdmin} from '@/components/errores-admin';
 type Texto = { es: string; en: string };
 export function EditorContenido({
   inicial,
@@ -25,6 +26,8 @@ export function EditorContenido({
   const t = useTranslations("AdminContenido"),
     a = useTranslations("AdminCatalogo"),
     router = useRouter();
+  const [campos,setCampos]=useState<CampoAdmin[]>([]);
+  function abrirCampo(campo:CampoAdmin){setTab(String(campo[0]));if(campo[0]==='textos'){setBusqueda(String(campo[1]));enfocarRegistro(String(campo[1]));}else if(campo[0]==='casos')enfocarRegistro(datos.casos[Number(campo[1])]?.id);}
   const [cargandoImagenes,setCargandoImagenes]=useState(false);
  const {pendientes,confirmarGuardado}=useCambiosAdmin(datos);
   const m=useTranslations('AdminImagenes');
@@ -47,10 +50,13 @@ export function EditorContenido({
     }));
   }
   function guardar() {
+    const validado=esquemaContenido.safeParse(datos);
+    if(!validado.success){setCampos(validado.error.issues.map(x=>x.path.map(k=>typeof k==='number'?k:String(k))));setEstado('validacion');return;}
+    setCampos([]);
     iniciar(async () => {
       try {
         const r = await guardarContenido(datos, revision);
-        if (r.error) setEstado(r.error);
+        if (r.error) {setEstado(r.error);if('campos' in r&&r.campos)setCampos(r.campos);}
         else {
           confirmarGuardado();
           setRevision(r.revision!);
@@ -99,7 +105,7 @@ export function EditorContenido({
               {t("nuevo")}
             </button>
             {datos.casos.map((c, i) => (
-              <details key={c.id} className="admin-item">
+              <details key={c.id} id={c.id} className="admin-item">
                 <summary>{c.cliente || t("nuevo")}</summary>
                 <label>
                   {t("cliente")}
@@ -159,7 +165,7 @@ export function EditorContenido({
               )
               .slice(0, 30)
               .map(([k, v]) => (
-                <details key={k} className="admin-item">
+                <details key={k} id={k} className="admin-item">
                   <summary>{k}</summary>
                   <div className="admin-fields">
                     {bilingue(k, datos.textos[k] ?? v, (valor) =>
@@ -215,6 +221,7 @@ export function EditorContenido({
           </div>
         )}
       </fieldset>
+      <ErroresAdmin campos={campos} abrir={abrirCampo}/>
       <div className="admin-actions">
         <button
           className="boton boton-azul"

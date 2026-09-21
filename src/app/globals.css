@@ -427,3 +427,7 @@ svg { flex-shrink: 0; }
   .ubicacion-foto { height: 300px; }
 }
 @media (prefers-reduced-motion: reduce) { .ayuda-opcion:hover { transform: none; } }
+
+.admin-validacion { margin-block: 24px; padding: 20px; border: 1px solid #c76640; border-radius: 12px; background: #fff8f4; color: #682f1e; }
+.admin-validacion ul { padding-left: 20px; }
+.admin-validacion button { text-align: left; text-decoration: underline; padding: 8px 0; cursor: pointer; }

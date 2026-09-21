@@ -5,7 +5,7 @@ import es from "../../../../messages/es.json";
 import en from "../../../../messages/en.json";
 import { esquemaContenido } from "@/lib/contenido-modelo";
 import {adminLocalDisponible,sesionLocal,guardarLocal} from '@/lib/admin-local';
-export async function guardarContenido(datos: unknown, revision: number) {
+export async function guardarContenido(datos: unknown, revision: number):Promise<{error?:string;revision?:number;campos?:(string|number)[][]}> {
   const local=await adminLocalDisponible();
   if(local&&!await sesionLocal())return {error:'sinPermiso'};
   const c = await crearClienteServidor();
@@ -22,15 +22,15 @@ export async function guardarContenido(datos: unknown, revision: number) {
     .maybeSingle():{data:local?{rol:'administrador'}:null};
   if (perfil?.rol !== "administrador") return { error: "sinPermiso" };
   const p = esquemaContenido.safeParse(datos);
-  if (!p.success || !Number.isInteger(revision) || revision < 0)
-    return { error: "validacion" };
+  if (!p.success) return {error:"validacion",campos:p.error.issues.map(x=>x.path.map(k=>typeof k==='number'?k:String(k)))};
+  if (!Number.isInteger(revision) || revision < 0) return {error:"validacion"};
   for (const [clave, valor] of Object.entries(p.data.textos)) {
     const [ns, k] = clave.split(".");
     for (const l of ["es", "en"] as const) {
       const original = (
         (l === "es" ? es : en) as Record<string, Record<string, unknown>>
       )[ns]?.[k];
-      if (typeof original !== "string") return { error: "validacion" };
+      if (typeof original !== "string") return { error: "validacion", campos:[["textos",clave,l]] };
       const parametros = (v: string) =>
         [...v.matchAll(/\{([^{}]+)\}/g)]
           .map((m) => m[1])
@@ -40,7 +40,7 @@ export async function guardarContenido(datos: unknown, revision: number) {
         parametros(valor[l]) !== parametros(original) ||
         /[{}]/.test(valor[l].replace(/\{[^{}]+\}/g, ""))
       )
-        return { error: "validacion" };
+        return { error: "validacion", campos:[["textos",clave,l]] };
     }
   }
   if(local){const resultado=await guardarLocal('contenido',p.data,revision);if(!resultado.error)revalidatePath('/','layout');return resultado;}

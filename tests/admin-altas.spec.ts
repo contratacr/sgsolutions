@@ -1,0 +1,45 @@
+import {test,expect} from '@playwright/test';
+import {readFile,writeFile} from 'node:fs/promises';
+import {randomBytes,createHash} from 'node:crypto';
+test.describe.configure({mode:'serial'});
+for(const idioma of ['es','en'])test(`altas visibles y errores precisos ${idioma}`,async({page,context})=>{
+ test.skip(process.env.SG_TEST_ALTAS!=='1','Solo con servidor local aislado');
+ test.setTimeout(90000);
+ const rutas=['cuenta','catalogo','contenido'].map(n=>`.privado/admin-local/${n}.json`);
+ const originales=await Promise.all(rutas.map(p=>readFile(p,'utf8')));
+ const cuenta=JSON.parse(originales[0]);const token=randomBytes(32).toString('hex');
+ cuenta.sesiones.push({hash:createHash('sha256').update(token).digest('hex'),vence:Date.now()+120000});
+ await writeFile(rutas[0],JSON.stringify(cuenta),{mode:0o600});
+ await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ const es=idioma==='es';
+ const guardar=()=>page.locator('.admin-actions button').first().click();
+ try{
+  await page.goto('/panel/catalogo');
+  await page.locator('.admin-tabs button').nth(1).click();
+  await page.locator('fieldset > button').click();
+  const categoria=page.locator('.admin-item').first();
+  await expect(categoria.locator('textarea').first()).toBeFocused();
+  await categoria.locator('textarea').nth(0).fill('Categoría QA');
+  await categoria.locator('textarea').nth(1).fill('QA category');
+  await guardar();await expect(page.locator('.admin-actions [role=status]')).toHaveText(es?'Cambios guardados.':'Changes saved.');
+  await page.locator('.admin-tabs button').first().click();
+  await page.locator('fieldset > button').click();
+  const nuevo=page.locator('details.admin-item').first();
+  await expect(nuevo).toHaveAttribute('open','');
+  await expect(nuevo.locator('textarea').first()).toBeFocused();
+  await page.locator('.admin-tabs button').nth(3).click();
+  await guardar();
+  await expect(page.locator('.admin-validacion')).toContainText(es?'Productos':'Products');
+  await page.locator('.admin-validacion button').first().click();
+  await expect(nuevo).toHaveAttribute('open','');
+  for(const [i,value] of ['Producto QA','QA product','Descripción QA','QA description'].entries())await nuevo.locator('textarea').nth(i).fill(value);
+  await guardar();await expect(page.locator('.admin-actions [role=status]')).toHaveText(es?'Cambios guardados.':'Changes saved.');
+  await page.reload();await expect(page.locator('details.admin-item').first()).toContainText(es?'Producto QA':'QA product');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+  await page.goto('/panel/contenido');await page.locator('.admin-tabs button').nth(1).click();
+  await page.locator('input[type=search]').fill('Entrada.descripcion');
+  await page.locator('details summary').click();await page.locator('details textarea').first().fill('Texto de prueba QA');
+  await guardar();await expect(page.locator('.admin-actions [role=status]')).toHaveText(es?'Cambios guardados.':'Changes saved.');
+  await page.goto('/');await context.addCookies([{name:'sg-idioma',value:'es',domain:'127.0.0.1',path:'/'}]);await page.reload();await expect(page.locator('main')).toContainText('Texto de prueba QA');
+ }finally{await Promise.all(rutas.map((p,i)=>writeFile(p,originales[i],{mode:0o600})));}
+});
