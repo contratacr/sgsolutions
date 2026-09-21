@@ -4,7 +4,11 @@ test('tarjetas alineadas y cuadrícula móvil en ambos idiomas',async({page},inf
  await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto('/tienda');
  for(const idioma of ['es','en']){
-  if(idioma==='en') await page.getByRole('button',{name:'Read this page in English'}).click();
+  if(idioma==='en'){
+   await page.getByRole('button',{name:'Read this page in English'}).click();
+   await expect(page.locator('html')).toHaveAttribute('lang','en');
+  }
+  await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
   await expect(page.locator('.shop-producto')).toHaveCount(24);
   await expect(page.locator('.marcas-controles')).toHaveCount(0);
   await expect(page.locator('.marcas-grupo')).toHaveCount(2);
@@ -12,7 +16,7 @@ test('tarjetas alineadas y cuadrícula móvil en ambos idiomas',async({page},inf
   await expect.poll(()=>page.locator('.marca-logo img').evaluateAll(imgs=>imgs.every(img=>(img as HTMLImageElement).complete&&(img as HTMLImageElement).naturalWidth>0))).toBe(true);
   await expect(page.locator('.marcas-pista')).toHaveCSS('animation-name','marcas-deslizar');
   // Measure final geometry, rather than the staggered scroll entrance frames.
-  await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();
+  await page.evaluate(()=>document.querySelector('.shop-producto')?.scrollIntoView({block:'center'}));
   await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);
   const posiciones=await page.locator('.shop-producto').evaluateAll(es=>es.slice(0,innerWidth<=650?2:3).map(e=>({precio:e.querySelector('.shop-precio')!.getBoundingClientRect().y,boton:e.querySelector('button')!.getBoundingClientRect().y})));
   for(const posicion of posiciones){expect(Math.abs(posicion.precio-posiciones[0].precio)).toBeLessThan(1);expect(Math.abs(posicion.boton-posiciones[0].boton)).toBeLessThan(1);}
