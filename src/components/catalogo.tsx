@@ -16,13 +16,19 @@ export function Catalogo(){
  const t=useTranslations('Tienda'),s=useTranslations('Comercio'),idioma=useLocale(),datos=useCatalogo();
  const [categoria,setCategoria]=useState('todos'),[busqueda,setBusqueda]=useState(''),[orden,setOrden]=useState('destacados'),[marca,setMarca]=useState('');
  const [vista,setVista]=useState('cuadricula'),[preferenciasListas,setPreferenciasListas]=useState(false);
+ const idiomaAnterior=useRef(idioma);
  useEffect(()=>{
   const frame=requestAnimationFrame(()=>{
-   try{const p=JSON.parse(sessionStorage.getItem('sg-tienda-preferencias')??'null');if(p){if(typeof p.categoria==='string')setCategoria(p.categoria);if(typeof p.busqueda==='string')setBusqueda(p.busqueda.slice(0,150));if(typeof p.marca==='string')setMarca(p.marca);if(['destacados','menor','mayor','nombre'].includes(p.orden))setOrden(p.orden);if(p.vista==='lista')setVista('lista');}}catch{}
+   try{const p=JSON.parse(sessionStorage.getItem('sg-tienda-preferencias')??'null');if(p?.idioma===idioma){if(typeof p.categoria==='string')setCategoria(p.categoria);if(typeof p.busqueda==='string')setBusqueda(p.busqueda.slice(0,150));if(typeof p.marca==='string')setMarca(p.marca);if(['destacados','menor','mayor','nombre'].includes(p.orden))setOrden(p.orden);if(p.vista==='lista')setVista('lista');}}catch{}
    setPreferenciasListas(true);
   });return ()=>cancelAnimationFrame(frame);
- },[]);
- useEffect(()=>{if(preferenciasListas)try{sessionStorage.setItem('sg-tienda-preferencias',JSON.stringify({categoria,busqueda,orden,marca,vista}));}catch{}},[categoria,busqueda,orden,marca,vista,preferenciasListas]);
+ },[idioma]);
+ useEffect(()=>{if(preferenciasListas)try{sessionStorage.setItem('sg-tienda-preferencias',JSON.stringify({idioma,categoria,busqueda,orden,marca,vista}));}catch{}},[idioma,categoria,busqueda,orden,marca,vista,preferenciasListas]);
+ useEffect(()=>{
+  if(idiomaAnterior.current===idioma)return;
+  idiomaAnterior.current=idioma;
+  setCategoria('todos');setBusqueda('');setOrden('destacados');setMarca('');
+ },[idioma]);
  const [paginacion,setPaginacion]=useState({clave:'',pagina:1});
  const resultados=useRef<HTMLHeadingElement>(null);
  const clave=JSON.stringify([categoria,busqueda,orden,marca,idioma]);
