@@ -1,5 +1,6 @@
 'use client';
 
+import {medir} from '@/lib/analitica-cliente';
 import * as Dialog from '@radix-ui/react-dialog';
 import {useState, type FormEvent} from 'react';
 import {useTranslations} from 'next-intl';
@@ -15,9 +16,10 @@ export function SolicitudPlan({indice}:{indice:number}) {
     const datos=new FormData(evento.currentTarget);
     const campos=['empresa','nombre','correo','telefono','equipos','mensaje'];
     const cuerpo=[t('saludo'),'',t('planElegido')+': '+nombrePlan,...campos.map(campo=>`${t(campo)}: ${String(datos.get(campo)||'').trim()}`),'',t('consentimiento')].join('\n');
+    medir('plan_revisado',String(indice+1));
     setRevision({cuerpo,nombre:String(datos.get('empresa'))});
   }
-  return <Dialog.Root onOpenChange={()=>setRevision(null)}><Dialog.Trigger className={`boton ${indice===1?'boton-naranja':'boton-contorno'}`}>{planes('planAccion')}<ArrowRight size={18}/></Dialog.Trigger>
+  return <Dialog.Root onOpenChange={()=>setRevision(null)}><Dialog.Trigger onClick={()=>medir('plan',String(indice+1))} className={`boton ${indice===1?'boton-naranja':'boton-contorno'}`}>{planes('planAccion')}<ArrowRight size={18}/></Dialog.Trigger>
     <Dialog.Portal><Dialog.Overlay className="solicitud-overlay"/><Dialog.Content className="solicitud-dialog">
       <Dialog.Close className="solicitud-cerrar" aria-label={t('cerrar')}><X size={20}/></Dialog.Close>
       <aside className="solicitud-resumen"><span className="solicitud-marca">{marca('nombre')}</span><div className="solicitud-plan-icono"><Building2 size={30} strokeWidth={1.4}/></div><p className="solicitud-eyebrow">{t('planElegido')}</p><h2>{nombrePlan}</h2><p className="solicitud-frase">{planes(`plan${indice}Frase`)}</p><ul>{planes(`plan${indice}Detalle`).split(' · ').map(detalle=><li key={detalle}><Check size={15}/>{detalle}</li>)}</ul><div className="solicitud-contacto"><Mail size={17}/><span>{empresa.correo}</span></div></aside>

@@ -1,4 +1,5 @@
 'use client';
+import {medir} from './analitica-cliente';
 import { useSyncExternalStore } from 'react';
 type ProductoId = string;
 
@@ -46,6 +47,7 @@ export function cambiarCantidad(id: ProductoId, cantidad: number) {
 export function agregarProducto(id: ProductoId) {
   const cantidad = obtener().find(linea => linea.id === id)?.cantidad ?? 0;
   cambiarCantidad(id, Math.min(cantidad + 1, 99));
+  if(cantidad<99&&obtener().some(l=>l.id===id))medir('carrito',id);
 }
 export function useCarrito() {
   return useSyncExternalStore(suscribir, obtener, () => vacio);

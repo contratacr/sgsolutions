@@ -1,7 +1,8 @@
 "use client";
+import {medir} from '@/lib/analitica-cliente';
 import type { Contenido } from "@/lib/contenido-modelo";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft,
@@ -16,6 +17,7 @@ import { useCarrito } from "@/lib/carrito";
 import { colones, traducir } from "@/lib/catalogo-modelo";
 import { enlaceWhatsApp } from "@/lib/empresa";
 import { FotoProducto } from "./foto-producto";
+import { desplazarContenido } from "@/lib/desplazar-contenido";
 const provincias = [
   "San José",
   "Alajuela",
@@ -37,6 +39,17 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
     [otro, setOtro] = useState(false),
     [pago, setPago] = useState("sinpe"),
     [revision, setRevision] = useState<Record<string, string> | null>(null);
+  const entregaCampos = useRef<HTMLDivElement>(null),
+    receptorCampos = useRef<HTMLDivElement>(null),
+    facturaCampos = useRef<HTMLDivElement>(null),
+    pagoDatos = useRef<HTMLDetailsElement>(null),
+    desplazamientoPendiente = useRef<"entrega" | "receptor" | "factura" | "pago" | null>(null);
+  useEffect(() => {
+    const destino = desplazamientoPendiente.current;
+    if (!destino) return;
+    desplazamientoPendiente.current = null;
+    desplazarContenido({ entrega: entregaCampos, receptor: receptorCampos, factura: facturaCampos, pago: pagoDatos }[destino].current);
+  }, [entrega, otro, factura, pago]);
   const productos = lineas.flatMap((x) => {
     const p = c.productos.find((p) => p.id === x.id);
     return p ? [{ ...x, p }] : [];
@@ -54,6 +67,7 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
     ) as Record<string, string>;
     setBorrador(datos);
     setRevision(datos);
+    medir('pedido_revisado');
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   const mensaje = revision
@@ -194,7 +208,7 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                           name="modalidad"
                           value={m}
                           checked={entrega === (i === 1)}
-                          onChange={() => setEntrega(i === 1)}
+                          onChange={() => {if(i === 1) desplazamientoPendiente.current="entrega";setEntrega(i === 1);}}
                         />
                         <strong>{t(m)}</strong>
                         <small>{t(`${m}Detalle`)}</small>
@@ -202,7 +216,7 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                     ))}
                   </fieldset>
                   {entrega && (
-                    <div className="compra-campos">
+                    <div className="compra-campos" ref={entregaCampos}>
                       <label>
                         {t("provincia")}
                         <select
@@ -225,15 +239,15 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                         <input
                           type="checkbox"
                           checked={otro}
-                          onChange={(e) => setOtro(e.target.checked)}
+                          onChange={(e) => {if(e.target.checked) desplazamientoPendiente.current="receptor";setOtro(e.target.checked);}}
                         />
                         {t("otro")}
                       </label>
                       {otro && (
-                        <>
+                        <div className="compra-campos compra-campos-anidados" ref={receptorCampos}>
                           {campo("receptor")}
                           {campo("telefonoReceptor", true, "tel")}
-                        </>
+                        </div>
                       )}
                     </div>
                   )}
@@ -248,16 +262,14 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                     <select
                       name="factura"
                       value={factura ? "electronica" : "tiquete"}
-                      onChange={(e) =>
-                        setFactura(e.target.value === "electronica")
-                      }
+                      onChange={(e) => {const activa=e.target.value === "electronica";if(activa) desplazamientoPendiente.current="factura";setFactura(activa);}}
                     >
                       <option value="tiquete">{t("tiquete")}</option>
                       <option value="electronica">{t("electronica")}</option>
                     </select>
                   </label>
                   {factura && (
-                    <div className="compra-campos">
+                    <div className="compra-campos" ref={facturaCampos}>
                       {campo("identificacion")}
                       {campo("razonSocial")}
                       {campo("actividad", false)}
@@ -284,7 +296,7 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                           name="pago"
                           value={id}
                           checked={pago === id}
-                          onChange={() => setPago(id)}
+                          onChange={() => {if(id!=="tarjeta") desplazamientoPendiente.current="pago";setPago(id);}}
                         />
                         <Icon size={23} />
                         <span>
@@ -301,7 +313,7 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                     )}
                   </p>
                   {pago !== "tarjeta" && (
-                    <details className="compra-cuentas">
+                    <details key={pago} className="compra-cuentas" open ref={pagoDatos}>
                       <summary>{t("verCuentas")}</summary>
                       <p>{pagos.titular}</p>
                       {pago === "sinpe" ? (

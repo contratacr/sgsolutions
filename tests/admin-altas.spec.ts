@@ -15,6 +15,20 @@ for(const idioma of ['es','en'])test(`altas visibles y errores precisos ${idioma
  const guardar=()=>page.locator('.admin-actions button').first().click();
  try{
   await page.goto('/panel/catalogo');
+  await expect(page.locator('.admin-guia:visible')).toHaveCount(1);
+  await page.locator('details.admin-item > summary').first().click();
+  const nombre=page.locator('details.admin-item textarea').first();
+  const previo=await nombre.inputValue();
+  await nombre.fill(previo+' UX');await guardar();
+  await expect(page.locator('.admin-actions [role=status]')).toHaveText(es?'Cambios guardados.':'Changes saved.');
+  await nombre.fill(previo+' SIN GUARDAR');
+  page.once('dialog',d=>d.accept());
+  await page.locator('.admin-actions button').nth(1).click();
+  await expect(nombre).toHaveValue(previo+' UX');
+  await nombre.fill(previo);await guardar();
+  await expect(page.locator('.admin-actions [role=status]')).toHaveText(es?'Cambios guardados.':'Changes saved.');
+  await expect(page.locator('.admin-especificaciones').first()).not.toHaveAttribute('open');
+  await page.screenshot({path:'evidencias/admin-ux-'+idioma+'-'+test.info().project.name+'.png',fullPage:true});
   await page.locator('.admin-tabs button').nth(1).click();
   await page.locator('fieldset > button').click();
   const categoria=page.locator('.admin-item').first();
@@ -36,7 +50,15 @@ for(const idioma of ['es','en'])test(`altas visibles y errores precisos ${idioma
   await guardar();await expect(page.locator('.admin-actions [role=status]')).toHaveText(es?'Cambios guardados.':'Changes saved.');
   await page.reload();await expect(page.locator('details.admin-item').first()).toContainText(es?'Producto QA':'QA product');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
-  await page.goto('/panel/contenido');await page.locator('.admin-tabs button').nth(1).click();
+  await page.goto('/panel/contenido');
+  await page.locator('fieldset > button').click();
+  await expect(page.locator('details.admin-item').last()).toHaveAttribute('open','');
+  await expect(page.locator('details.admin-item').last().locator('input').first()).toBeFocused();
+  page.once('dialog',d=>d.accept());await page.locator('details.admin-item').last().locator(':scope > button').click();
+  await page.locator('.admin-tabs button').nth(1).click();
+  await expect(page.locator('details.admin-item')).toHaveCount(30);
+  await page.getByRole('button',{name:es?'Mostrar más textos':'Show more text entries',exact:true}).click();
+  await expect(page.locator('details.admin-item')).toHaveCount(60);
   await page.locator('input[type=search]').fill('Entrada.descripcion');
   await page.locator('details summary').click();await page.locator('details textarea').first().fill('Texto de prueba QA');
   await guardar();await expect(page.locator('.admin-actions [role=status]')).toHaveText(es?'Cambios guardados.':'Changes saved.');

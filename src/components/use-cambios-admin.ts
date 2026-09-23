@@ -3,7 +3,7 @@ import {useEffect,useState} from 'react';
 import {useTranslations} from 'next-intl';
 export function useCambiosAdmin<T>(datos:T){
  const [guardado,setGuardado]=useState(datos);const t=useTranslations('AdminImagenes');
- const pendientes=datos!==guardado;
+ const pendientes=JSON.stringify(datos)!==JSON.stringify(guardado);
  useEffect(()=>{
   if(!pendientes)return;
   const salir=(e:BeforeUnloadEvent)=>{e.preventDefault();};

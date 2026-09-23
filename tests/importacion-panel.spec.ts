@@ -1,0 +1,63 @@
+import {test,expect} from '@playwright/test';
+import {readFile,writeFile} from 'node:fs/promises';
+import {randomBytes,createHash} from 'node:crypto';
+import {prepararArchivo} from '../src/lib/intcomex/archivo';
+import {esquemaCatalogo,publicarCatalogo} from '../src/lib/catalogo-modelo';
+import base from '../src/lib/catalogo-base.json';
+const encabezados=['Nombre','Marca','Precio','Disponibilidad','No. de Parte','SKU'];
+const fecha='2026-09-21T12:00:00.000Z';
+test('valida archivos y conserva reglas de publicación',()=>{
+ const inicial=esquemaCatalogo.parse({...base,productos:[]});
+ const filas=[encabezados,['Prueba','QA',100,'Más de 20','QA','SKU']];
+ const primero=prepararArchivo(filas,inicial,'USD','computo',fecha);
+ expect(primero.cambios[0]).toMatchObject({precio:68000,stock:21,exacto:false,nuevo:true});
+ expect(publicarCatalogo(primero.catalogo).productos).toHaveLength(0);
+ const producto=primero.catalogo.productos[0];producto.publicado=true;producto.nombre.en='Custom';producto.precioManual=75000;
+ const segundo=prepararArchivo([encabezados,['Proveedor','QA',150,0,'QA','SKU']],primero.catalogo,'USD','redes',fecha);
+ expect(segundo.catalogo.productos[0]).toMatchObject({nombre:{en:'Custom'},categoria:'computo',precioManual:75000,revisionPrecio:true});
+ expect(publicarCatalogo(segundo.catalogo).productos[0]).toMatchObject({precio:75000,disponibilidad:'agotado'});
+ expect(()=>prepararArchivo([...filas,filas[1]],inicial,'USD','computo',fecha)).toThrow('duplicado');
+ expect(()=>prepararArchivo([encabezados,['Prueba','QA','100',5,'QA','SKU']],inicial,'USD','computo',fecha)).toThrow('fila');
+ expect(()=>prepararArchivo([encabezados,['Prueba','QA',100,'muchos','QA','SKU']],inicial,'USD','computo',fecha)).toThrow('stock');
+ const crc=prepararArchivo([encabezados,['Prueba','QA',50000,null,'QA','SKU']],inicial,'CRC','computo',fecha);
+ expect(crc.cambios[0]).toMatchObject({precio:68000,stock:null});
+});
+test.describe('panel importación',()=>{
+ test.describe.configure({mode:'serial'});
+ for(const idioma of ['es','en'])test(`Excel, confirmación y tienda ${idioma}`,async({page,context})=>{
+  test.skip(process.env.SG_TEST_ALTAS!=='1','Solo servidor local aislado');test.setTimeout(90000);
+  const rutas=['cuenta','catalogo'].map(n=>`.privado/admin-local/${n}.json`);
+  const originales=await Promise.all(rutas.map(p=>readFile(p,'utf8')));
+  const cuenta=JSON.parse(originales[0]),token=randomBytes(32).toString('hex');
+  cuenta.sesiones.push({hash:createHash('sha256').update(token).digest('hex'),vence:Date.now()+120000});
+  const preparado=prepararArchivo([encabezados,['Equipo QA','QA',90,1,'QA-IMPORT','QA-IMPORT']],esquemaCatalogo.parse({...base,productos:[]}),'USD','computo',fecha).catalogo;
+  preparado.productos[0].publicado=true;
+  await writeFile(rutas[0],JSON.stringify(cuenta),{mode:0o600});
+  await writeFile(rutas[1],JSON.stringify({contenido:preparado,revision:100}),{mode:0o600});
+  await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+  try{
+   await page.goto('/panel/catalogo/importar');
+   await page.locator('input[type=file]').setInputFiles('tests/fixtures/intcomex-qa.xlsx');
+   await page.locator('select').first().selectOption('USD');
+   await page.getByRole('button',{name:idioma==='es'?'Revisar cambios':'Review changes',exact:true}).click();
+   await expect(page.locator('tbody tr')).toHaveCount(2);
+   expect(JSON.parse(await readFile(rutas[1],'utf8')).revision).toBe(100);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+   await page.locator('input[type=file]').blur();
+   await page.screenshot({path:`/tmp/importacion-${idioma}-${test.info().project.name}.png`,fullPage:true});
+   await writeFile(rutas[1],JSON.stringify({contenido:preparado,revision:101}),{mode:0o600});
+   await page.getByRole('button',{name:idioma==='es'?'Confirmar y guardar importación':'Confirm and save import',exact:true}).click();
+   await expect(page.locator('.admin-importacion > [role=status]')).toContainText(idioma==='es'?'El catálogo cambió':'The catalog changed');
+   expect(JSON.parse(await readFile(rutas[1],'utf8')).contenido.productos).toHaveLength(1);
+   await page.getByRole('button',{name:idioma==='es'?'Revisar cambios':'Review changes',exact:true}).click();
+   await expect(page.locator('tbody tr')).toHaveCount(2);
+   await page.getByRole('button',{name:idioma==='es'?'Confirmar y guardar importación':'Confirm and save import',exact:true}).click();
+   await expect(page.locator('.admin-importacion > [role=status]')).toContainText(idioma==='es'?'Importación guardada':'Import saved');
+   const guardado=JSON.parse(await readFile(rutas[1],'utf8'));
+   expect(guardado.revision).toBe(102);
+   expect(publicarCatalogo(guardado.contenido).productos[0]).toMatchObject({precio:68000,disponibilidad:'proveedor'});
+   expect(guardado.contenido.productos.filter((p:{publicado:boolean})=>p.publicado)).toHaveLength(1);
+   await page.goto('/tienda');await expect(page.locator('main')).toContainText('68');await expect(page.locator('main')).toContainText('Equipo QA');
+  }finally{await Promise.all(rutas.map((p,i)=>writeFile(p,originales[i],{mode:0o600})));}
+ });
+});

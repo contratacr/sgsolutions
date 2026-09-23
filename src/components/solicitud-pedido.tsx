@@ -1,12 +1,13 @@
 'use client';
 
-import {FormEvent, useMemo, useState} from 'react';
+import {FormEvent, useEffect, useMemo, useRef, useState} from 'react';
 import {ArrowLeft, ArrowUpRight, Check} from 'lucide-react';
 import {useLocale, useTranslations} from 'next-intl';
 
 import type {CatalogoPublico} from '@/lib/catalogo-modelo';
 import {colones, traducir} from '@/lib/catalogo-modelo';
 import {enlaceWhatsApp} from '@/lib/empresa';
+import {desplazarContenido} from '@/lib/desplazar-contenido';
 
 type Producto = CatalogoPublico['productos'][number];
 type LineaPedido = {cantidad: number; producto: Producto};
@@ -26,6 +27,15 @@ export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regr
   const idioma = useLocale();
   const [modalidad, setModalidad] = useState<Modalidad>('retiro');
   const [revision, setRevision] = useState<DatosPedido | null>(null);
+  const destino = useRef<HTMLLabelElement>(null);
+  const revisionVista = useRef<HTMLElement>(null);
+  const desplazamientoPendiente = useRef<'destino' | 'revision' | null>(null);
+  useEffect(() => {
+    if (!desplazamientoPendiente.current) return;
+    const elemento = desplazamientoPendiente.current === 'destino' ? destino.current : revisionVista.current;
+    desplazamientoPendiente.current = null;
+    desplazarContenido(elemento);
+  }, [modalidad, revision]);
   const tienePrecioPendiente = lineas.some(({producto}) => producto.precio === null);
   const total = lineas.reduce((suma, {cantidad, producto}) => suma + (producto.precio ?? 0) * cantidad, 0);
 
@@ -58,6 +68,7 @@ export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regr
   function revisar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
     const formulario = new FormData(evento.currentTarget);
+    desplazamientoPendiente.current = 'revision';
     setRevision({
       nombre: String(formulario.get('nombre') ?? '').trim(),
       telefono: String(formulario.get('telefono') ?? '').trim(),
@@ -68,7 +79,7 @@ export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regr
     });
   }
 
-  if (revision) return <section className="pedido-revision" aria-labelledby="pedido-revision-titulo">
+  if (revision) return <section className="pedido-revision" aria-labelledby="pedido-revision-titulo" ref={revisionVista}>
     <span className="pedido-paso">{t('paso2')}</span>
     <h3 id="pedido-revision-titulo">{t('revisionTitulo')}</h3>
     <p>{t('revisionDescripcion')}</p>
@@ -108,9 +119,9 @@ export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regr
       <fieldset className="pedido-ancho">
         <legend>{t('modalidad')}</legend>
         <label className="pedido-opcion"><input type="radio" name="modalidad" value="retiro" checked={modalidad === 'retiro'} onChange={() => setModalidad('retiro')}/><span><strong>{t('retiro')}</strong><small>{t('retiroDetalle')}</small></span></label>
-        <label className="pedido-opcion"><input type="radio" name="modalidad" value="entrega" checked={modalidad === 'entrega'} onChange={() => setModalidad('entrega')}/><span><strong>{t('entrega')}</strong><small>{t('entregaDetalle')}</small></span></label>
+        <label className="pedido-opcion"><input type="radio" name="modalidad" value="entrega" checked={modalidad === 'entrega'} onChange={() => {desplazamientoPendiente.current='destino';setModalidad('entrega');}}/><span><strong>{t('entrega')}</strong><small>{t('entregaDetalle')}</small></span></label>
       </fieldset>
-      {modalidad === 'entrega' && <label className="pedido-ancho">{t('destino')}<textarea name="destino" required maxLength={350} rows={3} placeholder={t('destinoEjemplo')}/></label>}
+      {modalidad === 'entrega' && <label className="pedido-ancho" ref={destino}>{t('destino')}<textarea name="destino" required maxLength={350} rows={3} placeholder={t('destinoEjemplo')}/></label>}
       <label className="pedido-ancho">{t('notasOpcional')}<textarea name="notas" maxLength={600} rows={3} placeholder={t('notasEjemplo')}/></label>
       <label className="pedido-consentimiento pedido-ancho"><input name="consentimiento" type="checkbox" required/><span>{t('consentimiento')}</span></label>
       <button className="boton boton-azul pedido-revisar pedido-ancho" type="submit">{t('revisar')}<ArrowUpRight size={18}/></button>

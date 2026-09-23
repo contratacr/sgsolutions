@@ -1,3 +1,4 @@
+import {Medicion} from '@/components/medicion';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -27,5 +28,5 @@ export default async function DisenoRaiz({children}: {children: React.ReactNode}
   const t = await getTranslations('Navegacion');
   const idioma = await getLocale();
   const catalogo = await leerCatalogoPublico();
-  return <html lang={idioma}><body><FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera/>{children}<Pie/></DatosCatalogo></NextIntlClientProvider></body></html>;
+  return <html lang={idioma}><body><FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera/>{children}<Pie/><Medicion pixel={process.env.NEXT_PUBLIC_META_PIXEL_ID??''}/></DatosCatalogo></NextIntlClientProvider></body></html>;
 }

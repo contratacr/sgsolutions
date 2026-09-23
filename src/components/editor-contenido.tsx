@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { esquemaContenido, type Contenido } from "@/lib/contenido-modelo";
@@ -26,6 +26,10 @@ export function EditorContenido({
   const t = useTranslations("AdminContenido"),
     a = useTranslations("AdminCatalogo"),
     router = useRouter();
+  const u=useTranslations('AdminUX');
+  const [nuevoId,setNuevoId]=useState('');
+  const [limite,setLimite]=useState(30);
+  useEffect(()=>{if(nuevoId)enfocarRegistro(nuevoId);},[nuevoId]);
   const [campos,setCampos]=useState<CampoAdmin[]>([]);
   function abrirCampo(campo:CampoAdmin){setTab(String(campo[0]));if(campo[0]==='textos'){setBusqueda(String(campo[1]));enfocarRegistro(String(campo[1]));}else if(campo[0]==='casos')enfocarRegistro(datos.casos[Number(campo[1])]?.id);}
   const [cargandoImagenes,setCargandoImagenes]=useState(false);
@@ -70,7 +74,7 @@ export function EditorContenido({
   }
   return (
     <div className="admin-editor">
-      <p>{t("descripcion")}</p>
+      <p>{t("descripcion")}</p><p className="admin-guia">{u("guia")}</p>
       <div className="admin-tabs">
         {["casos", "textos", "pagos"].map((k) => (
           <button key={k} aria-pressed={tab === k} onClick={() => setTab(k)}>
@@ -83,13 +87,13 @@ export function EditorContenido({
           <>
             <button
               className="boton boton-contorno"
-              onClick={() =>
+              onClick={() => {const id=`caso-${crypto.randomUUID().slice(0,8)}`;setNuevoId(id);
                 setDatos((d) => ({
                   ...d,
                   casos: [
                     ...d.casos,
                     {
-                      id: `caso-${crypto.randomUUID().slice(0, 8)}`,
+                      id,
                       publicado: false,
                       cliente: "",
                       categoria: { es: "", en: "" },
@@ -99,13 +103,13 @@ export function EditorContenido({
                       fotos: [],
                     },
                   ],
-                }))
+                }));}
               }
             >
               {t("nuevo")}
             </button>
             {datos.casos.map((c, i) => (
-              <details key={c.id} id={c.id} className="admin-item">
+              <details key={c.id} id={c.id} className="admin-item" open={c.id===nuevoId?true:undefined}>
                 <summary>{c.cliente || t("nuevo")}</summary>
                 <label>
                   {t("cliente")}
@@ -134,11 +138,10 @@ export function EditorContenido({
                 <GestorImagenes onBusy={setCargandoImagenes} fotos={c.fotos} descripciones cambiar={fotos=>caso(i,{fotos:fotos.map(f=>({src:f.src,alt:{es:f.alt?.es||c.cliente,en:f.alt?.en||c.cliente},caption:{es:f.caption?.es||c.cliente,en:f.caption?.en||c.cliente}}))})}/>
                 <button
                   className="boton boton-contorno"
-                  onClick={() =>
-                    setDatos((d) => ({
+                  onClick={() => {if(window.confirm(u("confirmarEliminar")))setDatos((d) => ({
                       ...d,
                       casos: d.casos.filter((_, j) => j !== i),
-                    }))
+                    }));}
                   }
                 >
                   {a("quitar")}
@@ -154,7 +157,7 @@ export function EditorContenido({
               <input
                 type="search"
                 value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
+                onChange={(e) => {setBusqueda(e.target.value);setLimite(30);}}
               />
             </label>
             {Object.entries(textos)
@@ -163,10 +166,10 @@ export function EditorContenido({
                   .toLowerCase()
                   .includes(busqueda.toLowerCase()),
               )
-              .slice(0, 30)
+              .slice(0, limite)
               .map(([k, v]) => (
                 <details key={k} id={k} className="admin-item">
-                  <summary>{k}</summary>
+                  <summary><span className="admin-texto-resumen">{(datos.textos[k]??v).es}</span><small className="admin-clave">{k}</small></summary>
                   <div className="admin-fields">
                     {bilingue(k, datos.textos[k] ?? v, (valor) =>
                       setDatos((d) => ({
@@ -177,6 +180,7 @@ export function EditorContenido({
                   </div>
                 </details>
               ))}
+            {Object.entries(textos).filter(([k,v])=>`${k} ${v.es} ${v.en}`.toLowerCase().includes(busqueda.toLowerCase())).length>limite&&<button className="boton boton-contorno" onClick={()=>setLimite(n=>n+30)}>{u("mas")}</button>}
           </>
         )}
         {tab === "pagos" && (

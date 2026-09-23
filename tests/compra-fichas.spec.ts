@@ -32,9 +32,17 @@ for (const idioma of ["es", "en"])
       await form.locator(`[name=${k}]`).fill("Prueba");
     await form.locator("[name=correoFactura]").fill("factura@example.com");
     await form.locator("[value=transferencia]").check();
+    await expect(form.locator(".compra-cuentas")).toHaveAttribute("open", "");
     await form.locator(".compra-cuentas summary").click();
+    await expect(form.locator(".compra-cuentas")).not.toHaveAttribute("open");
+    await form.locator("[value=sinpe]").check();
+    await expect(form.locator(".compra-cuentas")).toHaveAttribute("open", "");
+    await expect(form.locator(".compra-cuentas")).toContainText("6439 9417");
+    await form.locator("[value=transferencia]").check();
+    await expect(form.locator(".compra-cuentas")).toHaveAttribute("open", "");
     await expect(form).toContainText("CR71015102120010448776");
     await form.locator("[value=tarjeta]").check();
+    await expect(form.locator(".compra-cuentas")).toHaveCount(0);
     await expect(form.locator(".compra-aviso")).toContainText(
       idioma === "es" ? "aún no están habilitados" : "not enabled yet",
     );
@@ -44,7 +52,7 @@ for (const idioma of ["es", "en"])
     const enviar = page.locator('main a[href^="https://wa.me/"]');
     await expect(enviar).toHaveAttribute("rel", "noopener noreferrer");
     const url = new URL((await enviar.getAttribute("href"))!);
-    expect(url.pathname).toContain("50689395256");
+    expect(url.pathname).toContain("50664399417");
     expect(url.searchParams.get("text")).toContain("Alex");
     expect(url.searchParams.get("text")).toContain("21H2S1NH00");
     await page.locator("main .pedido-volver").click();

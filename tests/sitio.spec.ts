@@ -13,7 +13,7 @@ test('portada real, imágenes, cabeceras y tamaño de descarga', async ({page}, 
   await page.waitForLoadState('networkidle');
   expect(respuesta?.headers()['x-content-type-options']).toBe('nosniff');
   expect(respuesta?.headers()['content-security-policy']).toContain("frame-ancestors 'self'");
-  await expect(page.locator('a[href^="https://wa.me/50689395256"]').first()).toBeVisible();
+  await expect(page.locator('a[href^="https://wa.me/50664399417"]').first()).toBeVisible();
   const revision = await page.evaluate(() => ({
     desborda: document.documentElement.scrollWidth > innerWidth,
     imagenesRotas: [...document.images].filter(i => i.complete && i.naturalWidth === 0).map(i => i.src),
