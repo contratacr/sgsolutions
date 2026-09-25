@@ -6,7 +6,7 @@ for(const idioma of ['es','en']){
    await page.goto(ruta);
    await expect(page.locator('main.estado-pagina[aria-busy="true"]')).toHaveCount(0);
    await expect(page.locator('main:visible h1')).toHaveText(ruta==='/terminos'?(idioma==='es'?'Términos y Condiciones':'Terms and Conditions'):(idioma==='es'?'Política de Privacidad':'Privacy Policy'));
-   await expect(page.locator('.legal-grid:visible article section')).toHaveCount(9);
+   await expect(page.locator('.legal-grid:visible article section')).toHaveCount(ruta==='/privacidad'?10:9);
    await expect(page.locator('.pie-legales a')).toHaveCount(2);
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
    await expect(page.locator('html')).toHaveAttribute('lang',idioma);

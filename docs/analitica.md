@@ -4,7 +4,7 @@ Implementación local, sin despliegue automático. No constituye un registro de 
 
 ## Activación
 1. Aplicar `supabase/migrations/20260922000100_analitica.sql` al proyecto correspondiente. La tabla tiene RLS, sin lectura pública; solo un administrador activo puede consultar el resumen.
-2. Crear un conjunto de datos web en el Administrador de eventos de Meta, bajo el negocio SG Solutions. Copiar únicamente su ID numérico a `NEXT_PUBLIC_META_PIXEL_ID` y reconstruir/desplegar cuando se autorice. Nunca requiere un token de acceso en el navegador.
+2. El conjunto de datos web «SG Solutions - Sitio web» usa el ID público `1837501974261618`, configurado como valor predeterminado. `NEXT_PUBLIC_META_PIXEL_ID` permite sustituirlo por entorno; reconstruir/desplegar cuando se autorice. Nunca requiere un token de acceso en el navegador.
 3. Probar con Meta Test Events tras aceptar publicidad. Confirmar que no hay solicitudes a Meta antes de consentir y que no se duplican PageView. El modo automático del píxel se desactiva; se envían solo eventos explícitos.
 4. Revisar `/panel/estadisticas`. Si falta la migración, se muestra un estado de configuración pendiente, no estadísticas inventadas.
 

@@ -469,7 +469,16 @@
     "fichaTecnica": "Technical datasheet URL",
     "nuevaEspecificacion": "Add specification",
     "valor": "Value",
-    "quitarEspecificacion": "Remove specification"
+    "quitarEspecificacion": "Remove specification",
+    "codigoIntcomex": "Intcomex code (optional, private)",
+    "codigoIntcomexAyuda": "Link new products to include them in updates. This code is not shown in the store.",
+    "revisionTitulo": "Needs review",
+    "revisionAyuda": "Intcomex did not find these codes in the latest lookup. They are hidden from the store; keep their details while checking the code, or mark own inventory if SG Solutions has stock.",
+    "revisionVacia": "There are no products awaiting review.",
+    "revisionEtiqueta": "Hidden · review Intcomex",
+    "revisionProducto": "Intcomex did not find this code. The product is hidden from the store, while its details and publication setting are retained.",
+    "inventarioPropio": "We have our own stock and can sell this without relying on Intcomex",
+    "revision": "Needs review"
   },
   "ServiciosSoporte": {
     "etiqueta": "OUR SERVICES",
@@ -830,7 +839,7 @@
         },
         "4": {
           "titulo": "Cookies and browser storage",
-          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in your browser’s local storage under sg-carrito-v1 until you empty it or clear site data. Form fields are retained during interaction with the page. Private staff access may use authentication cookies. You can remove data through your browser, but preferences or sessions will be lost. The current version does not embed third-party advertising or analytics tools."
+          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in your browser’s local storage under sg-carrito-v1 until you empty it or clear site data. Form fields are retained during interaction with the page. Private staff access may use authentication cookies. Your analytics and advertising choice is stored in your browser; only with your permission are first-party navigation events recorded and Meta Pixel loaded for advertising. You can change your choice through Privacy preferences and clear browser data, although preferences or sessions will be lost."
         },
         "5": {
           "titulo": "Access, providers and retention",
@@ -994,7 +1003,18 @@
     "fuenteAccesible": "View Intcomex source (opens in a new tab)",
     "descartarFoto": "Discard photo",
     "fotoPendiente": "No verified photo",
-    "fotoConservada": "Existing photo preserved"
+    "fotoConservada": "Existing photo preserved",
+    "actualizarInventario": "Update inventory",
+    "descripcionInventario": "Download a recent Intcomex Excel export and upload it here. Updates stock quantities and availability for existing products without changing prices or content. This is not a live query to Intcomex.",
+    "seleccionResumen": "Selection: {total} codes · {encontrados} registered · {pendientes} pending.",
+    "verPendientes": "View product codes awaiting import",
+    "soloSeleccion": "Process only the {total} selected codes",
+    "reglasInventario": "Only stock for products already linked to Intcomex is updated. Prices, text, photos and publication status are preserved. Products missing from the Excel are not marked out of stock. To add new products, use Import Intcomex file.",
+    "resumenInventario": "Stock will be updated for {actualizados} products.",
+    "omitidos": "{cantidad} rows skipped: outside the selection or not yet linked.",
+    "formatoInventario": "Use an Intcomex export with SKU and Disponibilidad columns.",
+    "sinCoincidencias": "No linked products match this file and selection. Import new products from the catalog first.",
+    "sinCoincidenciasSeleccion": "The file does not contain any selected codes. Check the export or selection filter."
   },
   "AdminUX": {
     "basico": "Product information",
@@ -1010,7 +1030,8 @@
     "editar": "Edit",
     "todos": "All",
     "publicados": "Published",
-    "borradores": "Drafts"
+    "borradores": "Drafts",
+    "revision": "Needs review"
   },
   "Analitica": {
     "tituloPanel": "Analytics",
@@ -1046,5 +1067,44 @@
     "sinDatos": "No activity in this period.",
     "general": "General",
     "privacidadDetalle": "With your permission, we record navigation events, product views, appearances in searches, cart additions and contact clicks. We use a random session identifier and retain these first-party events for 30 days; search text and form data are not recorded. Analytics is stored in Supabase. With separate advertising consent, Meta Pixel may send navigation and interaction events to Meta, which processes them according to its privacy policy. You can withdraw permission for future events through Privacy preferences; this does not delete data already sent to Meta."
+  },
+  "AdminSincronizacion": {
+    "titulo": "Update from Intcomex",
+    "volver": "Back to products",
+    "prototipo": "Local update using your Intcomex session in Edge",
+    "descripcion": "Look up catalog products using your Intcomex session. Review results before saving. IWS is not required. Complete the 3-product test first to enable the full lookup.",
+    "cantidad": "{cantidad} linked products, including new products with an Intcomex code.",
+    "instalacion": "Set up Edge once",
+    "paso1": "Install the private SG Solutions · Intcomex extension in Edge. This version only works with the local test panel.",
+    "paso2": "Sign in to Intcomex Costa Rica and open this panel in the same Edge profile.",
+    "paso3": "Click Test with 3 products. If prompted, click Export Excel in Intcomex; the extension will remember that button.",
+    "limites": "Keep your computer and Edge open. If the session expires, sign in again. Portal changes may require extension updates. This prototype interprets Excel costs as USD: use the Costa Rica account configured in dollars.",
+    "probar": "Test with 3 products",
+    "todos": "Look up all linked products",
+    "cancelar": "Cancel lookup",
+    "conectando": "Checking extension…",
+    "consultando": "Looking up Intcomex in the Edge tab…",
+    "noInstalada": "Extension not detected. Open this panel in Edge with the extension installed.",
+    "extensionError": "Extension connection failed. No changes were saved. You can retry.",
+    "exportacion": "A valid Excel file was not received in time. Check the Intcomex tab and retry. No changes were saved.",
+    "sesion": "Open Intcomex and sign in. Then retry from the panel.",
+    "ocupado": "Another lookup is running. Wait for it to finish.",
+    "codigo": "Check the product’s Intcomex code.",
+    "cancelado": "Lookup canceled. No changes were saved.",
+    "sinResultados": "No products were found to update. Previous data was retained.",
+    "revisando": "Validating files and calculating prices…",
+    "listo": "Lookup complete. Review changes before saving.",
+    "guardado": "Update saved. The store now uses these details.",
+    "progreso": "Checked: {hechos} of {total}.",
+    "faltantes": "No exact match: {codigos}. Saving will hide these products from the store and list them under Needs review.",
+    "revision": "Review changes",
+    "conserva": "Descriptions, photos, categories, publication settings, and manual prices are preserved. Products without an exact match stay hidden until the code is found or own stock is confirmed.",
+    "producto": "Product",
+    "cantidadLabel": "Availability",
+    "precio": "Selling price",
+    "guardar": "Confirm and update store",
+    "usd": "I confirm the Intcomex export uses US dollars (USD).",
+    "limite": "This lookup supports up to 500 products and 16 MB of files. No changes were saved.",
+    "duplicado": "A code is duplicated or conflicts with its linked product. Check the catalog codes. No changes were saved."
   }
 }

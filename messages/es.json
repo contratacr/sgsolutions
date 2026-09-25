@@ -469,7 +469,16 @@
     "fichaTecnica": "URL de ficha técnica",
     "nuevaEspecificacion": "Agregar especificación",
     "valor": "Valor",
-    "quitarEspecificacion": "Quitar especificación"
+    "quitarEspecificacion": "Quitar especificación",
+    "codigoIntcomex": "Código de Intcomex (opcional, privado)",
+    "codigoIntcomexAyuda": "Vincule los productos nuevos para incluirlos en la actualización. Este código no se muestra en la tienda.",
+    "revisionTitulo": "Requieren revisión",
+    "revisionAyuda": "Intcomex no encontró estos códigos en la última consulta. Están ocultos de la tienda; conserve sus datos mientras revisa el código o marque inventario propio si SG Solutions tiene existencias.",
+    "revisionVacia": "No hay productos pendientes por revisar.",
+    "revisionEtiqueta": "Oculto · revisar Intcomex",
+    "revisionProducto": "Intcomex no encontró este código. El producto está oculto de la tienda, pero conserva sus datos y su estado de publicación.",
+    "inventarioPropio": "Tenemos inventario propio y podemos venderlo sin depender de Intcomex",
+    "revision": "Requieren revisión"
   },
   "ServiciosSoporte": {
     "etiqueta": "NUESTROS SERVICIOS",
@@ -830,7 +839,7 @@
         },
         "4": {
           "titulo": "Cookies y almacenamiento del navegador",
-          "texto": "La cookie sg-idioma recuerda su idioma durante un máximo de un año. El carrito guarda identificadores y cantidades de productos en el almacenamiento local de su navegador, bajo sg-carrito-v1, hasta que lo vacíe o borre los datos del sitio. Los campos de los formularios se mantienen durante la interacción con la página. El acceso privado del equipo puede utilizar cookies de autenticación. Puede eliminar los datos desde su navegador, aunque perderá preferencias o sesiones. En la versión actual no se incorporan herramientas de publicidad o analítica de terceros al sitio."
+          "texto": "La cookie sg-idioma recuerda su idioma durante un máximo de un año. El carrito guarda identificadores y cantidades de productos en el almacenamiento local de su navegador, bajo sg-carrito-v1, hasta que lo vacíe o borre los datos del sitio. Los campos de los formularios se mantienen durante la interacción con la página. El acceso privado del equipo puede utilizar cookies de autenticación. La preferencia de estadísticas y publicidad se guarda en su navegador; únicamente con su permiso se registran eventos propios de navegación y se carga Meta Pixel para publicidad. Puede cambiar su elección desde Preferencias de privacidad y eliminar los datos del navegador, aunque perderá preferencias o sesiones."
         },
         "5": {
           "titulo": "Acceso, proveedores y conservación",
@@ -994,7 +1003,18 @@
     "fuenteAccesible": "Ver fuente de Intcomex (se abre en otra pestaña)",
     "descartarFoto": "Descartar foto",
     "fotoPendiente": "Sin foto verificada",
-    "fotoConservada": "Foto existente conservada"
+    "fotoConservada": "Foto existente conservada",
+    "actualizarInventario": "Actualizar inventario",
+    "descripcionInventario": "Descargue un Excel reciente de Intcomex y cárguelo aquí. Actualiza las cantidades y disponibilidad de productos existentes, sin cambiar sus precios ni contenido. No es una consulta en vivo a Intcomex.",
+    "seleccionResumen": "Selección: {total} códigos · {encontrados} registrados · {pendientes} pendientes.",
+    "verPendientes": "Ver códigos pendientes de incorporar",
+    "soloSeleccion": "Procesar únicamente los {total} códigos seleccionados",
+    "reglasInventario": "Solo se actualizan existencias de productos ya vinculados a Intcomex. Los precios, textos, fotos y estado de publicación se conservan. Los ausentes del Excel no se marcan como agotados. Para incorporar productos nuevos, utilice Importar archivo de Intcomex.",
+    "resumenInventario": "Se actualizarán las existencias de {actualizados} productos.",
+    "omitidos": "{cantidad} filas omitidas: fuera de la selección o productos aún sin vincular.",
+    "formatoInventario": "Use una exportación de Intcomex con las columnas SKU y Disponibilidad.",
+    "sinCoincidencias": "No hay productos vinculados que coincidan con este archivo y la selección. Importe primero los productos nuevos desde el catálogo.",
+    "sinCoincidenciasSeleccion": "El archivo no contiene ninguno de los códigos seleccionados. Revise la exportación o el filtro de selección."
   },
   "AdminUX": {
     "basico": "Información del producto",
@@ -1010,7 +1030,8 @@
     "editar": "Editar",
     "todos": "Todos",
     "publicados": "Publicados",
-    "borradores": "Borradores"
+    "borradores": "Borradores",
+    "revision": "Requieren revisión"
   },
   "Analitica": {
     "tituloPanel": "Estadísticas",
@@ -1046,5 +1067,44 @@
     "sinDatos": "Sin actividad en este período.",
     "general": "General",
     "privacidadDetalle": "Si usted lo autoriza, registramos eventos de navegación, productos consultados, apariciones en búsquedas, carrito y clics de contacto. Usamos un identificador aleatorio de sesión y conservamos estos eventos propios por 30 días; no registramos textos de búsquedas ni datos de formularios. Las estadísticas se almacenan en Supabase. Con permiso separado para publicidad, Meta Pixel puede enviar eventos de navegación e interacción a Meta, que los trata según su política de privacidad. Puede retirar el permiso para eventos futuros desde Preferencias de privacidad; esto no elimina datos ya enviados a Meta."
+  },
+  "AdminSincronizacion": {
+    "titulo": "Actualizar desde Intcomex",
+    "volver": "Volver a productos",
+    "prototipo": "Actualización local desde su sesión de Intcomex en Edge",
+    "descripcion": "Consulte los productos de su catálogo desde su sesión de Intcomex. Revise los resultados antes de guardar. No necesita IWS. Primero complete la prueba de 3 productos para habilitar la consulta completa.",
+    "cantidad": "{cantidad} productos vinculados, incluidos los nuevos con código de Intcomex.",
+    "instalacion": "Preparar Edge una sola vez",
+    "paso1": "Instale la extensión privada SG Solutions · Intcomex en Edge. Esta versión solo funciona con el panel local de pruebas.",
+    "paso2": "Inicie sesión en Intcomex Costa Rica y abra este panel en el mismo perfil de Edge.",
+    "paso3": "Pulse Probar con 3 productos. Si se solicita, pulse el botón de exportar Excel en Intcomex; la extensión recordará ese botón.",
+    "limites": "La computadora y Edge deben permanecer abiertos. Una sesión vencida requiere iniciar sesión nuevamente. Los cambios del portal pueden requerir ajustes de la extensión. El prototipo interpreta los costos del Excel en USD: use la cuenta de Costa Rica configurada en dólares.",
+    "probar": "Probar con 3 productos",
+    "todos": "Consultar todos los vinculados",
+    "cancelar": "Cancelar consulta",
+    "conectando": "Comprobando la extensión…",
+    "consultando": "Consultando Intcomex en la pestaña de Edge…",
+    "noInstalada": "No se detectó la extensión. Abra este panel en Edge con la extensión instalada.",
+    "extensionError": "La conexión con la extensión falló. No se guardaron cambios. Puede reintentar.",
+    "exportacion": "No se recibió un Excel válido a tiempo. Revise la pestaña de Intcomex y reintente. No se guardaron cambios.",
+    "sesion": "Abra Intcomex e inicie sesión. Después reintente desde el panel.",
+    "ocupado": "Hay otra consulta en curso. Espere a que termine.",
+    "codigo": "Revise el código de Intcomex del producto.",
+    "cancelado": "Consulta cancelada. No se guardaron cambios.",
+    "sinResultados": "No se encontraron productos para actualizar. Se conservaron los datos anteriores.",
+    "revisando": "Validando archivos y calculando precios…",
+    "listo": "Consulta completa. Revise los cambios antes de guardarlos.",
+    "guardado": "Actualización guardada. La tienda ya utiliza estos datos.",
+    "progreso": "Consultados: {hechos} de {total}.",
+    "faltantes": "Sin coincidencia exacta: {codigos}. Al guardar, estos productos se ocultarán de la tienda y aparecerán en Requieren revisión.",
+    "revision": "Cambios para revisar",
+    "conserva": "Se conservan textos, fotos, categorías, publicación y precios manuales. Los productos sin coincidencia exacta se ocultan hasta encontrar el código o confirmar inventario propio.",
+    "producto": "Producto",
+    "cantidadLabel": "Disponibilidad",
+    "precio": "Precio de venta",
+    "guardar": "Confirmar y actualizar la tienda",
+    "usd": "Confirmo que la exportación de Intcomex utiliza dólares (USD).",
+    "limite": "Esta consulta admite hasta 500 productos y 16 MB de archivos. No se guardaron cambios.",
+    "duplicado": "Hay un código repetido o incompatible con el producto vinculado. Revise los códigos del catálogo. No se guardaron cambios."
   }
 }

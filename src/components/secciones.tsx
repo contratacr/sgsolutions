@@ -9,7 +9,7 @@ export async function Soluciones() {
   const t = await getTranslations('Inicio');
   const contacto = await getTranslations('Contacto');
   const iconos = [Headset, Network, ShieldCheck, Monitor];
-  return <section id="servicios" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('serviciosEtiqueta')}</p><h2>{t('serviciosTitulo')}</h2></div><p>{t('serviciosDescripcion')}</p></div><div className="servicios-grid">{iconos.map((Icono,i) => <a key={i} className="servicio" id={`solucion-${i}`} href={enlaceWhatsApp(contacto('servicioMensaje', {servicio: t(`servicio${i}Titulo`)}))} target="_blank" rel="noopener noreferrer"><div className="servicio-icono"><Icono size={28}/><span>{`0${i+1}`}</span></div><h3>{t(`servicio${i}Titulo`)}</h3><p>{t(`servicio${i}Texto`)}</p><ArrowUpRight className="servicio-flecha" size={24}/><span className="sr-only">{t('servicioAccion')}</span></a>)}</div></section>;
+  return <section id="servicios" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('serviciosEtiqueta')}</p><h2>{t('serviciosTitulo')}</h2></div><p>{t('serviciosDescripcion')}</p></div><div className="servicios-grid">{iconos.map((Icono,i) => <a key={i} className="servicio" id={`solucion-${i+1}`} href={enlaceWhatsApp(contacto('servicioMensaje', {servicio: t(`servicio${i}Titulo`)}))} target="_blank" rel="noopener noreferrer"><div className="servicio-icono"><Icono size={28}/><span>{`0${i+1}`}</span></div><h3>{t(`servicio${i}Titulo`)}</h3><p>{t(`servicio${i}Texto`)}</p><ArrowUpRight className="servicio-flecha" size={24}/><span className="sr-only">{t('servicioAccion')}</span></a>)}</div></section>;
 }
 
 export async function Proyectos() {

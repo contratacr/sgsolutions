@@ -1,0 +1,407 @@
+[
+  {
+    "codigoFabricante": "BR1500RM2U",
+    "imagen": "/imagenes/catalogo-seleccion/ic-c92ccee1f8c81aae549d4bd5.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/509183"
+  },
+  {
+    "codigoFabricante": "BR1500G",
+    "imagen": "/imagenes/catalogo-seleccion/ic-b929a18c965f31b7071ed950.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/92988"
+  },
+  {
+    "codigoFabricante": "BV500",
+    "imagen": "/imagenes/catalogo-seleccion/ic-1d0167f7e4289a41ba2bf660.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/325633"
+  },
+  {
+    "codigoFabricante": "SRT3000XLA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-f027599831d3350aa9fa1d70.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/260459"
+  },
+  {
+    "codigoFabricante": "MG8G4BE/A",
+    "imagen": "/imagenes/catalogo-seleccion/ic-c76e0163f5c6538e2f07d321.webp",
+    "fuente": "https://pe.tiendasishop.com/products/iphone-17-pro-mg8g4be-a"
+  },
+  {
+    "codigoFabricante": "MTP03BE/A",
+    "imagen": "/imagenes/catalogo-seleccion/ic-0729462be598530e66d47c4a.webp",
+    "fuente": "https://co.tiendasishop.com/products/iphone-15-mtp03be-a"
+  },
+  {
+    "codigoFabricante": "6937224116399",
+    "imagen": "/imagenes/catalogo-seleccion/ic-e749a00d48c4e6d0e51237e0.webp",
+    "fuente": "https://store.dji.com/uk/product/dji-mic-3-receiver?set_region=GB"
+  },
+  {
+    "codigoFabricante": "6937224116405",
+    "imagen": "/imagenes/catalogo-seleccion/ic-fe6f867752c04d863a399b1d.webp",
+    "fuente": "https://store.dji.com/sg/product/dji-mic-3?from=store_homepage"
+  },
+  {
+    "codigoFabricante": "DELL-P2424HT",
+    "imagen": "/imagenes/catalogo-seleccion/ic-278b1a22b3e92a0c6edf80d2.webp",
+    "fuente": "https://www.dell.com/en-us/shop/monitors/apd/dell-pro-24-plus-touch-usb-c-hub-monitor-p2424ht/p2424ht_monitor/-"
+  },
+  {
+    "codigoFabricante": "DELL-E2725HM",
+    "imagen": "/imagenes/catalogo-seleccion/ic-fa6d900dde5adebc9366b9be.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/585772"
+  },
+  {
+    "codigoFabricante": "Dell-CP5723",
+    "imagen": "/imagenes/catalogo-seleccion/ic-5518277e6de4d569ae85a0ca.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/451998"
+  },
+  {
+    "codigoFabricante": "Dell-P2726H",
+    "imagen": "/imagenes/catalogo-seleccion/ic-5d22080d844b4e167a9656e0.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/648904"
+  },
+  {
+    "codigoFabricante": "DELL-SE2225HM",
+    "imagen": "/imagenes/catalogo-seleccion/ic-49368529d8619fc799b499cc.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/613997"
+  },
+  {
+    "codigoFabricante": "7XNFP",
+    "imagen": "/imagenes/catalogo-seleccion/ic-560c43a5461458e58c258230.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/624230"
+  },
+  {
+    "codigoFabricante": "37TWC",
+    "imagen": "/imagenes/catalogo-seleccion/ic-d7c08199d38d992562b59b20.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/624231"
+  },
+  {
+    "codigoFabricante": "V11HB51021",
+    "imagen": "/imagenes/catalogo-seleccion/ic-ab6ddbf1eb2c4e755a8eed06.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/620357"
+  },
+  {
+    "codigoFabricante": "C11CK27301",
+    "imagen": "/imagenes/catalogo-seleccion/ic-dd8f129a20239112bb51875c.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/565080"
+  },
+  {
+    "codigoFabricante": "T504220-AL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-89d5b0941a1eca6302521717.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/288186"
+  },
+  {
+    "codigoFabricante": "T504420-AL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-5e113f096c198306685a9616.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/288188"
+  },
+  {
+    "codigoFabricante": "T504320-AL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-0246de076e6e8aaeedc03622.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/288187"
+  },
+  {
+    "codigoFabricante": "T544420-AL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-d911dfc1f9574f1d8ba59178.webp",
+    "fuente": "https://store.intcomex.com/images/products/AS208EPS47%20M.jpg"
+  },
+  {
+    "codigoFabricante": "T544320-AL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-31b09b185812bbc1a55fe7d5.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/305872"
+  },
+  {
+    "codigoFabricante": "T544220-AL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-3927e0b6f1ecccfa9273ed09.webp",
+    "fuente": "https://store.intcomex.com/images/products/AS208EPS45%20M.jpg"
+  },
+  {
+    "codigoFabricante": "T504120-AL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-9e9acbd643f33a3dd5841c56.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/288185"
+  },
+  {
+    "codigoFabricante": "CS-CB2-R100-2D2WF-BK(AM)",
+    "imagen": "/imagenes/catalogo-seleccion/ic-703ea3cae380c3182deb0178.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/545703"
+  },
+  {
+    "codigoFabricante": "CS-HB8c/SP-R100(4MPW4GA)",
+    "imagen": "/imagenes/catalogo-seleccion/ic-89cf01d8e65844241b4a7d27.webp",
+    "fuente": "https://smart.cr/collections/camaras-de-seguridad/products/camara-pt-4g-solar-ezviz-cs-hb8c-sp-r100-4mp-w4ga-am-std-kit-2k-h-265-h-264-wifi-4g-4-mm-15m-ir-audio-bidireccional-303103698-blanco"
+  },
+  {
+    "codigoFabricante": "NT-1011",
+    "imagen": "/imagenes/catalogo-seleccion/ic-d8e73db5048cff66862d1a4c.webp",
+    "fuente": "https://www.panacompu.com/panama/es/informacion-producto/forza-nt-1011-ups-120v-tomas-de-salida-6x-nema-5-15r-1x-rj-11-1000va-500w-bateria-12v-9ah-200j"
+  },
+  {
+    "codigoFabricante": "FDC-3011RUL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-791b56780225fa39a6f88ebf.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/269150"
+  },
+  {
+    "codigoFabricante": "HT-750LCD",
+    "imagen": "/imagenes/catalogo-seleccion/ic-a3c6d6de00c80954f6182375.webp",
+    "fuente": "https://store.intcomex.com/images/products/UI150FOR31%20M.jpg"
+  },
+  {
+    "codigoFabricante": "SL-1501UL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-258b9df30da33568e1d0178e.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/373080"
+  },
+  {
+    "codigoFabricante": "FSI-3011RUL",
+    "imagen": "/imagenes/catalogo-seleccion/ic-f01779b140851158930b90a0.webp",
+    "fuente": "https://forza-ups-frontend.s3.amazonaws.com/media/docs/FSI-3011RUL_DS_ENG.pdf"
+  },
+  {
+    "codigoFabricante": "A08JXAA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-bc98ae7d947852d109424d95.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/558006"
+  },
+  {
+    "codigoFabricante": "BT4F1LA#ABM",
+    "imagen": "/imagenes/catalogo-seleccion/ic-2347e282cdd0fb0b9c10db80.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/590218"
+  },
+  {
+    "codigoFabricante": "9U5C1AA#ABA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-dcde05d939aab99faf197b40.webp",
+    "fuente": "https://www.hp.com/co-es/shop/monitor-hp-de-la-serie-3-pro-de-23-8-324pv-fhd-9u5c1aa.html"
+  },
+  {
+    "codigoFabricante": "A71FGLT#ABM",
+    "imagen": "/imagenes/catalogo-seleccion/ic-c7340204621aebce589ee138.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/578582"
+  },
+  {
+    "codigoFabricante": "9D9L6UT#ABA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-c2fad87d22c5f8b985773e87.webp",
+    "fuente": "https://www.hp.com/gb-en/shop/product.aspx?id=9d9l6ut&opt=abu&sel=mto"
+  },
+  {
+    "codigoFabricante": "AK2F1UT#ABA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-150a6a02c300197564eca1e5.webp",
+    "fuente": "https://www.hp.com/in-en/products/monitors/product-details/2102586826"
+  },
+  {
+    "codigoFabricante": "B9TP1LA#ABM",
+    "imagen": "/imagenes/catalogo-seleccion/ic-1957754cc6ccb0783ab469ca.webp",
+    "fuente": "https://www.hp.com/uy-es/products/laptops/product-details/2102972905"
+  },
+  {
+    "codigoFabricante": "A24Z3LT#ABM",
+    "imagen": "/imagenes/catalogo-seleccion/ic-6b84085595df7f64e8faa172.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/540427"
+  },
+  {
+    "codigoFabricante": "AE-DC2032-V300(3CH)",
+    "imagen": "/imagenes/catalogo-seleccion/ic-d5a4a9721c9583e1787b5573.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/640641"
+  },
+  {
+    "codigoFabricante": "DS-2CD1147G3-LIU(2.8mm)",
+    "imagen": "/imagenes/catalogo-seleccion/ic-1812ff4a47058693fa90aac3.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/638708"
+  },
+  {
+    "codigoFabricante": "DS-3WR30X/US",
+    "imagen": "/imagenes/catalogo-seleccion/ic-3b4a33a02389c02e38bca513.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/606873"
+  },
+  {
+    "codigoFabricante": "SA400S37/480G",
+    "imagen": "/imagenes/catalogo-seleccion/ic-cc5553cfb6ce58c597c7a1ab.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/282516"
+  },
+  {
+    "codigoFabricante": "SA400S37/240G",
+    "imagen": "/imagenes/catalogo-seleccion/ic-c575e5cad6b45d008bac0049.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/282184"
+  },
+  {
+    "codigoFabricante": "KMP-100B",
+    "imagen": "/imagenes/catalogo-seleccion/ic-bfe466fe1ad5ec0b81277593.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/39276"
+  },
+  {
+    "codigoFabricante": "ZAG70867PA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-124003d518937f664677e927.webp",
+    "fuente": "https://www.lenovo.com/in/en/p/tablets/android-tablets/lenovo-tab-series/lenovo-idea-tab-plus/len103l0033"
+  },
+  {
+    "codigoFabricante": "920-004422",
+    "imagen": "/imagenes/catalogo-seleccion/ic-181d8c58f08d50d703ed5a8a.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/140798"
+  },
+  {
+    "codigoFabricante": "920-004428",
+    "imagen": "/imagenes/catalogo-seleccion/ic-989764f0bd7c14789dab16e4.webp",
+    "fuente": "https://www.logitech.com/es-mx/product/desktop-mk120"
+  },
+  {
+    "codigoFabricante": "981-000014",
+    "imagen": "/imagenes/catalogo-seleccion/ic-f3cf61012047559690f8c170.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/49349"
+  },
+  {
+    "codigoFabricante": "920-004432",
+    "imagen": "/imagenes/catalogo-seleccion/ic-278b218b7ddb31356b6b2e3e.webp",
+    "fuente": "https://store.intcomex.com/images/products/ID232LOG19%20M.jpg"
+  },
+  {
+    "codigoFabricante": "910-007113",
+    "imagen": "/imagenes/catalogo-seleccion/ic-e3fca5d521c74edfee558327.webp",
+    "fuente": "https://www.logitech.com/pt-br/shop/p/m240-silent-bluetooth-mouse.910-007113"
+  },
+  {
+    "codigoFabricante": "980-000028",
+    "imagen": "/imagenes/catalogo-seleccion/ic-67b67ec7f7e886f0d3e4dd12.webp",
+    "fuente": "https://www.logitech.com/en-us/shop/p/s150-usb-stereo-speakers"
+  },
+  {
+    "codigoFabricante": "PG38C08260",
+    "imagen": "/imagenes/catalogo-seleccion/ic-ba69be5c405f6625a2d06dea.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/635962"
+  },
+  {
+    "codigoFabricante": "NPM-DH2UB",
+    "imagen": "/imagenes/catalogo-seleccion/ic-9bad7879b50b39e576f3df43.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/432282"
+  },
+  {
+    "codigoFabricante": "NPS-S11U3B",
+    "imagen": "/imagenes/catalogo-seleccion/ic-913a20f91e3d97568ceeb4ff.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/437409"
+  },
+  {
+    "codigoFabricante": "NPC-F6U66B",
+    "imagen": "/imagenes/catalogo-seleccion/ic-b03c58211038fd9c71b02926.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/413395"
+  },
+  {
+    "codigoFabricante": "NPC-F9U64B",
+    "imagen": "/imagenes/catalogo-seleccion/ic-fe6cf0e383ad575ff70f60a8.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/413391"
+  },
+  {
+    "codigoFabricante": "NSW-V900P",
+    "imagen": "/imagenes/catalogo-seleccion/ic-279fe444f778bbb136a3c4c3.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/511754"
+  },
+  {
+    "codigoFabricante": "NSW-A2400UR",
+    "imagen": "/imagenes/catalogo-seleccion/ic-a3c8dfc37a03b113adab9e00.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/542277"
+  },
+  {
+    "codigoFabricante": "RZ38-05310700-R3CA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-60ee221fec992ad6b9420d03.webp",
+    "fuente": "https://www.razer.com/gb-en/gaming-chairs/razer-iskur-v2-x-newgen"
+  },
+  {
+    "codigoFabricante": "RZ38-05310100-R3UA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-3b4cf0f88ce1b0b439d8dde5.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/568272"
+  },
+  {
+    "codigoFabricante": "RZ38-05310200-R3UA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-e8a6c84b16ba8b2b2d5d2755.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/578800"
+  },
+  {
+    "codigoFabricante": "SDSDXXJ-128G-GSCIN",
+    "imagen": "/imagenes/catalogo-seleccion/ic-137a2aacb8f9fb2edef075c2.webp",
+    "fuente": "https://www.sandisk.com/ar-sa/products/memory-cards/sd-cards/sandisk-extreme-pro-sd-uhs-i?sku=SDSDXXJ-128G-GSCIN"
+  },
+  {
+    "codigoFabricante": "SDSQXCD-512G-GN6MA",
+    "imagen": "/imagenes/catalogo-seleccion/ic-92338a00940965c5f37bbeb4.webp",
+    "fuente": "https://www.sandisk.com/en-il/products/memory-cards/microsd-cards/sandisk-extreme-pro-uhs-i-microsd?sku=SDSQXCD-512G-GN6MA"
+  },
+  {
+    "codigoFabricante": "UE306",
+    "imagen": "/imagenes/catalogo-seleccion/ic-66ae85bd343a2ae8102c0840.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/436624"
+  },
+  {
+    "codigoFabricante": "ARCHER AX12",
+    "imagen": "/imagenes/catalogo-seleccion/ic-184868b63b79f88cd712c985.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/508302"
+  },
+  {
+    "codigoFabricante": "EAP650-Outdoor",
+    "imagen": "/imagenes/catalogo-seleccion/ic-1f595bfe05652058d9b7b3ea.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/482277"
+  },
+  {
+    "codigoFabricante": "Archer T2UB Nano",
+    "imagen": "/imagenes/catalogo-seleccion/ic-eb2bcbecdcfa714c998430ac.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/482193"
+  },
+  {
+    "codigoFabricante": "MR70X",
+    "imagen": "/imagenes/catalogo-seleccion/ic-a3753e923a6c50eb8877a4f3.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/438950"
+  },
+  {
+    "codigoFabricante": "MR60X",
+    "imagen": "/imagenes/catalogo-seleccion/ic-16cf741d182d692fa7e91f72.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/498064"
+  },
+  {
+    "codigoFabricante": "UACC-UK-UltraPanelAntenna",
+    "imagen": "/imagenes/catalogo-seleccion/ic-0078f9a17d017fa93ab40a95.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/538222"
+  },
+  {
+    "codigoFabricante": "Loco5AC",
+    "imagen": "/imagenes/catalogo-seleccion/ic-f088fb372bb971518c1f9835.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/341382"
+  },
+  {
+    "codigoFabricante": "USW-WAN-RJ45",
+    "imagen": "/imagenes/catalogo-seleccion/ic-fdf923b500263aa73a8105f1.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/592230"
+  },
+  {
+    "codigoFabricante": "USW-PRO-48",
+    "imagen": "/imagenes/catalogo-seleccion/ic-7a601c53fd8db873bdfa8a14.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/399938"
+  },
+  {
+    "codigoFabricante": "U7-Pro",
+    "imagen": "/imagenes/catalogo-seleccion/ic-71d595aeaa8835b1112c8371.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/531258"
+  },
+  {
+    "codigoFabricante": "70847",
+    "imagen": "/imagenes/catalogo-seleccion/ic-a5f752f53393602756ffc93e.webp",
+    "fuente": "https://www.mi.com/pl/product/xiaomi-2k-gaming-monitor-g27qi-2026/"
+  },
+  {
+    "codigoFabricante": "70853",
+    "imagen": "/imagenes/catalogo-seleccion/ic-6eb1313e6bd861b8fae4cde2.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/631301"
+  },
+  {
+    "codigoFabricante": "68366",
+    "imagen": "/imagenes/catalogo-seleccion/ic-a3a1f4aaf7ba887b4e90c055.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/620488"
+  },
+  {
+    "codigoFabricante": "70859",
+    "imagen": "/imagenes/catalogo-seleccion/ic-cb38d700acc68008d332f8f0.webp",
+    "fuente": "https://www.mi.com/es/product/xiaomi-2k-monitor-a27qi-2026/"
+  },
+  {
+    "codigoFabricante": "XTC-308",
+    "imagen": "/imagenes/catalogo-seleccion/ic-d4ac929c05662af32060b7f4.webp",
+    "fuente": "https://store.intcomex.com/images/products/AB004XTK14%20M.jpg"
+  },
+  {
+    "codigoFabricante": "XTC-626",
+    "imagen": "/imagenes/catalogo-seleccion/ic-4dd2e62faa8ba57b5437f33f.webp",
+    "fuente": "https://store.intcomex.com/es-XCR/Product/Detail/337429"
+  }
+]

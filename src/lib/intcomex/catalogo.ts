@@ -46,10 +46,10 @@ export function fusionarProveedor(actual:CatalogoAdmin,filas:FilaProveedor[],fec
   if(!siguiente.categorias.some(c=>c.id===f.categoria)){informe.fueraDeCategoria++;continue;}
   const idImportado=`ic-${createHash('sha256').update(f.sku).digest('hex').slice(0,24)}`;
   const candidatos=siguiente.productos.filter(p=>!p.proveedor&&p.codigoFabricante===f.mpn&&p.marca===f.marca);
-  let p=indice.get(f.sku)??siguiente.productos.find(p=>p.id===idImportado)??(f.mpn&&candidatos.length===1?candidatos[0]:undefined);
+  let p=indice.get(f.sku)??siguiente.productos.find(p=>p.codigoIntcomex===f.sku)??siguiente.productos.find(p=>p.id===idImportado)??(f.mpn&&candidatos.length===1?candidatos[0]:undefined);
   const proveedor={sku:f.sku,costo:f.costo,moneda:f.moneda,stock:f.stock,stockExacto:f.stockExacto,tipo:f.tipo,actualizado:fecha};
   if(!p){
-   p={id:idImportado,precioReferencia:null,disponibilidadReferencia:'consultar',categoria:f.categoria,nombre:{es:f.nombreEs,en:f.nombreEn},descripcion:{es:f.nombreEs,en:f.nombreEn},marca:f.marca,codigoFabricante:f.mpn,imagen:f.imagen||'/imagenes/producto-sin-imagen.svg',costoUsd:f.moneda==='USD'?f.costo:null,costoCrc:f.moneda==='CRC'?f.costo:null,imagenes:[],especificaciones:[],precioManual:null,publicado:!!f.mpn,destacado:false,proveedor,revisionPrecio:false};
+   p={id:idImportado,precioReferencia:null,disponibilidadReferencia:'consultar',categoria:f.categoria,nombre:{es:f.nombreEs,en:f.nombreEn},descripcion:{es:f.nombreEs,en:f.nombreEn},marca:f.marca,codigoFabricante:f.mpn,imagen:f.imagen||'/imagenes/producto-sin-imagen.svg',costoUsd:f.moneda==='USD'?f.costo:null,costoCrc:f.moneda==='CRC'?f.costo:null,imagenes:[],especificaciones:[],precioManual:null,publicado:!!f.mpn,destacado:false,inventarioPropio:false,proveedor,revisionPrecio:false};
    siguiente.productos.push(p);indice.set(f.sku,p);informe.nuevos++;
   }else{
    // Completar imágenes pendientes sin reemplazar imágenes personalizadas por SG.
@@ -62,6 +62,7 @@ export function fusionarProveedor(actual:CatalogoAdmin,filas:FilaProveedor[],fec
    else{p.costoUsd=f.moneda==='USD'?f.costo:null;p.costoCrc=f.moneda==='CRC'?f.costo:null;p.revisionPrecio=false;}
    informe.actualizados++;
   }
+  p.estadoIntcomex={estado:'encontrado',fecha};
   if(!f.imagen&&p.imagen==='/imagenes/producto-sin-imagen.svg')informe.sinImagen++;
   if(!p.codigoFabricante)informe.sinCodigo++;
  }

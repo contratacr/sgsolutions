@@ -1,7 +1,8 @@
 import {test,expect} from '@playwright/test';
 import {readFile,writeFile} from 'node:fs/promises';
 import {randomBytes,createHash} from 'node:crypto';
-import {prepararArchivo} from '../src/lib/intcomex/archivo';
+import {estaSeleccionado,resumenSeleccion,seleccionIntcomex} from '../src/lib/intcomex/seleccion';
+import {prepararArchivo,prepararInventario} from '../src/lib/intcomex/archivo';
 import {esquemaCatalogo,publicarCatalogo} from '../src/lib/catalogo-modelo';
 import base from '../src/lib/catalogo-base.json';
 const encabezados=['Nombre','Marca','Precio','Disponibilidad','No. de Parte','SKU'];
@@ -37,6 +38,7 @@ test.describe('panel importación',()=>{
   await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
   try{
    await page.goto('/panel/catalogo/importar');
+   await page.getByRole('checkbox').uncheck();
    await page.locator('input[type=file]').setInputFiles('tests/fixtures/intcomex-qa.xlsx');
    await page.locator('select').first().selectOption('USD');
    await page.getByRole('button',{name:idioma==='es'?'Revisar cambios':'Review changes',exact:true}).click();
@@ -60,4 +62,63 @@ test.describe('panel importación',()=>{
    await page.goto('/tienda');await expect(page.locator('main')).toContainText('68');await expect(page.locator('main')).toContainText('Equipo QA');
   }finally{await Promise.all(rutas.map((p,i)=>writeFile(p,originales[i],{mode:0o600})));}
  });
+});
+
+test('selección exacta e inventario conservan todos los datos comerciales',()=>{
+ const inicial=esquemaCatalogo.parse({...base,productos:[]});
+ expect(seleccionIntcomex).toHaveLength(104);
+ expect(new Set(seleccionIntcomex).size).toBe(104);
+ expect(resumenSeleccion(inicial).pendientes).toHaveLength(104);
+ expect(estaSeleccionado('ES226HIK18','')).toBe(true);
+ expect(estaSeleccionado('ES226HIK18-B1','')).toBe(false);
+ const entrada=[encabezados,['Equipo','QA',100,5,'MODELO','UI150FOR31'],['Cámara','QA',80,3,'DS-2CD1147G3-LIU(2.8mm)','HIK-SKU'],['Otro','QA',20,4,'OTRO','FUERA']];
+ const seleccion=prepararArchivo(entrada,inicial,'USD','computo',fecha,true);
+ expect(seleccion.catalogo.productos).toHaveLength(2);
+ const original=seleccion.catalogo;
+ original.productos[0].publicado=true;original.productos[0].precioManual=85000;
+ const actualizado=prepararInventario([['SKU','Disponibilidad'],['UI150FOR31','Más de 20'],['DESCONOCIDO',1]],original,fecha,true);
+ expect(actualizado.catalogo.productos[0]).toEqual({...original.productos[0],proveedor:{...original.productos[0].proveedor,stock:21,stockExacto:false,actualizado:fecha}});
+ expect(actualizado.catalogo.productos[1]).toEqual(original.productos[1]);
+ expect(actualizado.omitidos).toBe(1);
+ expect(publicarCatalogo(actualizado.catalogo).productos[0]).toMatchObject({precio:85000,disponibilidad:'proveedor'});
+ const cero=prepararInventario([['SKU','Disponibilidad'],['UI150FOR31',0]],original,fecha,true);
+ expect(publicarCatalogo(cero.catalogo).productos[0].disponibilidad).toBe('agotado');
+ const desconocido=prepararInventario([['SKU','Disponibilidad'],['UI150FOR31',null]],original,fecha,true);
+ expect(publicarCatalogo(desconocido.catalogo).productos[0].disponibilidad).toBe('consultar');
+ expect(()=>prepararInventario([['SKU','Disponibilidad'],['UI150FOR31',1],['UI150FOR31',0]],original,fecha,true)).toThrow('duplicado');
+ expect(()=>prepararInventario([['SKU','Disponibilidad'],['FUERA',1]],original,fecha,true)).toThrow('sinCoincidencias');
+});
+
+for(const idioma of ['es','en'])test(`actualización diaria conserva precio y cambia tienda ${idioma}`,async({page,context})=>{
+ test.skip(process.env.SG_TEST_ALTAS!=='1','Solo servidor local aislado');
+ const rutas=['cuenta','catalogo'].map(n=>`.privado/admin-local/${n}.json`);
+ const originales=await Promise.all(rutas.map(p=>readFile(p,'utf8')));
+ const cuenta=JSON.parse(originales[0]),token=randomBytes(32).toString('hex');
+ cuenta.sesiones.push({hash:createHash('sha256').update(token).digest('hex'),vence:Date.now()+120000});
+ const preparado=prepararArchivo([encabezados,['Equipo QA','QA',90,0,'QA-IMPORT','QA-IMPORT']],esquemaCatalogo.parse({...base,productos:[]}),'USD','computo',fecha).catalogo;
+ preparado.productos[0].publicado=true;preparado.productos[0].precioManual=75000;
+ await writeFile(rutas[0],JSON.stringify(cuenta),{mode:0o600});
+ await writeFile(rutas[1],JSON.stringify({contenido:preparado,revision:100}),{mode:0o600});
+ await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ try{
+  await page.goto('/panel/catalogo');
+  await page.getByRole('link',{name:idioma==='es'?'Actualizar inventario':'Update inventory',exact:true}).click();
+  await expect(page.locator('select')).toHaveCount(0);
+  await page.getByRole('checkbox').uncheck();
+  await page.locator('input[type=file]').setInputFiles('tests/fixtures/intcomex-qa.xlsx');
+  await page.getByRole('button',{name:idioma==='es'?'Revisar cambios':'Review changes',exact:true}).click();
+  await expect(page.locator('tbody tr')).toHaveCount(1);
+  await expect(page.locator('tbody')).toContainText('75');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+  await page.screenshot({path:`/tmp/inventario-${idioma}-${test.info().project.name}.png`,fullPage:true});
+  await page.getByRole('button',{name:idioma==='es'?'Confirmar y guardar importación':'Confirm and save import',exact:true}).click();
+  await expect(page.locator('.admin-importacion > [role=status]')).toContainText(idioma==='es'?'Importación guardada':'Import saved');
+  const guardado=JSON.parse(await readFile(rutas[1],'utf8')).contenido;
+  expect(guardado.productos).toHaveLength(1);
+  expect(guardado.productos[0]).toMatchObject({costoUsd:90,precioManual:75000,nombre:{es:'Equipo QA'}});
+  expect(guardado.inventario.actualizados).toBe(1);
+  await page.goto('/tienda');
+  await expect(page.locator('.shop-producto')).toContainText('75');
+  await expect(page.locator('.shop-producto')).toContainText(idioma==='es'?'Disponible con proveedor':'Available from supplier');
+ }finally{await Promise.all(rutas.map((p,i)=>writeFile(p,originales[i],{mode:0o600})));}
 });

@@ -42,7 +42,7 @@ test('cinta espera imágenes lentas y mantiene continuidad al cerrar el bucle',a
  await expect(pista).toHaveCSS('animation-play-state','paused');
  liberar();
  await expect(pista).toHaveAttribute('data-lista','true');
- await expect(pista).toHaveCSS('animation-play-state','running');
+ await expect(pista).toHaveCSS('animation-play-state',test.info().project.name==='movil'?'paused':'running');
  const salto=await pista.evaluate(e=>{
   const a=e.getAnimations()[0];a.pause();
   const duracion=Number(a.effect!.getTiming().duration);
