@@ -12,6 +12,15 @@ export function asignarCategoria(codigo:string,nombre:string){
  if(categoria&&['computo','accesorios','componentes'].includes(categoria)&&/\b(gaming|gamer|legion|victus|predator|rog|loq)\b/i.test(nombre))return 'gaming';
  return categoria??null;
 }
+// Los Excel del portal no incluyen la categoría IWS. Solo inferimos familias
+// cuyo prefijo de SKU es inequívoco; lo demás requiere la categoría elegida.
+export function categoriaDeSku(sku:string,nombre:string):string|null{
+ const prefijo=sku.trim().toUpperCase().match(/^[A-Z]+/)?.[0];
+ const familias:Record<string,string>={NT:'computo',PC:'computo',TA:'computo',MT:'componentes',NW:'redes',AW:'redes',AS:'oficina',SE:'software',CH:'componentes',DH:'componentes',UI:'componentes',UP:'componentes',ID:'accesorios',AN:'accesorios',AB:'accesorios'};
+ const categoria=prefijo?familias[prefijo]:undefined;
+ if(categoria&&['computo','componentes','accesorios'].includes(categoria)&&/\b(gaming|gamer|legion|victus|predator|rog|loq)\b/i.test(nombre))return 'gaming';
+ return categoria??null;
+}
 const productoIws=z.object({Sku:texto,Mpn:z.string().optional(),MPN:z.string().optional(),Brand:z.object({Description:texto}),Description:texto,Category:z.object({CategoryId:texto}).optional(),Type:z.string().optional()});
 const precioIws=z.object({Sku:texto,Price:z.object({UnitPrice:z.number().finite(),CurrencyId:texto})});
 const inventarioIws=z.object({Sku:texto,InStock:z.union([z.number(),z.string().regex(/^\d+$/)]).transform(Number).pipe(z.number().int().nonnegative()),RealStockValue:z.boolean().optional()});

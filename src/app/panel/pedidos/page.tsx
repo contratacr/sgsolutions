@@ -6,6 +6,7 @@ import { basePedidosAdministracion } from '@/lib/tilopay';
 import { colones } from '@/lib/catalogo-modelo';
 import { accesoPedido, basePedidosManuales, configuracionPedidosManuales, numeroPedido, type EstadoPedidoManual } from '@/lib/pedidos-manuales';
 import { actualizarPedidoManual } from './acciones';
+import {costoEntrega} from '@/lib/envio';
 
 type Pedido = {
   id: string;
@@ -57,6 +58,8 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
     <h2>{t('manualTitulo')}</h2>
     {!manualDb || manualError ? <p role="status">{t('configurarManual')}</p> : !manuales.length ? <p>{t('manualVacio')}</p> :
       <div className="pedidos-admin-lista">{await Promise.all(manuales.map(async p => {
+        const envio = p.costo_envio ?? (p.estado === 'revision' ? costoEntrega(p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro') : null);
+        const total = p.total_cobrar ?? p.total_productos + (envio ?? 0);
         const enlace = new URL('/finalizar-compra/pedido', configManual!.origen);
         enlace.searchParams.set('pedido', p.id); enlace.searchParams.set('acceso', accesoPedido(configManual!, p.id));
         const comprobante = p.comprobante_path ? await manualDb.storage.from('comprobantes-pedidos').createSignedUrl(p.comprobante_path, 300) : null;
@@ -65,11 +68,12 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(p.creado_en))} · {t(`metodo_${p.metodo}`)} · {t(`modalidad_${p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro'}`)}</p>
           {p.cliente?.direccion && <p>{p.cliente.direccion}</p>}
           <ul>{p.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>
-          <div className="pedidos-admin-pie"><code>{numeroPedido(p.id)}</code><strong>{colones(p.total_cobrar ?? p.total_productos)}</strong></div>
-          {p.total_cobrar === null && <p>{t('subtotalPendiente')}</p>}
+          <div className="pedidos-admin-pie"><code>{numeroPedido(p.id)}</code><strong>{colones(total)}</strong></div>
+          {envio !== null && <p>{t('costoEnvio')}: {colones(envio)}</p>}
+          {p.estado === 'revision' && <p>{t('subtotalPendiente')}</p>}
           {comprobante?.data?.signedUrl && <p><a href={comprobante.data.signedUrl} target="_blank" rel="noopener noreferrer">{t('verComprobante')} <span className="sr-only">{t('nuevaPestana')}</span></a></p>}
           {(!p.correo_cliente_en || p.estado === 'pendiente_pago' && !p.correo_pago_en) && <div className="panel-aviso"><p>{t('correoPendiente')}</p><label>{t('enlaceCliente')}<input readOnly value={enlace.href} aria-label={t('enlaceCliente')} /></label></div>}
-          {p.estado === 'revision' && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pendiente_pago"/><label>{t('costoEnvio')}<input type="number" min="0" max="99999999" step="1" name="envio" defaultValue={p.cliente?.modalidad === 'retiro' ? 0 : undefined} required /></label><button className="boton boton-azul">{t('confirmarYEnviar')}</button></form>}
+          {p.estado === 'revision' && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pendiente_pago"/><button className="boton boton-azul">{t('confirmarYEnviar')}</button></form>}
           {(p.estado === 'pendiente_pago' || p.estado === 'comprobante_recibido') && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pagado"/><p>{t('verificarBanco')}</p><button className="boton boton-azul">{t('marcarPagado')}</button></form>}
           {(p.estado === 'revision' || p.estado === 'pendiente_pago' || p.estado === 'comprobante_recibido') && <form action={actualizarPedidoManual}><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="cancelado"/><button className="boton boton-contorno">{t('cancelar')}</button></form>}
         </article>;

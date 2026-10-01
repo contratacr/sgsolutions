@@ -8,6 +8,7 @@ import type {CatalogoPublico} from '@/lib/catalogo-modelo';
 import {colones, traducir} from '@/lib/catalogo-modelo';
 import {enlaceWhatsApp} from '@/lib/empresa';
 import {enlaceProductoParaWhatsApp, mensajePedidoWhatsApp} from '@/lib/mensaje-pedido-whatsapp';
+import {costoEntrega} from '@/lib/envio';
 import {desplazarContenido} from '@/lib/desplazar-contenido';
 
 type Producto = CatalogoPublico['productos'][number];
@@ -39,11 +40,13 @@ export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regr
     desplazarContenido(elemento);
   }, [modalidad, revision]);
   const tienePrecioPendiente = lineas.some(({producto}) => producto.precio === null);
-  const total = lineas.reduce((suma, {cantidad, producto}) => suma + (producto.precio ?? 0) * cantidad, 0);
+  const subtotal = lineas.reduce((suma, {cantidad, producto}) => suma + (producto.precio ?? 0) * cantidad, 0);
 
   const mensaje = revision ? mensajePedidoWhatsApp({
     lineas: lineas.map(({cantidad, producto}) => ({cantidad, nombre: traducir(producto.nombre, idioma), codigo: producto.codigoFabricante || undefined, precio: producto.precio === null ? t('precioPendiente') : colones(producto.precio * cantidad)})),
-    subtotal: tienePrecioPendiente ? t('precioPendiente') : colones(total),
+    subtotal: tienePrecioPendiente ? t('precioPendiente') : colones(subtotal),
+    costoEnvio: colones(costoEntrega(revision.modalidad)),
+    total: tienePrecioPendiente ? t('precioPendiente') : colones(subtotal + costoEntrega(revision.modalidad)),
     nombre: revision.nombre,
     telefono: revision.telefono,
     correo: revision.correo,
@@ -52,7 +55,7 @@ export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regr
     notas: revision.notas,
     enlaceProducto: lineas.length === 1 ? enlaceProductoParaWhatsApp(lineas[0].producto.id) : undefined,
   }, {
-    titulo: w('titulo'), productos: w('productos'), codigo: w('codigo'), subtotal: w('subtotal'),
+    titulo: w('titulo'), productos: w('productos'), codigo: w('codigo'), subtotal: w('subtotal'), costoEnvio: w('costoEnvio'), total: w('total'),
     entrega: w('entrega'), direccion: w('direccion'), receptor: w('receptor'), pago: w('pago'),
     comprobante: w('comprobante'), cliente: w('cliente'), correo: w('correo'),
     contacto: w('contacto'), notas: w('notas'), ficha: w('ficha'), confirmacion: w('confirmacion'),
@@ -90,7 +93,9 @@ export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regr
         <div><strong>{cantidad} × {traducir(producto.nombre, idioma)}</strong><span>{t('codigoFabricante')}: {producto.codigoFabricante || t('sinCodigo')}</span></div>
         <strong>{producto.precio === null ? t('precioPendiente') : colones(producto.precio * cantidad)}</strong>
       </li>)}</ul>
-      <div className="pedido-total"><span>{t('totalEstimado')}</span><strong>{tienePrecioPendiente ? t('precioPendiente') : colones(total)}</strong></div>
+      <div className="pedido-total"><span>{t('subtotal')}</span><strong>{tienePrecioPendiente ? t('precioPendiente') : colones(subtotal)}</strong></div>
+      <div className="pedido-total"><span>{t('costoEnvio')}</span><strong>{colones(costoEntrega(revision.modalidad))}</strong></div>
+      <div className="pedido-total"><span>{t('totalEstimado')}</span><strong>{tienePrecioPendiente ? t('precioPendiente') : colones(subtotal + costoEntrega(revision.modalidad))}</strong></div>
     </div>
     <p className="pedido-confirmacion"><Check size={17}/><span>{t('confirmacion')}</span></p>
     <a className="boton boton-azul pedido-enviar" href={enlaceWhatsApp(mensaje)} target="_blank" rel="noopener noreferrer" title={`${t('enviarWhatsapp')}. ${n('nuevaPestana')}`}>

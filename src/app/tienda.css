@@ -98,6 +98,8 @@
 .tienda-compacta .shop-precio small{font-size:.64rem;background:#edf3f7;color:#526c80}
 .tienda-compacta .shop-producto .boton{background:#142e42;border-color:#142e42;color:white;border-radius:10px;font-size:.77rem;padding:12px 14px;min-height:44px;transition:background .2s,border-color .2s}
 .tienda-compacta .shop-producto .boton svg{width:18px;height:18px}
+.compra-resumen dl .compra-total{border-top:1px solid #d4dfe7;padding-top:18px;font-size:17px;color:#18344c}
+.pedido-seleccion .pedido-total + .pedido-total{border-top:1px solid #e8edf1}
 .tienda-compacta .shop-paginacion{padding:20px 0;margin-top:24px;border-color:#dce4eb}
 @media(hover:hover){
  .tienda-compacta .shop-ayuda:hover{background:#ffffff14;border-color:#abc9dc70}

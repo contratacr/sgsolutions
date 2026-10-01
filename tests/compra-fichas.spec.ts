@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { esquemaContenido } from "../src/lib/contenido-modelo";
 import contenido from "../src/lib/contenido-base.json";
+import {costoEntrega} from '../src/lib/envio';
+import {colones} from '../src/lib/catalogo-modelo';
 for (const idioma of ["es", "en"])
   test(`ficha y checkout completos ${idioma}`, async ({ page }, info) => {
     const errores: string[] = [];
@@ -10,6 +12,7 @@ for (const idioma of ["es", "en"])
       await page
         .getByRole("button", { name: "Read this page in English" })
         .click();
+    await expect(page.locator('html')).toHaveAttribute('lang', idioma);
     await expect(page.locator(".shop-producto").first()).toBeVisible();
     await page.locator(".shop-producto h3 a").first().click();
     await expect(page).toHaveURL(/\/tienda\/[^/]+$/);
@@ -25,6 +28,11 @@ for (const idioma of ["es", "en"])
     await form.locator("[name=correo]").fill("prueba@example.com");
     await form.locator("[name=telefono]").fill("88888888");
     await form.locator("[value=envio]").check();
+    await expect(form.locator('label:has([value=envio])')).toContainText('Correos de Costa Rica');
+    const importes = page.locator('.compra-resumen dl dd');
+    const numero = async (indice: number) => Number((await importes.nth(indice).innerText()).replace(/\D/g, ''));
+    expect(await numero(1)).toBe(3500);
+    expect(await numero(2)).toBe((await numero(0)) + costoEntrega('envio'));
     await form.locator("[name=provincia]").selectOption("Alajuela");
     for (const k of ["canton", "distrito", "direccion"])
       await form.locator(`[name=${k}]`).fill("Atenas");
@@ -58,6 +66,7 @@ for (const idioma of ["es", "en"])
     expect(url.searchParams.get("text")).toContain("21H2S1NH00");
     expect(url.searchParams.get("text")).toContain(idioma === 'es' ? '*Solicitud de pedido · SG Solutions*' : '*Order request · SG Solutions*');
     expect(url.searchParams.get("text")).toContain(idioma === 'es' ? '*Productos*' : '*Products*');
+    expect(url.searchParams.get('text')?.replace(/\s/g, ' ')).toContain(colones(3500).replace(/\s/g, ' '));
     expect(url.searchParams.get("text")).not.toContain(idioma === 'es' ? 'Apellidos:' : 'Last name:');
     await page.locator("main .pedido-volver").click();
     await expect(form.locator("[name=nombre]")).toHaveValue("Alex");
@@ -75,6 +84,15 @@ for (const idioma of ["es", "en"])
     });
     expect(errores).toEqual([]);
   });
+test('retiro no suma costo de envío', async ({page}) => {
+  await page.goto('/tienda/portatil');
+  await page.locator('.ficha-compra button').click();
+  await page.locator('.ficha-compra a[href="/finalizar-compra"]').click();
+  const importes = page.locator('.compra-resumen dl dd');
+  const numero = async (indice: number) => Number((await importes.nth(indice).innerText()).replace(/\D/g, ''));
+  expect(await numero(1)).toBe(0);
+  expect(await numero(2)).toBe(await numero(0));
+});
 test("contenido valida imágenes y protege administrador", async ({ page }) => {
   expect(esquemaContenido.safeParse(contenido).success).toBe(true);
   const malo = structuredClone(contenido);

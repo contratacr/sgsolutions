@@ -24,6 +24,26 @@ test('valida archivos y conserva reglas de publicación',()=>{
  const crc=prepararArchivo([encabezados,['Prueba','QA',50000,null,'QA','SKU']],inicial,'CRC','computo',fecha);
  expect(crc.cambios[0]).toMatchObject({precio:68000,stock:null});
 });
+test('Excel mixto clasifica familias conocidas y conserva categorías editadas',()=>{
+ const vacio=esquemaCatalogo.parse({...base,productos:[]});
+ const filas=[encabezados,['Monitor Dell','Dell',100,3,'P2424','MT007DEL66'],['Laptop Lenovo','Lenovo',500,2,'L14','NT081LEN10'],['Router TP-Link','TP-Link',80,5,'AX20','NW003TPL80'],['Producto nuevo','Marca',50,1,'X1','SIN-FAMILIA']];
+ const primero=prepararArchivo(filas,vacio,'USD','accesorios',fecha);
+ expect(primero.cambios.map(c=>c.categoria)).toEqual(['componentes','computo','redes','accesorios']);
+ primero.catalogo.productos[0].categoria='oficina';
+ const segundo=prepararArchivo(filas,primero.catalogo,'USD','computo',fecha);
+ expect(segundo.catalogo.productos[0].categoria).toBe('oficina');
+ const inventario=prepararInventario([['SKU','Disponibilidad'],['MT007DEL66',0]],segundo.catalogo,fecha);
+ expect(inventario.catalogo.productos[0].categoria).toBe('oficina');
+});
+test('las computadoras todo en uno se identifican como equipos, no como monitores',()=>{
+ const catalogo=esquemaCatalogo.parse(inicialActual);
+ for(const codigo of ['F0JC001ELD','F0JE002ALD']){
+  const p=catalogo.productos.find(p=>p.codigoFabricante===codigo);
+  expect(p).toMatchObject({categoria:'computo'});
+  expect(p?.nombre.es).toContain('computadora todo en uno');
+  expect(p?.nombre.en).toContain('all-in-one computer');
+ }
+});
 test.describe('panel importación',()=>{
  test.describe.configure({mode:'serial'});
  for(const idioma of ['es','en'])test(`Excel, confirmación y tienda ${idioma}`,async({page,context})=>{

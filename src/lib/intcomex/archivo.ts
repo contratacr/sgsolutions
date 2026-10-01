@@ -1,5 +1,5 @@
 import {type CatalogoAdmin,calcularPrecio} from '../catalogo-modelo';
-import {fusionarProveedor,type FilaProveedor} from './catalogo';
+import {categoriaDeSku,fusionarProveedor,type FilaProveedor} from './catalogo';
 import {estaSeleccionado} from './seleccion';
 
 export class ErrorImportacion extends Error {
@@ -28,7 +28,8 @@ export function prepararArchivo(filas:unknown[][],base:CatalogoAdmin,moneda:'USD
   // Unknown availability is never interpreted as zero inventory.
   const candidatos=base.productos.filter(p=>p.codigoFabricante===String(mpn??'').trim()&&p.marca===String(marca).trim());
   const existente=base.productos.find(p=>p.proveedor?.sku===codigo||p.codigoIntcomex===codigo)||(mpn&&candidatos.length===1?candidatos[0]:undefined);
-  datos.push({sku:codigo,mpn:String(mpn??'').trim(),marca:String(marca).trim(),nombreEs:existente?.nombre.es??String(nombre).trim(),nombreEn:existente?.nombre.en??String(nombre).trim(),categoria:existente?.categoria??categoria,costo,moneda,stock,stockExacto,tipo:existente?.proveedor?.tipo??'Physical',imagen:''});
+  const sugerida=categoriaDeSku(codigo,String(nombre));
+  datos.push({sku:codigo,mpn:String(mpn??'').trim(),marca:String(marca).trim(),nombreEs:existente?.nombre.es??String(nombre).trim(),nombreEn:existente?.nombre.en??String(nombre).trim(),categoria:existente?.categoria??(sugerida&&base.categorias.some(c=>c.id===sugerida)?sugerida:categoria),costo,moneda,stock,stockExacto,tipo:existente?.proveedor?.tipo??'Physical',imagen:''});
  }
  if(!datos.length&&soloSeleccion)throw new ErrorImportacion('sinCoincidenciasSeleccion');
  if(!datos.length||datos.length>20000)throw new ErrorImportacion('limite');
@@ -37,7 +38,7 @@ export function prepararArchivo(filas:unknown[][],base:CatalogoAdmin,moneda:'USD
  const recibidos=new Set(datos.map(d=>d.sku));
  const cambios=resultado.catalogo.productos.filter(p=>p.proveedor&&recibidos.has(p.proveedor.sku)).map(p=>{
   const antes=anteriores.get(p.id);if(!antes)p.publicado=false;
-  return {sku:p.proveedor!.sku,mpn:p.codigoFabricante,sinFoto:p.imagen==='/imagenes/producto-sin-imagen.svg',nombre:p.nombre.es,nuevo:!antes,costoAntes:antes?.proveedor?.costo??antes?.costoUsd??antes?.costoCrc??null,monedaAntes:antes?.proveedor?.moneda??(antes?.costoUsd!=null?'USD':'CRC'),costo:p.proveedor!.costo,stock:p.proveedor!.stock,exacto:p.proveedor!.stockExacto,precio:p.revisionPrecio&&p.precioManual===null?null:calcularPrecio(p.costoUsd,base.ajustes,p.precioManual,p.costoCrc),manual:p.precioManual!==null,revision:p.revisionPrecio};
+  return {sku:p.proveedor!.sku,mpn:p.codigoFabricante,sinFoto:p.imagen==='/imagenes/producto-sin-imagen.svg',nombre:p.nombre.es,categoria:p.categoria,nuevo:!antes,costoAntes:antes?.proveedor?.costo??antes?.costoUsd??antes?.costoCrc??null,monedaAntes:antes?.proveedor?.moneda??(antes?.costoUsd!=null?'USD':'CRC'),costo:p.proveedor!.costo,stock:p.proveedor!.stock,exacto:p.proveedor!.stockExacto,precio:p.revisionPrecio&&p.precioManual===null?null:calcularPrecio(p.costoUsd,base.ajustes,p.precioManual,p.costoCrc),manual:p.precioManual!==null,revision:p.revisionPrecio};
  });
  return {...resultado,cambios};
 }
@@ -66,7 +67,7 @@ export function prepararInventario(filas:unknown[][],base:CatalogoAdmin,fecha:st
   else if(!['','n/a','consultar','no disponible','sin disponibilidad'].includes(texto))throw new ErrorImportacion('stock',i+1);
   if(stock!==null&&!Number.isSafeInteger(stock))throw new ErrorImportacion('stock',i+1);
   p.proveedor={...p.proveedor,stock,stockExacto:exacto,actualizado:fecha};
-  cambios.push({sku,mpn:p.codigoFabricante,sinFoto:false,nombre:p.nombre.es,nuevo:false,costoAntes:p.proveedor.costo,monedaAntes:p.proveedor.moneda,costo:p.proveedor.costo,stock,exacto,precio:p.revisionPrecio&&p.precioManual===null?null:calcularPrecio(p.costoUsd,base.ajustes,p.precioManual,p.costoCrc),manual:p.precioManual!==null,revision:p.revisionPrecio});
+  cambios.push({sku,mpn:p.codigoFabricante,sinFoto:false,nombre:p.nombre.es,categoria:p.categoria,nuevo:false,costoAntes:p.proveedor.costo,monedaAntes:p.proveedor.moneda,costo:p.proveedor.costo,stock,exacto,precio:p.revisionPrecio&&p.precioManual===null?null:calcularPrecio(p.costoUsd,base.ajustes,p.precioManual,p.costoCrc),manual:p.precioManual!==null,revision:p.revisionPrecio});
  }
  if(!cambios.length)throw new ErrorImportacion('sinCoincidencias');
  if(vistos.size>20000)throw new ErrorImportacion('limite');

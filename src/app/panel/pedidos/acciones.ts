@@ -7,6 +7,7 @@ import { accesoPedido, basePedidosManuales, configuracionPedidosManuales, estado
 import { enviarCorreo } from '@/lib/email/send';
 import { leerContenido } from '@/lib/contenido-servidor';
 import { colones } from '@/lib/catalogo-modelo';
+import {costoEntrega} from '@/lib/envio';
 
 async function autorizado() {
   if (await sesionLocal()) return true;
@@ -30,10 +31,8 @@ export async function actualizarPedidoManual(form: FormData) {
   if (!pedido || !estadosPermitidos[pedido.estado as EstadoPedidoManual]?.includes(nuevo)) redirect('/panel/pedidos?resultado=invalido');
   const cambios: Record<string, unknown> = { estado: nuevo, actualizado_en: new Date().toISOString() };
   if (nuevo === 'pendiente_pago') {
-    const valor = String(form.get('envio') ?? '');
-    if (!/^\d{1,8}$/.test(valor)) redirect('/panel/pedidos?resultado=invalido');
-    const envio = Number(valor);
-    if (pedido.cliente?.modalidad === 'retiro' && envio !== 0) redirect('/panel/pedidos?resultado=invalido');
+    if (!['retiro', 'envio'].includes(pedido.cliente?.modalidad)) redirect('/panel/pedidos?resultado=invalido');
+    const envio = costoEntrega(pedido.cliente.modalidad as 'retiro' | 'envio');
     cambios.costo_envio = envio;
     const totalDefinitivo = Number(pedido.total_productos) + envio;
     cambios.total_cobrar = totalDefinitivo;

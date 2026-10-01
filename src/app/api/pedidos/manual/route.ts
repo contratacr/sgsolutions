@@ -3,6 +3,8 @@ import { leerCatalogoPublico } from '@/lib/catalogo-servidor';
 import { basePedidosManuales, configuracionPedidosManuales, enlacePedido, numeroPedido } from '@/lib/pedidos-manuales';
 import { enviarCorreo } from '@/lib/email/send';
 import { empresa } from '@/lib/empresa';
+import {costoEntrega} from '@/lib/envio';
+import {colones} from '@/lib/catalogo-modelo';
 
 const telefono = z.string().trim().regex(/^\+?[0-9\s-]{8,20}$/);
 const entrada = z.object({
@@ -48,10 +50,12 @@ export async function POST(request: Request) {
     total += producto.precio * linea.cantidad;
     articulos.push({ id: producto.id, codigo: producto.codigoFabricante, nombre: producto.nombre.es, cantidad: linea.cantidad, precio: producto.precio });
   }
-  if (!Number.isSafeInteger(total) || total <= 0 || total > 100000000) return Response.json({ error: 'datos_invalidos' }, { status: 400 });
+  const envio = costoEntrega(datos.datos.modalidad);
+  const totalConEnvio = total + envio;
+  if (!Number.isSafeInteger(totalConEnvio) || total <= 0 || totalConEnvio > 100000000) return Response.json({ error: 'datos_invalidos' }, { status: 400 });
   const id = crypto.randomUUID();
   const db = basePedidosManuales(config);
-  const { error } = await db.from('pedidos_manuales').insert({ id, metodo: datos.metodo, total_productos: total, cliente: { ...datos.datos, idioma: datos.idioma }, articulos });
+  const { error } = await db.from('pedidos_manuales').insert({ id, metodo: datos.metodo, total_productos: total, costo_envio: envio, total_cobrar: totalConEnvio, cliente: { ...datos.datos, idioma: datos.idioma }, articulos });
   if (error) return Response.json({ error: 'no_disponible' }, { status: 503 });
   const numero = numeroPedido(id);
   const enlace = enlacePedido(config, id, config.origen);
@@ -59,11 +63,11 @@ export async function POST(request: Request) {
   const cliente = enviarCorreo({ destinatario: datos.datos.correo,
     asunto: ingles ? `SG Solutions order ${numero} received` : `Recibimos su pedido ${numero} de SG Solutions`,
     texto: ingles
-      ? `We received your order ${numero}. Please wait for our team to confirm availability, delivery cost and final total before paying. Follow its status here: ${enlace}`
-      : `Recibimos su pedido ${numero}. Espere a que nuestro equipo confirme disponibilidad, costo de entrega y total definitivo antes de pagar. Consulte su estado aquí: ${enlace}`,
+      ? `We received your order ${numero}. Products: ${colones(total)}. ${datos.datos.modalidad === 'envio' ? 'Correos de Costa Rica shipping' : 'Store pickup'}: ${colones(envio)}. Estimated total: ${colones(totalConEnvio)}. Please wait for our team to confirm availability before paying. Follow its status here: ${enlace}`
+      : `Recibimos su pedido ${numero}. Productos: ${colones(total)}. ${datos.datos.modalidad === 'envio' ? 'Envío por Correos de Costa Rica' : 'Retiro en tienda'}: ${colones(envio)}. Total estimado: ${colones(totalConEnvio)}. Espere a que nuestro equipo confirme disponibilidad antes de pagar. Consulte su estado aquí: ${enlace}`,
   });
   const equipo = enviarCorreo({ destinatario: empresa.correo, asunto: `Nuevo pedido ${numero} · ${datos.metodo.toUpperCase()}`,
-    texto: `Pedido ${numero}\nCliente: ${datos.datos.nombre} ${datos.datos.apellidos}\nCorreo: ${datos.datos.correo}\nTeléfono: ${datos.datos.telefono}\nProductos: ${articulos.map(x => `${x.cantidad} × ${x.nombre}`).join(', ')}\nSubtotal: ₡${total}\nRevisar y confirmar disponibilidad en el panel.`,
+    texto: `Pedido ${numero}\nCliente: ${datos.datos.nombre} ${datos.datos.apellidos}\nCorreo: ${datos.datos.correo}\nTeléfono: ${datos.datos.telefono}\nProductos: ${articulos.map(x => `${x.cantidad} × ${x.nombre}`).join(', ')}\nSubtotal: ${colones(total)}\n${datos.datos.modalidad === 'envio' ? 'Correos de Costa Rica' : 'Retiro en tienda'}: ${colones(envio)}\nTotal estimado: ${colones(totalConEnvio)}\nRevisar y confirmar disponibilidad en el panel.`,
   });
   const [correoCliente, correoEquipo] = await Promise.allSettled([cliente, equipo]);
   if (correoCliente.status === 'fulfilled' || correoEquipo.status === 'fulfilled') await db.from('pedidos_manuales').update({

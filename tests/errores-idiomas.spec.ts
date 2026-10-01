@@ -1,12 +1,10 @@
 import {expect, test} from '@playwright/test';
 
 for (const idioma of ['es', 'en'] as const) {
-  test(`errores de formulario y página inexistente en ${idioma}`, async ({page}) => {
-    await page.goto('/tienda');
-    if (idioma === 'en') await page.getByRole('button', {name: 'Read this page in English'}).click();
+  test(`errores de formulario y página inexistente en ${idioma}`, async ({page,context}) => {
+    await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+    await page.goto('/tienda/portatil');
     await expect(page.locator('html')).toHaveAttribute('lang', idioma);
-
-    await page.locator('.shop-producto h3 a').first().click();
     await page.locator('.ficha-compra button').click();
     await page.locator('.ficha-compra a[href="/finalizar-compra"]').click();
     const consentimiento = page.locator('[name="consentimiento"]');

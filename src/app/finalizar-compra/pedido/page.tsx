@@ -32,7 +32,8 @@ export default async function PedidoManual({ searchParams }: { searchParams: Pro
         <p role="status">{t(`estado_${pedido.estado}`)}</p>
         <ul>{pedido.articulos?.map((a, i) => <li key={i}>{a.cantidad} × {a.nombre}</li>)}</ul>
         <p>{t('subtotal')}: <strong>{colones(pedido.total_productos)}</strong></p>
-        {pedido.total_cobrar !== null && <p>{t('total')}: <strong>{colones(pedido.total_cobrar)}</strong></p>}
+        {pedido.costo_envio !== null && <p>{t('costoEnvio')}: <strong>{colones(pedido.costo_envio)}</strong></p>}
+        {pedido.total_cobrar !== null && <p>{t(pedido.estado === 'revision' ? 'totalEstimado' : 'total')}: <strong>{colones(pedido.total_cobrar)}</strong></p>}
         {pedido.estado === 'revision' && <p>{t('esperarRevision')}</p>}
         {pedido.estado === 'pendiente_pago' && pagos && <section className="pedido-pago-datos">
           <h2>{t('datosPago')}</h2><p>{t('montoConfirmado')}</p><p>{pagos.titular}</p>

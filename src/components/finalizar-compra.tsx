@@ -17,6 +17,7 @@ import { useCarrito } from "@/lib/carrito";
 import { colones, traducir } from "@/lib/catalogo-modelo";
 import { enlaceWhatsApp } from "@/lib/empresa";
 import {enlaceProductoParaWhatsApp, mensajePedidoWhatsApp} from '@/lib/mensaje-pedido-whatsapp';
+import {costoEntrega} from '@/lib/envio';
 import { FotoProducto } from "./foto-producto";
 import { desplazarContenido } from "@/lib/desplazar-contenido";
 const provincias = [
@@ -65,7 +66,9 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
     productos.length !== lineas.length ||
     productos.some((x) => x.p.disponibilidad === "agotado");
   const pendiente = productos.some((x) => x.p.precio === null),
-    total = productos.reduce((s, x) => s + (x.p.precio ?? 0) * x.cantidad, 0);
+    subtotal = productos.reduce((s, x) => s + (x.p.precio ?? 0) * x.cantidad, 0),
+    envio = costoEntrega(entrega ? 'envio' : 'retiro'),
+    total = subtotal + envio;
   function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrorFormulario(false);
@@ -113,7 +116,9 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
   }
   const mensaje = revision ? mensajePedidoWhatsApp({
     lineas: productos.map(x => ({cantidad: x.cantidad, nombre: traducir(x.p.nombre, l), codigo: x.p.codigoFabricante, precio: x.p.precio === null ? t('pendiente') : colones(x.p.precio * x.cantidad)})),
-    subtotal: pendiente ? t('pendiente') : colones(total),
+    subtotal: pendiente ? t('pendiente') : colones(subtotal),
+    costoEnvio: colones(costoEntrega(revision.modalidad === 'envio' ? 'envio' : 'retiro')),
+    total: pendiente ? t('pendiente') : colones(subtotal + costoEntrega(revision.modalidad === 'envio' ? 'envio' : 'retiro')),
     nombre: [revision.nombre, revision.apellidos].filter(Boolean).join(' '),
     telefono: revision.telefono,
     correo: revision.correo,
@@ -133,7 +138,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
     notas: revision.notas,
     enlaceProducto: productos.length === 1 ? enlaceProductoParaWhatsApp(productos[0].p.id) : undefined,
   }, {
-    titulo: w('titulo'), productos: w('productos'), codigo: w('codigo'), subtotal: w('subtotal'),
+    titulo: w('titulo'), productos: w('productos'), codigo: w('codigo'), subtotal: w('subtotal'), costoEnvio: w('costoEnvio'), total: w('total'),
     entrega: w('entrega'), direccion: w('direccion'), receptor: w('receptor'), pago: w('pago'),
     comprobante: w('comprobante'), cliente: w('cliente'), correo: w('correo'),
     contacto: w('contacto'), notas: w('notas'), ficha: w('ficha'), confirmacion: w('confirmacion'),
@@ -439,12 +444,13 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
             <dl>
               <div>
                 <dt>{t("subtotal")}</dt>
-                <dd>{pendiente ? t("pendiente") : colones(total)}</dd>
+                <dd>{pendiente ? t("pendiente") : colones(subtotal)}</dd>
               </div>
               <div>
-                <dt>{t("entregaTitulo")}</dt>
-                <dd>{t(entrega ? "envioPorConfirmar" : "retiroDetalle")}</dd>
+                <dt>{t("costoEnvio")}</dt>
+                <dd>{colones(envio)}</dd>
               </div>
+              <div className="compra-total"><dt>{t('total')}</dt><dd>{pendiente ? t('pendiente') : colones(total)}</dd></div>
             </dl>
             <p>{t("iva")}</p>
             {bloqueado && <p role="alert">{t("carga")}</p>}

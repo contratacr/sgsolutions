@@ -2,6 +2,8 @@ type Linea = {cantidad: number; nombre: string; codigo?: string; precio: string}
 type Datos = {
   lineas: Linea[];
   subtotal: string;
+  costoEnvio?: string;
+  total?: string;
   nombre: string;
   telefono: string;
   correo?: string;
@@ -16,7 +18,7 @@ type Datos = {
   enlaceProducto?: string;
 };
 type Textos = {
-  titulo: string; productos: string; codigo: string; subtotal: string;
+  titulo: string; productos: string; codigo: string; subtotal: string; costoEnvio: string; total: string;
   entrega: string; direccion: string; receptor: string; pago: string;
   comprobante: string; cliente: string; correo: string;
   contacto: string; notas: string; ficha: string; confirmacion: string;
@@ -53,6 +55,8 @@ export function mensajePedidoWhatsApp(datos: Datos, t: Textos) {
     datos.enlaceProducto ? `${t.ficha}: ${datos.enlaceProducto}` : '',
     '',
     `*${t.subtotal}: ${limpiar(datos.subtotal)}*`,
+    datos.costoEnvio ? `${t.costoEnvio}: ${limpiar(datos.costoEnvio)}` : '',
+    datos.total ? `*${t.total}: ${limpiar(datos.total)}*` : '',
     '',
     ...detalles,
     '',
