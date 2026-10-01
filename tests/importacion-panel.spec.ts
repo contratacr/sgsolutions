@@ -5,6 +5,7 @@ import {estaSeleccionado,resumenSeleccion,seleccionIntcomex} from '../src/lib/in
 import {prepararArchivo,prepararInventario} from '../src/lib/intcomex/archivo';
 import {esquemaCatalogo,publicarCatalogo} from '../src/lib/catalogo-modelo';
 import base from '../src/lib/catalogo-base.json';
+import inicialActual from '../src/lib/catalogo-inicial.json';
 const encabezados=['Nombre','Marca','Precio','Disponibilidad','No. de Parte','SKU'];
 const fecha='2026-09-21T12:00:00.000Z';
 test('valida archivos y conserva reglas de publicación',()=>{
@@ -87,6 +88,21 @@ test('selección exacta e inventario conservan todos los datos comerciales',()=>
  expect(publicarCatalogo(desconocido.catalogo).productos[0].disponibilidad).toBe('consultar');
  expect(()=>prepararInventario([['SKU','Disponibilidad'],['UI150FOR31',1],['UI150FOR31',0]],original,fecha,true)).toThrow('duplicado');
  expect(()=>prepararInventario([['SKU','Disponibilidad'],['FUERA',1]],original,fecha,true)).toThrow('sinCoincidencias');
+});
+
+test('la tienda inicial muestra todos los códigos verificados y conserva los cuatro pendientes',()=>{
+ const catalogo=esquemaCatalogo.parse(inicialActual);
+ const resumen=resumenSeleccion(catalogo);
+ expect(resumen).toMatchObject({total:104,encontrados:100,pendientes:['MM722LOG25','AN000ANK01','ES002EZV53','MM005DJI20']});
+ const publicos=new Set(publicarCatalogo(catalogo).productos.map(p=>p.id));
+ for(const codigo of seleccionIntcomex){
+  if(resumen.pendientes.includes(codigo))continue;
+  const producto=catalogo.productos.find(p=>p.proveedor?.sku===codigo||p.codigoFabricante===codigo||(codigo==='DS-2CD1147G3-LIU(2.8mm)'&&p.proveedor?.sku==='ES226HIK18'));
+  expect(producto,codigo).toBeDefined();
+  expect(publicos.has(producto!.id),codigo).toBe(true);
+  expect(producto!.imagen,codigo).not.toBe('/imagenes/producto-sin-imagen.svg');
+  expect(producto!.proveedor?.costo,codigo).toBeGreaterThan(0);
+ }
 });
 
 for(const idioma of ['es','en'])test(`actualización diaria conserva precio y cambia tienda ${idioma}`,async({page,context})=>{

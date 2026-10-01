@@ -20,5 +20,5 @@ for(const idioma of ['es','en'])test(`galería administrativa ${idioma}`,async({
  await page.reload();await page.locator('.admin-item>summary').first().click();await expect(fotos).toHaveCount(inicial+2);
  for(let i=0;i<2;i++)await fotos.last().getByRole('button',{name:idioma==='es'?'Quitar':'Remove',exact:true}).click();
  await page.locator('.admin-actions button').first().click();await expect(page.locator('.admin-actions:visible [role=status]')).toHaveText(idioma==='es'?/guardad/i:/saved/i);
- await page.goto('/panel/catalogo');await page.locator('.admin-item>summary').first().click();await expect(page.locator('.gestor-imagenes:visible').first()).toBeVisible();
+ await page.goto('/panel/catalogo');await page.locator('.admin-producto-fila button').first().click();await page.locator('.admin-editor-seccion').first().locator('summary').click();await expect(page.locator('.gestor-imagenes:visible').first()).toBeVisible();
 });

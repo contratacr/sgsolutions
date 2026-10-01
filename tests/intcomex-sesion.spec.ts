@@ -36,6 +36,7 @@ test('solo oculta ausentes tras una consulta válida y los vuelve a mostrar cuan
  const c=prepararArchivo(filas,esquemaCatalogo.parse({...base,productos:[]}),'USD','computo',fecha).catalogo;
  c.productos[0].publicado=true;
  c.productos.push({...c.productos[0],id:'otro',proveedor:{...c.productos[0].proveedor!,sku:'OTRO'}});
+ const antes=structuredClone(c);
  const parcial=prepararSesion([{sku:'NUEVO-1',filas}],c,fecha,['NUEVO-1','OTRO']);
  expect(parcial.faltantes).toEqual(['OTRO']);
  expect(publicarCatalogo(parcial.catalogo).productos.map(p=>p.id)).toEqual([c.productos[0].id]);
@@ -44,7 +45,7 @@ test('solo oculta ausentes tras una consulta válida y los vuelve a mostrar cuan
  expect(publicarCatalogo(propio).productos).toHaveLength(2);
  const recuperado=prepararSesion([{sku:'OTRO',filas:[cab,['Equipo','Marca',100,10,'MPN','OTRO']]}],parcial.catalogo,fecha,['OTRO']);
  expect(publicarCatalogo(recuperado.catalogo).productos).toHaveLength(2);
- expect(c.productos[1].estadoIntcomex).toBeUndefined();
+ expect(c).toEqual(antes);
 });
 test('solo el Excel con precio y SKU exacto recupera un producto oculto',()=>{
  const c=prepararArchivo(filas,esquemaCatalogo.parse({...base,productos:[]}),'USD','computo',fecha).catalogo;
@@ -151,10 +152,14 @@ for(const idioma of ['es','en'])test(`productos sin coincidencia quedan en revis
   const res=await page.request.get('/api/catalogo');expect(res.ok()).toBe(true);
   const publico=await res.json();expect(JSON.stringify(publico)).not.toContain(ausentes[0].id);
   await page.goto('/panel/catalogo');
-  await page.getByRole('button',{name:idioma==='es'?'Requieren revisión':'Needs review',exact:true}).click();
+  await page.getByRole('button',{name:new RegExp(`^${idioma==='es'?'Requieren revisión':'Needs review'} \\(25\\)$`)}).click();
   await expect(page.getByRole('heading',{name:new RegExp(idioma==='es'?'Requieren revisión':'Needs review')})).toContainText('25');
   await expect(page.locator('.admin-revision-lista li')).toHaveCount(25);
   await page.screenshot({path:`/tmp/intcomex-revision-${idioma}-${info.project.name}.png`,fullPage:true});
+  await page.goto('/panel/catalogo/importar');
+  await expect(page.locator('.admin-guia')).toContainText('100');
+  await page.locator('.admin-guia details summary').click();
+  for(const codigo of ['MM722LOG25','AN000ANK01','ES002EZV53','MM005DJI20'])await expect(page.locator('.admin-guia details')).toContainText(codigo);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }finally{await writeFile(rutaCuenta,original);}
 });

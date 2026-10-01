@@ -258,6 +258,8 @@
     "salir": "Cerrar sesión"
   },
   "Panel": {
+    "inventarioDetalle": "Cargue el Excel del día y revise las existencias antes de aplicarlas.",
+    "estadisticasDetalle": "Consulte visitas, búsquedas e interacciones de los clientes.",
     "titulo": "Administración",
     "descripcion": "Administre los productos, los precios y el contenido de SG Solutions desde un solo lugar.",
     "pruebaLocal": "Entorno de prueba local. Los cambios se guardan en este equipo y no modifican el sitio publicado.",
@@ -733,6 +735,12 @@
     "transferenciaDetalle": "Desde su cuenta bancaria",
     "tarjetaDetalle": "Próximamente: pago seguro en línea",
     "tarjetaPendiente": "Los pagos con tarjeta aún no están habilitados. Puede solicitar el pedido y consultar una alternativa con nuestro equipo.",
+    "tarjetaPruebaDetalle": "Pago seguro de prueba en Tilopay",
+    "tarjetaPruebaAviso": "Continúe solo con una tarjeta de prueba y después de verificar que Tilopay muestra el modo de prueba. Confirme la disponibilidad antes de coordinar el retiro.",
+    "tarjetaSoloRetiro": "El pago con tarjeta de prueba está disponible únicamente para retiro en tienda; el costo de entrega requiere confirmación.",
+    "pagarPrueba": "Continuar al pago de prueba",
+    "procesandoPago": "Preparando pago…",
+    "errorPago": "No pudimos preparar el pago. Inténtelo de nuevo o solicite ayuda a nuestro equipo.",
     "pagoPendiente": "Le compartiremos los datos de pago después de confirmar disponibilidad y el total. No realice depósitos antes de esa confirmación.",
     "notas": "Notas del pedido (opcional)",
     "consentimiento": "Autorizo el uso de estos datos para atender mi solicitud y coordinar mi pedido.",
@@ -749,6 +757,31 @@
     "confirmacion": "Esta es una solicitud de pedido. Confirmaremos disponibilidad, envío y total antes de cobrar.",
     "verCuentas": "Ver datos bancarios",
     "referencia": "Utilice la referencia de pedido que le comparta nuestro equipo. El depósito se verifica antes de procesar el pedido."
+  },
+  "ResultadoPago": {
+    "titulo": "Resultado del pago",
+    "etiqueta": "Pago de prueba",
+    "pagado": "Pago de prueba confirmado.",
+    "pagadoDetalle": "La transacción de prueba se confirmó con Tilopay. Nuestro equipo revisará la disponibilidad del pedido.",
+    "rechazado": "El pago de prueba fue rechazado.",
+    "rechazadoDetalle": "Puede volver a la tienda e intentarlo de nuevo.",
+    "pendiente": "Estamos verificando el resultado.",
+    "pendienteDetalle": "No marque el pedido como pagado todavía. Si necesita ayuda, comuníquese con nuestro equipo.",
+    "volver": "Volver a la tienda"
+  },
+  "PedidosAdmin": {
+    "etiqueta": "Operación",
+    "titulo": "Pedidos con tarjeta",
+    "descripcion": "Consulte los pedidos y su estado confirmado con Tilopay. No entregue un pedido pendiente o rechazado.",
+    "configurar": "La base de datos de pedidos todavía no está configurada en este entorno.",
+    "vacio": "Todavía no hay pedidos con tarjeta.",
+    "iniciado": "Iniciado",
+    "pendiente": "Pendiente de verificación",
+    "pagado": "Pago confirmado",
+    "rechazado": "Rechazado",
+    "error": "Error de inicio",
+    "pruebas": "Prueba",
+    "produccion": "Producción"
   },
   "AdminContenido": {
     "titulo": "Administrar contenido",
@@ -948,6 +981,9 @@
     "utilidad": "Utilidad"
   },
   "AdminImportacion": {
+    "paginasCambios": "Páginas de cambios del archivo",
+    "paginaCambios": "Página {pagina} de {total}",
+    "mostrandoCambios": "Mostrando {inicio}–{fin} de {total}",
     "titulo": "Importar archivo de Intcomex",
     "volver": "Volver al catálogo",
     "descripcion": "Descargue la lista de precios de Intcomex en Excel (.xlsx). Seleccione su moneda y revise los cambios antes de confirmar. Máximo 4 MB y 20 000 productos.",
@@ -1017,6 +1053,17 @@
     "sinCoincidenciasSeleccion": "El archivo no contiene ninguno de los códigos seleccionados. Revise la exportación o el filtro de selección."
   },
   "AdminUX": {
+    "cerrarEditor": "Cerrar edición",
+    "idiomaEs": "ES",
+    "idiomaEn": "EN",
+    "editarProducto": "Editar {nombre}",
+    "edicion": "Edición de producto",
+    "sinCodigo": "Sin código",
+    "sinMarca": "Sin marca",
+    "opcionesAvanzadas": "Más opciones",
+    "irPagina": "Ir a la página",
+    "mostrando": "Mostrando {inicio}–{fin}",
+    "estado": "Estado",
     "basico": "Información del producto",
     "imagenes": "Imágenes y ficha técnica",
     "especificaciones": "Especificaciones técnicas",

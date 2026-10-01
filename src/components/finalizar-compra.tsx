@@ -27,7 +27,7 @@ const provincias = [
   "Puntarenas",
   "Limón",
 ];
-export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
+export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false }: { pagos: Contenido["pagos"]; tarjetaPruebaDisponible?: boolean }) {
   const t = useTranslations("Compra"),
     n = useTranslations("Navegacion"),
     l = useLocale(),
@@ -38,7 +38,9 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
     [factura, setFactura] = useState(false),
     [otro, setOtro] = useState(false),
     [pago, setPago] = useState("sinpe"),
-    [revision, setRevision] = useState<Record<string, string> | null>(null);
+    [revision, setRevision] = useState<Record<string, string> | null>(null),
+    [procesando, setProcesando] = useState(false),
+    [errorPago, setErrorPago] = useState(false);
   const entregaCampos = useRef<HTMLDivElement>(null),
     receptorCampos = useRef<HTMLDivElement>(null),
     facturaCampos = useRef<HTMLDivElement>(null),
@@ -69,6 +71,27 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
     setRevision(datos);
     medir('pedido_revisado');
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  async function pagarConTarjeta() {
+    if (!revision || procesando || entrega || pendiente || bloqueado) return;
+    setProcesando(true);
+    setErrorPago(false);
+    try {
+      const respuesta = await fetch('/api/pagos/tilopay/iniciar', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          nombre: revision.nombre, apellidos: revision.apellidos, correo: revision.correo,
+          telefono: revision.telefono, consentimiento: revision.consentimiento === 'on',
+          articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })),
+        }),
+      });
+      const datos = await respuesta.json();
+      if (!respuesta.ok || typeof datos.url !== 'string') throw new Error('PAGO_NO_DISPONIBLE');
+      window.location.assign(datos.url);
+    } catch {
+      setErrorPago(true);
+      setProcesando(false);
+    }
   }
   const mensaje = revision
     ? [
@@ -149,8 +172,13 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                       </div>
                     ))}
                 </dl>
-                <p>{t("confirmacion")}</p>
-                {!bloqueado && (
+                <p>{pago === 'tarjeta' && tarjetaPruebaDisponible ? t('tarjetaPruebaAviso') : t("confirmacion")}</p>
+                {pago === 'tarjeta' && tarjetaPruebaDisponible && !entrega && !pendiente && !bloqueado ? (
+                  <button className="boton boton-naranja" type="button" onClick={pagarConTarjeta} disabled={procesando}>
+                    {t(procesando ? 'procesandoPago' : 'pagarPrueba')}
+                    <ArrowUpRight size={18} />
+                  </button>
+                ) : !bloqueado && (
                   <a
                     className="boton boton-naranja"
                     href={enlaceWhatsApp(mensaje)}
@@ -162,6 +190,7 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                     <span className="sr-only">{n("nuevaPestana")}</span>
                   </a>
                 )}
+                {errorPago && <p role="alert">{t('errorPago')}</p>}
                 <button
                   className="pedido-volver"
                   onClick={() => setRevision(null)}
@@ -301,16 +330,14 @@ export function FinalizarCompra({ pagos }: { pagos: Contenido["pagos"] }) {
                         <Icon size={23} />
                         <span>
                           <strong>{t(id)}</strong>
-                          <small>{t(`${id}Detalle`)}</small>
+                          <small>{id === 'tarjeta' && tarjetaPruebaDisponible ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
                         </span>
                       </label>
                     ))}
                   </fieldset>
                   <p className="compra-aviso">
                     <ShieldCheck size={19} />
-                    {t(
-                      pago === "tarjeta" ? "tarjetaPendiente" : "pagoPendiente",
-                    )}
+                    {t(pago === "tarjeta" ? tarjetaPruebaDisponible ? entrega ? 'tarjetaSoloRetiro' : 'tarjetaPruebaAviso' : "tarjetaPendiente" : "pagoPendiente")}
                   </p>
                   {pago !== "tarjeta" && (
                     <details key={pago} className="compra-cuentas" open ref={pagoDatos}>

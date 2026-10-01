@@ -9,7 +9,7 @@ for(const idioma of ['es','en'])test(`ediciones visibles sin sesión ${idioma}`,
  const guardar=async()=>{await page.locator('.admin-actions button').first().click();await expect(page.locator('.admin-actions:visible [role=status]')).toHaveText('Cambios guardados.');};
  try{
   await page.goto('/admin');await page.locator('[name=correo]').fill('lsanchez@sgsolutionscr.com');await page.locator('[name=clave]').fill(process.env.SG_PRUEBA_CLAVE!);await page.locator('main form button').click();await expect(page).toHaveURL(/\/panel$/);
-  await page.goto('/panel/catalogo');const producto=page.locator('details.admin-item').first();await producto.locator('summary').first().click();
+  await page.goto('/panel/catalogo');await page.locator('.admin-producto-fila button').first().click();const producto=page.locator('.admin-producto-editor');
   await producto.getByRole('textbox',{name:'Nombre (ES)',exact:true}).first().fill('Producto QA ES');await producto.getByRole('textbox',{name:'Nombre (EN)',exact:true}).first().fill('Product QA EN');await producto.getByLabel('Precio manual final (CRC, IVA incluido; opcional)',{exact:true}).fill('123456');await guardar();
   const catalogo=JSON.parse(respaldos[0]).contenido;const id=catalogo.productos[0].id;
   const api=await publico.request.get(`/api/catalogo?ids=${id}`);const p=(await api.json()).productos[0];expect(p.precio).toBe(123456);expect(p).not.toHaveProperty('costoUsd');

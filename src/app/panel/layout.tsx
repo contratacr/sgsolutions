@@ -5,5 +5,5 @@ export default async function DisenoPanel({children}:{children:React.ReactNode})
  const t=await getTranslations('Panel');
  const m=await getTranslations('Analitica');
  const a=await getTranslations('Acceso');
- return <><nav className="panel-navegacion contenedor" aria-label={t('titulo')}><Link href="/panel">{t('titulo')}</Link><Link href="/panel/catalogo">{t('productos')}</Link><Link href="/panel/contenido">{t('contenido')}</Link><Link href="/panel/estadisticas">{m('tituloPanel')}</Link><form action={cerrarSesion} data-cerrar-sesion><button className="boton boton-contorno">{a('salir')}</button></form></nav>{children}</>;
+ return <><nav className="panel-navegacion contenedor" aria-label={t('titulo')}><Link href="/panel">{t('titulo')}</Link><Link href="/panel/catalogo">{t('productos')}</Link><Link href="/panel/contenido">{t('contenido')}</Link><Link href="/panel/pedidos">{t('pedidos')}</Link><Link href="/panel/estadisticas">{m('tituloPanel')}</Link><form action={cerrarSesion} data-cerrar-sesion><button className="boton boton-contorno">{a('salir')}</button></form></nav>{children}</>;
 }

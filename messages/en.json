@@ -258,6 +258,8 @@
     "salir": "Sign out"
   },
   "Panel": {
+    "inventarioDetalle": "Upload today's spreadsheet and review stock before applying it.",
+    "estadisticasDetalle": "Review visits, searches, and customer interactions.",
     "titulo": "Administration",
     "descripcion": "Manage SG Solutions products, prices and content in one place.",
     "pruebaLocal": "Local test environment. Changes are saved on this computer and do not affect the published website.",
@@ -733,6 +735,12 @@
     "transferenciaDetalle": "From your bank account",
     "tarjetaDetalle": "Coming soon: secure online payment",
     "tarjetaPendiente": "Card payments are not enabled yet. You can request the order and discuss an alternative with our team.",
+    "tarjetaPruebaDetalle": "Secure test payment via Tilopay",
+    "tarjetaPruebaAviso": "Continue only with a test card after confirming Tilopay shows test mode. Confirm availability before arranging pickup.",
+    "tarjetaSoloRetiro": "Test card payment is available for store pickup only; delivery cost must be confirmed first.",
+    "pagarPrueba": "Continue to test payment",
+    "procesandoPago": "Preparing payment…",
+    "errorPago": "We could not prepare the payment. Please try again or contact our team.",
     "pagoPendiente": "We will share payment details after confirming availability and the total. Please wait for confirmation before making a deposit.",
     "notas": "Order notes (optional)",
     "consentimiento": "I authorize the use of these details to handle my request and arrange my order.",
@@ -749,6 +757,31 @@
     "confirmacion": "This is an order request. We will confirm availability, shipping and the total before taking payment.",
     "verCuentas": "View bank details",
     "referencia": "Use the order reference provided by our team. The deposit is verified before processing the order."
+  },
+  "ResultadoPago": {
+    "titulo": "Payment result",
+    "etiqueta": "Test payment",
+    "pagado": "Test payment confirmed.",
+    "pagadoDetalle": "Tilopay confirmed the test transaction. Our team will review product availability.",
+    "rechazado": "The test payment was declined.",
+    "rechazadoDetalle": "You can return to the store and try again.",
+    "pendiente": "We are checking the result.",
+    "pendienteDetalle": "Do not mark the order as paid yet. Please contact our team if you need help.",
+    "volver": "Back to the store"
+  },
+  "PedidosAdmin": {
+    "etiqueta": "Operations",
+    "titulo": "Card orders",
+    "descripcion": "Review orders and their status verified with Tilopay. Do not fulfill a pending or declined order.",
+    "configurar": "The orders database is not configured in this environment yet.",
+    "vacio": "There are no card orders yet.",
+    "iniciado": "Started",
+    "pendiente": "Pending verification",
+    "pagado": "Payment confirmed",
+    "rechazado": "Declined",
+    "error": "Start error",
+    "pruebas": "Test",
+    "produccion": "Production"
   },
   "AdminContenido": {
     "titulo": "Manage content",
@@ -948,6 +981,9 @@
     "utilidad": "Markup"
   },
   "AdminImportacion": {
+    "paginasCambios": "File change pages",
+    "paginaCambios": "Page {pagina} of {total}",
+    "mostrandoCambios": "Showing {inicio}–{fin} of {total}",
     "titulo": "Import Intcomex file",
     "volver": "Back to catalog",
     "descripcion": "Download the Intcomex price list as Excel (.xlsx). Select its currency and review the changes before confirming. Maximum 4 MB and 20,000 products.",
@@ -1017,6 +1053,17 @@
     "sinCoincidenciasSeleccion": "The file does not contain any selected codes. Check the export or selection filter."
   },
   "AdminUX": {
+    "cerrarEditor": "Close editor",
+    "idiomaEs": "ES",
+    "idiomaEn": "EN",
+    "editarProducto": "Edit {nombre}",
+    "edicion": "Product editor",
+    "sinCodigo": "No code",
+    "sinMarca": "No brand",
+    "opcionesAvanzadas": "More options",
+    "irPagina": "Go to page",
+    "mostrando": "Showing {inicio}–{fin}",
+    "estado": "Status",
     "basico": "Product information",
     "imagenes": "Images and technical sheet",
     "especificaciones": "Technical specifications",
