@@ -3,7 +3,7 @@ import { z } from 'zod';
 const correo = z.object({destinatario: z.email(), asunto: z.string().min(1).max(200), texto: z.string().min(1).max(100000)});
 
 // Único punto de salida de correo de NEGOCIO. Auth utiliza su propio SMTP en Supabase.
-// Ninguna ruta pública llama esta función. Habilitar con la cola de cotizaciones.
+// La confirmación de pedidos puede usar esta función desde el servidor cuando Brevo esté configurado.
 export async function enviarCorreo(entrada: z.infer<typeof correo>) {
   const datos = correo.parse(entrada);
   if (process.env.SG_ENTORNO !== 'produccion') throw new Error('CORREO_REAL_DESHABILITADO_EN_DESARROLLO');

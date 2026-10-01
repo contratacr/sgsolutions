@@ -21,10 +21,10 @@ export function Catalogo(){
  const idiomaAnterior=useRef(idioma);
  useEffect(()=>{
   const frame=requestAnimationFrame(()=>{
-   try{const p=JSON.parse(sessionStorage.getItem('sg-tienda-preferencias')??'null');if(p){if(typeof p.categoria==='string')setCategoria(p.categoria);if(typeof p.busqueda==='string')setBusqueda(p.busqueda.slice(0,150));if(typeof p.marca==='string')setMarca(p.marca);if(['destacados','menor','mayor','nombre'].includes(p.orden))setOrden(p.orden);if(p.vista==='lista')setVista('lista');}}catch{}
+   try{const p=JSON.parse(sessionStorage.getItem('sg-tienda-preferencias')??'null');if(p){if(p.vista==='lista')setVista('lista');if(p.idioma===document.documentElement.lang){if(typeof p.categoria==='string')setCategoria(p.categoria);if(typeof p.busqueda==='string')setBusqueda(p.busqueda.slice(0,150));if(typeof p.marca==='string')setMarca(p.marca);if(['destacados','menor','mayor','nombre'].includes(p.orden))setOrden(p.orden);}}}catch{}
    setPreferenciasListas(true);
   });return ()=>cancelAnimationFrame(frame);
- },[idioma]);
+ },[]);
  useEffect(()=>{if(preferenciasListas)try{sessionStorage.setItem('sg-tienda-preferencias',JSON.stringify({idioma,categoria,busqueda,orden,marca,vista}));}catch{}},[idioma,categoria,busqueda,orden,marca,vista,preferenciasListas]);
  useEffect(()=>{
   if(idiomaAnterior.current===idioma)return;

@@ -4,6 +4,8 @@ import { sesionLocal } from '@/lib/admin-local';
 import { crearClienteServidor } from '@/lib/supabase/servidor';
 import { basePedidosAdministracion } from '@/lib/tilopay';
 import { colones } from '@/lib/catalogo-modelo';
+import { accesoPedido, basePedidosManuales, configuracionPedidosManuales, numeroPedido, type EstadoPedidoManual } from '@/lib/pedidos-manuales';
+import { actualizarPedidoManual } from './acciones';
 
 type Pedido = {
   id: string;
@@ -15,7 +17,15 @@ type Pedido = {
   articulos: { nombre?: string; cantidad?: number }[];
 };
 
-export default async function Pedidos() {
+type Manual = {
+  id: string; creado_en: string; estado: EstadoPedidoManual; metodo: 'sinpe' | 'transferencia';
+  total_productos: number; costo_envio: number | null; total_cobrar: number | null;
+  cliente: { nombre?: string; apellidos?: string; correo?: string; telefono?: string; modalidad?: string; direccion?: string };
+  articulos: { nombre?: string; cantidad?: number }[];
+  comprobante_path: string | null; correo_cliente_en: string | null; correo_pago_en: string | null;
+};
+
+export default async function Pedidos({ searchParams }: { searchParams: Promise<{ resultado?: string }> }) {
   const local = await sesionLocal();
   if (!local) {
     const cliente = await crearClienteServidor();
@@ -32,10 +42,39 @@ export default async function Pedidos() {
     ? await db.from('pedidos_tilopay').select('id,creado_en,estado,entorno,total,cliente,articulos').order('creado_en', { ascending: false }).limit(50)
     : { data: null, error: null };
   const pedidos = (data ?? []) as Pedido[];
+  const configManual = configuracionPedidosManuales();
+  const manualDb = configManual ? basePedidosManuales(configManual) : null;
+  const { data: manualData, error: manualError } = manualDb
+    ? await manualDb.from('pedidos_manuales').select('id,creado_en,estado,metodo,total_productos,costo_envio,total_cobrar,cliente,articulos,comprobante_path,correo_cliente_en,correo_pago_en').order('creado_en', { ascending: false }).limit(50)
+    : { data: null, error: null };
+  const manuales = (manualData ?? []) as Manual[];
+  const resultado = (await searchParams).resultado;
   return <main id="contenido" className="contenedor seccion">
     <p className="etiqueta">{t('etiqueta')}</p>
     <h1>{t('titulo')}</h1>
     <p className="admin-guia">{t('descripcion')}</p>
+    {resultado && ['guardado','sin_correo','error','invalido','no_disponible'].includes(resultado) && <p role="status" className="panel-aviso">{t(`resultado_${resultado}`)}</p>}
+    <h2>{t('manualTitulo')}</h2>
+    {!manualDb || manualError ? <p role="status">{t('configurarManual')}</p> : !manuales.length ? <p>{t('manualVacio')}</p> :
+      <div className="pedidos-admin-lista">{await Promise.all(manuales.map(async p => {
+        const enlace = new URL('/finalizar-compra/pedido', configManual!.origen);
+        enlace.searchParams.set('pedido', p.id); enlace.searchParams.set('acceso', accesoPedido(configManual!, p.id));
+        const comprobante = p.comprobante_path ? await manualDb.storage.from('comprobantes-pedidos').createSignedUrl(p.comprobante_path, 300) : null;
+        return <article className="pedidos-admin-tarjeta" key={p.id}>
+          <div className="pedidos-admin-encabezado"><div><strong>{p.cliente?.nombre} {p.cliente?.apellidos}</strong><small>{p.cliente?.correo} · {p.cliente?.telefono}</small></div><span className="pedidos-admin-estado">{t(`manual_${p.estado}`)}</span></div>
+          <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(p.creado_en))} · {t(`metodo_${p.metodo}`)} · {t(`modalidad_${p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro'}`)}</p>
+          {p.cliente?.direccion && <p>{p.cliente.direccion}</p>}
+          <ul>{p.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>
+          <div className="pedidos-admin-pie"><code>{numeroPedido(p.id)}</code><strong>{colones(p.total_cobrar ?? p.total_productos)}</strong></div>
+          {p.total_cobrar === null && <p>{t('subtotalPendiente')}</p>}
+          {comprobante?.data?.signedUrl && <p><a href={comprobante.data.signedUrl} target="_blank" rel="noopener noreferrer">{t('verComprobante')} <span className="sr-only">{t('nuevaPestana')}</span></a></p>}
+          {(!p.correo_cliente_en || p.estado === 'pendiente_pago' && !p.correo_pago_en) && <div className="panel-aviso"><p>{t('correoPendiente')}</p><label>{t('enlaceCliente')}<input readOnly value={enlace.href} aria-label={t('enlaceCliente')} /></label></div>}
+          {p.estado === 'revision' && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pendiente_pago"/><label>{t('costoEnvio')}<input type="number" min="0" max="99999999" step="1" name="envio" defaultValue={p.cliente?.modalidad === 'retiro' ? 0 : undefined} required /></label><button className="boton boton-azul">{t('confirmarYEnviar')}</button></form>}
+          {(p.estado === 'pendiente_pago' || p.estado === 'comprobante_recibido') && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pagado"/><p>{t('verificarBanco')}</p><button className="boton boton-azul">{t('marcarPagado')}</button></form>}
+          {(p.estado === 'revision' || p.estado === 'pendiente_pago' || p.estado === 'comprobante_recibido') && <form action={actualizarPedidoManual}><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="cancelado"/><button className="boton boton-contorno">{t('cancelar')}</button></form>}
+        </article>;
+      }))}</div>}
+    <h2>{t('tarjetaTitulo')}</h2>
     {!db || error ? <p role="status">{t('configurar')}</p> : !pedidos.length ? <p>{t('vacio')}</p> :
       <div className="pedidos-admin-lista">
         {pedidos.map(pedido => <article className="pedidos-admin-tarjeta" key={pedido.id}>

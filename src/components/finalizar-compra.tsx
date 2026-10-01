@@ -27,7 +27,7 @@ const provincias = [
   "Puntarenas",
   "Limón",
 ];
-export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false }: { pagos: Contenido["pagos"]; tarjetaPruebaDisponible?: boolean }) {
+export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; tarjetaPruebaDisponible?: boolean; pedidosManualesDisponibles?: boolean }) {
   const t = useTranslations("Compra"),
     n = useTranslations("Navegacion"),
     l = useLocale(),
@@ -40,7 +40,8 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false }: { pa
     [pago, setPago] = useState("sinpe"),
     [revision, setRevision] = useState<Record<string, string> | null>(null),
     [procesando, setProcesando] = useState(false),
-    [errorPago, setErrorPago] = useState(false);
+    [errorPago, setErrorPago] = useState(false),
+    [errorPedido, setErrorPedido] = useState(false);
   const entregaCampos = useRef<HTMLDivElement>(null),
     receptorCampos = useRef<HTMLDivElement>(null),
     facturaCampos = useRef<HTMLDivElement>(null),
@@ -92,6 +93,19 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false }: { pa
       setErrorPago(true);
       setProcesando(false);
     }
+  }
+  async function crearPedidoManual() {
+    if (!revision || procesando || bloqueado || pendiente || !['sinpe', 'transferencia'].includes(pago)) return;
+    setProcesando(true); setErrorPedido(false);
+    try {
+      const respuesta = await fetch('/api/pedidos/manual', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ idioma: l, datos: revision, metodo: pago, articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })) }),
+      });
+      const datos = await respuesta.json();
+      if (!respuesta.ok || typeof datos.url !== 'string' || !datos.url.startsWith('/finalizar-compra/pedido?')) throw new Error('PEDIDO_NO_DISPONIBLE');
+      window.location.assign(datos.url);
+    } catch { setErrorPedido(true); setProcesando(false); }
   }
   const mensaje = revision
     ? [
@@ -178,6 +192,11 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false }: { pa
                     {t(procesando ? 'procesandoPago' : 'pagarPrueba')}
                     <ArrowUpRight size={18} />
                   </button>
+                ) : pedidosManualesDisponibles && (pago === 'sinpe' || pago === 'transferencia') && !pendiente && !bloqueado ? (
+                  <button className="boton boton-naranja" type="button" onClick={crearPedidoManual} disabled={procesando}>
+                    {t(procesando ? 'creandoPedido' : 'completarPedido')}
+                    <ArrowUpRight size={18} />
+                  </button>
                 ) : !bloqueado && (
                   <a
                     className="boton boton-naranja"
@@ -191,6 +210,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false }: { pa
                   </a>
                 )}
                 {errorPago && <p role="alert">{t('errorPago')}</p>}
+                {errorPedido && <p role="alert">{t('errorPedido')}</p>}
                 <button
                   className="pedido-volver"
                   onClick={() => setRevision(null)}
@@ -339,7 +359,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false }: { pa
                     <ShieldCheck size={19} />
                     {t(pago === "tarjeta" ? tarjetaPruebaDisponible ? entrega ? 'tarjetaSoloRetiro' : 'tarjetaPruebaAviso' : "tarjetaPendiente" : "pagoPendiente")}
                   </p>
-                  {pago !== "tarjeta" && (
+                  {pago !== "tarjeta" && !pedidosManualesDisponibles && (
                     <details key={pago} className="compra-cuentas" open ref={pagoDatos}>
                       <summary>{t("verCuentas")}</summary>
                       <p>{pagos.titular}</p>
