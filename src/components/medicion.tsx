@@ -8,6 +8,7 @@ import {rutaPublica} from '@/lib/analitica-modelo';
 export function Medicion({pixel}:{pixel:string}){
  const ruta=usePathname(),t=useTranslations('Analitica');const [abierto,setAbierto]=useState(false),[version,setVersion]=useState(0);
  useEffect(()=>{const frame=requestAnimationFrame(()=>setAbierto(!preferenciasMedicion()));return()=>cancelAnimationFrame(frame);},[]);
+ useEffect(()=>{const abrir=()=>setAbierto(true);window.addEventListener('sg-abrir-preferencias',abrir);return()=>window.removeEventListener('sg-abrir-preferencias',abrir);},[]);
  useEffect(()=>{
   if(!rutaPublica(ruta))return;
   iniciarPixel(pixel);medir('pagina');if(ruta.startsWith('/tienda/'))medir('producto',ruta.split('/')[2]);
@@ -19,5 +20,5 @@ export function Medicion({pixel}:{pixel:string}){
  },[ruta,pixel,version]);
  function elegir(analitica:boolean,publicidad:boolean){try{localStorage.setItem('sg-medicion',JSON.stringify({analitica,publicidad}));}catch{}document.cookie=`sg-analitica=${analitica?'1':'0'}; Path=/; Max-Age=15552000; SameSite=Lax${location.protocol==='https:'?'; Secure':''}`;if(!publicidad){window.fbq?.('consent','revoke');for(const nombre of ['_fbp','_fbc'])document.cookie=`${nombre}=; Max-Age=0; Path=/`; }if(!analitica){try{sessionStorage.removeItem('sg-medicion-sesion');}catch{}}setAbierto(false);setVersion(v=>v+1);}
  if(!rutaPublica(ruta))return null;
- return <><button className="medicion-preferencias" onClick={()=>setAbierto(true)}>{t('preferencias')}</button>{abierto&&<section className="medicion-aviso" aria-label={t('titulo')}><h2>{t('titulo')}</h2><p>{t('consentimiento')}</p><Link href="/privacidad">{t('privacidad')}</Link><div><button onClick={()=>elegir(false,false)}>{t('rechazar')}</button><button onClick={()=>elegir(true,false)}>{t('soloAnalitica')}</button><button onClick={()=>elegir(true,true)}>{t('aceptar')}</button></div></section>}</>;
+ return abierto&&<section className="medicion-aviso" aria-label={t('titulo')}><h2>{t('titulo')}</h2><p>{t('consentimiento')}</p><Link href="/privacidad">{t('privacidad')}</Link><div><button onClick={()=>elegir(false,false)}>{t('rechazar')}</button><button onClick={()=>elegir(true,false)}>{t('soloAnalitica')}</button><button onClick={()=>elegir(true,true)}>{t('aceptar')}</button></div></section>;
 }

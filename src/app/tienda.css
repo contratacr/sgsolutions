@@ -16,6 +16,7 @@
 .shop-imagen-pendiente{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#708596;font-size:.75rem}.shop-producto button:disabled{opacity:.55;cursor:default}.shop-foto img[src$="producto-sin-imagen.svg"]{object-fit:contain}.shop-resultados[aria-busy=true]{min-height:400px}
 
 .carrito-panel:has(.pedido-formulario),.carrito-panel:has(.pedido-revision){width:min(570px,100%)}
+.compra-ayuda-factura{font-size:.85rem;line-height:1.55;margin-top:8px}
 .pedido-formulario,.pedido-revision{padding-top:28px}
 .pedido-volver{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;color:#45627b;font:inherit;font-size:.78rem;padding:0;margin:0 0 26px;cursor:pointer}
 .pedido-paso{display:block;color:#c75128;font-size:.66rem;font-weight:700;letter-spacing:.13em;margin-bottom:10px}

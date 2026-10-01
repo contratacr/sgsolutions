@@ -1,9 +1,15 @@
 import {test,expect} from '@playwright/test';
+import {readFile,writeFile} from 'node:fs/promises';
+import {randomBytes,createHash} from 'node:crypto';
 test.describe.configure({mode:'serial'});
 for(const idioma of ['es','en'])test(`galería administrativa ${idioma}`,async({page,context})=>{
- test.skip(!process.env.SG_PRUEBA_CLAVE,'Requiere cuenta local');
+ test.skip(!process.env.SG_PRUEBA_CLAVE&&process.env.SG_TEST_ALTAS!=='1','Requiere cuenta local');
+ const rutas=['.privado/admin-local/cuenta.json','.privado/admin-local/contenido.json'];
+ const originales=process.env.SG_TEST_ALTAS==='1'?await Promise.all(rutas.map(p=>readFile(p,'utf8'))):null;
+ try{
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
- await page.goto('/admin');await page.locator('[name=correo]').fill('lsanchez@sgsolutionscr.com');await page.locator('[name=clave]').fill(process.env.SG_PRUEBA_CLAVE!);await page.locator('main form button').click();await expect(page).toHaveURL(/\/panel$/);
+ if(originales){const cuenta=JSON.parse(originales[0]),token=randomBytes(32).toString('hex');cuenta.sesiones.push({hash:createHash('sha256').update(token).digest('hex'),vence:Date.now()+120000});await writeFile(rutas[0],JSON.stringify(cuenta),{mode:0o600});await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'}]);}
+ else{await page.goto('/admin');await page.locator('[name=correo]').fill('lsanchez@sgsolutionscr.com');await page.locator('[name=clave]').fill(process.env.SG_PRUEBA_CLAVE!);await page.locator('main form button').click();await expect(page).toHaveURL(/\/panel$/);}
  await page.goto('/panel/contenido');await page.locator('.admin-item>summary').first().click();
  const gestor=page.locator('.gestor-imagenes:visible').first();const fotos=gestor.locator('.gestor-foto');const inicial=await fotos.count();
  await gestor.locator('input[type=file]').setInputFiles({name:'invalida.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg/>')});await expect(gestor.getByRole('alert')).toBeVisible();await expect(fotos).toHaveCount(inicial);
@@ -20,5 +26,6 @@ for(const idioma of ['es','en'])test(`galería administrativa ${idioma}`,async({
  await page.reload();await page.locator('.admin-item>summary').first().click();await expect(fotos).toHaveCount(inicial+2);
  for(let i=0;i<2;i++)await fotos.last().getByRole('button',{name:idioma==='es'?'Quitar':'Remove',exact:true}).click();
  await page.locator('.admin-actions button').first().click();await expect(page.locator('.admin-actions:visible [role=status]')).toHaveText(idioma==='es'?/guardad/i:/saved/i);
- await page.goto('/panel/catalogo');await page.locator('.admin-producto-fila button').first().click();await page.locator('.admin-editor-seccion').first().locator('summary').click();await expect(page.locator('.gestor-imagenes:visible').first()).toBeVisible();
+ await page.goto('/panel/catalogo');await page.locator('.admin-producto-fila button').first().click();await expect(page.locator('.gestor-imagenes:visible').first()).toBeVisible();
+ }finally{if(originales)await Promise.all(rutas.map((p,i)=>writeFile(p,originales[i],{mode:0o600})));}
 });

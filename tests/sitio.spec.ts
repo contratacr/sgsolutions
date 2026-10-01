@@ -38,8 +38,12 @@ test('portada real, imágenes, cabeceras y tamaño de descarga', async ({page}, 
 
 test('cambio de idioma persistente y navegación', async ({page}, prueba) => {
   await page.goto('/');
+  await expect(page.locator('.selector-idioma')).toHaveAttribute('role', 'group');
+  await expect(page.locator('.selector-idioma button[value="es"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.selector-idioma button[value="en"]')).toHaveAttribute('aria-pressed', 'false');
   await page.getByRole('button', {name: 'Read this page in English'}).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.locator('.selector-idioma button[value="en"]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('heading', {level: 1})).toHaveText('We are your technology partner.');
   await expect(page.locator('.entrada-eyebrow')).toContainText('IT SOLUTIONS');
   await page.reload();
@@ -49,6 +53,7 @@ test('cambio de idioma persistente y navegación', async ({page}, prueba) => {
   await expect(page.getByRole('heading', {level: 1})).toHaveText('Technology that works with you.');
   await page.getByRole('button', {name: 'Leer esta página en español'}).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
+  await expect(page.locator('.selector-idioma button[value="es"]')).toHaveAttribute('aria-pressed', 'true');
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
 });
 

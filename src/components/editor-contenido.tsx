@@ -35,15 +35,15 @@ export function EditorContenido({
   const [cargandoImagenes,setCargandoImagenes]=useState(false);
  const {pendientes,confirmarGuardado}=useCambiosAdmin(datos);
   const m=useTranslations('AdminImagenes');
-  function bilingue(titulo: string, valor: Texto, cambiar: (v: Texto) => void) {
+  function bilingue(titulo: string, valor: Texto, cambiar: (v: Texto) => void, corto = false) {
     return (["es", "en"] as const).map((l) => (
       <label key={l}>
         {titulo} ({l.toUpperCase()})
-        <textarea
+        {corto ? <input maxLength={250} value={valor[l]} onChange={(e) => cambiar({ ...valor, [l]: e.target.value })} /> : <textarea
           maxLength={4000}
           value={valor[l]}
           onChange={(e) => cambiar({ ...valor, [l]: e.target.value })}
-        />
+        />}
       </label>
     ));
   }
@@ -85,6 +85,7 @@ export function EditorContenido({
       <fieldset disabled={ocupado||cargandoImagenes} style={{ border: 0, padding: 0 }}>
         {tab === "casos" && (
           <>
+            <div className="admin-lista-cabecera"><div><h2>{t('casos')}</h2><p>{t('casosAyuda')}</p></div></div>
             <button
               className="boton boton-contorno"
               onClick={() => {const id=`caso-${crypto.randomUUID().slice(0,8)}`;setNuevoId(id);
@@ -131,7 +132,7 @@ export function EditorContenido({
                     ["categoria", "titulo", "descripcion", "solucion"] as const
                   ).map((k) => (
                     <div key={k}>
-                      {bilingue(t(k), c[k], (v) => caso(i, { [k]: v }))}
+                      {bilingue(t(k), c[k], (v) => caso(i, { [k]: v }), k === 'categoria' || k === 'titulo')}
                     </div>
                   ))}
                 </div>
@@ -152,6 +153,7 @@ export function EditorContenido({
         )}
         {tab === "textos" && (
           <>
+            <div className="admin-lista-cabecera"><div><h2>{t('textos')}</h2><p>{t('textosAyuda')}</p></div></div>
             <label>
               {t("buscar")}
               <input
@@ -184,7 +186,7 @@ export function EditorContenido({
           </>
         )}
         {tab === "pagos" && (
-          <div className="admin-fields">
+          <section className="admin-configuracion"><h2>{t('pagos')}</h2><p>{t('pagosAyuda')}</p><div className="admin-fields">
             {(["titular", "sinpe"] as const).map((k) => (
               <label key={k}>
                 {t(k)}
@@ -222,7 +224,7 @@ export function EditorContenido({
                 ))}
               </div>
             ))}
-          </div>
+          </div></section>
         )}
       </fieldset>
       <ErroresAdmin campos={campos} abrir={abrirCampo}/>

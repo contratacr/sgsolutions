@@ -16,6 +16,7 @@ import { useCatalogo } from "./datos-catalogo";
 import { useCarrito } from "@/lib/carrito";
 import { colones, traducir } from "@/lib/catalogo-modelo";
 import { enlaceWhatsApp } from "@/lib/empresa";
+import {enlaceProductoParaWhatsApp, mensajePedidoWhatsApp} from '@/lib/mensaje-pedido-whatsapp';
 import { FotoProducto } from "./foto-producto";
 import { desplazarContenido } from "@/lib/desplazar-contenido";
 const provincias = [
@@ -29,6 +30,7 @@ const provincias = [
 ];
 export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; tarjetaPruebaDisponible?: boolean; pedidosManualesDisponibles?: boolean }) {
   const t = useTranslations("Compra"),
+    w = useTranslations('MensajePedido'),
     n = useTranslations("Navegacion"),
     l = useLocale(),
     c = useCatalogo(),
@@ -41,7 +43,8 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
     [revision, setRevision] = useState<Record<string, string> | null>(null),
     [procesando, setProcesando] = useState(false),
     [errorPago, setErrorPago] = useState(false),
-    [errorPedido, setErrorPedido] = useState(false);
+    [errorPedido, setErrorPedido] = useState(false),
+    [errorFormulario, setErrorFormulario] = useState(false);
   const entregaCampos = useRef<HTMLDivElement>(null),
     receptorCampos = useRef<HTMLDivElement>(null),
     facturaCampos = useRef<HTMLDivElement>(null),
@@ -65,6 +68,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
     total = productos.reduce((s, x) => s + (x.p.precio ?? 0) * x.cantidad, 0);
   function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setErrorFormulario(false);
     const datos = Object.fromEntries(
       new FormData(e.currentTarget).entries(),
     ) as Record<string, string>;
@@ -107,23 +111,33 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
       window.location.assign(datos.url);
     } catch { setErrorPedido(true); setProcesando(false); }
   }
-  const mensaje = revision
-    ? [
-        t("saludo"),
-        ...Object.entries(revision)
-          .filter(([k, v]) => v && k !== "consentimiento")
-          .map(
-            ([k, v]) =>
-              `${t(k)}: ${["modalidad", "pago", "contacto", "factura"].includes(k) ? t(v) : v}`,
-          ),
-        ...productos.map(
-          (x) =>
-            `${x.cantidad} × ${traducir(x.p.nombre, l)} (${x.p.codigoFabricante}) — ${x.p.precio === null ? t("pendiente") : colones(x.p.precio * x.cantidad)}`,
-        ),
-        `${t("subtotal")}: ${pendiente ? t("pendiente") : colones(total)}`,
-        t("confirmacion"),
-      ].join("\n")
-    : "";
+  const mensaje = revision ? mensajePedidoWhatsApp({
+    lineas: productos.map(x => ({cantidad: x.cantidad, nombre: traducir(x.p.nombre, l), codigo: x.p.codigoFabricante, precio: x.p.precio === null ? t('pendiente') : colones(x.p.precio * x.cantidad)})),
+    subtotal: pendiente ? t('pendiente') : colones(total),
+    nombre: [revision.nombre, revision.apellidos].filter(Boolean).join(' '),
+    telefono: revision.telefono,
+    correo: revision.correo,
+    contacto: t(revision.contacto),
+    entrega: t(revision.modalidad),
+    direccion: revision.modalidad === 'envio' ? [revision.provincia, revision.canton, revision.distrito, revision.direccion, revision.apartamento, revision.postal].filter(Boolean).join(', ') : undefined,
+    receptor: revision.receptor ? [revision.receptor, revision.telefonoReceptor].filter(Boolean).join(' · ') : undefined,
+    pago: t(revision.pago),
+    comprobante: revision.factura === 'electronica' ? w('facturaElectronica') : w('tiqueteElectronico'),
+    datosFactura: revision.factura === 'electronica' ? [
+      `${t('identificacion')}: ${revision.identificacion}`,
+      `${t('razonSocial')}: ${revision.razonSocial}`,
+      revision.actividad ? `${t('actividad')}: ${revision.actividad}` : '',
+      `${t('correoFactura')}: ${revision.correoFactura}`,
+      `${t('direccionFiscal')}: ${revision.direccionFiscal}`,
+    ].filter(Boolean) : undefined,
+    notas: revision.notas,
+    enlaceProducto: productos.length === 1 ? enlaceProductoParaWhatsApp(productos[0].p.id) : undefined,
+  }, {
+    titulo: w('titulo'), productos: w('productos'), codigo: w('codigo'), subtotal: w('subtotal'),
+    entrega: w('entrega'), direccion: w('direccion'), receptor: w('receptor'), pago: w('pago'),
+    comprobante: w('comprobante'), cliente: w('cliente'), correo: w('correo'),
+    contacto: w('contacto'), notas: w('notas'), ficha: w('ficha'), confirmacion: w('confirmacion'),
+  }) : '';
   const campo = (
     name: string,
     required = true,
@@ -219,7 +233,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
                 </button>
               </section>
             ) : (
-              <form onSubmit={revisar}>
+              <form onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
                 <section className="compra-bloque">
                   <h2>
                     <span>01</span>
@@ -317,6 +331,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
                       <option value="electronica">{t("electronica")}</option>
                     </select>
                   </label>
+                  <p className="texto-suave compra-ayuda-factura">{t(factura ? "electronicaAyuda" : "tiqueteAyuda")}</p>
                   {factura && (
                     <div className="compra-campos" ref={facturaCampos}>
                       {campo("identificacion")}
@@ -391,6 +406,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
                     <input type="checkbox" name="consentimiento" required />
                     {t("consentimiento")}
                   </label>
+                  {errorFormulario && <p role="alert" className="aviso-formulario">{t('validacion')}</p>}
                   <button
                     className="boton boton-naranja"
                     type="submit"

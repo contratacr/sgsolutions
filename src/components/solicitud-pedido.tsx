@@ -1,12 +1,13 @@
 'use client';
 
-import {FormEvent, useEffect, useMemo, useRef, useState} from 'react';
+import {FormEvent, useEffect, useRef, useState} from 'react';
 import {ArrowLeft, ArrowUpRight, Check} from 'lucide-react';
 import {useLocale, useTranslations} from 'next-intl';
 
 import type {CatalogoPublico} from '@/lib/catalogo-modelo';
 import {colones, traducir} from '@/lib/catalogo-modelo';
 import {enlaceWhatsApp} from '@/lib/empresa';
+import {enlaceProductoParaWhatsApp, mensajePedidoWhatsApp} from '@/lib/mensaje-pedido-whatsapp';
 import {desplazarContenido} from '@/lib/desplazar-contenido';
 
 type Producto = CatalogoPublico['productos'][number];
@@ -23,6 +24,7 @@ type DatosPedido = {
 
 export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regresar: () => void}) {
   const t = useTranslations('Pedido');
+  const w = useTranslations('MensajePedido');
   const n = useTranslations('Navegacion');
   const idioma = useLocale();
   const [modalidad, setModalidad] = useState<Modalidad>('retiro');
@@ -39,31 +41,22 @@ export function SolicitudPedido({lineas, regresar}: {lineas: LineaPedido[]; regr
   const tienePrecioPendiente = lineas.some(({producto}) => producto.precio === null);
   const total = lineas.reduce((suma, {cantidad, producto}) => suma + (producto.precio ?? 0) * cantidad, 0);
 
-  const mensaje = useMemo(() => {
-    if (!revision) return '';
-    const productos = lineas.map(({cantidad, producto}) => {
-      const codigo = producto.codigoFabricante || t('sinCodigo');
-      const precio = producto.precio === null ? t('precioPendiente') : colones(producto.precio * cantidad);
-      return `• ${cantidad} × ${traducir(producto.nombre, idioma)}\n  ${t('codigoFabricante')}: ${codigo}\n  ${t('subtotal')}: ${precio}`;
-    }).join('\n');
-    const datos = [
-      t('mensajeSaludo'),
-      '',
-      `${t('nombre')}: ${revision.nombre}`,
-      `${t('telefono')}: ${revision.telefono}`,
-      revision.correo ? `${t('correo')}: ${revision.correo}` : '',
-      `${t('modalidad')}: ${t(revision.modalidad)}`,
-      revision.modalidad === 'entrega' ? `${t('destino')}: ${revision.destino}` : '',
-      revision.notas ? `${t('notas')}: ${revision.notas}` : '',
-      '',
-      t('seleccion'),
-      productos,
-      '',
-      `${t('totalEstimado')}: ${tienePrecioPendiente ? t('precioPendiente') : colones(total)}`,
-      t('mensajeConfirmacion')
-    ];
-    return datos.filter(Boolean).join('\n');
-  }, [idioma, lineas, revision, t, tienePrecioPendiente, total]);
+  const mensaje = revision ? mensajePedidoWhatsApp({
+    lineas: lineas.map(({cantidad, producto}) => ({cantidad, nombre: traducir(producto.nombre, idioma), codigo: producto.codigoFabricante || undefined, precio: producto.precio === null ? t('precioPendiente') : colones(producto.precio * cantidad)})),
+    subtotal: tienePrecioPendiente ? t('precioPendiente') : colones(total),
+    nombre: revision.nombre,
+    telefono: revision.telefono,
+    correo: revision.correo,
+    entrega: t(revision.modalidad),
+    direccion: revision.modalidad === 'entrega' ? revision.destino : undefined,
+    notas: revision.notas,
+    enlaceProducto: lineas.length === 1 ? enlaceProductoParaWhatsApp(lineas[0].producto.id) : undefined,
+  }, {
+    titulo: w('titulo'), productos: w('productos'), codigo: w('codigo'), subtotal: w('subtotal'),
+    entrega: w('entrega'), direccion: w('direccion'), receptor: w('receptor'), pago: w('pago'),
+    comprobante: w('comprobante'), cliente: w('cliente'), correo: w('correo'),
+    contacto: w('contacto'), notas: w('notas'), ficha: w('ficha'), confirmacion: w('confirmacion'),
+  }) : '';
 
   function revisar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();

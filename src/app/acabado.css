@@ -13,6 +13,9 @@ html[data-interaccion="teclado"] :is(a,button,input,select,textarea,summary):foc
 .etiqueta{font-weight:650;letter-spacing:.13em}
 .navegacion{gap:25px}.nav-escritorio a{padding-block:14px;white-space:nowrap}
 .nav-acciones{gap:12px}.boton-icono{min-width:42px;min-height:42px;border-radius:8px}
+.selector-idioma{display:inline-flex;align-items:center;gap:3px;padding:4px;border:1px solid #ffffff4a;border-radius:999px;color:#dce7ef;white-space:nowrap}.selector-idioma svg{margin-inline:7px 3px}.selector-idioma button{border:0;border-radius:999px;background:transparent;color:inherit;min-width:33px;min-height:32px;padding:3px 7px;font-size:.72rem;font-weight:700;letter-spacing:.04em;transition:background .18s,color .18s}.selector-idioma button:hover:not([aria-pressed="true"]){background:#ffffff20;color:white}.selector-idioma button[aria-pressed="true"]{background:#f5f8fa;color:#173149;cursor:default}.selector-idioma button:focus-visible{outline:2px solid #f5a06e;outline-offset:2px}
+@media(max-width:760px){.selector-idioma{gap:1px;padding:3px}.selector-idioma button{min-width:32px;min-height:34px;padding-inline:5px}}
+@media(max-width:380px){.navegacion .logo{width:96px}.navegacion .nav-acciones{gap:3px}.navegacion{gap:8px}.navegacion .boton-icono{min-width:38px}.selector-idioma svg{display:none}.selector-idioma button{min-width:29px;padding-inline:3px}}
 .nav-movil{box-shadow:0 16px 30px #10283d20}.nav-movil a{padding-block:15px}
 .pie{padding-top:0;border-top:1px solid #ffffff20}.pie-grid{padding-block:52px;grid-template-columns:1.15fr 1fr 1fr}
 .pie h3{font-size:.92rem;letter-spacing:0}.pie p,.pie a{line-height:1.8}

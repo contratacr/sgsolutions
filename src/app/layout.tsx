@@ -20,6 +20,7 @@ import './estados.css';
 import './admin.css';
 import {RevelarScroll} from '@/components/revelar-scroll';
 import {META_PIXEL_ID} from '@/lib/meta-pixel';
+import {ValidacionNativa} from '@/components/validacion-nativa';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Marca');
@@ -29,5 +30,5 @@ export default async function DisenoRaiz({children}: {children: React.ReactNode}
   const t = await getTranslations('Navegacion');
   const idioma = await getLocale();
   const catalogo = await leerCatalogoPublico();
-  return <html lang={idioma}><body><FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera/>{children}<Pie/><Medicion pixel={META_PIXEL_ID}/></DatosCatalogo></NextIntlClientProvider></body></html>;
+  return <html lang={idioma}><body><FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><ValidacionNativa/><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera/>{children}<Pie/><Medicion pixel={META_PIXEL_ID}/></DatosCatalogo></NextIntlClientProvider></body></html>;
 }

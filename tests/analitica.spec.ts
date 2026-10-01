@@ -15,7 +15,7 @@ for(const idioma of ['es','en'])test(`consentimiento y exclusión de administrac
  await page.locator('.plan button').first().click();await expect.poll(()=>eventos.some(e=>e.tipo==='plan')).toBe(true);
  await page.getByRole('dialog').locator('.solicitud-cerrar').click();
  expect(await page.evaluate(()=>!!window.fbq)).toBe(false);
- await page.locator('.medicion-preferencias').click();await page.getByRole('button',{name:idioma==='es'?'Rechazar opcionales':'Reject optional tracking',exact:true}).click();
+ await page.locator('.pie-preferencias').click();await page.getByRole('button',{name:idioma==='es'?'Rechazar opcionales':'Reject optional tracking',exact:true}).click();
  const antes=eventos.length;await page.goto('/nosotros');await expect(page.locator('h1')).toBeVisible();expect(eventos.length).toBe(antes);
  await page.goto('/admin');await expect(page.locator('.medicion-aviso')).toHaveCount(0);expect(eventos.length).toBe(antes);
 });
@@ -36,7 +36,7 @@ test('Meta Pixel solo inicia tras aceptar publicidad y se detiene al revocar el 
  const cola=await page.evaluate(()=>(window as Window&{fbq?:{queue:unknown[][]}}).fbq?.queue??[]);
  expect(cola).toContainEqual(['init','1837501974261618']);
  expect(cola.filter(evento=>evento[0]==='track'&&evento[1]==='PageView')).toHaveLength(1);
- await page.locator('.medicion-preferencias').click();
+ await page.locator('.pie-preferencias').click();
  await page.getByRole('button',{name:'Rechazar opcionales'}).click();
  await expect.poll(()=>page.evaluate(()=>(window as Window&{fbq?:{queue:unknown[][]}}).fbq?.queue.some(evento=>evento[0]==='consent'&&evento[1]==='revoke'))).toBe(true);
  await page.goto('/nosotros');

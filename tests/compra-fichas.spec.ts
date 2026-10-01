@@ -14,6 +14,7 @@ for (const idioma of ["es", "en"])
     await page.locator(".shop-producto h3 a").first().click();
     await expect(page).toHaveURL(/\/tienda\/[^/]+$/);
     await expect(page.locator("h1")).toBeVisible();
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/sgsolutions\.soportecontratacr\.workers\.dev\/imagenes\//);
     await expect(page.locator(".ficha-codigo")).toContainText("21H2S1NH00");
     await page.locator(".ficha-compra button").click();
     await page.locator('.ficha-compra a[href="/finalizar-compra"]').click();
@@ -55,6 +56,9 @@ for (const idioma of ["es", "en"])
     expect(url.pathname).toContain("50664399417");
     expect(url.searchParams.get("text")).toContain("Alex");
     expect(url.searchParams.get("text")).toContain("21H2S1NH00");
+    expect(url.searchParams.get("text")).toContain(idioma === 'es' ? '*Solicitud de pedido · SG Solutions*' : '*Order request · SG Solutions*');
+    expect(url.searchParams.get("text")).toContain(idioma === 'es' ? '*Productos*' : '*Products*');
+    expect(url.searchParams.get("text")).not.toContain(idioma === 'es' ? 'Apellidos:' : 'Last name:');
     await page.locator("main .pedido-volver").click();
     await expect(form.locator("[name=nombre]")).toHaveValue("Alex");
     await expect(form.locator("[name=correoFactura]")).toHaveValue(
