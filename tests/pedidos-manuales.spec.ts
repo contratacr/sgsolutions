@@ -1,13 +1,14 @@
+import {abrirCompraAprobada} from './aprobacion-fixture';
 import { test, expect } from '@playwright/test';
 
 test.skip(process.env.SG_TEST_MANUAL !== '1', 'Se ejecuta contra el entorno de pruebas con pedidos manuales activos.');
 
 for (const idioma of ['es', 'en'] as const) {
   test(`pedido manual visible sin solicitar depósito previo ${idioma}`, async ({ page }) => {
-    await page.goto('/tienda/portatil');
+    await page.goto('/soluciones/portatil');
     if (idioma === 'en') await page.getByRole('button', { name: 'Read this page in English' }).click();
-    await page.locator('.ficha-compra button').click();
-    await page.locator('.ficha-compra a[href="/finalizar-compra"]').click();
+    await page.locator('.ficha-agregar').click();
+    await abrirCompraAprobada(page);
     await expect(page.locator('html')).toHaveAttribute('lang', idioma);
     await expect(page.locator('.compra-cuentas')).toHaveCount(0);
     await expect(page.locator('form .compra-aviso').first()).toContainText(idioma === 'es' ? 'después de confirmar' : 'after confirming');

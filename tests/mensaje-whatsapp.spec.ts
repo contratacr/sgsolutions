@@ -11,7 +11,7 @@ for (const [idioma, textos] of [['es', es.MensajePedido], ['en', en.MensajePedid
       costoEnvio: '₡3.500', total: '₡622.500',
       correo: 'isaac_sanchez@example.com', contacto: 'WhatsApp', entrega: 'Correos de Costa Rica',
       pago: 'SINPE Móvil', comprobante: idioma === 'es' ? 'Tiquete electrónico' : 'Electronic receipt',
-      enlaceProducto: 'https://sgsolutions.soportecontratacr.workers.dev/tienda/portatil',
+      enlaceProducto: 'https://sgsolutions.soportecontratacr.workers.dev/soluciones/portatil',
     }, textos);
     expect(mensaje).toContain(`*${textos.titulo}*\n\n*${textos.productos}*`);
     expect(mensaje).toContain('• 1 × Lenovo ThinkPad L14 — ₡619.000\n');

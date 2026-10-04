@@ -147,13 +147,58 @@
  .tienda-compacta .shop-producto .boton svg{display:none}
 }
 @media(prefers-reduced-motion:reduce){.tienda-compacta .shop-foto img,.tienda-compacta .shop-producto,.tienda-compacta .shop-producto .boton{transition:none}.tienda-compacta .shop-producto:hover .shop-foto img{transform:none}}
-.shop-vistas{display:flex;justify-content:flex-end;gap:4px;margin:-6px 0 18px}
-.shop-vistas button{min-height:44px;padding:8px 14px;border:1px solid #cfdae4;border-radius:8px;background:white;color:#294a62;font:inherit;font-size:13px;cursor:pointer}
-.shop-vistas button[aria-pressed=true]{background:#142e42;color:white;border-color:#142e42}
-.tienda-compacta .shop-grid[data-vista=lista]{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
-.tienda-compacta .shop-grid[data-vista=lista] .shop-producto{display:grid;grid-template-columns:minmax(110px,28%) minmax(0,1fr);grid-template-rows:auto;grid-row:auto;align-items:start}
-.tienda-compacta .shop-grid[data-vista=lista] .shop-producto-info{display:flex;grid-row:auto;gap:5px}
-.tienda-compacta .shop-grid[data-vista=lista] .shop-descripcion,.tienda-compacta .shop-grid[data-vista=lista] h3{display:block;-webkit-line-clamp:unset;min-height:0}
-.tienda-compacta .shop-grid[data-vista=lista] .shop-foto{height:170px}
-.tienda-compacta .shop-grid[data-vista=lista] .shop-precio,.tienda-compacta .shop-grid[data-vista=lista] .boton{align-self:stretch}
+
 .pedido-resultado{max-width:760px;margin:clamp(2rem,6vw,5rem) auto}.pedido-resultado h1{margin:10px 0}.pedido-resultado>ul{line-height:1.7;margin:20px 0;padding-left:22px}.pedido-numero{display:inline-flex;flex-wrap:wrap;gap:10px;align-items:center;background:#eef4f7;border-radius:9px;padding:12px 16px}.pedido-pago-datos{border-top:1px solid #dbe4ea;margin-top:28px;padding-top:24px}.pedido-pago-datos code{overflow-wrap:anywhere}.pedido-comprobante{display:grid;gap:12px;margin:22px 0}.pedido-comprobante label{display:grid;gap:8px}.pedido-comprobante input{max-width:100%;font:inherit}.pedido-comprobante .boton{justify-self:start}
+
+/* Compra acompañada: una selección editorial con la conversación primero. */
+
+.tienda-compacta{background:#f7f8f5}.tienda-compacta .shop-producto{box-shadow:none;border-radius:14px}.tienda-compacta .shop-producto .boton{gap:8px;justify-content:center;text-align:center;line-height:1.45}.tienda-compacta .shop-producto a.boton{background:#143041;border-color:#143041}.tienda-compacta .shop-producto .guardar-seleccion{background:transparent;color:#35576a;border-color:transparent;margin-top:6px;font-size:.72rem}.tienda-compacta .shop-producto .guardar-seleccion:hover{background:#edf3f3}.tienda-compacta .shop-precio small{background:none;padding:0}.tienda-compacta .shop-aviso{line-height:1.8}
+.carrito-resumen>.boton{width:100%;display:flex;gap:10px;justify-content:center}.carrito-asesoria-nota{font-size:.8rem;line-height:1.7;color:#607584;margin:18px 0}.ficha-asesoria-nota{padding:15px 18px;background:#f0f5f2;border-radius:12px;font-size:.88rem;line-height:1.7!important}
+.compra-asesoria{display:flex;align-items:center;justify-content:space-between;gap:28px;background:#edf3f0;border:1px solid #d6e2dd;border-radius:18px;padding:28px;margin-bottom:28px}.compra-asesoria strong{font-size:1.1rem}.compra-asesoria p{font-size:.88rem;line-height:1.75;color:#4f6964;margin:10px 0 0;max-width:600px}.compra-asesoria .boton{flex-shrink:0;gap:9px}.compra-paso-asesoria{max-width:760px}.compra-paso-asesoria p{line-height:1.85;color:#5d7180;margin-bottom:24px}
+.admin-guia p{line-height:1.75;margin-top:8px}.admin-lista-filtros{grid-template-columns:1fr 1.5fr 1fr}
+@media(max-width:1000px){.compra-asesoria{align-items:flex-start;flex-direction:column}}
+@media(max-width:650px){.tienda-compacta .shop-producto a.boton{font-size:.72rem;padding:12px 7px;min-height:56px;gap:5px}.tienda-compacta .shop-producto a.boton>svg:first-of-type{display:block;width:18px;height:18px;flex-shrink:0}.tienda-compacta .shop-producto .guardar-seleccion{font-size:.7rem;padding:9px 5px;min-height:48px}.compra-asesoria{padding:20px}.compra-asesoria .boton{width:100%;font-size:.83rem}.admin-lista-filtros{grid-template-columns:1fr}.ficha-compra>.boton{font-size:.85rem;gap:8px}}
+
+/* Ocho campos y dos acciones: mantener las filas alineadas sin superponer botones. */
+.tienda-compacta .shop-producto{grid-row:span 9}.tienda-compacta .shop-producto-info{grid-row:span 8;grid-template-rows:auto auto auto auto auto auto minmax(56px,auto) minmax(48px,auto)}
+@supports(grid-template-rows:subgrid){.tienda-compacta .shop-producto-info{grid-template-rows:subgrid}}
+
+/* Cabecera breve: el catálogo permanece cerca de la asesoría. */
+.tienda-compacta{padding-top:24px}
+.asesoria-hero{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:8px 0 24px;border-bottom:1px solid #dce3df;margin-bottom:20px}
+.asesoria-hero .etiqueta{font-size:.65rem;letter-spacing:.15em;margin:0 0 10px}
+.asesoria-hero h1{font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.15;letter-spacing:-.045em;margin:0 0 10px;font-weight:500}
+.asesoria-hero-texto>p:last-child{font-size:.92rem;line-height:1.6;color:#536975;margin:0}
+.asesoria-hero>.boton{flex-shrink:0;min-height:48px;gap:10px}
+.tienda-compacta .marcas-cinta{display:block;margin:0 0 20px;padding:10px 0;border-radius:10px}
+.tienda-compacta .marcas-encabezado{display:none}
+.tienda-compacta .marcas-ventana{width:100%}
+.tienda-compacta .marca-ficha{min-height:66px;grid-template-rows:40px;gap:0;padding:10px 20px;flex-basis:140px}
+.tienda-compacta .marca-logo,.tienda-compacta .marca-logo img{height:40px}
+.tienda-compacta .marca-pie{display:none}
+.tienda-compacta .shop-buscador{margin-bottom:20px}
+@media(max-width:650px){.tienda-compacta{padding-top:20px}.asesoria-hero{align-items:flex-start;flex-direction:column;gap:16px;padding:0 0 20px;margin-bottom:16px}.asesoria-hero h1{font-size:1.85rem;max-width:360px}.asesoria-hero .etiqueta{font-size:.6rem}.asesoria-hero-texto>p:last-child{font-size:.85rem}.asesoria-hero>.boton{font-size:.83rem}.tienda-compacta .marcas-cinta{padding:6px 0;margin-bottom:16px}.tienda-compacta .marca-ficha{flex-basis:115px;padding:8px 16px;min-height:56px}.tienda-compacta .marca-logo,.tienda-compacta .marca-logo img{height:34px}}
+
+.tienda-compacta .shop-orden select{appearance:none;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23173149' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;max-width:none}
+
+/* Permitir que el contenido se adapte incluso entre los puntos de corte. */
+.tienda-compacta .shop-producto,.tienda-compacta .shop-producto-info,.tienda-compacta .shop-producto-info>*{min-width:0}
+.tienda-compacta .shop-producto-info{box-sizing:border-box;width:100%}
+.tienda-compacta .shop-precio{flex-wrap:wrap;align-items:flex-start;gap:6px 12px}
+.tienda-compacta .shop-precio small{white-space:normal;line-height:1.5;overflow-wrap:anywhere}
+.tienda-compacta .shop-producto .boton{white-space:normal;overflow-wrap:anywhere;max-width:100%;height:auto}
+.tienda-compacta .shop-producto .boton svg{flex-shrink:0}
+@media(min-width:651px) and (max-width:1199px){.tienda-compacta .shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.tienda-compacta .shop-producto .guardar-seleccion svg{display:block;width:18px;height:18px;flex-shrink:0}
+
+.ficha-cantidad{display:flex;align-items:center;gap:18px;margin:18px 0;font-size:.85rem;color:#486277}
+.contador-cantidad{display:inline-flex;align-items:center;border:1px solid #cbd8e1;border-radius:9px;background:white;overflow:hidden;max-width:100%}
+.contador-cantidad button{display:grid;place-items:center;border:0;background:transparent;color:#23465e;width:40px;min-height:44px;padding:0;cursor:pointer;flex-shrink:0}
+.contador-cantidad button:disabled{opacity:.35;cursor:default}.contador-cantidad input{width:40px!important;min-width:0;text-align:center;border:0!important;border-radius:0!important;padding:8px 0!important;appearance:textfield;font-size:.85rem;color:#173149}
+.contador-cantidad input::-webkit-inner-spin-button,.contador-cantidad input::-webkit-outer-spin-button{appearance:none;margin:0}
+.contador-cantidad button:focus-visible,.contador-cantidad input:focus-visible{outline:2px solid #527b99;outline-offset:-3px}
+.ficha-compra>.boton{justify-content:center;gap:10px}
+
+.asesorias-admin{margin-block:2rem 3rem}.asesorias-admin .pedidos-admin-tarjeta{min-width:0}.asesoria-admin-form{display:grid;gap:1rem;margin-block:1.25rem}.asesoria-admin-linea{display:grid;grid-template-columns:minmax(160px,1fr) 90px 180px auto;gap:1rem;align-items:end;padding-block:.75rem;border-bottom:1px solid var(--borde,#d8e1e6)}.asesoria-admin-form label{display:grid;gap:.4rem;min-width:0}.asesoria-admin-form input,.asesoria-admin-form select,.asesorias-admin input[readonly]{width:100%;min-width:0;padding:.65rem;border:1px solid #bdccd6;border-radius:8px;background:white;color:#152f3e;box-sizing:border-box}.asesoria-admin-agregar{display:flex;gap:1rem;align-items:end}.asesoria-admin-agregar label{flex:1}.asesoria-admin-form .asesoria-admin-confirmar{display:flex;align-items:start;gap:.7rem}.asesoria-admin-confirmar input{width:auto;margin-top:.3rem}.asesoria-admin-form>.boton{justify-self:start}a[aria-disabled=true]{opacity:.6;cursor:wait}@media(max-width:760px){.asesoria-admin-linea{grid-template-columns:1fr 1fr}.asesoria-admin-linea strong{grid-column:1/-1}.asesoria-admin-agregar{flex-direction:column;align-items:stretch}}
+.asesoria-enlace{display:grid;gap:.75rem;margin-block:1rem}.asesoria-enlace label{display:grid;gap:.5rem}.asesoria-enlace .boton{justify-self:start}

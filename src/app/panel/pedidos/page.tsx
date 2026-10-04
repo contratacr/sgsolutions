@@ -1,3 +1,9 @@
+import {EnlaceCompra} from '@/components/enlace-compra';
+import {listarAsesorias,enlaceAprobado,referenciaAsesoria} from '@/lib/asesorias';
+import {leerCatalogoPublico} from '@/lib/catalogo-servidor';
+import {PrepararAsesoria} from '@/components/preparar-asesoria';
+import {prepararPedidoAsesorado} from './asesoria-acciones';
+import {headers} from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { sesionLocal } from '@/lib/admin-local';
@@ -37,6 +43,12 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
     if (!perfil?.activo || perfil.rol !== 'administrador') redirect('/panel');
   }
   const t = await getTranslations('PedidosAdmin');
+  const a=await getTranslations('AsesoriaAdmin');
+  let solicitudes:Awaited<ReturnType<typeof listarAsesorias>>=[],errorAsesorias=false;
+  try{solicitudes=await listarAsesorias();}catch{errorAsesorias=true;}
+  const catalogo=await leerCatalogoPublico();
+  const host=(await headers()).get('host')??'';
+  const origen=local?`http://${host}`:process.env.PEDIDOS_ORIGEN_PUBLICO??'https://www.sgsolutionscr.com';
   const idioma = await getLocale();
   const db = basePedidosAdministracion();
   const { data, error } = db
@@ -50,11 +62,13 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
     : { data: null, error: null };
   const manuales = (manualData ?? []) as Manual[];
   const resultado = (await searchParams).resultado;
+  const ahora=new Date().getTime();
   return <main id="contenido" className="contenedor seccion">
     <p className="etiqueta">{t('etiqueta')}</p>
     <h1>{t('titulo')}</h1>
     <p className="admin-guia">{t('descripcion')}</p>
     {resultado && ['guardado','sin_correo','error','invalido','no_disponible'].includes(resultado) && <p role="status" className="panel-aviso">{t(`resultado_${resultado}`)}</p>}
+    <section className="asesorias-admin"><h2>{a('titulo')}</h2><p>{a('descripcion')}</p><details><summary>{a('nueva')}</summary><PrepararAsesoria id="" articulos={[]} productos={catalogo.productos}/></details>{errorAsesorias?<p role="alert">{a('noDisponible')}</p>:!solicitudes.length?<p>{a('vacio')}</p>:<div className="pedidos-admin-lista">{solicitudes.map(s=><article key={s.id} className="pedidos-admin-tarjeta"><div className="pedidos-admin-encabezado"><strong>{referenciaAsesoria(s.id)}</strong><span>{a(s.estado)}</span></div><ul>{s.articulos.map(x=><li key={x.producto.id}>{x.cantidad} × {x.producto.nombre[idioma==='en'?'en':'es']}</li>)}</ul>{['solicitada','aprobada'].includes(s.estado)&&<PrepararAsesoria id={s.id} articulos={s.articulos} productos={catalogo.productos}/>} {s.estado==='aprobada'&&s.vence_en&&Date.parse(s.vence_en)>ahora&&<EnlaceCompra key={s.token} url={enlaceAprobado(s,origen)}/>}{s.estado==='aprobada'&&s.vence_en&&Date.parse(s.vence_en)<=ahora&&<p>{a('vencida')}</p>}{['solicitada','aprobada'].includes(s.estado)&&<form action={prepararPedidoAsesorado}><input type="hidden" name="id" value={s.id}/><input type="hidden" name="cancelar" value="1"/><button className="boton boton-contorno">{a('cancelar')}</button></form>}</article>)}</div>}</section>
     <h2>{t('manualTitulo')}</h2>
     {!manualDb || manualError ? <p role="status">{t('configurarManual')}</p> : !manuales.length ? <p>{t('manualVacio')}</p> :
       <div className="pedidos-admin-lista">{await Promise.all(manuales.map(async p => {

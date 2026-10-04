@@ -1,5 +1,5 @@
 import {getTranslations} from 'next-intl/server';
-import {ArrowUpRight, Plus} from 'lucide-react';
+import {Building2, Plus} from 'lucide-react';
 
 export async function ServiciosSoporte(){
  const t=await getTranslations('ServiciosSoporte');
@@ -9,6 +9,6 @@ export async function ServiciosSoporte(){
    <summary><span className="servicio-indice">0{i+1}</span><h3>{t(`grupo${i}`)}</h3><Plus size={20}/></summary>
    <ul>{Array.from({length:cantidad},(_,j)=><li key={j}><h4>{t(`g${i}s${j}Titulo`)}</h4><p>{t(`g${i}s${j}Texto`)}</p></li>)}</ul>
   </details>)}</div>
-  <aside className="soporte-empresa"><div><h3>{t('empresaTitulo')}</h3><p>{t('empresaTexto')}</p></div><a className="boton boton-azul" href="/empresas#planes">{t('empresaAccion')}<ArrowUpRight size={17}/></a></aside>
+  <aside className="soporte-empresa"><div><h3>{t('empresaTitulo')}</h3><p>{t('empresaTexto')}</p></div><a className="boton boton-azul" href="/empresas#planes">{t('empresaAccion')}<Building2 size={18} aria-hidden="true"/></a></aside>
  </section>;
 }

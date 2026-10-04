@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 
 test('tarjetas alineadas y cuadrícula móvil en ambos idiomas',async({page},info)=>{
  await page.emulateMedia({reducedMotion:'no-preference'});
- await page.goto('/tienda');
+ await page.goto('/soluciones');
  for(const idioma of ['es','en']){
   if(idioma==='en'){
    await page.getByRole('button',{name:'Read this page in English'}).click();
@@ -37,7 +37,7 @@ test('cinta espera imágenes lentas y mantiene continuidad al cerrar el bucle',a
  let liberar!:()=>void;
  const espera=new Promise<void>(resolve=>{liberar=resolve;});
  await page.route('**/imagenes/marcas/**',async route=>{await espera;await route.continue();});
- await page.goto('/tienda',{waitUntil:'domcontentloaded'});
+ await page.goto('/soluciones',{waitUntil:'domcontentloaded'});
  const pista=page.locator('.marcas-pista');
  await expect(pista).toHaveCSS('animation-play-state','paused');
  liberar();
@@ -55,7 +55,7 @@ test('cinta espera imágenes lentas y mantiene continuidad al cerrar el bucle',a
  expect(salto).toBeLessThan(1);
 });
 
- test('vista y filtros se conservan al regresar de una ficha',async({page})=>{
- await page.goto('/tienda');await page.getByRole('searchbox').fill('Lenovo');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');await page.getByRole('button',{name:'Lista',exact:true}).click();await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);await page.locator('.shop-producto h3 a').first().click();await expect(page).toHaveURL(/tienda\/.+/);await page.goBack();await expect(page.getByRole('searchbox')).toHaveValue('Lenovo');await expect(page.locator('.shop-grid')).toHaveAttribute('data-vista','lista');
- await page.getByRole('button',{name:'Read this page in English'}).click();await expect(page.getByRole('button',{name:'List',exact:true})).toHaveAttribute('aria-pressed','true');
+ test('filtros se conservan al regresar de una ficha',async({page})=>{
+ await page.goto('/soluciones');await page.getByRole('searchbox').fill('Lenovo');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);await page.locator('.shop-producto h3 a').first().click();await expect(page).toHaveURL(/soluciones\/.+/);await page.goBack();await expect(page.getByRole('searchbox')).toHaveValue('Lenovo');await expect(page.locator('.shop-vistas')).toHaveCount(0);
+ await page.getByRole('button',{name:'Read this page in English'}).click();await expect(page.locator('html')).toHaveAttribute('lang','en');
  });

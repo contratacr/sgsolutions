@@ -1,13 +1,13 @@
+import {abrirCompraAprobada} from './aprobacion-fixture';
 import { test, expect } from "@playwright/test";
 import { esquemaContenido } from "../src/lib/contenido-modelo";
 import contenido from "../src/lib/contenido-base.json";
 import {costoEntrega} from '../src/lib/envio';
-import {colones} from '../src/lib/catalogo-modelo';
 for (const idioma of ["es", "en"])
   test(`ficha y checkout completos ${idioma}`, async ({ page }, info) => {
     const errores: string[] = [];
     page.on("pageerror", (e) => errores.push(e.message));
-    await page.goto("/tienda");
+    await page.goto("/soluciones");
     if (idioma === "en")
       await page
         .getByRole("button", { name: "Read this page in English" })
@@ -15,12 +15,12 @@ for (const idioma of ["es", "en"])
     await expect(page.locator('html')).toHaveAttribute('lang', idioma);
     await expect(page.locator(".shop-producto").first()).toBeVisible();
     await page.locator(".shop-producto h3 a").first().click();
-    await expect(page).toHaveURL(/\/tienda\/[^/]+$/);
+    await expect(page).toHaveURL(/\/soluciones\/[^/]+$/);
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/sgsolutions\.soportecontratacr\.workers\.dev\/imagenes\//);
     await expect(page.locator(".ficha-codigo")).toContainText("21H2S1NH00");
-    await page.locator(".ficha-compra button").click();
-    await page.locator('.ficha-compra a[href="/finalizar-compra"]').click();
+    await page.locator(".ficha-agregar").click();
+    await abrirCompraAprobada(page);
     await expect(page.locator("html")).toHaveAttribute("lang", idioma);
     const form = page.locator("main form");
     await form.locator("[name=nombre]").fill("Alex");
@@ -58,16 +58,7 @@ for (const idioma of ["es", "en"])
     await form.locator("[value=sinpe]").check();
     await form.locator("[name=consentimiento]").check();
     await form.locator("[type=submit]").click();
-    const enviar = page.locator('main a[href^="https://wa.me/"]');
-    await expect(enviar).toHaveAttribute("rel", "noopener noreferrer");
-    const url = new URL((await enviar.getAttribute("href"))!);
-    expect(url.pathname).toContain("50664399417");
-    expect(url.searchParams.get("text")).toContain("Alex");
-    expect(url.searchParams.get("text")).toContain("21H2S1NH00");
-    expect(url.searchParams.get("text")).toContain(idioma === 'es' ? '*Solicitud de pedido · SG Solutions*' : '*Order request · SG Solutions*');
-    expect(url.searchParams.get("text")).toContain(idioma === 'es' ? '*Productos*' : '*Products*');
-    expect(url.searchParams.get('text')?.replace(/\s/g, ' ')).toContain(colones(3500).replace(/\s/g, ' '));
-    expect(url.searchParams.get("text")).not.toContain(idioma === 'es' ? 'Apellidos:' : 'Last name:');
+    await expect(page.locator('main a[href^="https://wa.me/"]')).toHaveCount(0);
     await page.locator("main .pedido-volver").click();
     await expect(form.locator("[name=nombre]")).toHaveValue("Alex");
     await expect(form.locator("[name=correoFactura]")).toHaveValue(
@@ -85,9 +76,9 @@ for (const idioma of ["es", "en"])
     expect(errores).toEqual([]);
   });
 test('retiro no suma costo de envío', async ({page}) => {
-  await page.goto('/tienda/portatil');
-  await page.locator('.ficha-compra button').click();
-  await page.locator('.ficha-compra a[href="/finalizar-compra"]').click();
+  await page.goto('/soluciones/portatil');
+  await page.locator('.ficha-agregar').click();
+  await abrirCompraAprobada(page);
   const importes = page.locator('.compra-resumen dl dd');
   const numero = async (indice: number) => Number((await importes.nth(indice).innerText()).replace(/\D/g, ''));
   expect(await numero(1)).toBe(0);
@@ -100,6 +91,6 @@ test("contenido valida imágenes y protege administrador", async ({ page }) => {
   expect(esquemaContenido.safeParse(malo).success).toBe(false);
   await page.goto("/panel/contenido");
   await expect(page).toHaveURL(/\/admin/);
-  await page.goto("/tienda/no-existe");
+  await page.goto("/soluciones/no-existe");
   await expect(page.locator("main")).toBeVisible();
 });

@@ -63,7 +63,7 @@ test('panel sin sesión no revela datos y carrito ignora almacenamiento manipula
   await expect(page.locator('.admin-editor')).toHaveCount(0);
   await expect(page.getByRole('heading',{level:1})).toBeVisible();
   await page.evaluate(() => localStorage.setItem('sg-carrito-v1', '[{"id":"desconocido","cantidad":3},{"id":"gamer","cantidad":-9}]'));
-  await page.goto('/tienda');
+  await page.goto('/soluciones');
   await page.getByRole('button', {name: 'Abrir carrito'}).click();
   await expect(page.getByText('Todavía no ha agregado equipo.')).toBeVisible();
 });
@@ -90,7 +90,7 @@ test('entrada inicia neutral, navega y muestra animación única', async ({page}
     await expect(menu.getByRole('link', {name: /Soluciones empresariales/})).toBeInViewport({ratio: 1});
   }
   await menu.getByRole('link', {name: /Explorar productos/}).click();
-  await expect(page).toHaveURL(/\/tienda$/);
+  await expect(page).toHaveURL(/\/soluciones$/);
 });
 
 test('movimiento reducido mantiene menú y versión estática', async ({page}) => {
@@ -124,7 +124,7 @@ test.describe('navegación sin JavaScript', () => {
     await page.goto('/');
     await expect(page.getByRole('navigation', {name: 'Elija una solución'})).toBeVisible();
     await page.getByRole('link', {name: /Explorar productos/}).click();
-    await expect(page).toHaveURL(/\/tienda$/);
+    await expect(page).toHaveURL(/\/soluciones$/);
     await expect(page.getByRole('heading', {level: 1})).toBeVisible();
   });
 });
@@ -133,7 +133,7 @@ test('las tres áreas navegan en la misma pestaña y conservan el idioma', async
   await page.goto('/');
   await page.getByRole('button', {name: 'Read this page in English'}).click();
   const menu = page.getByRole('navigation', {name: 'Choose a solution'});
-  for (const ruta of ['/tienda', '/soporte', '/empresas']) {
+  for (const ruta of ['/soluciones', '/soporte', '/empresas']) {
     const enlace = menu.locator(`a[href="${ruta}"]`);
     await expect(enlace).not.toHaveAttribute('target', '_blank');
     await enlace.click();
@@ -223,7 +223,7 @@ for (const [ruta,tituloEs,tituloEn] of [
 }
 
 test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page}, prueba) => {
-  await page.goto('/tienda');
+  await page.goto('/soluciones');
   const buscar = page.getByRole('searchbox', {name:'Buscar equipo'});
   await buscar.fill('PORTATIL');
   await expect(page.getByRole('article')).toHaveCount(24);
@@ -251,7 +251,7 @@ test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page
     await imagen.evaluate(async elemento => { await (elemento as HTMLImageElement).decode(); });
   }
   await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
-  await page.screenshot({path:`evidencias/tienda-editorial-${prueba.project.name}.png`, fullPage:true, animations:'disabled', scale:'css'});
+  await page.screenshot({path:`evidencias/soluciones-editorial-${prueba.project.name}.png`, fullPage:true, animations:'disabled', scale:'css'});
 });
 
 test('tarjetas inmersivas conservan foco, idioma y movimiento reducido', async ({page}, prueba) => {

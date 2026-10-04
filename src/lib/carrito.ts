@@ -44,9 +44,10 @@ export function cambiarCantidad(id: ProductoId, cantidad: number) {
   const actuales = obtener().filter(linea => linea.id !== id);
   guardar(cantidad ? [...actuales, { id, cantidad }] : actuales);
 }
-export function agregarProducto(id: ProductoId) {
+export function agregarProducto(id: ProductoId, unidades=1) {
+  if(!Number.isInteger(unidades)||unidades<1||unidades>99)return;
   const cantidad = obtener().find(linea => linea.id === id)?.cantidad ?? 0;
-  cambiarCantidad(id, Math.min(cantidad + 1, 99));
+  cambiarCantidad(id, Math.min(cantidad + unidades, 99));
   if(cantidad<99&&obtener().some(l=>l.id===id))medir('carrito',id);
 }
 export function useCarrito() {

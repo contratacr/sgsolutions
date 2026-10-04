@@ -69,5 +69,5 @@ export function mensajePedidoWhatsApp(datos: Datos, t: Textos) {
 
 export function enlaceProductoParaWhatsApp(id: string) {
   if (typeof window === 'undefined' || window.location.protocol !== 'https:') return undefined;
-  return new URL(`/tienda/${encodeURIComponent(id)}`, window.location.origin).href;
+  return new URL(`/soluciones/${encodeURIComponent(id)}`, window.location.origin).href;
 }

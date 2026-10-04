@@ -22,7 +22,7 @@ export default async function ResultadoPago({ searchParams }: { searchParams: Pr
       <p className="etiqueta">{t('etiqueta')}</p>
       <h1>{t(estado)}</h1>
       <p>{t(`${estado}Detalle`)}</p>
-      <Link className="boton boton-azul" href="/tienda">{t('volver')}</Link>
+      <Link className="boton boton-azul" href="/soluciones">{t('volver')}</Link>
     </section>
   </main>;
 }

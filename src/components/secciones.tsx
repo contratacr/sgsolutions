@@ -1,15 +1,16 @@
 import Image from 'next/image';
+import {IconoWhatsApp} from '@/components/icono-whatsapp';
 import {SolicitudPlan} from './solicitud-plan';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { ArrowRight, ArrowUpRight, Headset, Network, ShieldCheck, Monitor, Check, MapPin, Phone } from 'lucide-react';
+import { ShoppingBag, Mail, Headset, Network, ShieldCheck, Monitor, Check, MapPin, Phone } from 'lucide-react';
 import { enlaceCorreo, enlaceWhatsApp, empresa } from '@/lib/empresa';
 
 export async function Soluciones() {
   const t = await getTranslations('Inicio');
   const contacto = await getTranslations('Contacto');
   const iconos = [Headset, Network, ShieldCheck, Monitor];
-  return <section id="servicios" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('serviciosEtiqueta')}</p><h2>{t('serviciosTitulo')}</h2></div><p>{t('serviciosDescripcion')}</p></div><div className="servicios-grid">{iconos.map((Icono,i) => <a key={i} className="servicio" id={`solucion-${i+1}`} href={enlaceWhatsApp(contacto('servicioMensaje', {servicio: t(`servicio${i}Titulo`)}))} target="_blank" rel="noopener noreferrer"><div className="servicio-icono"><Icono size={28}/><span>{`0${i+1}`}</span></div><h3>{t(`servicio${i}Titulo`)}</h3><p>{t(`servicio${i}Texto`)}</p><ArrowUpRight className="servicio-flecha" size={24}/><span className="sr-only">{t('servicioAccion')}</span></a>)}</div></section>;
+  return <section id="servicios" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('serviciosEtiqueta')}</p><h2>{t('serviciosTitulo')}</h2></div><p>{t('serviciosDescripcion')}</p></div><div className="servicios-grid">{iconos.map((Icono,i) => <a key={i} className="servicio" id={`solucion-${i+1}`} href={enlaceWhatsApp(contacto('servicioMensaje', {servicio: t(`servicio${i}Titulo`)}))} target="_blank" rel="noopener noreferrer"><div className="servicio-icono"><Icono size={28}/><span>{`0${i+1}`}</span></div><h3>{t(`servicio${i}Titulo`)}</h3><p>{t(`servicio${i}Texto`)}</p><IconoWhatsApp className="servicio-flecha" width={24} height={24}/><span className="sr-only">{t('servicioAccion')}</span></a>)}</div></section>;
 }
 
 export async function Proyectos() {
@@ -24,12 +25,12 @@ export async function Planes() {
 
 export async function InvitacionTienda() {
   const t = await getTranslations('Inicio');
-  return <section className="tienda-invitacion"><div className="contenedor tienda-invitacion-grid"><div><p className="etiqueta etiqueta-clara">{t('tiendaEtiqueta')}</p><h2>{t('tiendaTitulo')}</h2><p>{t('tiendaTexto')}</p><Link className="boton boton-naranja" href="/tienda">{t('tiendaAccion')}<ArrowRight size={18}/></Link></div><div className="tienda-imagen"><Image src="/imagenes/portatil.webp" alt={t('tiendaAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div></div></section>;
+  return <section className="tienda-invitacion"><div className="contenedor tienda-invitacion-grid"><div><p className="etiqueta etiqueta-clara">{t('tiendaEtiqueta')}</p><h2>{t('tiendaTitulo')}</h2><p>{t('tiendaTexto')}</p><Link className="boton boton-naranja" href="/soluciones">{t('tiendaAccion')}<ShoppingBag size={18} aria-hidden="true"/></Link></div><div className="tienda-imagen"><Image src="/imagenes/portatil.webp" alt={t('tiendaAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div></div></section>;
 }
 
 export async function Nosotros() {
   const t = await getTranslations('Inicio');
-  return <section id="nosotros" className="seccion contenedor nosotros"><div className="nosotros-imagen"><Image src="/imagenes/oficina.webp" alt={t('nosotrosAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div><div><p className="etiqueta">{t('nosotrosEtiqueta')}</p><h2>{t('nosotrosTitulo')}</h2><p>{t('nosotrosTexto')}</p><a className="enlace-azul" href={empresa.mapa} target="_blank" rel="noopener noreferrer"><MapPin size={19}/>{t('visitanos')}<ArrowUpRight size={18}/></a></div></section>;
+  return <section id="nosotros" className="seccion contenedor nosotros"><div className="nosotros-imagen"><Image src="/imagenes/oficina.webp" alt={t('nosotrosAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div><div><p className="etiqueta">{t('nosotrosEtiqueta')}</p><h2>{t('nosotrosTitulo')}</h2><p>{t('nosotrosTexto')}</p><a className="enlace-azul" href={empresa.mapa} target="_blank" rel="noopener noreferrer"><MapPin size={19}/>{t('visitanos')}</a></div></section>;
 }
 
 export async function Contacto({porCorreo=false}:{porCorreo?:boolean}={}) {
@@ -37,5 +38,5 @@ export async function Contacto({porCorreo=false}:{porCorreo?:boolean}={}) {
   const contacto = await getTranslations('Contacto');
   const whatsapp = enlaceWhatsApp(contacto('mensaje'));
   const marca = await getTranslations('Marca');
-  return <section id="contacto" className="contacto"><div className="contenedor contacto-grid"><div><p className="etiqueta">{t('contactoEtiqueta')}</p><h2>{t('contactoTitulo')}</h2><p>{t('contactoTexto')}</p></div><div className="contacto-acciones"><a className="boton boton-naranja" href={porCorreo?enlaceCorreo():whatsapp} target="_blank" rel="noopener noreferrer">{t(porCorreo?'contactoCorreo':'contactoAccion')}<ArrowUpRight size={20}/></a><a className="enlace-azul" href={`tel:${empresa.telefono}`}><Phone size={18}/>{marca('telefono')}</a></div></div></section>;
+  return <section id="contacto" className="contacto"><div className="contenedor contacto-grid"><div><p className="etiqueta">{t('contactoEtiqueta')}</p><h2>{t('contactoTitulo')}</h2><p>{t('contactoTexto')}</p></div><div className="contacto-acciones"><a className="boton boton-naranja" href={porCorreo?enlaceCorreo():whatsapp} target="_blank" rel="noopener noreferrer">{t(porCorreo?'contactoCorreo':'contactoAccion')}{porCorreo?<Mail size={20} aria-hidden="true"/>:<IconoWhatsApp width={20} height={20}/>}</a><a className="enlace-azul" href={`tel:${empresa.telefono}`}><Phone size={18}/>{marca('telefono')}</a></div></div></section>;
 }

@@ -14,7 +14,7 @@ for(const idioma of ['es','en']){
  });
  test(`secciones públicas visibles ${idioma}`,async({page,context})=>{
   await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
-  for(const ruta of ['/','/tienda','/soporte','/empresas','/casos-de-exito','/nosotros']){
+  for(const ruta of ['/','/soluciones','/soporte','/empresas','/casos-de-exito','/nosotros']){
    await page.goto(ruta);
    await expect(page.locator('main.estado-pagina[aria-busy="true"]')).toHaveCount(0);
    await expect(page.locator('main:visible h1')).toBeVisible();

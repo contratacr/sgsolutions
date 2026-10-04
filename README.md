@@ -12,7 +12,7 @@ Base de la plataforma web: Next.js 16, React 19, TypeScript, Tailwind 4, next-in
 - Configuración Supabase local y migración inicial de perfiles con RLS.
 - Plantillas de workflows de revisión, despliegue manual, migraciones con simulación/respaldo y respaldo diario cifrado en `docs/automatizaciones/`.
 
-**La solicitud asistida ya puede utilizarse, pero todavía no es una tienda con cobro automático:** SG Solutions recibe por WhatsApp una selección estructurada y confirma disponibilidad, entrega y total antes del pago. Falta conectar la pasarela y convertir las solicitudes en pedidos persistentes. El editor de productos, categorías, textos bilingües y fórmula de precios está implementado; su guardado necesita Supabase y la segunda migración. Clientes, cotizaciones/PDF/correo y telemetría siguen pendientes. La conexión Auth/RLS no se ha probado localmente por ausencia de Docker.
+**Venta asistida:** el cliente reúne productos en el carrito y solicita asesoría por WhatsApp. El equipo prepara la compra desde Panel → Pedidos, confirma productos, cantidades y precios y comparte un enlace privado válido por 24 horas. El servidor exige esa aprobación para generar pedidos o iniciar pagos. Los pedidos SINPE/transferencia se guardan en el panel y permiten adjuntar comprobantes; el ingreso bancario se verifica manualmente. Los cobros reales por tarjeta siguen deshabilitados. Antes del despliegue, aplicar la migración de solicitudes de asesoría; consulte [el procedimiento y las pruebas](docs/catalogo/venta-asistida.md).
 
 ## Desarrollo
 
@@ -65,6 +65,6 @@ El despliegue requiere despacho manual, autorización actual de Isaac y environm
 
 - [Revisión visual y lenguaje](docs/13-acabado-y-lenguaje.md)
 
-- [Integración automática de Intcomex: estado y activación](docs/15-integracion-intcomex.md)
+- [Catálogo manual y venta asistida](docs/catalogo/venta-asistida.md)
 
-La sincronización de catálogo/precios diarios e inventario cada hora está implementada para las nueve categorías, pero desactivada. Necesita credenciales IWS, Supabase configurado y la migración de sincronización. El Excel disponible solo contiene Lenovo y no incluye imágenes; no representa todo Intcomex. El administrador conserva sus cambios de contenido y precios manuales.
+Soluciones ofrece productos con asesoría: el carrito solicita atención y solo el enlace preparado por un asesor habilita la compra. El catálogo se administra manualmente. Se retiraron la importación Excel, sincronización IWS y extensión de Edge. Los productos fuera de la selección inicial se conservan como borradores.

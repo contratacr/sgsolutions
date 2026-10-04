@@ -17,7 +17,7 @@ async function esperarInicioSeccion(elemento: Locator) {
 
 test('los filtros de tienda llevan al contenido actualizado', async ({page}) => {
   await page.emulateMedia({reducedMotion: 'reduce'});
-  await page.goto('/tienda');
+  await page.goto('/soluciones');
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy', 'false');
 
   const marca = page.locator('.marca-logo').first();
@@ -36,7 +36,7 @@ test('los filtros de tienda llevan al contenido actualizado', async ({page}) => 
 
 test('la selección de marca espera los productos nuevos y los muestra con desplazamiento suave', async ({page}, info) => {
   await page.emulateMedia({reducedMotion: 'no-preference'});
-  await page.goto('/tienda');
+  await page.goto('/soluciones');
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy', 'false');
   await page.route('**/api/catalogo?*', async ruta => {
     if (new URL(ruta.request().url()).searchParams.get('marca')) await new Promise(resolve => setTimeout(resolve, 300));

@@ -1,6 +1,6 @@
 import {z} from 'zod';
 export const tiposEvento=['pagina','producto','busqueda_producto','carrito','plan','whatsapp','correo','telefono','mapa','red_social','galeria','pedido_revisado','plan_revisado','scroll'] as const;
-export const rutaPublica=(ruta:string)=>/^\/(?:|tienda(?:\/[a-z0-9-]{1,60})?|soporte|empresas|casos-de-exito|nosotros|contacto|finalizar-compra|terminos|privacidad)$/.test(ruta);
+export const rutaPublica=(ruta:string)=>/^\/(?:|soluciones(?:\/[a-z0-9-]{1,60})?|soporte|empresas|casos-de-exito|nosotros|contacto|finalizar-compra|terminos|privacidad)$/.test(ruta);
 export const eventoAnalitica=z.object({id:z.uuid(),sesion:z.uuid(),tipo:z.enum(tiposEvento),ruta:z.string().refine(rutaPublica),detalle:z.string().max(100).regex(/^[a-zA-Z0-9_.:/-]*$/),dispositivo:z.enum(['movil','escritorio']),idioma:z.enum(['es','en']),campana:z.string().max(80).regex(/^[a-zA-Z0-9_-]*$/)}).strict();
 export type EventoAnalitica=z.infer<typeof eventoAnalitica>;
 export type ResumenAnalitica={total:number;sesiones:number;filas:{tipo:string;detalle:string;cantidad:number}[]};

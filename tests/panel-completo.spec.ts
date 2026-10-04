@@ -33,9 +33,6 @@ for (const idioma of ['es', 'en'] as const) test(`recorrido completo del panel $
       '/panel/contenido',
       '/panel/pedidos',
       '/panel/estadisticas',
-      '/panel/catalogo/importar',
-      '/panel/catalogo/importar?modo=inventario',
-      '/panel/catalogo/sincronizar',
     ];
     for (const ruta of rutas) {
       await page.goto(ruta);
@@ -49,7 +46,7 @@ for (const idioma of ['es', 'en'] as const) test(`recorrido completo del panel $
     await expect(page.locator('.admin-producto-fila')).toHaveCount(20);
     await page.locator('.admin-producto-fila button').first().click();
     await expect(page.locator('.admin-producto-editor')).toBeVisible();
-    await expect(page.locator('.admin-editor-indice a')).toHaveCount(6);
+    await expect(page.locator('.admin-editor-indice a')).toHaveCount(5);
     await page.locator('.admin-volver-lista').click();
     await expect(page.locator('.admin-producto-fila')).toHaveCount(20);
     for (const tab of await page.locator('.admin-tabs button').all()) {

@@ -44,7 +44,7 @@ export default async function PedidoManual({ searchParams }: { searchParams: Pro
         </section>}
         {pedido.estado === 'comprobante_recibido' && <p>{t('verificacion')}</p>}
       </> : <p>{t('enlaceInvalido')}</p>}
-      <Link className="boton boton-contorno" href="/tienda">{t('volver')}</Link>
+      <Link className="boton boton-contorno" href="/soluciones">{t('volver')}</Link>
     </section>
   </main>;
 }

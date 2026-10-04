@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
+import {ContadorCantidad} from './contador-cantidad';
+import {AsesoriaWhatsApp} from "./asesoria-whatsapp";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft,
-  ArrowUpRight,
-  Check,
-  Plus,
+  ShoppingCart,
   ShieldCheck,
   Truck,
 } from "lucide-react";
@@ -26,17 +26,19 @@ export function FichaProducto({
   producto: CatalogoPublico["productos"][number];
   categoria: Texto;
 }) {
+  const a = useTranslations("Asesoria");
   const t = useTranslations("Ficha"),
     s = useTranslations("Tienda"),
     n = useTranslations("Navegacion"),
     l = useLocale(),
     datos = useCatalogo();
+  const [cantidad,setCantidad]=useState(1);
   const [foto, setFoto] = useState(0);
   const fotos = [...new Set([p.imagen, ...(p.imagenes ?? [])])];
   const agregado = useCarrito().some((x) => x.id === p.id);
   return (
     <>
-      <Link className="ficha-volver" href="/tienda">
+      <Link className="ficha-volver" href="/soluciones">
         <ArrowLeft size={17} />
         {t("volver")}
       </Link>
@@ -73,32 +75,32 @@ export function FichaProducto({
             <strong>
               {p.precio === null ? s("precioPendiente") : colones(p.precio)}
             </strong>
-            {p.precio !== null && <small>{t("iva")}</small>}
+            {p.precio !== null && <small>{a("precioConIva")}</small>}
           </div>
           <p className="ficha-stock">
             {s(
               p.disponibilidad === "agotado"
                 ? "agotado"
                 : p.disponibilidad === "proveedor"
-                  ? "proveedor"
+                  ? "consultarDisponibilidad"
                   : "consultarDisponibilidad",
             )}
           </p>
+          <p className="ficha-asesoria-nota">{a('fichaAyuda')}</p>
+          <AsesoriaWhatsApp lineas={[{producto:p,cantidad}]} onSolicitar={()=>{datos.recordar([p]);if(!agregado&&p.disponibilidad!=='agotado')agregarProducto(p.id,cantidad);}}/>
+          <div className="ficha-cantidad"><span>{t("cantidad")}</span><ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/></div>
           <button
-            className="boton boton-naranja"
+            className="boton boton-contorno ficha-agregar"
             disabled={p.disponibilidad === "agotado"}
             onClick={() => {
               datos.recordar([p]);
-              agregarProducto(p.id);
+              agregarProducto(p.id,cantidad);
             }}
           >
-            {agregado ? t("agregado") : s("agregar")}
-            {agregado ? <Check size={19} /> : <Plus size={19} />}
+            <ShoppingCart size={19} aria-hidden="true" />
+            {s("agregar")}
           </button>
-          <Link className="boton boton-contorno" href="/finalizar-compra">
-            {t("continuar")}
-            <ArrowUpRight size={18} />
-          </Link>
+
           <div className="ficha-confianza">
             <span>
               <ShieldCheck size={20} />

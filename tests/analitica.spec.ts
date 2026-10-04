@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 import {eventoAnalitica,resumirEventos} from '../src/lib/analitica-modelo';
 test('los eventos rechazan información extra y rutas privadas',()=>{
- const evento={id:crypto.randomUUID(),sesion:crypto.randomUUID(),tipo:'pagina',ruta:'/tienda',detalle:'',dispositivo:'movil',idioma:'es',campana:''};
+ const evento={id:crypto.randomUUID(),sesion:crypto.randomUUID(),tipo:'pagina',ruta:'/soluciones',detalle:'',dispositivo:'movil',idioma:'es',campana:''};
  expect(eventoAnalitica.safeParse(evento).success).toBe(true);
  for(const datos of [{...evento,correo:'persona@example.com'},{...evento,ruta:'/admin'},{...evento,tipo:'Purchase'},{...evento,detalle:'persona@example.com'}])expect(eventoAnalitica.safeParse(datos).success).toBe(false);
  expect(resumirEventos([eventoAnalitica.parse(evento)]).sesiones).toBe(1);

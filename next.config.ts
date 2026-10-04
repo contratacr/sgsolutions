@@ -5,6 +5,9 @@ const configuracion: NextConfig = {
   images: { unoptimized: true },
   poweredByHeader: false,
   experimental: {serverActions: {bodySizeLimit: '32mb'}},
+  async redirects() {
+    return [{source: '/tienda/:path*', destination: '/soluciones/:path*', permanent: true}];
+  },
   async headers() {
     return [{ source: '/:path*', headers: [
       { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -12,7 +15,7 @@ const configuracion: NextConfig = {
       { key: 'Content-Security-Policy', value: "frame-ancestors 'self'; object-src 'none'; base-uri 'self'" },
       { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
       { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' }
-    ] }];
+    ] }, {source:'/finalizar-compra/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'}]}];
   }
 };
 export default createNextIntlPlugin('./src/i18n/request.ts')(configuracion);

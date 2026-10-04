@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       title: nombre,
       description: descripcion,
-      url: `${origen}/tienda/${encodeURIComponent(id)}`,
+      url: `${origen}/soluciones/${encodeURIComponent(id)}`,
       images: [{url: new URL(p.imagen, origen).href, alt: nombre}],
       type: 'website',
     },

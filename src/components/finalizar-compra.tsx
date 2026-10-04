@@ -2,11 +2,12 @@
 import {medir} from '@/lib/analitica-cliente';
 import type { Contenido } from "@/lib/contenido-modelo";
 import Link from "next/link";
+import {AsesoriaWhatsApp} from "./asesoria-whatsapp";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft,
-  ArrowUpRight,
+  ClipboardCheck,
   ShieldCheck,
   CreditCard,
   Landmark,
@@ -15,8 +16,6 @@ import {
 import { useCatalogo } from "./datos-catalogo";
 import { useCarrito } from "@/lib/carrito";
 import { colones, traducir } from "@/lib/catalogo-modelo";
-import { enlaceWhatsApp } from "@/lib/empresa";
-import {enlaceProductoParaWhatsApp, mensajePedidoWhatsApp} from '@/lib/mensaje-pedido-whatsapp';
 import {costoEntrega} from '@/lib/envio';
 import { FotoProducto } from "./foto-producto";
 import { desplazarContenido } from "@/lib/desplazar-contenido";
@@ -29,13 +28,15 @@ const provincias = [
   "Puntarenas",
   "Limón",
 ];
-export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; tarjetaPruebaDisponible?: boolean; pedidosManualesDisponibles?: boolean }) {
+export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarjetaPruebaDisponible = false, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; aprobacion?: {id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaPruebaDisponible?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
+  const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
-    w = useTranslations('MensajePedido'),
-    n = useTranslations("Navegacion"),
     l = useLocale(),
     c = useCatalogo(),
-    lineas = useCarrito();
+    carrito = useCarrito();
+  const lineas=aprobacion?aprobacion.articulos.map(x=>({id:x.producto.id,cantidad:x.cantidad})):carrito;
+
+  const [errorAutorizacion,setErrorAutorizacion]=useState(false);
   const [borrador, setBorrador] = useState<Record<string, string>>({});
   const [entrega, setEntrega] = useState(false),
     [factura, setFactura] = useState(false),
@@ -58,11 +59,11 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
     desplazarContenido({ entrega: entregaCampos, receptor: receptorCampos, factura: facturaCampos, pago: pagoDatos }[destino].current);
   }, [entrega, otro, factura, pago]);
   const productos = lineas.flatMap((x) => {
-    const p = c.productos.find((p) => p.id === x.id);
+    const p = aprobacion?.articulos.find(a=>a.producto.id===x.id)?.producto ?? c.productos.find((p) => p.id === x.id);
     return p ? [{ ...x, p }] : [];
   });
   const bloqueado =
-    c.errorCarrito ||
+    (!aprobacion && c.errorCarrito) ||
     productos.length !== lineas.length ||
     productos.some((x) => x.p.disponibilidad === "agotado");
   const pendiente = productos.some((x) => x.p.precio === null),
@@ -88,12 +89,13 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
       const respuesta = await fetch('/api/pagos/tilopay/iniciar', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          nombre: revision.nombre, apellidos: revision.apellidos, correo: revision.correo,
+          asesoria:aprobacion?.id,acceso:aprobacion?.token, nombre: revision.nombre, apellidos: revision.apellidos, correo: revision.correo,
           telefono: revision.telefono, consentimiento: revision.consentimiento === 'on',
           articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })),
         }),
       });
       const datos = await respuesta.json();
+      if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
       if (!respuesta.ok || typeof datos.url !== 'string') throw new Error('PAGO_NO_DISPONIBLE');
       window.location.assign(datos.url);
     } catch {
@@ -107,42 +109,14 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
     try {
       const respuesta = await fetch('/api/pedidos/manual', {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ idioma: l, datos: revision, metodo: pago, articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })) }),
+        body: JSON.stringify({ asesoria:aprobacion?.id,acceso:aprobacion?.token, idioma: l, datos: revision, metodo: pago, articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })) }),
       });
       const datos = await respuesta.json();
+      if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
       if (!respuesta.ok || typeof datos.url !== 'string' || !datos.url.startsWith('/finalizar-compra/pedido?')) throw new Error('PEDIDO_NO_DISPONIBLE');
       window.location.assign(datos.url);
     } catch { setErrorPedido(true); setProcesando(false); }
   }
-  const mensaje = revision ? mensajePedidoWhatsApp({
-    lineas: productos.map(x => ({cantidad: x.cantidad, nombre: traducir(x.p.nombre, l), codigo: x.p.codigoFabricante, precio: x.p.precio === null ? t('pendiente') : colones(x.p.precio * x.cantidad)})),
-    subtotal: pendiente ? t('pendiente') : colones(subtotal),
-    costoEnvio: colones(costoEntrega(revision.modalidad === 'envio' ? 'envio' : 'retiro')),
-    total: pendiente ? t('pendiente') : colones(subtotal + costoEntrega(revision.modalidad === 'envio' ? 'envio' : 'retiro')),
-    nombre: [revision.nombre, revision.apellidos].filter(Boolean).join(' '),
-    telefono: revision.telefono,
-    correo: revision.correo,
-    contacto: t(revision.contacto),
-    entrega: t(revision.modalidad),
-    direccion: revision.modalidad === 'envio' ? [revision.provincia, revision.canton, revision.distrito, revision.direccion, revision.apartamento, revision.postal].filter(Boolean).join(', ') : undefined,
-    receptor: revision.receptor ? [revision.receptor, revision.telefonoReceptor].filter(Boolean).join(' · ') : undefined,
-    pago: t(revision.pago),
-    comprobante: revision.factura === 'electronica' ? w('facturaElectronica') : w('tiqueteElectronico'),
-    datosFactura: revision.factura === 'electronica' ? [
-      `${t('identificacion')}: ${revision.identificacion}`,
-      `${t('razonSocial')}: ${revision.razonSocial}`,
-      revision.actividad ? `${t('actividad')}: ${revision.actividad}` : '',
-      `${t('correoFactura')}: ${revision.correoFactura}`,
-      `${t('direccionFiscal')}: ${revision.direccionFiscal}`,
-    ].filter(Boolean) : undefined,
-    notas: revision.notas,
-    enlaceProducto: productos.length === 1 ? enlaceProductoParaWhatsApp(productos[0].p.id) : undefined,
-  }, {
-    titulo: w('titulo'), productos: w('productos'), codigo: w('codigo'), subtotal: w('subtotal'), costoEnvio: w('costoEnvio'), total: w('total'),
-    entrega: w('entrega'), direccion: w('direccion'), receptor: w('receptor'), pago: w('pago'),
-    comprobante: w('comprobante'), cliente: w('cliente'), correo: w('correo'),
-    contacto: w('contacto'), notas: w('notas'), ficha: w('ficha'), confirmacion: w('confirmacion'),
-  }) : '';
   const campo = (
     name: string,
     required = true,
@@ -163,7 +137,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
   );
   return (
     <>
-      <Link className="ficha-volver" href="/tienda">
+      <Link className="ficha-volver" href="/soluciones">
         <ArrowLeft size={17} />
         {t("volver")}
       </Link>
@@ -172,14 +146,15 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
         <h1>{t("titulo")}</h1>
         <p>{t("intro")}</p>
       </header>
-      {!lineas.length ? (
+      {!enlaceInvalido&&!aprobacion&&productos.length>0&&<aside className="compra-asesoria"><div><strong>{a('antesPedido')}</strong><p>{a('antesPedidoTexto')}</p></div><AsesoriaWhatsApp etiqueta="consultarSeleccion" lineas={productos.map(x=>({producto:x.p,cantidad:x.cantidad}))}/></aside>}
+      {enlaceInvalido||errorAutorizacion ? <section className="compra-bloque"><h2>{a('enlaceInvalido')}</h2><p role="status">{a('enlaceInvalidoTexto')}</p><AsesoriaWhatsApp etiqueta="asesorar"/></section> : !lineas.length ? (
         <div className="compra-bloque">
           <h2>{t("vacio")}</h2>
-          <Link className="boton boton-azul" href="/tienda">
+          <Link className="boton boton-azul" href="/soluciones">
             {t("volver")}
           </Link>
         </div>
-      ) : (
+      ) : !aprobacion ? <section className="compra-bloque compra-paso-asesoria"><h2>{a('despuesAsesoria')}</h2><p>{a('despuesAsesoriaTexto')}</p></section> : (
         <div className="compra-grid">
           <div>
             {revision ? (
@@ -209,25 +184,14 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
                 {pago === 'tarjeta' && tarjetaPruebaDisponible && !entrega && !pendiente && !bloqueado ? (
                   <button className="boton boton-naranja" type="button" onClick={pagarConTarjeta} disabled={procesando}>
                     {t(procesando ? 'procesandoPago' : 'pagarPrueba')}
-                    <ArrowUpRight size={18} />
+                    <CreditCard size={18} aria-hidden="true" />
                   </button>
                 ) : pedidosManualesDisponibles && (pago === 'sinpe' || pago === 'transferencia') && !pendiente && !bloqueado ? (
                   <button className="boton boton-naranja" type="button" onClick={crearPedidoManual} disabled={procesando}>
                     {t(procesando ? 'creandoPedido' : 'completarPedido')}
-                    <ArrowUpRight size={18} />
+                    <ClipboardCheck size={18} aria-hidden="true" />
                   </button>
-                ) : !bloqueado && (
-                  <a
-                    className="boton boton-naranja"
-                    href={enlaceWhatsApp(mensaje)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t("enviar")}
-                    <ArrowUpRight size={18} />
-                    <span className="sr-only">{n("nuevaPestana")}</span>
-                  </a>
-                )}
+                ) : <p role="status">{a('compraNoDisponible')}</p>}
                 {errorPago && <p role="alert">{t('errorPago')}</p>}
                 {errorPedido && <p role="alert">{t('errorPedido')}</p>}
                 <button
@@ -418,7 +382,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
                     disabled={bloqueado}
                   >
                     {t("revisar")}
-                    <ArrowUpRight size={19} />
+                    <ClipboardCheck size={19} aria-hidden="true" />
                   </button>
                 </section>
               </form>
@@ -433,7 +397,7 @@ export function FinalizarCompra({ pagos, tarjetaPruebaDisponible = false, pedido
                   <FotoProducto src={p.imagen} alt={traducir(p.nombre, l)} />
                 </div>
                 <p>
-                  <Link href={`/tienda/${p.id}`}>{traducir(p.nombre, l)}</Link>
+                  <Link href={`/soluciones/${p.id}`}>{traducir(p.nombre, l)}</Link>
                   <small>
                     {cantidad} ×{" "}
                     {p.precio === null ? t("pendiente") : colones(p.precio)}

@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 
 test('marcas filtran productos y se combinan con categorías en ambos idiomas',async({page})=>{
- await page.goto('/tienda');
+ await page.goto('/soluciones');
  await expect(page.locator('.shop-producto').first()).toContainText('Código de fabricante');
  await expect(page.locator('main')).toContainText('21H2S1NH00');
  await expect(page.locator('main')).not.toContainText('NT083LEN02');

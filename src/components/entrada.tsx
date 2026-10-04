@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowUpRight, Headset, Network, ShoppingBag } from 'lucide-react';
+import { Headset, Network, ShoppingBag } from 'lucide-react';
 import { LazyMotion, MotionConfig, useMotionValue, useSpring, useReducedMotion, useMotionTemplate } from 'motion/react';
 import * as m from 'motion/react-m';
 import { useTranslations } from 'next-intl';
@@ -10,7 +10,7 @@ import { Escenario } from './escenario';
 
 const cargarAnimaciones = () => import('./movimiento').then(modulo => modulo.default);
 const destinos = [
-  { clave: 'tienda', href: '/tienda', Icono: ShoppingBag, foto: 'entrada-tienda' },
+  { clave: 'tienda', href: '/soluciones', Icono: ShoppingBag, foto: 'entrada-tienda' },
   { clave: 'soporte', href: '/soporte', Icono: Headset, foto: 'entrada-soporte' },
   { clave: 'empresas', href: '/empresas', Icono: Network, foto: 'entrada-empresas' },
 ] as const;
@@ -42,7 +42,7 @@ function TarjetaPortal({destino, indice, seleccionada, alSeleccionar}: {destino:
       <m.div className="portal-reflejo" style={{background: brillo}} aria-hidden="true"/>
       <div className="portal-tarjeta-cabecera" aria-hidden="true"><span className="portal-icono"><Icono size={20} strokeWidth={1.5}/></span></div>
       <div className="portal-tarjeta-contenido"><span className="portal-categoria">{t(`${clave}Categoria`)}</span><h2>{t(`${clave}Titulo`)}</h2><p>{t(`${clave}Texto`)}</p>
-        <div className="portal-tarjeta-base"><span>{t(`${clave}Accion`)}</span><span className="portal-flecha" aria-hidden="true"><ArrowUpRight size={21}/></span></div>
+        <div className="portal-tarjeta-base"><span>{t(`${clave}Accion`)}</span><span className="portal-flecha" aria-hidden="true"><Icono size={21}/></span></div>
       </div>
     </m.a>
   </div>;

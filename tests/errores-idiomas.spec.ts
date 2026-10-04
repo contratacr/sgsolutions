@@ -1,12 +1,13 @@
+import {abrirCompraAprobada} from './aprobacion-fixture';
 import {expect, test} from '@playwright/test';
 
 for (const idioma of ['es', 'en'] as const) {
   test(`errores de formulario y página inexistente en ${idioma}`, async ({page,context}) => {
     await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
-    await page.goto('/tienda/portatil');
+    await page.goto('/soluciones/portatil');
     await expect(page.locator('html')).toHaveAttribute('lang', idioma);
-    await page.locator('.ficha-compra button').click();
-    await page.locator('.ficha-compra a[href="/finalizar-compra"]').click();
+    await page.locator('.ficha-agregar').click();
+    await abrirCompraAprobada(page);
     const consentimiento = page.locator('[name="consentimiento"]');
     const mensaje = await consentimiento.evaluate((campo: HTMLInputElement) => {
       campo.checkValidity();

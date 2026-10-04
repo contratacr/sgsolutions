@@ -11,7 +11,7 @@ export function Medicion({pixel}:{pixel:string}){
  useEffect(()=>{const abrir=()=>setAbierto(true);window.addEventListener('sg-abrir-preferencias',abrir);return()=>window.removeEventListener('sg-abrir-preferencias',abrir);},[]);
  useEffect(()=>{
   if(!rutaPublica(ruta))return;
-  iniciarPixel(pixel);medir('pagina');if(ruta.startsWith('/tienda/'))medir('producto',ruta.split('/')[2]);
+  iniciarPixel(pixel);medir('pagina');if(ruta.startsWith('/soluciones/'))medir('producto',ruta.split('/')[2]);
   const clic=(e:MouseEvent)=>{const el=e.target instanceof Element?e.target:null;const enlace=el?.closest<HTMLAnchorElement>('a[href]');if(enlace){const url=new URL(enlace.href,location.href);if(url.hostname==='wa.me')medir('whatsapp',enlace.closest('footer')?'footer':enlace.classList.contains('whatsapp-flotante')?'flotante':'contenido');else if(url.protocol==='mailto:'||url.hostname==='outlook.office.com')medir('correo');else if(url.protocol==='tel:')medir('telefono');else if(['www.google.com','www.waze.com'].includes(url.hostname))medir('mapa');else if(['www.instagram.com','www.facebook.com'].includes(url.hostname))medir('red_social',url.hostname);}
    if(el?.closest('.caso-galeria button'))medir('galeria');
   };
