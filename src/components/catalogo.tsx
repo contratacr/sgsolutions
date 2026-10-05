@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {medir} from '@/lib/analitica-cliente';
+import {ContactoAsesoria} from './contacto-asesoria';
 import {AsesoriaWhatsApp} from './asesoria-whatsapp';
 import {FotoProducto} from './foto-producto';
 import {useEffect,useRef,useState} from 'react';
@@ -68,6 +69,7 @@ export function Catalogo(){
  function cambiarPagina(nueva:number){actualizarResultados(()=>setPaginacion({clave,pagina:nueva}));}
  return <>
   <section className="asesoria-hero"><div className="asesoria-hero-texto"><p className="etiqueta">{a('etiqueta')}</p><h1>{traducir(datos.textos.titulo,idioma)}</h1><p>{traducir(datos.textos.descripcion,idioma)}</p></div><AsesoriaWhatsApp etiqueta="asesorar"/></section>
+  <section className="soluciones-necesidades" aria-labelledby="necesidades-titulo"><h2 id="necesidades-titulo">{a('necesidades')}</h2><div>{(['red','negocio','seguridad','computadora'] as const).map(necesidad=><AsesoriaWhatsApp key={necesidad} necesidad={necesidad} className="solucion-necesidad"/>)}</div><ContactoAsesoria/></section>
   <MarcasDestacadas marcas={marcas} seleccionada={marca} seleccionar={nombre=>actualizarResultados(()=>{setMarca(marca===nombre?'':nombre);setCategoria('todos');setBusqueda('');})}/>
   <div className="shop-buscador"><Search size={23}/><label className="sr-only" htmlFor="buscar-equipo">{t('buscar')}</label><input id="buscar-equipo" type="search" value={busqueda} onChange={e=>setBusqueda(e.target.value)} placeholder={t('buscar')} maxLength={150}/>{busqueda&&<button aria-label={t('limpiarBusqueda')} onClick={()=>setBusqueda('')}><X size={20}/></button>}<span>{s('moneda')}</span></div>
   <div className="shop-distribucion" id="catalogo"><aside className="shop-sidebar"><h2><SlidersHorizontal size={16}/>{s('categorias')}</h2><div className="shop-categorias" role="group" aria-label={t('filtro')}><button aria-pressed={categoria==='todos'} onClick={()=>seleccionarCategoria('todos')}>{t('todos')}<span>{datos.total}</span></button>{datos.categorias.map(c=><button key={c.id} aria-label={traducir(c.nombre,idioma)} aria-pressed={categoria===c.id} onClick={()=>seleccionarCategoria(c.id)}>{traducir(c.nombre,idioma)}<span>{datos.conteos[c.id]??0}</span></button>)}</div></aside>

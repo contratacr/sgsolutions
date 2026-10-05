@@ -35,3 +35,13 @@ El push no despliega automáticamente: el despliegue y la migración de producci
 `SG_TEST_ALTAS=1 npx playwright test tests/asesoria-aprobacion.spec.ts --workers=1` comprueba aprobación por el panel, cambios de precio/cantidad y enlaces renovados/vencidos/usados en ambos idiomas y tamaños de pantalla.
 
 La prueba de APIs con almacenamiento REST simulado, sin correos ni cobros reales, se ejecuta con `NEXT_PUBLIC_SUPABASE_URL='' NEXT_PUBLIC_SUPABASE_ANON_KEY='' npm run build` y después `node scripts/probar-pedido-aprobado.mjs`. Usa únicamente los puertos locales 3108 y 54329. Comprueba precio aprobado, envío, dos envíos concurrentes, reutilización y recuperación tras un fallo de inserción. No sustituye una prueba de la migración en Supabase.
+
+## Entrada por necesidad y consultas de contacto
+
+Soluciones ofrece cuatro accesos directos a WhatsApp con el motivo de consulta: red/Wi‑Fi, negocio, seguridad y computadora. Una consulta general no exige productos ni solicita datos de facturación. El carrito se conserva para reunir productos antes de conversar.
+
+«Prefiero que me contacten» permite dejar nombre, WhatsApp con código de país y necesidad, con autorización para atender la consulta. Se guarda en la misma bandeja privada de asesorías; no envía WhatsApp ni promete un tiempo de respuesta. El equipo debe revisar la bandeja y contactar al cliente. No hay horario confirmado para publicarlo.
+
+Las pendientes aparecen primero, de más antigua a más reciente, con fecha y acceso a WhatsApp cuando el cliente dejó su número. Para una compra sencilla el equipo puede preparar el enlace en la misma conversación; para proyectos primero define la solución. No se añadieron dirección, facturación ni método de pago al formulario de consulta.
+
+Antes de publicar, aplicar también `20261004000200_asesorias_contacto.sql`, después de la migración inicial de asesorías. Los datos de contacto permanecen protegidos por las políticas privadas de la tabla. El push por sí solo no aplica migraciones ni despliega producción.

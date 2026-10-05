@@ -13,6 +13,14 @@ for(const idioma of ['es','en'])test(`asesor prepara compra y servidor impide sa
   await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
   const origen='http://127.0.0.1:3107';
   for(const ruta of ['/api/pedidos/manual','/api/pagos/tilopay/iniciar'])expect((await request.post(ruta,{headers:{origin:origen},data:{articulos:[{id:'portatil',cantidad:1}]}})).status()).toBe(403);
+  // A callback enquiry is saved without billing/address or choosing products.
+  expect((await request.post('/api/asesoria',{headers:{origin:origen},data:{idioma,articulos:[],contacto:{nombre:'Cliente prueba',telefono:'50688888888',necesidad:'Necesito mejorar la red'}}})).status()).toBe(400);
+  await page.goto('/soluciones');await page.locator('.contacto-asesoria summary').click();
+  await page.locator('.contacto-asesoria [name=nombre]').fill('Cliente prueba');await page.locator('.contacto-asesoria [name=telefono]').fill('+506 8888 8888');await page.locator('.contacto-asesoria [name=necesidad]').fill('Necesito mejorar la red');await page.locator('.contacto-asesoria [name=consentimiento]').check();await page.locator('.contacto-asesoria button').click();
+  await expect(page.locator('.contacto-asesoria [role=status]')).toContainText('SG-');
+  await page.goto('/panel/pedidos');const contacto=page.locator('.asesorias-admin article').filter({hasText:'Cliente prueba'});await expect(contacto).toContainText('Necesito mejorar la red');await expect(contacto.locator('a[href^="https://wa.me/"]')).toHaveAttribute('href',/^https:\/\/wa.me\/50688888888\?/);
+  await page.screenshot({path:`/tmp/sg-consultas-${idioma}-${info.project.name}.png`});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   await page.goto('/finalizar-compra');await expect(page.locator('main form')).toHaveCount(0);
   const solicitud=await request.post('/api/asesoria',{headers:{origin:origen},data:{idioma,articulos:[{id:'portatil',cantidad:2}]}});expect(solicitud.status()).toBe(201);const {referencia}=await solicitud.json();
   await page.goto('/panel/pedidos');const tarjeta=page.locator('.asesorias-admin article').filter({hasText:referencia});

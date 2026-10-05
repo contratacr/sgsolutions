@@ -2,7 +2,7 @@ import {calcularPrecio, publicarCatalogo, type CatalogoAdmin, type CatalogoPubli
 
 const textos={
  titulo:{es:'SG Solutions',en:'SG Solutions'},
- descripcion:{es:'Compra tecnología. Obtén asesoría. Nosotros nos encargamos del resto.',en:'Buy technology. Get advice. We take care of the rest.'},
+ descripcion:{es:'Tecnología que funciona para usted. Le ayudamos a elegir equipos compatibles y la solución adecuada para su hogar o negocio.',en:'Technology that works for you. We help you choose compatible equipment and the right solution for your home or business.'},
  aviso:{es:'Precios de referencia con IVA incluido. Su carrito no reserva productos ni genera un cobro.',en:'Reference prices include VAT. Your cart does not reserve products or create a charge.'}
 };
 
@@ -17,11 +17,11 @@ export function seleccionarIniciales(productos:CatalogoPublico['productos']){
  });
 }
 export function catalogoPublicoManual(c:CatalogoPublico):CatalogoPublico{
- if(c.gestion==='manual')return c;
+ if(c.gestion==='manual')return actualizarPromesa(c);
  return {...c,gestion:'manual',textos,productos:seleccionarIniciales(c.productos).map(p=>({...p,disponibilidad:'consultar',actualizado:null}))};
 }
 export function migrarCatalogoManual(c:CatalogoAdmin):CatalogoAdmin{
- if(c.gestion==='manual')return c;
+ if(c.gestion==='manual')return actualizarPromesa(c);
  const elegidos=new Set(seleccionarIniciales(publicarCatalogo(c).productos).map(p=>p.id));
  const siguiente=structuredClone(c);
  siguiente.gestion='manual';siguiente.textos=structuredClone(textos);
@@ -32,4 +32,11 @@ export function migrarCatalogoManual(c:CatalogoAdmin):CatalogoAdmin{
   return {...p,publicado:elegidos.has(p.id),precioManual:precio,precioReferencia:null,costoUsd:null,costoCrc:null,revisionPrecio:false,inventarioPropio:false,disponibilidadReferencia:'consultar'};
  });
  return siguiente;
+}
+
+function actualizarPromesa<T extends CatalogoAdmin|CatalogoPublico>(c:T):T{
+ const anteriores={es:'Compra tecnología. Obtén asesoría. Nosotros nos encargamos del resto.',en:'Buy technology. Get advice. We take care of the rest.'};
+ const descripcion={...c.textos.descripcion};
+ for(const l of ['es','en'] as const)if(descripcion[l]===anteriores[l])descripcion[l]=textos.descripcion[l];
+ return {...c,textos:{...c.textos,descripcion}};
 }

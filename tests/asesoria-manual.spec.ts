@@ -25,6 +25,16 @@ for(const idioma of ['es','en'])test(`asesoría, selección y regreso al pedido 
  await page.locator('.medicion-aviso button').first().click();
  await expect(page.locator('.asesoria-hero h1')).toHaveText('SG Solutions');
 
+ await expect(page.locator('.solucion-necesidad')).toHaveCount(4);
+ for(const enlace of await page.locator('.solucion-necesidad').all()){
+  const texto=await enlace.innerText();const url=new URL((await enlace.getAttribute('href'))!);
+  expect(url.searchParams.get('text')).toContain(texto.split(idioma==='es'?'Se abre':'Opens')[0].trim());
+  expect(url.searchParams.get('text')).not.toContain(idioma==='es'?'Me interesan estos productos':'I am interested in these products');
+  await expect(enlace).toHaveAttribute('target','_blank');await expect(enlace).toHaveAttribute('rel','noopener noreferrer');
+ }
+ await page.locator('.contacto-asesoria summary').click();await page.locator('.contacto-asesoria button').click();await expect(page.locator('.contacto-asesoria [role=alert]')).toBeVisible();
+ await page.locator('.contacto-asesoria summary').click();
+ await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
  await page.screenshot({path:`/tmp/sg-asesoria-${idioma}-${info.project.name}.png`});
  await page.locator('.shop-categorias button').nth(1).click();
  await expect(page.locator('.shop-producto')).toHaveCount(5);
