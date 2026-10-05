@@ -18,7 +18,7 @@ const configuracion: NextConfig = {
       { key: 'Content-Security-Policy', value: "frame-ancestors 'self'; object-src 'none'; base-uri 'self'" },
       { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
       { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' }
-    ] }, {source:'/finalizar-compra/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'}]}];
+    ] }, {source:'/finalizar-compra/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'}]}, {source:'/compra/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}];
   }
 };
 export default createNextIntlPlugin('./src/i18n/request.ts')(configuracion);

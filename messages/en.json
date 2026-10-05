@@ -189,7 +189,8 @@
     "borrado": "Remove",
     "limite": "Maximum 99 units per option.",
     "disminuir": "Decrease quantity of {nombre}",
-    "aumentar": "Increase quantity of {nombre}"
+    "aumentar": "Increase quantity of {nombre}",
+    "articulos": "{cantidad, plural, one {# item in cart} other {# items in cart}}"
   },
   "Pedido": {
     "titulo": "Details for coordinating your order",

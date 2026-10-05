@@ -24,5 +24,17 @@ export async function leerAprobacion(id:string,token:string){if(!/^[0-9a-f-]{36}
 export async function validarAprobacion(cuerpo:{asesoria?:string;acceso?:string;articulos:{id:string;cantidad:number}[]}){const s=await leerAprobacion(cuerpo.asesoria??'',cuerpo.acceso??'');if(!s)return null;const ordenar=(a:{id:string;cantidad:number}[])=>JSON.stringify([...a].sort((a,b)=>a.id.localeCompare(b.id)));return ordenar(cuerpo.articulos)===ordenar(s.articulos.map(x=>({id:x.producto.id,cantidad:x.cantidad})))?s:null;}
 export async function reservarAprobacion(s:SolicitudAsesoria){if(Date.parse(s.vence_en??'')<=Date.now())return null;return cambiarAsesoria(s.id,'aprobada',{estado:'procesando'},{token:s.token!,vigente:true});}
 export const referenciaAsesoria=(id:string)=>`SG-${id.replaceAll('-','').slice(0,10).toUpperCase()}`;
-export function enlaceAprobado(s:SolicitudAsesoria,origen:string){const u=new URL('/finalizar-compra',origen);u.searchParams.set('asesoria',s.id);u.searchParams.set('acceso',s.token??'');return u.href;}
+export async function leerEnlaceCompra(acceso:string){
+ if(!/^[A-Za-z0-9_-]{43}$/.test(acceso))return null;
+ const bytes=Buffer.from(acceso,'base64url');
+ if(bytes.length!==32||bytes.toString('base64url')!==acceso)return null;
+ const token=bytes.toString('hex');let s:SolicitudAsesoria|null=null;
+ if(await adminLocalDisponible())s=await localModificar(f=>f.find(x=>x.token===token)??null);
+ else{const cliente=db();if(!cliente)return null;const {data,error}=await cliente.from('solicitudes_asesoria').select('*').eq('token',token).maybeSingle();if(!error)s=data;}
+ return s?.estado==='aprobada'&&s.vence_en&&Date.parse(s.vence_en)>Date.now()?s:null;
+}
+export function enlaceAprobado(s:SolicitudAsesoria,origen:string){
+ if(!s.token||!/^[0-9a-f]{64}$/.test(s.token))throw new Error('ASESORIA_SIN_ACCESO');
+ return new URL(`/compra/${Buffer.from(s.token,'hex').toString('base64url')}`,origen).href;
+}
 export function tokenAsesoria(){return randomBytes(32).toString('hex');}

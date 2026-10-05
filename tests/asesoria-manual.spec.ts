@@ -22,7 +22,7 @@ for(const idioma of ['es','en'])test(`asesoría, selección y regreso al pedido 
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
  await page.goto('/soluciones');
  await expect(page.locator('html')).toHaveAttribute('lang',idioma);
- await page.locator('.medicion-aviso button').first().click();
+ await expect(page.locator('.medicion-aviso')).toHaveCount(0);
  await expect(page.locator('.asesoria-hero h1')).toHaveText('SG Solutions');
 
  await expect(page.locator('.solucion-necesidad')).toHaveCount(4);

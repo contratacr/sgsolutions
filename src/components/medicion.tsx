@@ -3,11 +3,10 @@ import {useEffect,useState} from 'react';
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
 import {useTranslations} from 'next-intl';
-import {iniciarPixel,medir,preferenciasMedicion} from '@/lib/analitica-cliente';
+import {iniciarPixel,medir} from '@/lib/analitica-cliente';
 import {rutaPublica} from '@/lib/analitica-modelo';
 export function Medicion({pixel}:{pixel:string}){
  const ruta=usePathname(),t=useTranslations('Analitica');const [abierto,setAbierto]=useState(false),[version,setVersion]=useState(0);
- useEffect(()=>{const frame=requestAnimationFrame(()=>setAbierto(!preferenciasMedicion()));return()=>cancelAnimationFrame(frame);},[]);
  useEffect(()=>{const abrir=()=>setAbierto(true);window.addEventListener('sg-abrir-preferencias',abrir);return()=>window.removeEventListener('sg-abrir-preferencias',abrir);},[]);
  useEffect(()=>{
   if(!rutaPublica(ruta))return;

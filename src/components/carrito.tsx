@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import {useId} from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ShoppingCart, X, Trash2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -22,8 +23,10 @@ export function Carrito() {
   const todas = useCarrito();
   const lineas=todas.filter(l=>productos.some(p=>p.id===l.id));
   const faltantes=todas.some(l=>!productos.some(p=>p.id===l.id)&&!noDisponibles.includes(l.id));
+  const descripcionCantidad=useId();
+  const cantidad=lineas.reduce((total,l)=>total+l.cantidad,0);
   return <Dialog.Root>
-    <Dialog.Trigger className="boton-icono carrito-trigger" aria-label={n('carrito')}><ShoppingCart size={26} strokeWidth={2.2} aria-hidden="true"/><span className="carrito-cantidad" aria-live="polite">{lineas.reduce((total, l) => total + l.cantidad, 0)}</span></Dialog.Trigger>
+    <Dialog.Trigger className="boton-icono carrito-trigger" aria-label={n('carrito')} aria-describedby={descripcionCantidad}><ShoppingCart size={24} strokeWidth={2.2} aria-hidden="true"/><span id={descripcionCantidad} className="sr-only" aria-live="polite">{t('articulos',{cantidad})}</span>{cantidad>0&&<span className="carrito-cantidad" aria-hidden="true">{cantidad>99?'99+':cantidad}</span>}</Dialog.Trigger>
     <Dialog.Portal><Dialog.Overlay className="dialogo-fondo"/><Dialog.Content className="carrito-panel">
       <div className="carrito-cabecera"><Dialog.Title>{t('titulo')}</Dialog.Title><Dialog.Close className="boton-icono" aria-label={n('cerrar')}><X/></Dialog.Close></div>
       <Dialog.Description className="texto-suave">{t('descripcion')}</Dialog.Description>

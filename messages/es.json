@@ -189,7 +189,8 @@
     "borrado": "Quitar",
     "limite": "Máximo 99 unidades por opción.",
     "disminuir": "Reducir cantidad de {nombre}",
-    "aumentar": "Aumentar cantidad de {nombre}"
+    "aumentar": "Aumentar cantidad de {nombre}",
+    "articulos": "{cantidad, plural, one {# artículo en el carrito} other {# artículos en el carrito}}"
   },
   "Pedido": {
     "titulo": "Datos para coordinar su pedido",

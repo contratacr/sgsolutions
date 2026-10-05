@@ -2,6 +2,8 @@
 
 Implementación local, sin despliegue automático. No constituye un registro de ventas.
 
+Las preferencias no se abren automáticamente al visitar el sitio. Se consultan y modifican desde `/privacidad`; los enlaces a privacidad y términos permanecen en el footer. Sin una elección previa, la analítica opcional y Meta permanecen desactivados. Quitar el aviso de entrada no equivale a aceptar el seguimiento.
+
 ## Activación
 1. Aplicar `supabase/migrations/20260922000100_analitica.sql` al proyecto correspondiente. La tabla tiene RLS, sin lectura pública; solo un administrador activo puede consultar el resumen.
 2. El conjunto de datos web «SG Solutions - Sitio web» usa el ID público `1837501974261618`, configurado como valor predeterminado. `NEXT_PUBLIC_META_PIXEL_ID` permite sustituirlo por entorno; reconstruir/desplegar cuando se autorice. Nunca requiere un token de acceso en el navegador.
