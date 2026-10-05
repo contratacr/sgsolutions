@@ -7,7 +7,6 @@ import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft,
   ShoppingCart,
-  ShieldCheck,
   Truck,
 } from "lucide-react";
 import { FotoProducto } from "./foto-producto";
@@ -77,15 +76,7 @@ export function FichaProducto({
             </strong>
             {p.precio !== null && <small>{a("precioConIva")}</small>}
           </div>
-          <p className="ficha-stock">
-            {s(
-              p.disponibilidad === "agotado"
-                ? "agotado"
-                : p.disponibilidad === "proveedor"
-                  ? "consultarDisponibilidad"
-                  : "consultarDisponibilidad",
-            )}
-          </p>
+          {p.disponibilidad==='agotado'&&<p className="ficha-stock">{s('agotado')}</p>}
           <p className="ficha-asesoria-nota">{a('fichaAyuda')}</p>
           <AsesoriaWhatsApp lineas={[{producto:p,cantidad}]} onSolicitar={()=>{datos.recordar([p]);if(!agregado&&p.disponibilidad!=='agotado')agregarProducto(p.id,cantidad,false);}}/>
           <div className="ficha-cantidad"><span>{t("cantidad")}</span><ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/></div>
@@ -102,10 +93,6 @@ export function FichaProducto({
           </button>
 
           <div className="ficha-confianza">
-            <span>
-              <ShieldCheck size={20} />
-              {t("asesoria")}
-            </span>
             <span>
               <Truck size={20} />
               {t("entrega")}

@@ -140,9 +140,11 @@ body:has(.portal) .portal{box-shadow:none}
 .pie-contacto,.pie-ubicacion{display:flex;flex-direction:column;align-items:flex-start}
 .pie-contacto>a:not(.pie-whatsapp){margin-top:3px}
 .pie-base{justify-content:flex-start}
-.whatsapp-flotante{position:fixed;right:22px;bottom:22px;z-index:60;display:grid;place-items:center;width:56px;height:56px;border:1px solid #ffffff70;border-radius:50%;background:#25d366;color:#fff;box-shadow:0 14px 34px #071b1245;font-size:.78rem;font-weight:650;transition:transform .22s,background .22s,box-shadow .22s}
+.whatsapp-flotante{position:fixed;right:22px;bottom:22px;z-index:50;display:grid;place-items:center;width:56px;height:56px;border:1px solid #ffffff70;border-radius:50%;background:#25d366;color:#fff;box-shadow:0 14px 34px #071b1245;font-size:.78rem;font-weight:650;transition:transform .22s,background .22s,box-shadow .22s}
 .whatsapp-flotante span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .whatsapp-flotante:hover,.whatsapp-flotante:focus-visible{transform:translateY(-3px) scale(1.04);background:#20bd5a;box-shadow:0 18px 38px #071b1250}
+.whatsapp-flotante:focus-visible{outline:2px solid #143041;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.whatsapp-flotante{transition:none}.whatsapp-flotante:hover,.whatsapp-flotante:focus-visible{transform:none}}
 @media(max-width:899px){.pie-grid{grid-template-columns:1fr 1fr;gap:34px}.pie-identidad{grid-column:1/-1}}
 @media(max-width:600px){.pie-grid{grid-template-columns:1fr}.pie-identidad{grid-column:auto}.whatsapp-flotante{right:16px;bottom:16px;width:52px;height:52px}}
 
@@ -362,13 +364,15 @@ body:has(.portal) .portal{box-shadow:none}
 
 .pie-legales{display:flex;gap:22px;flex-wrap:wrap}.pie-legales a{font-size:.75rem;color:inherit;text-decoration:underline;text-underline-offset:4px}.pie-base{gap:20px;flex-wrap:wrap}@media(max-width:600px){.pie-legales{gap:12px 20px}}
 
-/* Acciones de contacto identificables, separadas de las redes sociales. */
-.pie-contacto-acciones{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 12px}
-.pie-contacto-acciones a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 14px;border:1px solid #ffffff40;border-radius:12px;color:#e6f0f4;font-size:.88rem}
-.pie-contacto-acciones .pie-contacto-whatsapp{background:#ffffff0d;border-color:#7bd7b478;color:#a9e9cc}
-.pie-contacto-acciones a:hover{background:#ffffff16;border-color:#ffffff80}
-.pie-contacto-acciones svg{flex-shrink:0}
+/* Contacto y redes sociales en una fila compacta de iconos. */
+.pie-redes>div{flex-wrap:wrap}
+.pie-redes a{width:44px;height:44px;flex-shrink:0}
 .pie-contacto .pie-telefono{margin:0 0 8px;color:#c7d9e8;font-size:.9rem;font-variant-numeric:tabular-nums}
 .barra-local a[href^="tel:"]{display:inline-flex;align-items:center;gap:6px}
-.contacto-acciones{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px}
-@media(max-width:760px){.contacto-acciones{justify-content:flex-start}}
+.contacto-acciones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;max-width:470px}
+.contacto-acciones>.boton-naranja{grid-column:1/-1}
+.contacto .contacto-acciones .boton{justify-content:center;text-align:center;gap:10px;min-height:48px;height:100%;padding:14px 16px}
+.contacto-acciones .boton svg{flex-shrink:0}
+.nosotros-pagina .contacto .boton-contorno{color:#f3f7fa;border-color:#a8c0d0;background:#ffffff08}
+.nosotros-pagina .contacto .boton-contorno:hover{color:#fff;background:#ffffff18;border-color:#e1ebf2}
+@media(max-width:760px){.contacto-acciones{justify-self:start}.contacto .contacto-acciones .boton{font-size:.85rem;padding:12px}}

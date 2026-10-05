@@ -10,7 +10,7 @@ for(const idioma of ['es','en'])test(`contacto opcional, validación y confirmac
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
  let datos:Record<string,unknown>|null=null,fallar=false;
  await page.route('**/api/asesoria',async r=>{datos=r.request().postDataJSON();await r.fulfill({status:fallar?503:201,json:fallar?{error:'no_disponible'}:{referencia:'SG-0001'}});});
- await page.goto('/soluciones');await page.locator('.contacto-asesoria summary').click();
+ await page.goto('/soluciones');await page.locator('.contacto-asesoria-trigger').click();
  const formulario=page.locator('.contacto-asesoria form');
  await expect(formulario.locator('[name=telefono]')).toHaveValue('+506 ');
  await formulario.locator('button').click();await expect(formulario.locator('[name=nombre]')).toBeFocused();
@@ -19,6 +19,7 @@ for(const idioma of ['es','en'])test(`contacto opcional, validación y confirmac
  fallar=true;await formulario.locator('button').click();await expect(formulario.locator('[role=alert]')).toBeVisible();await expect(formulario.locator('[name=nombre]')).toHaveValue('Cliente QA');
  fallar=false;await formulario.locator('button').click();await expect(page.locator('.contacto-asesoria [role=status]')).toContainText('SG-0001');
  expect(datos).toMatchObject({contacto:{telefono:'50688888888',necesidad:''}});
+ await page.locator('.contacto-asesoria-cabecera button').click();
  await page.locator('.shop-producto .guardar-seleccion').first().click();
  await expect(page.locator('.carrito-confirmacion [role=status]')).toContainText(idioma==='es'?'Agregado al carrito':'Added to cart');
  await page.locator('.carrito-confirmacion').getByRole('button',{name:idioma==='es'?'Ver carrito':'View cart',exact:true}).click();

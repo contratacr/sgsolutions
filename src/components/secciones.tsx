@@ -10,7 +10,7 @@ export async function Soluciones() {
   const t = await getTranslations('Inicio');
   const contacto = await getTranslations('Contacto');
   const iconos = [Headset, Network, ShieldCheck, Monitor];
-  return <section id="servicios" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('serviciosEtiqueta')}</p><h2>{t('serviciosTitulo')}</h2></div><p>{t('serviciosDescripcion')}</p></div><div className="servicios-grid">{iconos.map((Icono,i) => <a key={i} className="servicio" id={`solucion-${i+1}`} href={enlaceWhatsApp(contacto('servicioMensaje', {servicio: t(`servicio${i}Titulo`)}))} target="_blank" rel="noopener noreferrer"><div className="servicio-icono"><Icono size={28}/><span>{`0${i+1}`}</span></div><h3>{t(`servicio${i}Titulo`)}</h3><p>{t(`servicio${i}Texto`)}</p><IconoWhatsApp className="servicio-flecha" width={24} height={24}/><span className="sr-only">{t('servicioAccion')}</span></a>)}</div></section>;
+  return <section id="servicios" className="seccion contenedor"><div className="encabezado-seccion"><div><p className="etiqueta">{t('serviciosEtiqueta')}</p><h2>{t('serviciosTitulo')}</h2></div><p>{t('serviciosDescripcion')}</p></div><div className="servicios-grid">{iconos.map((Icono,i) => <a key={i} className="servicio" id={`solucion-${i+1}`} href={enlaceWhatsApp(contacto('servicioMensaje', {servicio: t(`servicio${i}Titulo`)}))} target="_blank" rel="noopener noreferrer"><div className="servicio-icono"><Icono size={28}/><span>{`0${i+1}`}</span></div><h3>{t(`servicio${i}Titulo`)}</h3><p>{t(`servicio${i}Texto`)}</p><span className="sr-only">{t('servicioAccion')}</span></a>)}</div></section>;
 }
 
 export async function Proyectos() {
@@ -33,12 +33,12 @@ export async function Nosotros() {
   return <section id="nosotros" className="seccion contenedor nosotros"><div className="nosotros-imagen"><Image src="/imagenes/oficina.webp" alt={t('nosotrosAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div><div><p className="etiqueta">{t('nosotrosEtiqueta')}</p><h2>{t('nosotrosTitulo')}</h2><p>{t('nosotrosTexto')}</p><a className="enlace-azul" href={empresa.mapa} target="_blank" rel="noopener noreferrer"><MapPin size={19}/>{t('visitanos')}</a></div></section>;
 }
 
-export async function Contacto({porCorreo=false}:{porCorreo?:boolean}={}) {
+export async function Contacto() {
   const t = await getTranslations('Inicio');
   const contacto = await getTranslations('Contacto');
   const whatsapp = enlaceWhatsApp(contacto('mensaje'));
   const marca = await getTranslations('Marca');
   const pie = await getTranslations('Pie');
   const n = await getTranslations('Navegacion');
-  return <section id="contacto" className="contacto"><div className="contenedor contacto-grid"><div><p className="etiqueta">{t('contactoEtiqueta')}</p><h2>{t('contactoTitulo')}</h2><p>{t('contactoTexto')}</p></div><div className="contacto-acciones"><a className="boton boton-naranja" href={porCorreo?enlaceCorreo():whatsapp} target="_blank" rel="noopener noreferrer">{t(porCorreo?'contactoCorreo':'contactoAccion')}{porCorreo?<Mail size={20} aria-hidden="true"/>:<IconoWhatsApp width={20} height={20}/>}<span className="sr-only">{n('nuevaPestana')}</span></a><a className="boton boton-contorno" href={`tel:${empresa.telefono}`} aria-label={`${pie('llamar')} · ${marca('telefono')}`}><Phone size={20} aria-hidden="true"/>{pie('llamar')}</a></div></div></section>;
+  return <section id="contacto" className="contacto"><div className="contenedor contacto-grid"><div><p className="etiqueta">{t('contactoEtiqueta')}</p><h2>{t('contactoTitulo')}</h2><p>{t('contactoTexto')}</p></div><div className="contacto-acciones"><a className="boton boton-naranja" href={whatsapp} target="_blank" rel="noopener noreferrer"><IconoWhatsApp width={20} height={20}/>{t('contactoAccion')}<span className="sr-only">{n('nuevaPestana')}</span></a><a className="boton boton-contorno" href={enlaceCorreo()} target="_blank" rel="noopener noreferrer"><Mail size={20} aria-hidden="true"/>{t('contactoCorreo')}<span className="sr-only">{n('nuevaPestana')}</span></a><a className="boton boton-contorno" href={`tel:${empresa.telefono}`} aria-label={`${pie('llamar')} · ${marca('telefono')}`}><Phone size={20} aria-hidden="true"/>{pie('llamar')}</a></div></div></section>;
 }
