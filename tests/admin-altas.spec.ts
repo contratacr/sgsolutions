@@ -16,17 +16,17 @@ for(const idioma of ['es','en'])test(`altas visibles y errores precisos ${idioma
  try{
   await page.goto('/panel/catalogo');
   await expect(page.locator('.panel-navegacion a[href="/panel/catalogo"]')).toHaveAttribute('aria-current','page');
-  await expect(page.locator('.admin-producto-fila')).toHaveCount(20);
-  const primera=await page.locator('.admin-producto-fila').first().innerText();
+  await expect(page.locator('main:visible .admin-producto-fila')).toHaveCount(20);
+  const primera=await page.locator('main:visible .admin-producto-fila').first().innerText();
   await page.locator('.admin-paginacion select').first().selectOption('2');
-  await expect(page.locator('.admin-producto-fila')).toHaveCount(20);
-  await expect(page.locator('.admin-producto-fila').first()).not.toHaveText(primera);
+  await expect(page.locator('main:visible .admin-producto-fila')).toHaveCount(20);
+  await expect(page.locator('main:visible .admin-producto-fila').first()).not.toHaveText(primera);
   const codigo=JSON.parse(originales[1]).contenido.productos[0].codigoFabricante;
   await page.locator('input[type=search]').fill(codigo);
-  await expect(page.locator('.admin-producto-fila').first()).toContainText(codigo);
+  await expect(page.locator('main:visible .admin-producto-fila').first()).toContainText(codigo);
   await page.locator('input[type=search]').fill('');
   await page.locator('.admin-producto-fila button').first().click();
-  await expect(page.locator('.admin-producto-fila')).toHaveCount(0);
+  await expect(page.locator('main:visible .admin-producto-fila')).toHaveCount(0);
   await expect(page.locator('.admin-editor-indice a')).toHaveCount(5);
   const precios=page.locator('.admin-producto-seccion[id$="-precios"] input[type=number]');
   const precioOriginal=await precios.first().inputValue();
@@ -68,7 +68,7 @@ for(const idioma of ['es','en'])test(`altas visibles y errores precisos ${idioma
   await nuevo.getByRole('textbox',{name:es?'Descripción (ES)':'Description (ES)',exact:true}).fill('Descripción QA');
   await nuevo.getByRole('textbox',{name:es?'Descripción (EN)':'Description (EN)',exact:true}).fill('QA description');
   await guardar();await expect(page.locator('.admin-actions [role=status]')).toHaveText(es?'Cambios guardados.':'Changes saved.');
-  await page.reload();await page.locator('.admin-lista-filtros select').last().selectOption('borradores');await expect(page.locator('.admin-producto-fila').first()).toContainText(es?'Producto QA':'QA product');
+  await page.reload();await page.locator('main:visible .admin-lista-filtros select').last().selectOption('borradores');await expect(page.locator('main:visible .admin-producto-fila').first()).toContainText(es?'Producto QA':'QA product');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   await page.goto('/panel/contenido');
   await expect(page.locator('.panel-navegacion a[href="/panel/contenido"]')).toHaveAttribute('aria-current','page');

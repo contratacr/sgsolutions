@@ -20,6 +20,12 @@ function analizar(ruta) {
     else if (ts.isBinaryExpression(nodo)) visible(nodo.right);
   }
   function visitar(nodo) {
+    if (ts.isCallExpression(nodo) && ts.isIdentifier(nodo.expression) && ['useTranslations', 'getTranslations'].includes(nodo.expression.text)) {
+      const namespace = nodo.arguments[0];
+      if (namespace && ts.isStringLiteral(namespace) && !Object.keys(es).some(clave => clave.startsWith(`${namespace.text}.`))) {
+        fallos.push(`${ruta}:${fuente.getLineAndCharacterOfPosition(nodo.getStart()).line + 1}: catálogo inexistente: ${namespace.text}`);
+      }
+    }
     if (ts.isJsxText(nodo) && /\p{L}/u.test(nodo.getText())) registrar(nodo);
     if (ts.isJsxExpression(nodo) && nodo.expression && !ts.isJsxAttribute(nodo.parent)) visible(nodo.expression);
     if (ts.isJsxAttribute(nodo) && atributos.has(nodo.name.getText()) && nodo.initializer && ts.isStringLiteral(nodo.initializer) && nodo.initializer.text.trim()) registrar(nodo);

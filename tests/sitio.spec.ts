@@ -49,8 +49,8 @@ test('cambio de idioma persistente y navegación', async ({page}, prueba) => {
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   if (prueba.project.name === 'movil') await page.getByRole('button', {name: 'Open menu'}).click();
-  await page.locator('header').getByRole('link', {name: 'Shop', exact: true}).click();
-  await expect(page.getByRole('heading', {level: 1})).toHaveText('Technology that works with you.');
+  await page.locator('header').getByRole('link', {name: 'Solutions', exact: true}).click();
+  await expect(page.getByRole('heading', {level: 1})).toHaveText('SG Solutions');
   await page.getByRole('button', {name: 'Leer esta página en español'}).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
   await expect(page.locator('.selector-idioma button[value="es"]')).toHaveAttribute('aria-pressed', 'true');
@@ -73,21 +73,21 @@ test('entrada inicia neutral, navega y muestra animación única', async ({page}
   const menu = page.getByRole('navigation', {name: 'Elija una solución'});
   await expect(menu.getByRole('link')).toHaveCount(3);
   await expect(menu.getByRole('link', {name: /Soporte técnico/})).toHaveAttribute('href', '/soporte');
-  await expect(menu.getByRole('link', {name: /Soluciones empresariales/})).toHaveAttribute('href', '/empresas');
-  await expect(menu.getByRole('link', {name: /Tienda/})).toHaveAttribute('data-activa','false');
+  await expect(menu.getByRole('link', {name: /Para empresas/})).toHaveAttribute('href', '/empresas');
+  await expect(menu.getByRole('link', {name: /Soluciones/})).toHaveAttribute('data-activa','false');
   await expect(menu.getByRole('link', {name: /Soporte técnico/})).toHaveAttribute('data-activa','false');
-  await expect(menu.getByRole('link', {name: /Soluciones empresariales/})).toHaveAttribute('data-activa','false');
+  await expect(menu.getByRole('link', {name: /Para empresas/})).toHaveAttribute('data-activa','false');
   await expect(page.getByRole('button', {name: 'Pausar movimiento'})).toHaveCount(0);
   if (prueba.project.name === 'escritorio') {
     await expect(page.locator('.escenario')).toHaveAttribute('data-escena', '3d');
     await expect(page.locator('.escena-canvas canvas')).toBeVisible();
     await expect(page.locator('.escenario canvas')).toHaveCount(1);
-    await menu.getByRole('link', {name: /Soluciones empresariales/}).focus();
-    await expect(menu.getByRole('link', {name: /Soluciones empresariales/})).toBeFocused();
+    await menu.getByRole('link', {name: /Para empresas/}).focus();
+    await expect(menu.getByRole('link', {name: /Para empresas/})).toBeFocused();
   } else {
     await expect(page.locator('.escenario canvas')).toHaveCount(1);
-    await menu.getByRole('link', {name: /Soluciones empresariales/}).scrollIntoViewIfNeeded();
-    await expect(menu.getByRole('link', {name: /Soluciones empresariales/})).toBeInViewport({ratio: 1});
+    await menu.getByRole('link', {name: /Para empresas/}).scrollIntoViewIfNeeded();
+    await expect(menu.getByRole('link', {name: /Para empresas/})).toBeInViewport({ratio: 1});
   }
   await menu.getByRole('link', {name: /Explorar productos/}).click();
   await expect(page).toHaveURL(/\/soluciones$/);
@@ -114,7 +114,7 @@ test('la ilustración sin WebGL conserva la navegación', async ({page}) => {
   await expect(page.getByRole('navigation', {name: 'Elija una solución'})).toBeVisible();
   await expect(page.locator('.escenario')).toHaveAttribute('data-escena', 'fallo');
   await expect(page.locator('.escenario canvas')).toHaveCount(0);
-  await page.getByRole('link', {name: /Conocer soluciones/}).click();
+  await page.getByRole('link', {name: /Ver planes/}).click();
   await expect(page).toHaveURL(/\/empresas$/);
 });
 
@@ -224,21 +224,22 @@ for (const [ruta,tituloEs,tituloEn] of [
 
 test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page}, prueba) => {
   await page.goto('/soluciones');
-  const buscar = page.getByRole('searchbox', {name:'Buscar equipo'});
+  const buscar = page.getByRole('searchbox', {name:'Buscar productos'});
   await buscar.fill('PORTATIL');
-  await expect(page.getByRole('article')).toHaveCount(24);
+  await expect(page.getByRole('article')).toHaveCount((await (await page.request.get('/api/catalogo?q=PORTATIL')).json()).productos.length);
   await expect(page.getByRole('article').first()).toContainText('Lenovo ThinkPad L14');
   await page.getByRole('button', {name:'Seguridad', exact:true}).click();
   await expect(page.getByText('No encontramos esa opción.')).toBeVisible();
   await page.getByRole('button', {name:'Ver todo el equipo', exact:true}).click();
+  await expect(buscar).toHaveValue('');
   await expect(page.getByRole('article')).toHaveCount(24);
   await buscar.fill('CAMARA');
   await expect.poll(() => page.getByRole('article').count()).toBeGreaterThan(1);
   await expect(page.getByRole('article').first()).toContainText(/Cámara|Camara/);
   await page.getByRole('button', {name:'Read this page in English'}).click();
-  await expect(page.getByRole('searchbox', {name:'Search equipment'})).toHaveValue('');
+  await expect(page.getByRole('searchbox', {name:'Search products'})).toHaveValue('');
   await expect(page.getByRole('article')).toHaveCount(24);
-  await page.getByRole('searchbox', {name:'Search equipment'}).fill('Flex Mini');
+  await page.getByRole('searchbox', {name:'Search products'}).fill('Flex Mini');
   await expect(page.getByRole('article')).toHaveCount(1);
   await page.getByRole('button', {name:'Clear search'}).click();
   await expect(page.getByRole('article')).toHaveCount(24);
@@ -270,7 +271,7 @@ test('tarjetas inmersivas conservan foco, idioma y movimiento reducido', async (
   await page.getByRole('button', {name: 'Read this page in English'}).click();
   await expect(page.locator('.portal-tienda')).toContainText('Explore products');
   await expect(page.locator('.portal-soporte')).toContainText('Get support');
-  await expect(page.locator('.portal-empresas')).toContainText('Explore solutions');
+  await expect(page.locator('.portal-empresas')).toContainText('View plans');
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
   await page.locator('footer img').scrollIntoViewIfNeeded();
   await expect(page.locator('footer img')).toBeVisible();

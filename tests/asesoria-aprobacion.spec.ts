@@ -18,8 +18,8 @@ for(const idioma of ['es','en'])test(`asesor prepara compra y servidor impide sa
   for(const ruta of ['/api/pedidos/manual','/api/pagos/tilopay/iniciar'])expect((await request.post(ruta,{headers:{origin:origen},data:{articulos:[{id:'portatil',cantidad:1}]}})).status()).toBe(403);
   // A callback enquiry is saved without billing/address or choosing products.
   expect((await request.post('/api/asesoria',{headers:{origin:origen},data:{idioma,articulos:[],contacto:{nombre:'Cliente prueba',telefono:'50688888888',necesidad:'Necesito mejorar la red'}}})).status()).toBe(400);
-  await page.goto('/soluciones');await page.locator('.contacto-asesoria summary').click();
-  await page.locator('.contacto-asesoria [name=nombre]').fill('Cliente prueba');await page.locator('.contacto-asesoria [name=telefono]').fill('+506 8888 8888');await page.locator('.contacto-asesoria [name=necesidad]').fill('Necesito mejorar la red');await page.locator('.contacto-asesoria [name=consentimiento]').check();await page.locator('.contacto-asesoria button').click();
+  await page.goto('/soluciones');await page.locator('.contacto-asesoria-trigger').click();
+  await page.locator('.contacto-asesoria [name=nombre]').fill('Cliente prueba');await page.locator('.contacto-asesoria [name=telefono]').fill('+506 8888 8888');await page.locator('.contacto-asesoria [name=necesidad]').fill('Necesito mejorar la red');await page.locator('.contacto-asesoria [name=consentimiento]').check();await page.locator('.contacto-asesoria form button').click();
   await expect(page.locator('.contacto-asesoria [role=status]')).toContainText('SG-');
   await page.goto('/panel/pedidos');const contacto=page.locator('.asesorias-admin:visible article').filter({hasText:'Cliente prueba'});await contacto.locator('.panel-pedido-detalle>summary').click();await expect(contacto).toContainText('Necesito mejorar la red');await expect(contacto.locator('a[href^="https://wa.me/"]')).toHaveAttribute('href',/^https:\/\/wa.me\/50688888888\?/);
   await page.screenshot({path:`/tmp/sg-consultas-${idioma}-${info.project.name}.png`});

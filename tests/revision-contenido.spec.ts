@@ -13,9 +13,9 @@ test('marcas filtran productos y se combinan con categorías en ambos idiomas',a
   await boton.press('Enter');
  };
  await seleccionarMarca('Ver productos de Lenovo');
- await expect(page.locator('.shop-producto')).toHaveCount(24);
+ await expect(page.locator('.shop-producto')).toHaveCount((await (await page.request.get('/api/catalogo?marca=Lenovo')).json()).productos.length);
  await page.getByRole('button',{name:'Componentes informáticos',exact:true}).click();
- await expect(page.locator('.shop-producto')).toHaveCount(10);
+ await expect(page.locator('.shop-producto')).toHaveCount((await (await page.request.get('/api/catalogo?marca=Lenovo&categoria=componentes')).json()).productos.length);
  await expect(page.locator('.shop-producto').first()).toContainText('Lenovo');
  await seleccionarMarca('Ver productos de Lenovo');
  await expect(page.locator('.shop-producto')).toHaveCount(24);

@@ -203,7 +203,7 @@
 /* Permitir que el contenido se adapte incluso entre los puntos de corte. */
 .tienda-compacta .shop-producto,.tienda-compacta .shop-producto-info,.tienda-compacta .shop-producto-info>*{min-width:0}
 .tienda-compacta .shop-producto-info{box-sizing:border-box;width:100%}
-.tienda-compacta .shop-precio{flex-direction:row;flex-wrap:wrap;align-items:baseline;justify-content:flex-start;gap:6px 10px}
+.tienda-compacta .shop-precio{flex-direction:row;flex-wrap:wrap;align-items:baseline;align-self:stretch;align-content:flex-start;justify-content:flex-start;gap:6px 10px}
 .tienda-compacta .shop-precio small{white-space:nowrap;line-height:1.5}
 .tienda-compacta .shop-producto .boton{white-space:normal;overflow-wrap:anywhere;max-width:100%;height:auto}
 .tienda-compacta .shop-producto .boton svg{flex-shrink:0}

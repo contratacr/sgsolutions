@@ -1,5 +1,6 @@
-import {abrirCompraAprobada} from './aprobacion-fixture';
+import {abrirCompraAprobada,limpiarAprobacionesTrasPrueba} from './aprobacion-fixture';
 import { test, expect } from '@playwright/test';
+limpiarAprobacionesTrasPrueba();
 
 test.skip(process.env.SG_TEST_MANUAL !== '1', 'Se ejecuta contra el entorno de pruebas con pedidos manuales activos.');
 

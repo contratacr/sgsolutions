@@ -43,7 +43,7 @@ for (const idioma of ['es', 'en'] as const) test(`recorrido completo del panel $
       await page.goto(ruta);
       await expect(page.getByRole('heading', {level:1})).toBeVisible();
       await expect(page.locator('[data-cerrar-sesion] button')).toBeVisible();
-      await expect(page.locator('a[href*="wa.me"]')).toHaveCount(0);
+      await expect(page.locator('.whatsapp-flotante')).toHaveCount(0);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), ruta).toBeTruthy();
     }
 
@@ -54,17 +54,17 @@ for (const idioma of ['es', 'en'] as const) test(`recorrido completo del panel $
     await expect(page.locator('.admin-editor-indice a')).toHaveCount(5);
     await page.locator('.admin-volver-lista').click();
     await expect(page.locator('.admin-producto-fila')).toHaveCount(20);
-    for (const tab of await page.locator('.admin-tabs button').all()) {
+    for (const tab of await page.locator('main:visible .admin-tabs button').all()) {
       await tab.click();
       await expect(tab).toHaveAttribute('aria-pressed', 'true');
     }
 
     await page.goto('/panel/contenido');
-    for (const tab of await page.locator('.admin-tabs button').all()) {
+    for (const tab of await page.locator('main:visible .admin-tabs button').all()) {
       await tab.click();
       await expect(tab).toHaveAttribute('aria-pressed', 'true');
     }
-    await page.locator('.admin-tabs button').first().click();
+    await page.locator('main:visible .admin-tabs button').first().click();
     await page.locator('details.admin-item summary').first().click();
     await expect(page.locator('.gestor-imagenes:visible').first()).toBeVisible();
 

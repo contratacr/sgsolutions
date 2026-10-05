@@ -7,7 +7,7 @@ import {X} from 'lucide-react';
 import {normalizarTelefonoWhatsApp} from '@/lib/telefono-whatsapp';
 
 export function ContactoAsesoria(){
- const t=useTranslations('Asesoria'),n=useTranslations('Nav'),idioma=useLocale();
+ const t=useTranslations('Asesoria'),n=useTranslations('Navegacion'),idioma=useLocale();
  const prefijo=useId();
  const [abierto,setAbierto]=useState(false);
  const [errores,setErrores]=useState<Record<string,string>>({});

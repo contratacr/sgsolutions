@@ -14,7 +14,7 @@ for(const idioma of ['es','en'])test(`eventos persistidos y panel protegido ${id
   expect((await post()).status()).toBe(204);expect((await post()).status()).toBe(204);
   expect(JSON.parse(await readFile(archivo,'utf8')).filter((e:{id:string})=>e.id===evento.id)).toHaveLength(1);
   await writeFile(ruta,JSON.stringify(cuenta),{mode:0o600});await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
-  await page.goto('/panel/estadisticas');await expect(page.locator('main:not([aria-busy]) h1')).toHaveText(idioma==='es'?'Estadísticas':'Analytics');await expect(page.locator('main:not([aria-busy]) .metricas-grid')).toContainText(idioma==='es'?'Planes seleccionados':'Selected plans');
+  await page.goto('/panel/estadisticas');await expect(page.locator('main:visible:not([aria-busy]) h1')).toHaveText(idioma==='es'?'Estadísticas':'Analytics');await expect(page.locator('main:visible:not([aria-busy])')).toContainText(idioma==='es'?'Planes seleccionados':'Selected plans');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);await page.screenshot({path:`evidencias/analitica-${idioma}-${test.info().project.name}.png`,fullPage:true});
  }finally{await writeFile(ruta,original,{mode:0o600});if(previo!==null)await writeFile(archivo,previo,{mode:0o600});else await unlink(archivo).catch(()=>{});}
 });

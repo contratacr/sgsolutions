@@ -11,6 +11,7 @@ import { cambiarCantidad, useCarrito } from '@/lib/carrito';
 import {useCatalogo} from './datos-catalogo';
 import {colones,traducir} from '@/lib/catalogo-modelo';
 import {ContadorCantidad} from './contador-cantidad';
+import {EsqueletoCarrito} from './esqueletos';
 import {AsesoriaWhatsApp} from './asesoria-whatsapp';
 
 export function Carrito() {
@@ -37,8 +38,8 @@ export function Carrito() {
       <div className="carrito-cabecera"><Dialog.Title>{t('titulo')}</Dialog.Title><Dialog.Close className="boton-icono" aria-label={n('cerrar')}><X/></Dialog.Close></div>
       <Dialog.Description className="texto-suave">{t('descripcion')}</Dialog.Description>
       {todas.filter(l=>noDisponibles.includes(l.id)).map(l=><p key={l.id}>{tienda('productoNoDisponible')} <button onClick={()=>cambiarCantidad(l.id,0)}>{tienda('quitarProducto')}</button></p>)}
-      {(faltantes||errorCarrito)&&<p role="status">{tienda(errorCarrito?'errorCarga':'cargando')} <button onClick={reintentar}>{tienda('reintentar')}</button></p>}
-      {lineas.length === 0 ? <div className="carrito-vacio"><ShoppingCart size={44} aria-hidden="true"/><p>{faltantes?tienda('productoNoDisponible'):t('vacio')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/soluciones">{t('explorar')}</Link></Dialog.Close></div> : <>
+      {errorCarrito?<p role="alert">{tienda('errorCarga')} <button onClick={reintentar}>{tienda('reintentar')}</button></p>:faltantes?<EsqueletoCarrito texto={tienda('cargando')}/>:null}
+      {lineas.length === 0 && faltantes ? null : lineas.length === 0 ? <div className="carrito-vacio"><ShoppingCart size={44} aria-hidden="true"/><p>{faltantes?tienda('productoNoDisponible'):t('vacio')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/soluciones">{t('explorar')}</Link></Dialog.Close></div> : <>
         <ul className="carrito-lineas">{lineas.map(linea => {
           const producto = productos.find(p => p.id === linea.id)!;
           return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><span>{producto.precio===null?tienda('precioPendiente'):colones(producto.precio)}</span><ContadorCantidad cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;

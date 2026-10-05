@@ -2,7 +2,7 @@ import {expect,test,type Page} from '@playwright/test';
 import {readFile,writeFile} from 'node:fs/promises';
 import {randomBytes} from 'node:crypto';
 const creados=new Set<string>();
-test.afterEach(async()=>{if(!creados.size)return;const archivo='.privado/admin-local/asesorias.json';const filas=JSON.parse(await readFile(archivo,'utf8'));await writeFile(archivo,JSON.stringify(filas.filter((s:{id:string})=>!creados.has(s.id))));creados.clear();});
+export function limpiarAprobacionesTrasPrueba(){test.afterEach(async()=>{if(!creados.size)return;const archivo='.privado/admin-local/asesorias.json';const filas=JSON.parse(await readFile(archivo,'utf8'));await writeFile(archivo,JSON.stringify(filas.filter((s:{id:string})=>!creados.has(s.id))));creados.clear();});}
 export async function abrirCompraAprobada(page:Page,id='portatil',cantidad=1){
  test.skip(process.env.SG_TEST_ALTAS!=='1','La compra aprobada requiere servidor local aislado');
  const c=await (await page.request.get('/api/catalogo')).json();const producto=c.productos.find((p:{id:string})=>p.id===id);expect(producto).toBeTruthy();

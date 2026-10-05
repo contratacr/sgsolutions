@@ -1,8 +1,9 @@
-import {abrirCompraAprobada} from './aprobacion-fixture';
+import {abrirCompraAprobada,limpiarAprobacionesTrasPrueba} from './aprobacion-fixture';
 import { test, expect } from "@playwright/test";
 import { esquemaContenido } from "../src/lib/contenido-modelo";
 import contenido from "../src/lib/contenido-base.json";
 import {costoEntrega} from '../src/lib/envio';
+limpiarAprobacionesTrasPrueba();
 for (const idioma of ["es", "en"])
   test(`ficha y checkout completos ${idioma}`, async ({ page }, info) => {
     const errores: string[] = [];

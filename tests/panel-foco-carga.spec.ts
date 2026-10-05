@@ -23,13 +23,13 @@ for(const idioma of ['es','en'])test(`buscador sin doble foco y cargas centradas
   for(const ruta of ['/panel','/panel/catalogo','/panel/contenido','/panel/pedidos','/panel/estadisticas']){
    // Exercise the actual streamed fallback HTML emitted by Next, rather than a copied fixture.
    const respuesta=await page.request.get(ruta);expect(respuesta.ok()).toBe(true);
-   const html=await respuesta.text();const carga=html.match(/<main\b[^>]*class="estado-pagina"[^>]*>[\s\S]*?<\/main>/)?.[0];
+   const html=await respuesta.text();const carga=html.match(/<main\b[^>]*class="contenedor panel-esqueleto"[^>]*>[\s\S]*?<\/main>/)?.[0];
    // Fast responses can finish without emitting a Suspense fallback.
    if(!carga)continue;
    await page.evaluate(fragmento=>{document.querySelector('.panel-diseno>main')!.outerHTML=fragmento!;},carga);
-   await expect(page.locator('.estado-panel')).toContainText((idioma==='es'?es:en).Error.cargando);
-   const posicion=await page.locator('.estado-panel').evaluate(e=>{const p=e.getBoundingClientRect(),m=e.closest('main')!.getBoundingClientRect();return {horizontal:Math.abs(p.x+p.width/2-innerWidth/2),vertical:Math.abs(p.y+p.height/2-(m.y+m.height/2))};});
-   expect(posicion.horizontal).toBeLessThan(2);expect(posicion.vertical).toBeLessThan(2);
+   await expect(page.locator('.panel-esqueleto [role=status]')).toContainText((idioma==='es'?es:en).Error.cargando);
+   const posicion=await page.locator('.panel-esqueleto [role=status]').evaluate(e=>{const p=e.getBoundingClientRect(),m=e.closest('main')!.getBoundingClientRect();return {horizontal:Math.abs(p.x+p.width/2-(m.x+m.width/2)),vertical:Math.abs(p.y+p.height/2-(m.y+m.height/2))};});
+   expect(posicion.horizontal).toBeLessThan(2);await expect(page.locator('.panel-esqueleto .esqueleto-fila')).toHaveCount(5);
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }
   await page.evaluate(()=>window.scrollTo(0,0));

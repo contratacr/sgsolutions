@@ -1,5 +1,6 @@
-import {abrirCompraAprobada} from './aprobacion-fixture';
+import {abrirCompraAprobada,limpiarAprobacionesTrasPrueba} from './aprobacion-fixture';
 import {expect, test} from '@playwright/test';
+limpiarAprobacionesTrasPrueba();
 
 for (const idioma of ['es', 'en'] as const) {
   test(`errores de formulario y página inexistente en ${idioma}`, async ({page,context}) => {

@@ -8,7 +8,7 @@ for(const idioma of ['es','en'])test(`navegación compacta y marcas animadas ${i
   await page.locator('main .entrada').click({position:{x:10,y:10}});await expect(menu).toHaveAttribute('aria-expanded','false');
   await menu.click();await page.keyboard.press('Escape');await expect(menu).toHaveAttribute('aria-expanded','false');await expect(menu).toBeFocused();
  }
- await page.goto('/soluciones');await expect(page.locator('.solucion-necesidad svg.lucide')).toHaveCount(4);
+ await page.goto('/soluciones');await expect(page.locator('.solucion-necesidad')).toHaveCount(0);
  const pista=page.locator('.marcas-pista');await expect(pista).toHaveAttribute('data-lista','true');
  await page.mouse.move(0,0);await expect(pista).toHaveCSS('animation-play-state','running');
  const inicial=await pista.evaluate(e=>getComputedStyle(e).transform);

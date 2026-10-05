@@ -38,7 +38,7 @@
 .shop-producto h3{margin:8px 0;line-height:1.4;overflow-wrap:anywhere}
 .shop-producto-info>.shop-descripcion{margin:0 0 14px;min-height:0;overflow-wrap:anywhere}
 .shop-producto-info>.shop-codigo{overflow-wrap:anywhere}
-.shop-producto .shop-precio{align-self:end;margin-bottom:16px}
+.shop-producto .shop-precio{align-self:stretch;margin-bottom:16px}
 .shop-producto .boton{align-self:end;white-space:nowrap}
 @supports(grid-template-rows:subgrid){.shop-grid{grid-auto-rows:auto}.shop-producto{display:grid;grid-row:span 8;grid-template-rows:subgrid;row-gap:0}.shop-producto-info{display:grid;grid-row:span 7;grid-template-rows:subgrid;row-gap:0}}
 @media(max-width:650px){

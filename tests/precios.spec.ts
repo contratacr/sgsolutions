@@ -46,3 +46,10 @@ test('tienda mantiene CRC en inglés y ordena precios',async({page},prueba)=>{
  await expect(page.locator('.carrito-resumen')).toContainText('₡');
  await page.goto('/panel/catalogo');await expect(page).toHaveURL(/\/admin/);
 });
+
+test('colones conserva separadores y redondeo idénticos en servidor y navegador',()=>{
+ expect(colones(0)).toBe('₡0');
+ expect(colones(619000)).toBe('₡619\u00a0000');
+ expect(colones(1234567)).toBe('₡1\u00a0234\u00a0567');
+ expect(colones(1234.6)).toBe('₡1\u00a0235');
+});

@@ -22,12 +22,14 @@ export function RevelarScroll(){
     pendientes.delete(target);
     if(preferencia.matches)return;
     const foto=target.matches('.historia-foto, .ubicacion-foto');
-    const distancia=innerWidth<600?32:52;
-    const escalaInicial=foto?.965:.985;
+    // Product links must stay under the pointer while their cards appear.
+    const producto=target.matches('.shop-producto');
+    const distancia=producto?0:innerWidth<600?32:52;
+    const escalaInicial=producto?1:foto?.965:.985;
     target.setAttribute('data-revelando','');
     const animacion=target.animate([
      {opacity:0,transform:`translate3d(0,${distancia}px,0) scale(${escalaInicial})`,offset:0},
-     {opacity:.72,transform:'translate3d(0,10px,0) scale(.997)',offset:.72},
+     {opacity:.72,transform:producto?'none':'translate3d(0,10px,0) scale(.997)',offset:.72},
      {opacity:1,transform:'translate3d(0,0,0) scale(1)',offset:1}
     ],{duration:foto?1200:1050,delay:Math.min(orden++,3)*120,easing:'cubic-bezier(.22,.68,.24,1)',fill:'backwards'});
     animaciones.set(target,animacion);

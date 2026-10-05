@@ -32,4 +32,9 @@ export function calcularPrecio(costo:number|null,ajustes:CatalogoAdmin['ajustes'
 }
 export function publicarCatalogo(c:CatalogoAdmin){return {gestion:c.gestion,categorias:c.categorias,textos:c.textos,productos:c.productos.filter(p=>p.publicado&&(p.inventarioPropio||p.estadoIntcomex?.estado!=='noEncontrado')).map(p=>({id:p.id,categoria:p.categoria,nombre:p.nombre,descripcion:p.descripcion,imagen:p.imagen,imagenes:p.imagenes,especificaciones:p.especificaciones,fichaTecnica:p.fichaTecnica,marca:p.marca,codigoFabricante:p.codigoFabricante,destacado:p.destacado,disponibilidad:c.gestion==='manual'?p.disponibilidadReferencia:p.inventarioPropio?'consultar':p.proveedor?(p.proveedor.tipo==='Downloadable'||p.proveedor.tipo==='License'?'consultar':p.proveedor.stock===null?'consultar':p.proveedor.stock===0?'agotado':'proveedor'):p.disponibilidadReferencia,actualizado:p.proveedor?.actualizado??null,precio:p.revisionPrecio&&p.precioManual===null?null:(calcularPrecio(p.costoUsd,c.ajustes,p.precioManual,p.costoCrc)??p.precioReferencia)}))};}
 export type CatalogoPublico=ReturnType<typeof publicarCatalogo>;
-export function colones(precio:number){return new Intl.NumberFormat('es-CR',{style:'currency',currency:'CRC',minimumFractionDigits:0,maximumFractionDigits:0}).format(precio);}
+// Safari and Node use different thousands separators for es-CR. Keep the
+// server and browser output identical to avoid hydration errors in prices.
+export function colones(precio:number){
+ const entero=Math.round(precio);
+ return `${entero<0?'-':''}₡${Math.abs(entero).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0')}`;
+}

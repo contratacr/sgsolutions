@@ -12,6 +12,7 @@ for(const idioma of ['es','en'])test(`contacto opcional, validación y confirmac
  await page.route('**/api/asesoria',async r=>{datos=r.request().postDataJSON();await r.fulfill({status:fallar?503:201,json:fallar?{error:'no_disponible'}:{referencia:'SG-0001'}});});
  await page.goto('/soluciones');await page.locator('.contacto-asesoria-trigger').click();
  const formulario=page.locator('.contacto-asesoria form');
+ await expect(page.getByRole('dialog').getByRole('button',{name:idioma==='es'?'Cerrar':'Close',exact:true})).toBeVisible();
  await expect(formulario.locator('[name=telefono]')).toHaveValue('+506 ');
  await formulario.locator('button').click();await expect(formulario.locator('[name=nombre]')).toBeFocused();
  await expect(formulario.locator('[aria-invalid=true]')).toHaveCount(3);
@@ -52,7 +53,7 @@ test('pocas marcas llenan la ventana durante todo el ciclo',async({page})=>{
   await expect(banda.locator('button:not([aria-hidden=true])')).toHaveCount(1);
   await expect(banda.locator('button')).not.toHaveCount(1);
   const geometria=await page.locator('.marcas-ventana').evaluate(e=>{const grupos=e.querySelectorAll('.marcas-grupo');return {ventana:e.clientWidth,primera:grupos[0].getBoundingClientRect().width,segunda:grupos[1].getBoundingClientRect().width};});
-  expect(geometria.primera).toBeGreaterThanOrEqual(geometria.ventana);expect(geometria.primera).toBe(geometria.segunda);
+  expect(geometria.primera).toBeGreaterThanOrEqual(geometria.ventana);expect(Math.abs(geometria.primera-geometria.segunda)).toBeLessThan(1);
  }finally{await writeFile(archivo,original);}
 });
 

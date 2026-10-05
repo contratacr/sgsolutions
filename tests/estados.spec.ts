@@ -17,7 +17,10 @@ for(const idioma of ['es','en']){
   await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
   await page.route('**/api/catalogo?**',route=>route.abort());
   await page.goto('/soluciones');
+  await expect(page.locator('.shop-producto').first()).toBeVisible();
+  await page.locator('#buscar-equipo').fill('Lenovo');
   await expect(page.locator('.estado-inline[role="alert"]')).toBeVisible();
+  await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
   await page.unroute('**/api/catalogo?**');
   await page.locator('.estado-inline button').click();
   await expect(page.locator('.shop-producto').first()).toBeVisible();
