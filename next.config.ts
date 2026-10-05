@@ -6,7 +6,10 @@ const configuracion: NextConfig = {
   poweredByHeader: false,
   experimental: {serverActions: {bodySizeLimit: '32mb'}},
   async redirects() {
-    return [{source: '/tienda/:path*', destination: '/soluciones/:path*', permanent: true}];
+    return [
+      {source: '/tienda', destination: '/soluciones', permanent: true},
+      {source: '/tienda/:path*', destination: '/soluciones/:path*', permanent: true}
+    ];
   },
   async headers() {
     return [{ source: '/:path*', headers: [
