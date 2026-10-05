@@ -87,7 +87,7 @@ export function FichaProducto({
             )}
           </p>
           <p className="ficha-asesoria-nota">{a('fichaAyuda')}</p>
-          <AsesoriaWhatsApp lineas={[{producto:p,cantidad}]} onSolicitar={()=>{datos.recordar([p]);if(!agregado&&p.disponibilidad!=='agotado')agregarProducto(p.id,cantidad);}}/>
+          <AsesoriaWhatsApp lineas={[{producto:p,cantidad}]} onSolicitar={()=>{datos.recordar([p]);if(!agregado&&p.disponibilidad!=='agotado')agregarProducto(p.id,cantidad,false);}}/>
           <div className="ficha-cantidad"><span>{t("cantidad")}</span><ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/></div>
           <button
             className="boton boton-contorno ficha-agregar"

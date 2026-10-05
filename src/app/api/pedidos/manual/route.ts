@@ -9,7 +9,7 @@ import {colones} from '@/lib/catalogo-modelo';
 
 const telefono = z.string().trim().regex(/^\+?[0-9\s-]{8,20}$/);
 const entrada = z.object({
-  asesoria:z.uuid(),acceso:z.string().regex(/^[0-9a-f]{64}$/),
+  asesoria:z.uuid(),acceso:z.string().regex(/^(?:[0-9a-f]{32}|[0-9a-f]{64})$/),
   idioma: z.enum(['es', 'en']),
   datos: z.object({
     nombre: z.string().trim().min(1).max(100), apellidos: z.string().trim().min(1).max(100),

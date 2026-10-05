@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { basePedidos, configuracionTilopay, iniciarTilopay, tokenTilopay } from '@/lib/tilopay';
 
 const solicitud = z.object({
-  asesoria:z.uuid(),acceso:z.string().regex(/^[0-9a-f]{64}$/),
+  asesoria:z.uuid(),acceso:z.string().regex(/^(?:[0-9a-f]{32}|[0-9a-f]{64})$/),
   nombre: z.string().trim().min(1).max(100),
   apellidos: z.string().trim().min(1).max(100),
   correo: z.email().max(150),

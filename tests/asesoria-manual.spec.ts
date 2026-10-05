@@ -32,7 +32,7 @@ for(const idioma of ['es','en'])test(`asesoría, selección y regreso al pedido 
   expect(url.searchParams.get('text')).not.toContain(idioma==='es'?'Me interesan estos productos':'I am interested in these products');
   await expect(enlace).toHaveAttribute('target','_blank');await expect(enlace).toHaveAttribute('rel','noopener noreferrer');
  }
- await page.locator('.contacto-asesoria summary').click();await page.locator('.contacto-asesoria button').click();await expect(page.locator('.contacto-asesoria [role=alert]')).toBeVisible();
+ await page.locator('.contacto-asesoria summary').click();await page.locator('.contacto-asesoria button').click();await expect(page.locator('.contacto-asesoria [role=alert]')).toHaveCount(3);
  await page.locator('.contacto-asesoria summary').click();
  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
  await page.screenshot({path:`/tmp/sg-asesoria-${idioma}-${info.project.name}.png`});

@@ -73,3 +73,26 @@
 .admin-textos-filtros{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px;margin-block:20px}.admin-casos-buscar{margin-top:18px}.admin-cuentas-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.admin-cuentas-grid .admin-item{margin-bottom:0}.admin-cuentas-grid label+label{margin-top:14px}.panel-diseno .admin-item>summary:has(.admin-estado-producto){display:flex;gap:12px;align-items:center;justify-content:space-between}.panel-diseno .admin-item>summary>strong{overflow-wrap:anywhere;min-width:0}.panel-diseno .metricas-resumen{gap:14px}.panel-diseno .metricas-resumen article{padding:22px;background:#173b59;color:white;border:0}.metricas-resumen span{display:block;font-size:.85rem;margin-top:6px}.panel-diseno .metricas-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.panel-diseno .metricas-grid section{padding:20px}.metrica-encabezado{display:flex;justify-content:space-between;align-items:center;gap:12px}.metrica-encabezado>span{font-size:.85rem;color:#315c7b;background:#edf4f8;padding:5px 9px;border-radius:15px}.panel-correo-info>summary{cursor:pointer;font-weight:600;font-size:.88rem}.panel-diseno .metricas-grid li:last-child{border-bottom:0}.panel-diseno .pedidos-admin-tarjeta .pedidos-admin-estado{white-space:normal}
 @media(max-width:650px){.admin-textos-filtros,.admin-cuentas-grid,.panel-diseno .metricas-grid{grid-template-columns:1fr}.panel-diseno .metricas-resumen{grid-template-columns:1fr}.panel-diseno .admin-item>summary:has(.admin-estado-producto){flex-wrap:wrap}.panel-diseno .admin-paginacion select{max-width:none;min-width:135px}}
 .panel-diseno .panel-buscador input[type=search]{border:0;border-radius:0;padding-inline:0;background:transparent}
+
+/* El contenedor de búsqueda muestra un único foco, sin borde interior duplicado. */
+html .panel-diseno .panel-buscador input:focus,
+html[data-interaccion] .panel-diseno .panel-buscador input:focus{outline:none;box-shadow:none}
+.panel-buscador>svg{flex-shrink:0}
+/* La carga comparte el ancho completo y centra su contenido bajo la navegación. */
+.panel-diseno>main.estado-pagina{max-width:none;margin-inline:auto;padding:48px 24px}
+.asesoria-enlace{scroll-margin-block:24px;min-width:0}.panel-diseno .asesoria-enlace{align-items:center}.asesoria-enlace-resumen{display:grid;gap:9px;min-width:0}.asesoria-enlace-resumen>strong{font-size:1.1rem}.asesoria-enlace-listo{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#2d7048}.asesoria-enlace-resumen>code{font-size:.8rem;color:#486754;overflow-wrap:anywhere}.asesoria-enlace-completo{grid-column:1/-1;min-width:0;border-top:1px solid #c4dbc8;padding-top:12px}.asesoria-enlace-completo summary{cursor:pointer;font-size:.8rem;color:#476852}.asesoria-enlace-completo label{display:block;margin-top:10px}.asesoria-enlace:focus{outline:2px solid #4b7999;outline-offset:4px}
+
+/* Datos de contacto disponibles también en el historial. */
+.panel-contacto-cliente{padding:18px;border:1px solid var(--borde,#dbe4eb);border-radius:14px;background:#f6f9fb;overflow-wrap:anywhere}
+.panel-contacto-cliente h3{font-size:1rem;margin:0 0 10px}
+.panel-contacto-cliente p{margin:6px 0}
+.panel-contacto-cliente .boton{margin-top:12px}
+.panel-contacto-telefono{font-variant-numeric:tabular-nums}
+.panel-contacto-nota{white-space:pre-wrap}
+.panel-confirmar-eliminar{display:flex!important;align-items:flex-start;gap:10px;margin:14px 0}
+.panel-confirmar-eliminar input{width:18px!important;height:18px;flex-shrink:0;margin-top:3px}
+.panel-eliminar-consulta summary{color:#9b2929}
+
+.panel-contacto-datos{display:grid;gap:12px;margin:14px 0}
+.panel-contacto-datos dt{font-size:.85rem;color:#526b7e}
+.panel-contacto-datos dd{margin:3px 0 0;white-space:pre-wrap}

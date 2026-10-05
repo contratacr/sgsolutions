@@ -5,7 +5,7 @@
 1. Explora productos seleccionados con precios de referencia e IVA incluido.
 2. Pulsa «Recibir asesoría». Se guarda una solicitud previa al pedido y se abre WhatsApp con productos, cantidades, códigos y referencia SG. El cliente envía el mensaje; la app no lo envía automáticamente.
 3. En Panel → Pedidos → Solicitudes de asesoría, el equipo encuentra la referencia, ajusta productos/cantidades/precios y confirma que realizó la asesoría y revisó disponibilidad.
-4. «Generar enlace de compra» genera un enlace privado `/compra/…` que vence en 24 horas. Puede copiarse y compartirse con el cliente. Prepararlo nuevamente invalida el enlace anterior. También se puede preparar una compra sin referencia para consultas generales. El acceso conserva los 256 bits aleatorios originales, representados en 43 caracteres base64url, sin UUID ni parámetros. No requiere migración; los enlaces largos anteriores siguen validándose. No se permite indexación, caché compartida ni envío del enlace como referrer.
+4. «Generar enlace de compra» genera un enlace privado `/compra/…` que vence en 24 horas. Puede copiarse y compartirse con el cliente. Prepararlo nuevamente invalida el enlace anterior. También se puede preparar una compra sin referencia para consultas generales. El acceso nuevo tiene 128 bits aleatorios, representados en 22 caracteres base64url, sin UUID ni parámetros. No requiere migración; los accesos anteriores de 256 bits / 43 caracteres y los enlaces con parámetros siguen validándose. No se permite indexación, caché compartida ni envío del enlace como referrer.
 5. El cliente abre ese enlace en cualquier dispositivo, completa datos y entrega y genera su pedido. El carrito no habilita checkout. Las APIs de pedido manual y tarjeta validan la autorización en el servidor, las cantidades exactas y un único uso. Los precios aprobados quedan fijos.
 
 No se cobra ni reserva inventario al solicitar asesoría. El pedido manual aprobado nace pendiente de pago; después muestra datos bancarios y permite adjuntar el comprobante. El equipo verifica el ingreso antes de marcarlo pagado. Se mantiene Correos de Costa Rica a ₡3500. Los pagos reales siguen deshabilitados; Tilopay solo conserva el flujo de prueba existente.
@@ -85,3 +85,35 @@ Límites actuales: asesorías recupera hasta 100 pendientes y 50 de otros estado
 Validación de esta revisión: 20 escenarios de navegador en español/inglés y escritorio/móvil, correspondientes a altas/edición, estadísticas, recorrido completo, aprobación y acceso protegido con build de producción. La aprobación incluye reemplazar un equipo por otro privado, precios/cantidades, confirmación obligatoria, renovación/vencimiento/uso del enlace, paginación de historial y búsquedas con/sin resultados. `npm run verificar` y `npm run build` completados.
 
 El recorrido en desarrollo excluye únicamente el error conocido del profiler de React con timestamp negativo al abortar las redirecciones de autenticación (`vercel/next.js#86060`). La prueba `panel-produccion-smoke.spec.ts` comprueba esos accesos en el build de producción sin excluir errores del navegador. No se publicaron estos cambios.
+
+
+## Contacto y carrito, 5 de octubre de 2026
+
+El teléfono parte de +506 editable. Ocho dígitos locales se normalizan con 506; se permiten formatos internacionales con + o 00, espacios, guiones y paréntesis. Se valida el formato, no la existencia de una cuenta de WhatsApp. Los números de Costa Rica requieren ocho dígitos tras el prefijo. Nombre, teléfono y consentimiento tienen errores propios y foco en el primer campo inválido; un fallo del servidor conserva la información. La necesidad es opcional. Las consultas llegan a Panel → Pedidos → Solicitudes de asesoría.
+
+Las nuevas consultas reciben SG-0001, SG-0002, etc. Aplicar `20261005000100_referencias_asesoria.sql` antes de publicar para habilitar el consecutivo en Supabase. La secuencia pertenece a la tabla y está restringida a service_role. No cambia las referencias históricas ni los tokens de compra; conocer un consecutivo no concede acceso. Localmente se asigna dentro de la escritura serializada.
+
+Agregar productos muestra un aviso con el nombre y «Ver carrito», sin mover el foco ni interrumpir la navegación. Solo confirma si la cantidad aumentó; al alcanzar un límite informa el resultado. Solicitar asesoría conserva la pestaña original y abre una copia de Soluciones mientras prepara WhatsApp, evitando about:blank al regresar de la app móvil. Las marcas usan dos bandas idénticas de ancho suficiente incluso con una sola marca; las copias se ocultan a tecnologías de asistencia. Se mantienen movimiento reducido y pausa al interactuar. Las categorías alinean nombre y cantidad verticalmente. La portada distingue «Soluciones» de «Para empresas», con «Ver planes».
+
+Referencias de diseño: [teléfonos internacionales de GOV.UK](https://design-system.service.gov.uk/patterns/phone-numbers/) y [carrito de Shopify Dawn](https://github.com/Shopify/dawn/blob/main/snippets/cart-drawer.liquid).
+
+Pruebas: contacto vacío, números nacionales/internacionales y formato inválido, errores de servidor/reintento, necesidad opcional, referencias simultáneas, regreso desde WhatsApp, confirmación y apertura del carrito, cinta con una sola marca, continuidad con imágenes lentas, regreso de fichas y aprobación protegida. WhatsApp se simula en pruebas; no se envían mensajes ni se cobran compras. Los registros locales utilizados se respaldan y restauran.
+
+
+## Enlace de compra y posición del resultado
+
+Los nuevos enlaces usan 16 bytes aleatorios criptográficos (128 bits), representados en 22 caracteres base64url. Se mantienen los enlaces anteriores de 43 caracteres y los parámetros UUID/token anteriores. La tabla token no tiene restricción de longitud y no requiere migración adicional. Las APIs admiten únicamente los dos tamaños previstos, la representación base64url canónica, aprobación vigente y cantidades autorizadas. Se conserva vencimiento de 24 horas, uso único, renovación y no-referrer/no-store.
+
+La tarjeta presenta referencia, estado listo, ruta corta y Copiar enlace; la dirección absoluta sigue disponible bajo Ver enlace completo y es lo que se copia. Si falla el portapapeles, abre el detalle y selecciona el campo para copiar manualmente. El dominio workers.dev continúa hasta configurar un dominio propio autorizado.
+
+Al generar, el resultado abre la solicitud, selecciona la página de lista que la contiene, mueve el foco sin desplazamiento previo y centra el enlace. Se respeta movimiento reducido. El fragmento de la redirección también apunta al resultado para navegación sin JavaScript. Pruebas en ambos idiomas y tamaños: copiar URL, 22 caracteres, compatibilidad histórica, aprobación/renovación/vencimiento/uso y resultado en segunda página con quince consultas pendientes.
+
+Criterio de aleatoriedad: [OWASP Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html), mínimo de 128 bits para identificadores criptográficos propios. Estas claves autorizan una compra concreta; la referencia consecutiva sigue sin conceder acceso.
+
+### Contacto e historial de pedidos
+
+- Todas las secciones muestran los datos de contacto guardados y WhatsApp si existe un teléfono válido. Las asesorías con pedido incorporan los datos del cliente de los pedidos cargados en el panel. Se indica explícitamente si no se dejó teléfono; no se inventa ni se usa el número del negocio como destino.
+- Solo una consulta cancelada sin `pedido_id` puede eliminarse del panel. Requiere confirmación y autorización administrativa en servidor, y comprueba el estado al escribir. Los pedidos manuales y con tarjeta conservan su historial.
+- La eliminación es lógica (`eliminado_en`): se oculta en todas las listas y se conserva la referencia interna para evitar reutilizar números. No es una eliminación definitiva de datos personales.
+- Aplicar `20261005000200_eliminar_consultas_canceladas.sql` antes de publicar este bloque. Aplicada y verificada en SG Solutions Producción el 5 de octubre de 2026, junto con la migración de referencias numéricas.
+- Pruebas locales en ES/EN, escritorio/móvil: contacto, falta de teléfono, enlace externo accesible, confirmación obligatoria, rechazo de ID manipulado, persistencia de eliminación y referencias consecutivas sin reutilización. No se enviaron mensajes ni se efectuaron cobros.

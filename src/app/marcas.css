@@ -27,7 +27,7 @@
 @media(max-width:650px){.marcas-cinta{padding-top:22px}.marcas-encabezado{padding:0 19px 18px;align-items:flex-start;flex-wrap:wrap;gap:15px}.marcas-encabezado h2{font-size:1.25rem}.marcas-controles{gap:14px}.marca-ficha{flex-basis:160px;padding:20px 17px 12px}.marcas-grupo{animation-duration:25s}.marcas-descripcion{font-size:.78rem}}
 @media(prefers-reduced-motion:reduce){.marcas-pista{animation:none}.marcas-grupo[aria-hidden=true]{display:none}.marcas-ventana{overflow-x:auto;mask-image:none}.marcas-pausa{display:none!important}}
 
-/* La cinta se mueve sola y permite arrastre/scroll cuando la persona interactúa. */
+/* Cinta de marcas; el desplazamiento manual se reserva para movimiento reducido. */
 .marcas-ventana{overflow-x:auto;mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent);scrollbar-width:none;padding:0 16px 8px}
 .marcas-ventana::-webkit-scrollbar{display:none}
 .marcas-grupo{justify-content:flex-start;min-width:max-content;width:max-content}
@@ -55,3 +55,8 @@
  .shop-categorias{scroll-snap-type:x proximity;scrollbar-width:thin}.shop-categorias button{scroll-snap-align:start}
  @supports(grid-template-rows:subgrid){.shop-grid{grid-template-rows:190px auto auto auto auto auto auto 62px}.shop-producto{display:grid;grid-row:1/9;grid-template-rows:subgrid}.shop-producto-info{grid-row:span 7;grid-template-rows:subgrid}}
 }
+
+/* Dos bandas idénticas, cada una al menos tan ancha como la ventana. */
+.marcas-ventana{overflow-x:hidden}
+.marcas-grupo{min-width:0}
+@media(prefers-reduced-motion:reduce){.marcas-ventana{overflow-x:auto}.marca-ficha[aria-hidden=true]{display:none}}

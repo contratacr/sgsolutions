@@ -2,8 +2,8 @@
 import {useRef,useState,type ReactNode} from 'react';
 import {useTranslations} from 'next-intl';
 import {Search} from 'lucide-react';
-export function ListaPanel({items,filtros,inicial='todos'}:{items:{id:string;busqueda:string;estado:string;contenido:ReactNode}[];filtros:{id:string;texto:string;estados?:string[]}[];inicial?:string}){
- const t=useTranslations('PanelLista'),[buscar,setBuscar]=useState(''),[filtro,setFiltro]=useState(inicial),[pagina,setPagina]=useState(1),lista=useRef<HTMLDivElement>(null);
+export function ListaPanel({items,filtros,inicial='todos',destacado}:{destacado?:string;items:{id:string;busqueda:string;estado:string;contenido:ReactNode}[];filtros:{id:string;texto:string;estados?:string[]}[];inicial?:string}){
+ const t=useTranslations('PanelLista'),[buscar,setBuscar]=useState(''),[filtro,setFiltro]=useState(inicial),[pagina,setPagina]=useState(()=>{const estados=filtros.find(f=>f.id===inicial)?.estados;const indice=items.filter(x=>!estados||estados.includes(x.estado)).findIndex(x=>x.id===destacado);return Math.floor(Math.max(0,indice)/10)+1;}),lista=useRef<HTMLDivElement>(null);
  const actual=filtros.find(f=>f.id===filtro);
  const coincidencias=items.filter(x=>(!actual?.estados||actual.estados.includes(x.estado))&&x.busqueda.toLocaleLowerCase().includes(buscar.trim().toLocaleLowerCase()));
  const paginas=Math.max(1,Math.ceil(coincidencias.length/10)),visible=Math.min(pagina,paginas);

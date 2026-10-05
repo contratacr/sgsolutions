@@ -4,7 +4,7 @@ import {redirect} from 'next/navigation';
 import {revalidatePath} from 'next/cache';
 import {sesionLocal} from '@/lib/admin-local';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
-import {listarAsesorias,cambiarAsesoria,tokenAsesoria,crearAsesoria} from '@/lib/asesorias';
+import {listarAsesorias,cambiarAsesoria,tokenAsesoria,crearAsesoria,eliminarConsultaCancelada} from '@/lib/asesorias';
 import {leerProductosAsesoria} from '@/lib/catalogo-servidor';
 
 async function preparar(form:FormData){
@@ -28,5 +28,14 @@ export async function prepararPedidoAsesorado(form:FormData){
  const resultado=await preparar(form).catch(()=>({resultado:'error',id:''}));
  revalidatePath('/panel/pedidos');
  const parametros=new URLSearchParams({resultado:resultado.resultado});if(resultado.id)parametros.set('asesoria',resultado.id);
- redirect(`/panel/pedidos?${parametros}`);
+ redirect(`/panel/pedidos?${parametros}${resultado.resultado==='enlace_generado'?`#enlace-${resultado.id}`:''}`);
+}
+
+export async function eliminarConsulta(form:FormData){
+ if(!await sesionLocal()){const cliente=await crearClienteServidor();const user=cliente?(await cliente.auth.getUser()).data.user:null;if(!user)redirect('/admin');const perfil=await cliente!.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();if(!perfil.data?.activo||perfil.data.rol!=='administrador')redirect('/panel');}
+ const id=String(form.get('id')??'');
+ if(!/^[0-9a-f-]{36}$/.test(id)||form.get('confirmarEliminar')!=='on')redirect('/panel/pedidos?resultado=invalido');
+ const eliminado=await eliminarConsultaCancelada(id).catch(()=>false);
+ revalidatePath('/panel/pedidos');
+ redirect(`/panel/pedidos?resultado=${eliminado?'consulta_eliminada':'error'}`);
 }

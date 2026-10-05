@@ -38,5 +38,7 @@ export async function Contacto({porCorreo=false}:{porCorreo?:boolean}={}) {
   const contacto = await getTranslations('Contacto');
   const whatsapp = enlaceWhatsApp(contacto('mensaje'));
   const marca = await getTranslations('Marca');
-  return <section id="contacto" className="contacto"><div className="contenedor contacto-grid"><div><p className="etiqueta">{t('contactoEtiqueta')}</p><h2>{t('contactoTitulo')}</h2><p>{t('contactoTexto')}</p></div><div className="contacto-acciones"><a className="boton boton-naranja" href={porCorreo?enlaceCorreo():whatsapp} target="_blank" rel="noopener noreferrer">{t(porCorreo?'contactoCorreo':'contactoAccion')}{porCorreo?<Mail size={20} aria-hidden="true"/>:<IconoWhatsApp width={20} height={20}/>}</a><a className="enlace-azul" href={`tel:${empresa.telefono}`}><Phone size={18}/>{marca('telefono')}</a></div></div></section>;
+  const pie = await getTranslations('Pie');
+  const n = await getTranslations('Navegacion');
+  return <section id="contacto" className="contacto"><div className="contenedor contacto-grid"><div><p className="etiqueta">{t('contactoEtiqueta')}</p><h2>{t('contactoTitulo')}</h2><p>{t('contactoTexto')}</p></div><div className="contacto-acciones"><a className="boton boton-naranja" href={porCorreo?enlaceCorreo():whatsapp} target="_blank" rel="noopener noreferrer">{t(porCorreo?'contactoCorreo':'contactoAccion')}{porCorreo?<Mail size={20} aria-hidden="true"/>:<IconoWhatsApp width={20} height={20}/>}<span className="sr-only">{n('nuevaPestana')}</span></a><a className="boton boton-contorno" href={`tel:${empresa.telefono}`} aria-label={`${pie('llamar')} · ${marca('telefono')}`}><Phone size={20} aria-hidden="true"/>{pie('llamar')}</a></div></div></section>;
 }

@@ -190,7 +190,11 @@
     "limite": "Máximo 99 unidades por opción.",
     "disminuir": "Reducir cantidad de {nombre}",
     "aumentar": "Aumentar cantidad de {nombre}",
-    "articulos": "{cantidad, plural, one {# artículo en el carrito} other {# artículos en el carrito}}"
+    "articulos": "{cantidad, plural, one {# artículo en el carrito} other {# artículos en el carrito}}",
+    "avisoTitulo": "Actualización del carrito",
+    "productoAgregado": "Agregado al carrito",
+    "noAgregado": "Alcanzó el límite del carrito. Revise sus cantidades.",
+    "verCarrito": "Ver carrito"
   },
   "Pedido": {
     "titulo": "Datos para coordinar su pedido",
@@ -248,7 +252,9 @@
     "instagram": "Instagram",
     "facebook": "Facebook",
     "terminos": "Términos y Condiciones",
-    "legal": "Información legal"
+    "legal": "Información legal",
+    "llamar": "Llamar",
+    "whatsappBoton": "WhatsApp"
   },
   "Acceso": {
     "etiqueta": "ESPACIO DEL EQUIPO",
@@ -331,9 +337,9 @@
     "soporteTitulo": "Soporte técnico",
     "soporteTexto": "Su tecnología, funcionando como debe.",
     "soporteAccion": "Solicitar ayuda",
-    "empresasTitulo": "Soluciones empresariales",
+    "empresasTitulo": "Para empresas",
     "empresasTexto": "Respaldo continuo para su operación.",
-    "empresasAccion": "Conocer soluciones",
+    "empresasAccion": "Ver planes",
     "ayuda": "Asesoría cercana. Respaldo de principio a fin.",
     "escena": "Todo conectado. Todo resuelto.",
     "visual": "Diseñado para conectar",
@@ -879,7 +885,12 @@
     "correoExplicacion": "Se envían al correo que el cliente escribe al completar la compra. Crear una asesoría no solicita ni envía correo.",
     "correoRemitente": "Remitente configurado: {correo}. Los avisos se envían mediante Brevo.",
     "correoSinConfig": "El envío automático no está configurado en este entorno. Comparta el enlace con el cliente.",
-    "resultado_asesoria_cancelada": "Asesoría cancelada. El enlace de compra ya no está disponible."
+    "resultado_asesoria_cancelada": "Asesoría cancelada. El enlace de compra ya no está disponible.",
+    "resultado_consulta_eliminada": "Consulta eliminada del panel.",
+    "contactoTitulo": "Datos del cliente",
+    "sinTelefono": "No dejó un teléfono de contacto.",
+    "telefonoInvalido": "Número guardado sin formato válido para WhatsApp.",
+    "mensajeWhatsApp": "Hola, {nombre}. Le contactamos de SG Solutions sobre la referencia {referencia}."
   },
   "AdminContenido": {
     "titulo": "Administrar contenido",
@@ -1233,14 +1244,18 @@
     "contactarme": "Prefiero que me contacten",
     "contactoTexto": "Deje su consulta. Nuestro equipo le contactará por WhatsApp; no necesita elegir un producto.",
     "nombre": "Nombre",
-    "telefono": "WhatsApp (con código de país)",
-    "necesidad": "¿Qué necesita?",
+    "telefono": "Número de WhatsApp",
+    "necesidad": "¿Qué necesita? (opcional)",
     "consentimiento": "Autorizo que SG Solutions utilice estos datos para atender mi consulta.",
     "enviarConsulta": "Solicitar contacto",
     "consultaGuardada": "Consulta recibida. Su referencia es {referencia}. Nuestro equipo le contactará por WhatsApp.",
     "errorContacto": "Revise su nombre, número con código de país, consulta y autorización.",
     "telefonoEjemplo": "+506 8888 8888",
-    "metaDescripcion": "Asesoría para redes, seguridad y equipos para su hogar o negocio. Explore productos y encuentre su solución con SG Solutions."
+    "metaDescripcion": "Asesoría para redes, seguridad y equipos para su hogar o negocio. Explore productos y encuentre su solución con SG Solutions.",
+    "telefonoAyuda": "Costa Rica: +506 y 8 dígitos. Para otro país, cambie el código. También puede pegar su número completo.",
+    "errorNombre": "Escriba su nombre (al menos 2 caracteres).",
+    "errorTelefono": "Revise su número. Para otro país, incluya + y el código de país.",
+    "errorConsentimiento": "Autorice el contacto para enviar su consulta."
   },
   "AsesoriaAdmin": {
     "titulo": "Solicitudes de asesoría",
@@ -1261,7 +1276,7 @@
     "confirmar": "Ya acordé con el cliente los productos, las cantidades y los precios, y comprobé la disponibilidad.",
     "preparar": "Generar enlace de compra",
     "vence": "El enlace dura 24 horas. Compártalo por WhatsApp; no se envía ningún correo al generarlo. Si cambia el pedido, el enlace anterior deja de funcionar.",
-    "enlace": "Enlace de compra para compartir con el cliente",
+    "enlace": "Enlace de compra",
     "vencida": "El enlace venció. Revise la disponibilidad antes de preparar uno nuevo.",
     "cancelar": "Cancelar solicitud",
     "nueva": "Crear compra después de una asesoría privada",
@@ -1288,7 +1303,14 @@
     "faltaConfirmar": "Confirme el acuerdo con el cliente y la disponibilidad antes de generar el enlace.",
     "compartirAyuda": "Enlace listo. Cópielo y compártalo en la conversación con el cliente.",
     "opciones": "Otras acciones",
-    "cancelarAyuda": "Cancelar impide continuar la compra con este enlace."
+    "cancelarAyuda": "Cancelar impide continuar la compra con este enlace.",
+    "listoCompartir": "Listo para compartir",
+    "compraReferencia": "Compra {referencia}",
+    "verEnlaceCompleto": "Ver enlace completo",
+    "eliminar": "Eliminar del panel",
+    "eliminarAyuda": "Solo se eliminan del panel consultas canceladas que no generaron un pedido. Su referencia se conserva internamente y no se reutiliza.",
+    "confirmarEliminar": "Confirmo que deseo eliminar esta consulta del panel.",
+    "eliminando": "Eliminando…"
   },
   "PanelLista": {
     "buscar": "Buscar por cliente, referencia o producto",

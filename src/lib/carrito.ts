@@ -44,11 +44,13 @@ export function cambiarCantidad(id: ProductoId, cantidad: number) {
   const actuales = obtener().filter(linea => linea.id !== id);
   guardar(cantidad ? [...actuales, { id, cantidad }] : actuales);
 }
-export function agregarProducto(id: ProductoId, unidades=1) {
+export function agregarProducto(id: ProductoId, unidades=1, avisar=true) {
   if(!Number.isInteger(unidades)||unidades<1||unidades>99)return;
   const cantidad = obtener().find(linea => linea.id === id)?.cantidad ?? 0;
   cambiarCantidad(id, Math.min(cantidad + unidades, 99));
-  if(cantidad<99&&obtener().some(l=>l.id===id))medir('carrito',id);
+  const agregadas=(obtener().find(l=>l.id===id)?.cantidad??0)-cantidad;
+  if(agregadas>0)medir('carrito',id);
+  if(avisar)window.dispatchEvent(new CustomEvent('sg-carrito-agregado',{detail:{id,agregadas}}));
 }
 export function useCarrito() {
   return useSyncExternalStore(suscribir, obtener, () => vacio);

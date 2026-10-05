@@ -460,3 +460,7 @@ svg { flex-shrink: 0; }
 /* El distintivo ocupa el mismo espacio del icono, sin ampliar la navegación. */
 .carrito-trigger{position:relative;width:44px;height:44px;padding:9px;flex:none}
 .carrito-cantidad{position:absolute;right:-3px;top:0;min-width:18px;height:18px;padding-inline:3px;font-size:.65rem;border:2px solid var(--oscuro)}
+
+.carrito-confirmacion{position:fixed;z-index:60;left:24px;bottom:24px;width:min(390px,calc(100vw - 48px));padding:20px 44px 20px 20px;border:1px solid #c8d9d1;border-radius:14px;background:white;box-shadow:0 12px 40px #0b243326;color:#142e42}
+.carrito-confirmacion [role=status]{display:flex;align-items:start;gap:10px}.carrito-confirmacion [role=status]>svg{color:#2b7048;flex:none}.carrito-confirmacion strong{font-size:.9rem}.carrito-confirmacion p{font-size:.8rem;margin:6px 0 0;line-height:1.5;overflow-wrap:anywhere}.carrito-confirmacion .boton{margin-top:14px;min-height:44px;padding:10px 16px;gap:9px}.carrito-confirmacion-cerrar{position:absolute;right:3px;top:3px}
+@media(max-width:650px){.carrito-confirmacion{left:12px;bottom:16px;width:calc(100vw - 88px);padding:16px 36px 16px 16px}}

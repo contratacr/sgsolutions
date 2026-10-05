@@ -190,7 +190,11 @@
     "limite": "Maximum 99 units per option.",
     "disminuir": "Decrease quantity of {nombre}",
     "aumentar": "Increase quantity of {nombre}",
-    "articulos": "{cantidad, plural, one {# item in cart} other {# items in cart}}"
+    "articulos": "{cantidad, plural, one {# item in cart} other {# items in cart}}",
+    "avisoTitulo": "Cart update",
+    "productoAgregado": "Added to cart",
+    "noAgregado": "You reached the cart limit. Review your quantities.",
+    "verCarrito": "View cart"
   },
   "Pedido": {
     "titulo": "Details for coordinating your order",
@@ -248,7 +252,9 @@
     "instagram": "Instagram",
     "facebook": "Facebook",
     "terminos": "Terms and Conditions",
-    "legal": "Legal information"
+    "legal": "Legal information",
+    "llamar": "Call",
+    "whatsappBoton": "WhatsApp"
   },
   "Acceso": {
     "etiqueta": "TEAM WORKSPACE",
@@ -331,9 +337,9 @@
     "soporteTitulo": "Technical support",
     "soporteTexto": "Your technology, working as it should.",
     "soporteAccion": "Get support",
-    "empresasTitulo": "Business solutions",
+    "empresasTitulo": "For businesses",
     "empresasTexto": "Ongoing support for your operation.",
-    "empresasAccion": "Explore solutions",
+    "empresasAccion": "View plans",
     "ayuda": "Personal advice. Support from start to finish.",
     "escena": "Everything connected. Everything covered.",
     "visual": "Designed to connect",
@@ -879,7 +885,12 @@
     "correoExplicacion": "They are sent to the email address entered by the customer at checkout. Creating an advice request neither asks for nor sends an email.",
     "correoRemitente": "Configured sender: {correo}. Notifications are sent through Brevo.",
     "correoSinConfig": "Automatic email is not configured in this environment. Share the link with the customer.",
-    "resultado_asesoria_cancelada": "Advice request canceled. The checkout link is no longer available."
+    "resultado_asesoria_cancelada": "Advice request canceled. The checkout link is no longer available.",
+    "resultado_consulta_eliminada": "Enquiry removed from the dashboard.",
+    "contactoTitulo": "Customer details",
+    "sinTelefono": "No contact phone number was provided.",
+    "telefonoInvalido": "Saved number is not in a valid WhatsApp format.",
+    "mensajeWhatsApp": "Hello, {nombre}. This is SG Solutions contacting you about reference {referencia}."
   },
   "AdminContenido": {
     "titulo": "Manage content",
@@ -1233,14 +1244,18 @@
     "contactarme": "I would prefer to be contacted",
     "contactoTexto": "Leave your enquiry. Our team will contact you on WhatsApp; you do not need to choose a product.",
     "nombre": "Name",
-    "telefono": "WhatsApp (with country code)",
-    "necesidad": "What do you need?",
+    "telefono": "WhatsApp number",
+    "necesidad": "What do you need? (optional)",
     "consentimiento": "I authorize SG Solutions to use these details to respond to my enquiry.",
     "enviarConsulta": "Request contact",
     "consultaGuardada": "Enquiry received. Your reference is {referencia}. Our team will contact you on WhatsApp.",
     "errorContacto": "Check your name, number with country code, enquiry and consent.",
     "telefonoEjemplo": "+506 8888 8888",
-    "metaDescripcion": "Advice on networks, security and equipment for your home or business. Explore products and find your solution with SG Solutions."
+    "metaDescripcion": "Advice on networks, security and equipment for your home or business. Explore products and find your solution with SG Solutions.",
+    "telefonoAyuda": "Costa Rica: +506 and 8 digits. For another country, change the code. You can also paste your full number.",
+    "errorNombre": "Enter your name (at least 2 characters).",
+    "errorTelefono": "Check your number. For another country, include + and the country code.",
+    "errorConsentimiento": "Allow us to contact you before sending your inquiry."
   },
   "AsesoriaAdmin": {
     "titulo": "Advice requests",
@@ -1261,7 +1276,7 @@
     "confirmar": "I agreed on the products, quantities and prices with the customer and checked availability.",
     "preparar": "Generate checkout link",
     "vence": "The link lasts 24 hours. Share it via WhatsApp; generating it does not send an email. Changing the order invalidates the previous link.",
-    "enlace": "Checkout link to share with the customer",
+    "enlace": "Purchase link",
     "vencida": "The link has expired. Check availability before preparing a new one.",
     "cancelar": "Cancel request",
     "nueva": "Create a purchase after private advice",
@@ -1288,7 +1303,14 @@
     "faltaConfirmar": "Confirm the customer agreement and availability before generating the link.",
     "compartirAyuda": "Link ready. Copy it and share it in the customer conversation.",
     "opciones": "Other actions",
-    "cancelarAyuda": "Canceling prevents checkout through this link."
+    "cancelarAyuda": "Canceling prevents checkout through this link.",
+    "listoCompartir": "Ready to share",
+    "compraReferencia": "Purchase {referencia}",
+    "verEnlaceCompleto": "View full link",
+    "eliminar": "Remove from dashboard",
+    "eliminarAyuda": "Only cancelled enquiries without an order can be removed from the dashboard. Their reference is retained internally and is not reused.",
+    "confirmarEliminar": "I confirm that I want to remove this enquiry from the dashboard.",
+    "eliminando": "Removing…"
   },
   "PanelLista": {
     "buscar": "Search by customer, reference or product",

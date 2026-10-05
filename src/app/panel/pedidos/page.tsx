@@ -1,4 +1,5 @@
-import {IconoWhatsApp} from '@/components/icono-whatsapp';
+import {ContactoPedidoAdmin} from '@/components/contacto-pedido-admin';
+import {EliminarConsulta} from '@/components/eliminar-consulta';
 import {EnlaceCompra} from '@/components/enlace-compra';
 import {listarAsesorias,enlaceAprobado,referenciaAsesoria} from '@/lib/asesorias';
 import {leerProductosAsesoria} from '@/lib/catalogo-servidor';
@@ -22,7 +23,7 @@ type Pedido = {
   estado: 'iniciado' | 'pendiente' | 'pagado' | 'rechazado' | 'error';
   entorno: 'pruebas' | 'produccion';
   total: number;
-  cliente: { nombre?: string; apellidos?: string; correo?: string };
+  cliente: { nombre?: string; apellidos?: string; correo?: string; telefono?:string; direccion?:string; modalidad?:string };
   articulos: { nombre?: string; cantidad?: number }[];
 };
 
@@ -64,6 +65,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
     ? await manualDb.from('pedidos_manuales').select('id,creado_en,estado,metodo,total_productos,costo_envio,total_cobrar,cliente,articulos,comprobante_path,correo_cliente_en,correo_pago_en').order('creado_en', { ascending: false }).limit(50)
     : { data: null, error: null };
   const manuales = (manualData ?? []) as Manual[];
+  const contactosPedidos=new Map([...manuales,...pedidos].map(p=>[p.id,p.cliente]));
   const {resultado,asesoria:destacada} = await searchParams;
   const lista=await getTranslations('PanelLista');
   const ahora=new Date().getTime();
@@ -71,20 +73,21 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
     <p className="etiqueta">{t('etiqueta')}</p>
     <h1>{t('titulo')}</h1>
     <p className="admin-guia">{t('descripcion')}</p>
-    {resultado && ['guardado','sin_correo','error','invalido','no_disponible','enlace_generado','asesoria_cancelada'].includes(resultado) && <p role="status" className="panel-aviso">{t(`resultado_${resultado}`)}</p>}
+    {resultado && ['guardado','sin_correo','error','invalido','no_disponible','enlace_generado','asesoria_cancelada','consulta_eliminada'].includes(resultado) && <p role="status" className="panel-aviso">{t(`resultado_${resultado}`)}</p>}
     <SeccionesPedidos inicial={resultado&&['guardado','sin_correo','no_disponible'].includes(resultado)?'manuales':'asesorias'} secciones={[
       {id:'asesorias',nombre:a('titulo'),cantidad:solicitudes.filter(s=>s.estado==='solicitada').length,contenido:<section className="asesorias-admin">
         <div className="panel-seccion-cabecera"><div><h2>{a('titulo')}</h2><p>{a('descripcion')}</p></div></div>
         <details className="panel-nueva-asesoria"><summary>{a('nueva')}</summary><PrepararAsesoria id="" articulos={[]} productos={productos}/></details>
-        {errorAsesorias?<p role="alert">{a('noDisponible')}</p>:<ListaPanel inicial={resultado==='asesoria_cancelada'?'historial':'activos'} filtros={[{id:'activos',texto:lista('activos'),estados:['solicitada','aprobada']},{id:'pendientes',texto:lista('pendientes'),estados:['solicitada']},{id:'historial',texto:lista('historial'),estados:['procesando','utilizada','cancelada']},{id:'todos',texto:lista('todos')}]} items={solicitudes.map(s=>({id:s.id,estado:s.estado,busqueda:[referenciaAsesoria(s.id),s.contacto?.nombre,s.contacto?.telefono,s.contacto?.necesidad,...s.articulos.map(x=>x.producto.nombre.es+' '+x.producto.nombre.en+' '+x.producto.codigoFabricante)].join(' '),contenido:<article className={`pedidos-admin-tarjeta ${s.estado==='solicitada'?'asesoria-pendiente':''}`}>
+        {errorAsesorias?<p role="alert">{a('noDisponible')}</p>:<ListaPanel key={solicitudes.find(s=>s.id===destacada)?.token??destacada} destacado={destacada} inicial={['asesoria_cancelada','consulta_eliminada'].includes(resultado??'')?'historial':'activos'} filtros={[{id:'activos',texto:lista('activos'),estados:['solicitada','aprobada']},{id:'pendientes',texto:lista('pendientes'),estados:['solicitada']},{id:'historial',texto:lista('historial'),estados:['procesando','utilizada','cancelada']},{id:'todos',texto:lista('todos')}]} items={solicitudes.map(s=>({id:s.id,estado:s.estado,busqueda:[referenciaAsesoria(s.id,s.numero),s.contacto?.nombre,s.contacto?.telefono,s.contacto?.necesidad,...s.articulos.map(x=>x.producto.nombre.es+' '+x.producto.nombre.en+' '+x.producto.codigoFabricante)].join(' '),contenido:<article className={`pedidos-admin-tarjeta ${s.estado==='solicitada'?'asesoria-pendiente':''}`}>
           <details className="panel-pedido-detalle" open={s.id===destacada?true:undefined}>
-            <summary><div><strong>{s.contacto?.nombre??referenciaAsesoria(s.id)}</strong><small>{s.contacto?referenciaAsesoria(s.id):s.articulos.slice(0,2).map(x=>x.producto.nombre[idioma==='en'?'en':'es']).join(' · ')}<br/><time dateTime={s.creado_en}>{new Intl.DateTimeFormat(idioma==='en'?'en-US':'es-CR',{dateStyle:'medium',timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(s.creado_en))}</time></small></div><span className="pedidos-admin-estado">{a(s.estado)}</span></summary>
+            <summary><div><strong>{s.contacto?.nombre??referenciaAsesoria(s.id,s.numero)}</strong><small>{s.contacto?referenciaAsesoria(s.id,s.numero):s.articulos.slice(0,2).map(x=>x.producto.nombre[idioma==='en'?'en':'es']).join(' · ')}<br/><time dateTime={s.creado_en}>{new Intl.DateTimeFormat(idioma==='en'?'en-US':'es-CR',{dateStyle:'medium',timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(s.creado_en))}</time></small></div><span className="pedidos-admin-estado">{a(s.estado)}</span></summary>
             <div className="panel-pedido-cuerpo">
-            {s.contacto&&<div className="asesoria-contacto"><p>{s.contacto.necesidad}</p><a className="boton boton-azul" href={`https://wa.me/${s.contacto.telefono}?text=${encodeURIComponent(a('mensajeContacto',{nombre:s.contacto.nombre,referencia:referenciaAsesoria(s.id)}))}`} target="_blank" rel="noopener noreferrer"><IconoWhatsApp width={20} height={20}/>{a('contactar')}<span className="sr-only">{a('nuevaPestana')}</span></a></div>}
-            {s.estado==='aprobada'&&s.vence_en&&Date.parse(s.vence_en)>ahora&&<><p className="panel-ayuda">{a('compartirAyuda')}</p><EnlaceCompra key={s.token} url={enlaceAprobado(s,origen)}/></>}
+            <ContactoPedidoAdmin cliente={{...s.contacto,...(s.pedido_id?contactosPedidos.get(s.pedido_id):{})}} referencia={referenciaAsesoria(s.id,s.numero)}/>
+            {s.estado==='aprobada'&&s.vence_en&&Date.parse(s.vence_en)>ahora&&<><EnlaceCompra key={s.token} id={s.id} referencia={referenciaAsesoria(s.id,s.numero)} destacar={resultado==='enlace_generado'&&s.id===destacada} url={enlaceAprobado(s,origen)}/></>}
             {s.estado==='aprobada'&&s.vence_en&&Date.parse(s.vence_en)<=ahora&&<p className="panel-aviso">{a('vencida')}</p>}
             {['solicitada','aprobada'].includes(s.estado)?<PrepararAsesoria id={s.id} articulos={s.articulos} productos={productos}/>:<ul>{s.articulos.map(x=><li key={x.producto.id}>{x.cantidad} × {x.producto.nombre[idioma==='en'?'en':'es']}</li>)}</ul>}
             {['solicitada','aprobada'].includes(s.estado)&&<details className="panel-opciones-secundarias"><summary>{a('opciones')}</summary><p>{a('cancelarAyuda')}</p><form action={prepararPedidoAsesorado}><input type="hidden" name="id" value={s.id}/><input type="hidden" name="cancelar" value="1"/><button className="boton boton-contorno">{a('cancelar')}</button></form></details>}
+            {s.estado==='cancelada'&&!s.pedido_id&&<EliminarConsulta id={s.id}/>}
             </div>
           </details>
         </article>}))}/>}</section>},
@@ -101,7 +104,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
         return {id:p.id,estado:p.estado,busqueda:[numeroPedido(p.id),p.cliente.nombre,p.cliente.apellidos,p.cliente.correo,p.cliente.telefono,...p.articulos.map(x=>x.nombre)].join(' '),contenido:<article className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{p.cliente.nombre} {p.cliente.apellidos}</strong><small>{numeroPedido(p.id)} · {colones(total)}</small></div><span className="pedidos-admin-estado">{t(`manual_${p.estado}`)}</span></summary><div className="panel-pedido-cuerpo">
           <div className="pedidos-admin-encabezado"><div><strong>{p.cliente?.nombre} {p.cliente?.apellidos}</strong><small>{p.cliente?.correo} · {p.cliente?.telefono}</small></div><span className="pedidos-admin-estado">{t(`manual_${p.estado}`)}</span></div>
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(p.creado_en))} · {t(`metodo_${p.metodo}`)} · {t(`modalidad_${p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro'}`)}</p>
-          {p.cliente?.direccion && <p>{p.cliente.direccion}</p>}
+          <ContactoPedidoAdmin cliente={p.cliente} referencia={numeroPedido(p.id)}/>
           <ul>{p.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>
           <div className="pedidos-admin-pie"><code>{numeroPedido(p.id)}</code><strong>{colones(total)}</strong></div>
           {envio !== null && <p>{t('costoEnvio')}: {colones(envio)}</p>}
@@ -123,6 +126,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
             <span className="pedidos-admin-estado">{t(pedido.estado)}</span>
           </div>
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))} · {t(pedido.entorno)}</p>
+          <ContactoPedidoAdmin cliente={pedido.cliente} referencia={numeroPedido(pedido.id)}/>
           <ul>{pedido.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>
           <div className="pedidos-admin-pie"><code>{pedido.id}</code><strong>{colones(pedido.total)}</strong></div>
         </div></details></article>}))}/> }

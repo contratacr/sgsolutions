@@ -140,8 +140,6 @@ body:has(.portal) .portal{box-shadow:none}
 .pie-contacto,.pie-ubicacion{display:flex;flex-direction:column;align-items:flex-start}
 .pie-contacto>a:not(.pie-whatsapp){margin-top:3px}
 .pie-base{justify-content:flex-start}
-.pie-redes .pie-whatsapp-icono{color:#dce8f0;border-color:#ffffff2b}
-.pie-redes .pie-whatsapp-icono:hover{color:#fff;background:#ffffff12;border-color:#ffffff5c}
 .whatsapp-flotante{position:fixed;right:22px;bottom:22px;z-index:60;display:grid;place-items:center;width:56px;height:56px;border:1px solid #ffffff70;border-radius:50%;background:#25d366;color:#fff;box-shadow:0 14px 34px #071b1245;font-size:.78rem;font-weight:650;transition:transform .22s,background .22s,box-shadow .22s}
 .whatsapp-flotante span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .whatsapp-flotante:hover,.whatsapp-flotante:focus-visible{transform:translateY(-3px) scale(1.04);background:#20bd5a;box-shadow:0 18px 38px #071b1250}
@@ -363,3 +361,14 @@ body:has(.portal) .portal{box-shadow:none}
 }
 
 .pie-legales{display:flex;gap:22px;flex-wrap:wrap}.pie-legales a{font-size:.75rem;color:inherit;text-decoration:underline;text-underline-offset:4px}.pie-base{gap:20px;flex-wrap:wrap}@media(max-width:600px){.pie-legales{gap:12px 20px}}
+
+/* Acciones de contacto identificables, separadas de las redes sociales. */
+.pie-contacto-acciones{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 12px}
+.pie-contacto-acciones a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 14px;border:1px solid #ffffff40;border-radius:12px;color:#e6f0f4;font-size:.88rem}
+.pie-contacto-acciones .pie-contacto-whatsapp{background:#ffffff0d;border-color:#7bd7b478;color:#a9e9cc}
+.pie-contacto-acciones a:hover{background:#ffffff16;border-color:#ffffff80}
+.pie-contacto-acciones svg{flex-shrink:0}
+.pie-contacto .pie-telefono{margin:0 0 8px;color:#c7d9e8;font-size:.9rem;font-variant-numeric:tabular-nums}
+.barra-local a[href^="tel:"]{display:inline-flex;align-items:center;gap:6px}
+.contacto-acciones{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px}
+@media(max-width:760px){.contacto-acciones{justify-content:flex-start}}

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, MapPin } from 'lucide-react';
+import { Menu, X, MapPin, Phone } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Carrito } from './carrito';
 import { cambiarIdioma } from '@/app/acciones-idioma';
@@ -24,7 +24,7 @@ export function Cabecera() {
     return()=>{document.removeEventListener('pointerdown',fuera);document.removeEventListener('keydown',tecla);document.removeEventListener('focusin',foco);};
   },[abierto]);
   const enlaces = [['/soluciones', 'tienda'], ['/soporte', 'soporte'], ['/empresas', 'empresas'], ['/casos-de-exito', 'casos'], ['/nosotros', 'nosotros']] as const;
-  return <header ref={cabecera} className="cabecera"><div className="barra-local"><div className="contenedor"><span><MapPin size={13}/>{marca('ubicacionCorta')}</span><a href="tel:+50624467846">{marca('telefono')}</a></div></div><div className="contenedor navegacion">
+  return <header ref={cabecera} className="cabecera"><div className="barra-local"><div className="contenedor"><span><MapPin size={13}/>{marca('ubicacionCorta')}</span><a href="tel:+50624467846"><Phone size={13} aria-hidden="true"/>{marca('telefono')}</a></div></div><div className="contenedor navegacion">
     <Link href="/" aria-label={t('inicio')}><Image className="logo" src="/imagenes/logo-principal.png" alt={marca('logo')} width={150} height={63} priority/></Link>
     <nav aria-label={t('principal')} className="nav-escritorio">{enlaces.map(([href, texto]) => <Link href={href} key={texto} aria-current={ruta === href ? 'page' : undefined}>{t(texto)}</Link>)}</nav>
     <div className="nav-acciones"><form className="selector-idioma" action={cambiarIdioma} role="group" aria-label={t('seleccionarIdioma')}>{(['es', 'en'] as const).map(opcion => <button key={opcion} type="submit" name="idioma" value={opcion} lang={opcion} aria-pressed={idioma === opcion} aria-label={idioma === opcion ? `${t(opcion === 'es' ? 'espanol' : 'ingles')} · ${t('idiomaActual')}` : t('cambiarIdioma')}>{opcion.toUpperCase()}</button>)}</form><Carrito/><button ref={botonMenu} className="boton-icono menu-movil" onClick={() => setAbierto(!abierto)} aria-label={abierto ? t('cerrar') : t('menu')} aria-expanded={abierto} aria-controls="navegacion-movil">{abierto ? <X/> : <Menu/>}</button></div>
