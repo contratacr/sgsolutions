@@ -191,7 +191,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
           <button type="button" className="boton boton-azul" onClick={agregarProducto}>{t('nuevoProducto')}</button>
         </div>
         <div className="admin-lista-filtros">
-          <label>{t('categoria')}<select value={categoriaFiltro} onChange={e=>{setCategoriaFiltro(e.target.value);setPaginaAdmin(1);setEditorId(null);}}><option value="todos">{u('todos')}</option>{datos.categorias.map(c=><option key={c.id} value={c.id}>{traducir(c.nombre,idioma)} ({datos.productos.filter(p=>p.publicado&&p.categoria===c.id).length})</option>)}</select></label>
+          <label>{t('categoria')}<select value={categoriaFiltro} onChange={e=>{setCategoriaFiltro(e.target.value);setPaginaAdmin(1);setEditorId(null);}}><option value="todos">{u('todos')}</option>{datos.categorias.map(c=><option key={c.id} value={c.id}>{traducir(c.nombre,idioma)} ({datos.productos.filter(p=>p.categoria===c.id&&(filtroEstado==='todos'||filtroEstado==='publicados'&&p.publicado||filtroEstado==='borradores'&&!p.publicado)).length})</option>)}</select></label>
           <label>{t('buscarProductos')}<input type="search" value={buscar} onChange={e => { setBuscar(e.target.value); setPaginaAdmin(1); setEditorId(null); }} /></label>
           <label>{u('estado')}<select value={filtroEstado} onChange={e => { setFiltroEstado(e.target.value); setPaginaAdmin(1); setEditorId(null); }}>{['todos', 'publicados', 'borradores'].map(k => <option key={k} value={k}>{u(k)}</option>)}</select></label>
         </div>

@@ -44,12 +44,14 @@ for(const idioma of ['es','en'])test(`asesoría, selección y regreso al pedido 
  await expect(consulta).toHaveAttribute('rel','noopener noreferrer');
  const url=new URL((await consulta.getAttribute('href'))!);
  expect(url.pathname).toBe('/50664399417');
- expect(url.searchParams.get('text')).toContain(idioma==='es'?'Me interesan estos productos':'I am interested in these products');
+ expect(url.searchParams.get('text')).toContain(idioma==='es'?'¿Qué me recomiendan':'What would you recommend');
+ expect(url.searchParams.get('text')).toContain('\n\n*1 × ');
+ expect(url.searchParams.get('text')).not.toContain('\n\n\n');
  const codigo=await producto.locator('.shop-codigo').innerText();
  expect(url.searchParams.get('text')).toContain(codigo.split(' ').at(-1));
  await context.route('**/api/asesoria',route=>route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({referencia:'SG-PRUEBA'})}));
  await context.route('https://wa.me/**',route=>route.fulfill({status:200,body:'WhatsApp test — no message sent'}));
- const popupPromise=page.waitForEvent('popup');await consulta.click();const popup=await popupPromise;await popup.waitForURL("https://wa.me/**");await popup.close();
+ const popupPromise=page.waitForEvent('popup');await consulta.click();const popup=await popupPromise;await popup.waitForURL("https://wa.me/**");expect(new URL(popup.url()).searchParams.get("text")).toContain("SG-PRUEBA");await popup.close();
  await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();
  await expect(page.locator('.carrito-lineas li')).toHaveCount(1);
  await expect(page.locator('.carrito-resumen a[href^="https://wa.me/"]')).toBeVisible();

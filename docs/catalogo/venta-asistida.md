@@ -5,7 +5,7 @@
 1. Explora productos seleccionados con precios de referencia e IVA incluido.
 2. Pulsa «Recibir asesoría». Se guarda una solicitud previa al pedido y se abre WhatsApp con productos, cantidades, códigos y referencia SG. El cliente envía el mensaje; la app no lo envía automáticamente.
 3. En Panel → Pedidos → Solicitudes de asesoría, el equipo encuentra la referencia, ajusta productos/cantidades/precios y confirma que realizó la asesoría y revisó disponibilidad.
-4. «Preparar pedido» genera un enlace privado que vence en 24 horas. Puede copiarse y compartirse con el cliente. Prepararlo nuevamente invalida el enlace anterior. También se puede preparar una compra sin referencia para consultas generales.
+4. «Generar enlace de compra» genera un enlace privado que vence en 24 horas. Puede copiarse y compartirse con el cliente. Prepararlo nuevamente invalida el enlace anterior. También se puede preparar una compra sin referencia para consultas generales.
 5. El cliente abre ese enlace en cualquier dispositivo, completa datos y entrega y genera su pedido. El carrito no habilita checkout. Las APIs de pedido manual y tarjeta validan la autorización en el servidor, las cantidades exactas y un único uso. Los precios aprobados quedan fijos.
 
 No se cobra ni reserva inventario al solicitar asesoría. El pedido manual aprobado nace pendiente de pago; después muestra datos bancarios y permite adjuntar el comprobante. El equipo verifica el ingreso antes de marcarlo pagado. Se mantiene Correos de Costa Rica a ₡3500. Los pagos reales siguen deshabilitados; Tilopay solo conserva el flujo de prueba existente.
@@ -18,7 +18,7 @@ La transición de aprobación a procesamiento es condicional para impedir dos pe
 
 ## Administración
 
-En Productos se muestran inicialmente los publicados. Filtre por categoría, busque o cambie a Borradores. Edite datos básicos, precio final en colones, disponibilidad, imágenes, especificaciones y publicación. Guarde los cambios. Los textos siguen disponibles en español e inglés.
+En Productos se muestran inicialmente los publicados. Filtre por categoría, busque o cambie a Borradores. Edite datos básicos, precio de referencia en colones, disponibilidad, imágenes, especificaciones y publicación. Guarde los cambios. Los textos siguen disponibles en español e inglés.
 
 La primera adaptación elige hasta cinco productos por categoría entre los publicados: prioriza los no agotados, con precio y destacados. Es una selección provisional para que Luis la revise. Los demás quedan en borrador, sin borrar sus fichas ni imágenes. Los precios existentes se copian como precios manuales; no se recalculan al cambiar una fórmula.
 
@@ -45,3 +45,43 @@ Soluciones ofrece cuatro accesos directos a WhatsApp con el motivo de consulta: 
 Las pendientes aparecen primero, de más antigua a más reciente, con fecha y acceso a WhatsApp cuando el cliente dejó su número. Para una compra sencilla el equipo puede preparar el enlace en la misma conversación; para proyectos primero define la solución. No se añadieron dirección, facturación ni método de pago al formulario de consulta.
 
 Antes de publicar, aplicar también `20261004000200_asesorias_contacto.sql`, después de la migración inicial de asesorías. Los datos de contacto permanecen protegidos por las políticas privadas de la tabla. El push por sí solo no aplica migraciones ni despliega producción.
+
+
+## Revisión del panel, 4 de octubre de 2026
+
+La referencia de interacción es el pedido borrador de Shopify: el asesor construye la compra y comparte un enlace, antes de que el cliente ingrese sus datos de entrega/pago. La app conserva la asesoría como entrada principal y la gestión manual del catálogo.
+
+Referencias: [pedidos borradores](https://help.shopify.com/en/manual/fulfillment/managing-orders/create-orders/create-draft), [búsqueda y filtros](https://help.shopify.com/en/manual/products/searching-filtering), [componentes y accesibilidad](https://design-system.service.gov.uk/components/).
+
+Inventario completo de funciones visibles y criterio aplicado:
+
+1. **Acceso**: correo, contraseña, validación, estados de carga y errores traducidos; sin cambios de credenciales ni permisos.
+2. **Navegación**: Administración, Productos, Contenido, Pedidos, Estadísticas, cerrar sesión y ver sitio; iconos identificables, página activa y navegación en la misma pestaña.
+3. **Inicio**: cuatro módulos y una guía de trabajo de tres pasos. Aviso de prueba local separado del contenido operativo.
+4. **Listado de productos**: búsqueda por nombre/marca/código, categoría, publicados/borradores/todos, conteos y páginas de 20 productos; los nombres pueden ocupar más de una línea.
+5. **Producto — información**: nombre y descripción en español/inglés, categoría y marca, con índice de secciones.
+6. **Producto — precio**: referencia en colones con IVA, precio pendiente, disponibilidad y código de fabricante. El precio acordado se establece al preparar la compra.
+7. **Producto — imágenes**: subir, reemplazar, portada, ordenar, quitar, deshacer, URL, vista previa, errores y límite; ficha técnica HTTPS. Se conserva el gestor existente con controles coherentes.
+8. **Producto — especificaciones**: nombres/valores bilingües, agregar/quitar; sección secundaria desplegable.
+9. **Producto — publicación**: público o privado, destacado y eliminación secundaria con confirmación. Los productos privados pueden usarse en la compra asesorada.
+10. **Categorías**: nombre en ambos idiomas, agregar/quitar; no se elimina una categoría utilizada. Campos y desplegables con estilos uniformes.
+11. **Presentación de Soluciones**: título, descripción y aviso bilingües; nombres adaptados al modelo de soluciones, sin referencias a una tienda convencional.
+12. **Guardado**: guardar, descartar en catálogo, cambios pendientes, validación con foco, conflictos de revisión y errores. Sin pérdida de la edición por un fallo de servidor.
+13. **Casos de éxito**: búsqueda por cliente/título, publicación, categoría, historia, solución y fotografías; estado visible antes de abrir la edición.
+14. **Textos del sitio**: filtro por sección, búsqueda sobre la versión editada, bloques de 30 y mostrar más. Resumen en el idioma del panel; claves técnicas dentro del registro. Se excluyen textos internos de administración y analítica.
+15. **Datos bancarios**: titular, número SINPE, banco e IBAN, agrupados. Guardarlos no configura Brevo ni activa cobros de tarjeta.
+16. **Asesorías**: Por atender, Sin asesorar, Historial y Todos; búsqueda por referencia/cliente/teléfono/producto y páginas de 10. Se abre una solicitud para trabajarla en lugar de desplegar todos los formularios juntos.
+17. **Contacto solicitado**: nombre, necesidad y botón de WhatsApp; la app prepara el mensaje pero no lo envía.
+18. **Preparación de compra**: agregar por búsqueda de nombre/marca/código, incluyendo productos privados; quitar/cambiar recomendaciones, cantidad 1–99, precio unitario positivo, importe por línea y total. Vacíos y errores traducidos.
+19. **Autorización y enlace**: confirmación del acuerdo/disponibilidad, botón con estado de carga, enlace copiable de 24 horas, renovación que invalida el anterior, cancelación secundaria. El enlace usa el origen configurado o el sitio actual; nunca se presenta como correo enviado.
+20. **SINPE/transferencias**: sección independiente, búsqueda, filtros, paginación, cliente, entrega, envío, total, comprobante temporal privado, enlace de seguimiento y estados. Confirmar el pago exige verificarlo en el banco.
+21. **Correos del pedido**: destinatario es el correo ingresado en checkout; remitente viene de BREVO_REMITENTE y se usa BREVO_API_KEY del servidor. Sin envío automático configurado o ante un fallo, el panel indica compartir el enlace. Generar una asesoría no envía correo.
+22. **Tarjeta**: sección independiente con búsqueda/filtros/paginación, cliente, productos, estado, entorno y total. No se activan cobros reales desde esta revisión.
+23. **Estadísticas**: sesiones, páginas y WhatsApp; productos, búsquedas, carrito, planes, correo, teléfono, mapas, redes, galerías, revisión, scroll y campañas. Conteos por grupo y explicación secundaria del alcance. Clics no equivalen a ventas.
+24. **Transversal**: desplegables con flecha separada del borde, casillas de 18px, foco visible, controles de al menos 44px, ajuste móvil, español/inglés y persistencia del idioma; logo oficial en cabecera/footer.
+
+Límites actuales: asesorías recupera hasta 100 pendientes y 50 de otros estados; pagos muestran los 50 más recientes por tipo. La búsqueda y paginación operan sobre esos registros recuperados, no sobre todo el histórico. No se implementó un CRM, envío automático de WhatsApp, sincronización IWS ni nuevas configuraciones de cobro/correo. Las pruebas de modificación se ejecutan sobre archivos locales con respaldo/restauración, sin enviar mensajes, correos ni cobros reales.
+
+Validación de esta revisión: 20 escenarios de navegador en español/inglés y escritorio/móvil, correspondientes a altas/edición, estadísticas, recorrido completo, aprobación y acceso protegido con build de producción. La aprobación incluye reemplazar un equipo por otro privado, precios/cantidades, confirmación obligatoria, renovación/vencimiento/uso del enlace, paginación de historial y búsquedas con/sin resultados. `npm run verificar` y `npm run build` completados.
+
+El recorrido en desarrollo excluye únicamente el error conocido del profiler de React con timestamp negativo al abortar las redirecciones de autenticación (`vercel/next.js#86060`). La prueba `panel-produccion-smoke.spec.ts` comprueba esos accesos en el build de producción sin excluir errores del navegador. No se publicaron estos cambios.

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations,useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { esquemaContenido, type Contenido } from "@/lib/contenido-modelo";
 import { guardarContenido } from "@/app/panel/contenido/acciones";
@@ -27,11 +27,15 @@ export function EditorContenido({
     a = useTranslations("AdminCatalogo"),
     router = useRouter();
   const u=useTranslations('AdminUX');
+  const idioma=useLocale();
+  const [grupo,setGrupo]=useState('todos'),[buscarCasos,setBuscarCasos]=useState('');
+  const grupos=[...new Set(Object.keys(textos).map(k=>k.split('.')[0]))];
+  const textosFiltrados=Object.entries(textos).filter(([k,v])=>(grupo==='todos'||k.startsWith(grupo+'.'))&&`${k} ${(datos.textos[k]??v).es} ${(datos.textos[k]??v).en}`.toLowerCase().includes(busqueda.toLowerCase()));
   const [nuevoId,setNuevoId]=useState('');
   const [limite,setLimite]=useState(30);
   useEffect(()=>{if(nuevoId)enfocarRegistro(nuevoId);},[nuevoId]);
   const [campos,setCampos]=useState<CampoAdmin[]>([]);
-  function abrirCampo(campo:CampoAdmin){setTab(String(campo[0]));if(campo[0]==='textos'){setBusqueda(String(campo[1]));enfocarRegistro(String(campo[1]));}else if(campo[0]==='casos')enfocarRegistro(datos.casos[Number(campo[1])]?.id);}
+  function abrirCampo(campo:CampoAdmin){setTab(String(campo[0]));if(campo[0]==='textos'){setGrupo('todos');setBusqueda(String(campo[1]));enfocarRegistro(String(campo[1]));}else if(campo[0]==='casos')enfocarRegistro(datos.casos[Number(campo[1])]?.id);}
   const [cargandoImagenes,setCargandoImagenes]=useState(false);
  const {pendientes,confirmarGuardado}=useCambiosAdmin(datos);
   const m=useTranslations('AdminImagenes');
@@ -88,7 +92,7 @@ export function EditorContenido({
             <div className="admin-lista-cabecera"><div><h2>{t('casos')}</h2><p>{t('casosAyuda')}</p></div></div>
             <button
               className="boton boton-contorno"
-              onClick={() => {const id=`caso-${crypto.randomUUID().slice(0,8)}`;setNuevoId(id);
+              onClick={() => {const id=`caso-${crypto.randomUUID().slice(0,8)}`;setNuevoId(id);setBuscarCasos('');
                 setDatos((d) => ({
                   ...d,
                   casos: [
@@ -109,9 +113,10 @@ export function EditorContenido({
             >
               {t("nuevo")}
             </button>
-            {datos.casos.map((c, i) => (
+            <label className="admin-casos-buscar">{t('casosBuscar')}<input type="search" value={buscarCasos} onChange={e=>setBuscarCasos(e.target.value)}/></label>
+            {datos.casos.map((c, i) => ({c,i})).filter(({c})=>`${c.cliente} ${c.titulo.es} ${c.titulo.en}`.toLowerCase().includes(buscarCasos.toLowerCase())).map(({c,i}) => (
               <details key={c.id} id={c.id} className="admin-item" open={c.id===nuevoId?true:undefined}>
-                <summary>{c.cliente || t("nuevo")}</summary>
+                <summary><strong>{c.cliente || t('nuevo')}</strong><span className="admin-estado-producto">{a(c.publicado?'publicado':'borrador')}</span></summary>
                 <label>
                   {t("cliente")}
                   <input
@@ -154,7 +159,7 @@ export function EditorContenido({
         {tab === "textos" && (
           <>
             <div className="admin-lista-cabecera"><div><h2>{t('textos')}</h2><p>{t('textosAyuda')}</p></div></div>
-            <label>
+            <div className="admin-textos-filtros"><label>{t('grupoTextos')}<select value={grupo} onChange={e=>{setGrupo(e.target.value);setLimite(30);}}><option value="todos">{t('todosTextos')}</option>{grupos.map(g=><option key={g} value={g}>{t.has('grupo'+g)?t('grupo'+g):g}</option>)}</select></label><label>
               {t("buscar")}
               <input
                 type="search"
@@ -162,16 +167,12 @@ export function EditorContenido({
                 onChange={(e) => {setBusqueda(e.target.value);setLimite(30);}}
               />
             </label>
-            {Object.entries(textos)
-              .filter(([k, v]) =>
-                `${k} ${v.es} ${v.en}`
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase()),
-              )
+            </div><p className="admin-conteo">{u('resultados',{cantidad:textosFiltrados.length})}</p>
+            {textosFiltrados
               .slice(0, limite)
               .map(([k, v]) => (
                 <details key={k} id={k} className="admin-item">
-                  <summary><span className="admin-texto-resumen">{(datos.textos[k]??v).es}</span><small className="admin-clave">{k}</small></summary>
+                  <summary><span className="admin-texto-resumen">{(datos.textos[k]??v)[idioma==='en'?'en':'es']}</span></summary><p className="admin-clave">{k}</p>
                   <div className="admin-fields">
                     {bilingue(k, datos.textos[k] ?? v, (valor) =>
                       setDatos((d) => ({
@@ -182,7 +183,7 @@ export function EditorContenido({
                   </div>
                 </details>
               ))}
-            {Object.entries(textos).filter(([k,v])=>`${k} ${v.es} ${v.en}`.toLowerCase().includes(busqueda.toLowerCase())).length>limite&&<button className="boton boton-contorno" onClick={()=>setLimite(n=>n+30)}>{u("mas")}</button>}
+            {textosFiltrados.length>limite&&<button className="boton boton-contorno" onClick={()=>setLimite(n=>n+30)}>{u("mas")}</button>}
           </>
         )}
         {tab === "pagos" && (
@@ -201,7 +202,7 @@ export function EditorContenido({
                 />
               </label>
             ))}
-            {datos.pagos.cuentas.map((c, i) => (
+            </div><div className="admin-cuentas-grid">{datos.pagos.cuentas.map((c, i) => (
               <div className="admin-item" key={i}>
                 {(["banco", "iban"] as const).map((k) => (
                   <label key={k}>

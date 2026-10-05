@@ -38,7 +38,7 @@ export default async function Pagina() {
     );
   const textos: Record<string, { es: string; en: string }> = {};
   for (const [ns, entradas] of Object.entries(es)) {
-    if (ns.startsWith("Admin") || ["Panel", "Acceso"].includes(ns)) continue;
+    if (ns.startsWith("Admin") || ["Panel", "Acceso", "AsesoriaAdmin", "PedidosAdmin", "PanelLista", "Analitica", "Activacion"].includes(ns)) continue;
     for (const [k, v] of Object.entries(entradas)) {
       const traduccion = (en as Record<string, Record<string, unknown>>)[ns]?.[
         k

@@ -13,7 +13,12 @@ for (const idioma of ['es', 'en'] as const) test(`recorrido completo del panel $
   const token = randomBytes(32).toString('hex');
   cuenta.sesiones.push({hash:createHash('sha256').update(token).digest('hex'), vence:Date.now()+120000});
   const errores: string[] = [];
-  page.on('pageerror', error => errores.push(error.message));
+  page.on('pageerror', error => {
+    // React's development profiler can measure aborted auth redirects with a
+    // negative timestamp (vercel/next.js#86060). Keep all application errors.
+    if (/^Failed to execute 'measure' on 'Performance': '\u200b(?:Panel|Administrar)' cannot have a negative time stamp\.$/.test(error.message)) return;
+    errores.push(error.message);
+  });
 
   try {
     await page.goto('/admin');
