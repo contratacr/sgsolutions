@@ -14,13 +14,13 @@ const entrada = z.object({
   datos: z.object({
     nombre: z.string().trim().min(1).max(100), apellidos: z.string().trim().min(1).max(100),
     correo: z.email().max(150), telefono,
-    contacto: z.enum(['whatsapp', 'llamada', 'email']),
+    contacto: z.enum(['whatsapp', 'llamada', 'email']).default('whatsapp'),
     modalidad: z.enum(['retiro', 'envio']),
     provincia: z.string().trim().max(80).optional(), canton: z.string().trim().max(80).optional(),
     distrito: z.string().trim().max(80).optional(), direccion: z.string().trim().max(350).optional(),
     apartamento: z.string().trim().max(150).optional(), postal: z.string().trim().max(30).optional(),
     receptor: z.string().trim().max(150).optional(), telefonoReceptor: z.union([telefono, z.literal('')]).optional(),
-    factura: z.enum(['tiquete', 'electronica']), identificacion: z.string().trim().max(150).optional(),
+    factura: z.enum(['tiquete', 'electronica']), tipoIdentificacion:z.enum(['fisica','juridica']).optional(), identificacion: z.string().trim().max(150).optional(),
     razonSocial: z.string().trim().max(150).optional(), actividad: z.string().trim().max(150).optional(),
     correoFactura: z.union([z.email().max(150), z.literal('')]).optional(), direccionFiscal: z.string().trim().max(150).optional(),
     notas: z.string().trim().max(600).optional(), consentimiento: z.literal('on'),
@@ -70,11 +70,11 @@ export async function POST(request: Request) {
   const cliente = enviarCorreo({ destinatario: datos.datos.correo,
     asunto: ingles ? `SG Solutions order ${numero} received` : `Recibimos su pedido ${numero} de SG Solutions`,
     texto: ingles
-      ? `We received your order ${numero}. Products: ${colones(total)}. ${datos.datos.modalidad === 'envio' ? 'Correos de Costa Rica shipping' : 'Store pickup'}: ${colones(envio)}. Estimated total: ${colones(totalConEnvio)}. Your advisor approved these products. Open the link for payment instructions and to upload your receipt: ${enlace}`
-      : `Recibimos su pedido ${numero}. Productos: ${colones(total)}. ${datos.datos.modalidad === 'envio' ? 'Envío por Correos de Costa Rica' : 'Retiro en tienda'}: ${colones(envio)}. Total estimado: ${colones(totalConEnvio)}. Su asesor aprobó estos productos. Abra el enlace para ver los datos de pago y adjuntar su comprobante: ${enlace}`,
+      ? `We received your order ${numero}. Products: ${colones(total)}. ${datos.datos.modalidad === 'envio' ? 'Correos de Costa Rica shipping' : 'Store pickup'}: ${colones(envio)}. Total: ${colones(totalConEnvio)}. Your advisor approved these products. Open the link for payment instructions and to upload your receipt: ${enlace}`
+      : `Recibimos su pedido ${numero}. Productos: ${colones(total)}. ${datos.datos.modalidad === 'envio' ? 'Envío por Correos de Costa Rica' : 'Retiro en tienda'}: ${colones(envio)}. Total: ${colones(totalConEnvio)}. Su asesor aprobó estos productos. Abra el enlace para ver los datos de pago y adjuntar su comprobante: ${enlace}`,
   });
   const equipo = enviarCorreo({ destinatario: empresa.correo, asunto: `Nuevo pedido ${numero} · ${datos.metodo.toUpperCase()}`,
-    texto: `Pedido ${numero}\nCliente: ${datos.datos.nombre} ${datos.datos.apellidos}\nCorreo: ${datos.datos.correo}\nTeléfono: ${datos.datos.telefono}\nProductos: ${articulos.map(x => `${x.cantidad} × ${x.nombre}`).join(', ')}\nSubtotal: ${colones(total)}\n${datos.datos.modalidad === 'envio' ? 'Correos de Costa Rica' : 'Retiro en tienda'}: ${colones(envio)}\nTotal estimado: ${colones(totalConEnvio)}\nPedido aprobado por asesoría. Verifique el ingreso bancario antes de preparar la entrega.`,
+    texto: `Pedido ${numero}\nCliente: ${datos.datos.nombre} ${datos.datos.apellidos}\nCorreo: ${datos.datos.correo}\nTeléfono: ${datos.datos.telefono}\nProductos: ${articulos.map(x => `${x.cantidad} × ${x.nombre}`).join(', ')}\nSubtotal: ${colones(total)}\n${datos.datos.modalidad === 'envio' ? 'Correos de Costa Rica' : 'Retiro en tienda'}: ${colones(envio)}\nTotal: ${colones(totalConEnvio)}\nPedido aprobado por asesoría. Verifique el ingreso bancario antes de preparar la entrega.`,
   });
   const [correoCliente, correoEquipo] = await Promise.allSettled([cliente, equipo]);
   if (correoCliente.status === 'fulfilled' || correoEquipo.status === 'fulfilled') await db.from('pedidos_manuales').update({

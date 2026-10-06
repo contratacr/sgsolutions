@@ -11,7 +11,7 @@ export async function generateMetadata() {
 export default async function Compra({searchParams}:{searchParams:Promise<{asesoria?:string;acceso?:string}>}) {
   const parametros=await searchParams;
   const solicitud=await leerAprobacion(parametros.asesoria??"",parametros.acceso??"");
-  const aprobacion=solicitud?{id:solicitud.id,token:solicitud.token!,articulos:solicitud.articulos}:null;
+  const aprobacion=solicitud?{id:solicitud.id,token:solicitud.token!,articulos:solicitud.articulos,contacto:solicitud.contacto}:null;
   const { pagos } = await leerContenido();
   return (
     <main id="contenido" className="contenedor compra-pagina">

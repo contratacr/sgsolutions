@@ -1,28 +1,29 @@
 'use client';
 import {useId,useState} from 'react';
-import {useLocale,useTranslations} from 'next-intl';
+import {useTranslations} from 'next-intl';
 import * as Dialog from '@radix-ui/react-dialog';
 import {X} from 'lucide-react';
+import {esquemaContactoAsesoria,type ContactoAsesoriaDatos} from '@/lib/contacto-asesoria';
 
-import {normalizarTelefonoWhatsApp} from '@/lib/telefono-whatsapp';
-
-export function ContactoAsesoria(){
- const t=useTranslations('Asesoria'),n=useTranslations('Navegacion'),idioma=useLocale();
- const prefijo=useId();
- const [abierto,setAbierto]=useState(false);
+export function DatosAsesoria({abierto,cerrar,enviar,ocupado,error}:{abierto:boolean;cerrar:()=>void;enviar:(datos:ContactoAsesoriaDatos)=>Promise<void>;ocupado:boolean;error:boolean}){
+ const t=useTranslations('Asesoria'),n=useTranslations('Navegacion'),prefijo=useId();
  const [errores,setErrores]=useState<Record<string,string>>({});
- const [ocupado,setOcupado]=useState(false),[error,setError]=useState(''),[referencia,setReferencia]=useState('');
- async function enviar(e:React.FormEvent<HTMLFormElement>){
+ async function confirmar(e:React.FormEvent<HTMLFormElement>){
   e.preventDefault();if(ocupado)return;
-  const datos=new FormData(e.currentTarget),nombre=String(datos.get('nombre')??'').trim(),telefono=normalizarTelefonoWhatsApp(String(datos.get('telefono')??'')),necesidad=String(datos.get('necesidad')??'').trim();
+  const form=new FormData(e.currentTarget),resultado=esquemaContactoAsesoria.safeParse(Object.fromEntries(['nombre','correo','telefono','tipoIdentificacion','identificacion','necesidad'].map(k=>[k,String(form.get(k)??'')])));
   const fallos:Record<string,string>={};
-  if(nombre.length<2)fallos.nombre=t('errorNombre');
-  if(!telefono)fallos.telefono=t('errorTelefono');
-  if(!datos.get('consentimiento'))fallos.consentimiento=t('errorConsentimiento');
-  setErrores(fallos);setError('');
+  if(!resultado.success)for(const issue of resultado.error.issues){const key=String(issue.path[0]);fallos[key]=t(key==='nombre'?'errorNombre':key==='telefono'?'errorTelefono':key==='correo'?'errorCorreo':'errorIdentificacion');}
+  if(!form.get('consentimiento'))fallos.consentimiento=t('errorConsentimiento');
+  setErrores(fallos);
   if(Object.keys(fallos).length){(e.currentTarget.elements.namedItem(Object.keys(fallos)[0]) as HTMLElement)?.focus();return;}
-  setOcupado(true);setError('');
-  try{const r=await fetch('/api/asesoria',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({idioma,articulos:[],contacto:{nombre,telefono,necesidad},consentimiento:true})});const d=await r.json();if(!r.ok||typeof d.referencia!=='string')throw new Error();setReferencia(d.referencia);}catch{setError(t('errorSolicitud'));}finally{setOcupado(false);}
+  if(resultado.success)await enviar(resultado.data);
  }
- return <Dialog.Root open={abierto} onOpenChange={setAbierto}><Dialog.Trigger className="contacto-asesoria-trigger">{t('contactarme')}</Dialog.Trigger><Dialog.Portal><Dialog.Overlay className="contacto-asesoria-overlay" onClick={()=>setAbierto(false)}/><Dialog.Content className="contacto-asesoria contacto-asesoria-modal"><div className="contacto-asesoria-cabecera"><Dialog.Title>{t('contactarme')}</Dialog.Title><Dialog.Close className="boton-icono" aria-label={n('cerrar')}><X size={22} aria-hidden="true"/></Dialog.Close></div><Dialog.Description>{t('contactoTexto')}</Dialog.Description>{referencia?<p role="status">{t('consultaGuardada',{referencia})}</p>:<form onSubmit={enviar} noValidate><div className="contacto-asesoria-datos"><label>{t('nombre')}<input name="nombre" autoComplete="name" minLength={2} maxLength={100} required aria-invalid={Boolean(errores.nombre)} aria-describedby={errores.nombre?`${prefijo}-nombre`:undefined}/>{errores.nombre&&<span className="contacto-error" id={`${prefijo}-nombre`} role="alert">{errores.nombre}</span>}</label><label>{t('telefono')}<input name="telefono" type="tel" autoComplete="tel" inputMode="tel" defaultValue="+506 " maxLength={25} required aria-invalid={Boolean(errores.telefono)} aria-describedby={errores.telefono?`${prefijo}-telefono`:undefined}/>{errores.telefono&&<span className="contacto-error" id={`${prefijo}-telefono`} role="alert">{errores.telefono}</span>}</label></div><label>{t('necesidad')}<textarea name="necesidad" maxLength={1000} rows={2}/></label><label className="contacto-asesoria-consentimiento"><input type="checkbox" name="consentimiento" required aria-invalid={Boolean(errores.consentimiento)} aria-describedby={errores.consentimiento?`${prefijo}-consentimiento`:undefined}/>{t('consentimiento')}</label>{errores.consentimiento&&<p className="contacto-error" id={`${prefijo}-consentimiento`} role="alert">{errores.consentimiento}</p>}{error&&<p role="alert">{error}</p>}<button className="boton boton-azul" disabled={ocupado}>{t(ocupado?'preparando':'enviarConsulta')}</button></form>}</Dialog.Content></Dialog.Portal></Dialog.Root>;
+ return <Dialog.Root open={abierto} onOpenChange={v=>{if(!v&&!ocupado)cerrar();}}><Dialog.Portal><Dialog.Overlay className="contacto-asesoria-overlay"/><Dialog.Content className="contacto-asesoria contacto-asesoria-modal"><div className="contacto-asesoria-cabecera"><Dialog.Title>{t('datosTitulo')}</Dialog.Title><Dialog.Close className="boton-icono" disabled={ocupado} aria-label={n('cerrar')}><X size={22} aria-hidden="true"/></Dialog.Close></div><Dialog.Description>{t('datosTexto')}</Dialog.Description><form onSubmit={confirmar} noValidate><div className="contacto-asesoria-datos">
+ {(['nombre','correo','telefono'] as const).map(k=><label key={k}>{t(k)}<input name={k} type={k==='correo'?'email':k==='telefono'?'tel':'text'} autoComplete={k==='nombre'?'name':k==='correo'?'email':'tel'} defaultValue={k==='telefono'?'+506 ':undefined} required maxLength={k==='telefono'?25:150} aria-invalid={Boolean(errores[k])} aria-describedby={errores[k]?`${prefijo}-${k}`:undefined}/>{errores[k]&&<span className="contacto-error" id={`${prefijo}-${k}`} role="alert">{errores[k]}</span>}</label>)}
+ <label>{t('tipoIdentificacion')}<select name="tipoIdentificacion" defaultValue="fisica"><option value="fisica">{t('fisica')}</option><option value="juridica">{t('juridica')}</option></select></label>
+ <label>{t('identificacion')}<input name="identificacion" required maxLength={30} aria-invalid={Boolean(errores.identificacion)} aria-describedby={errores.identificacion?`${prefijo}-identificacion`:undefined}/>{errores.identificacion&&<span className="contacto-error" id={`${prefijo}-identificacion`} role="alert">{errores.identificacion}</span>}</label></div>
+ <label>{t('necesidad')}<textarea name="necesidad" rows={2} maxLength={1000}/></label>
+ <label className="contacto-asesoria-consentimiento"><input type="checkbox" name="consentimiento" required aria-invalid={Boolean(errores.consentimiento)} aria-describedby={errores.consentimiento?`${prefijo}-consentimiento`:undefined}/>{t('consentimiento')}</label>{errores.consentimiento&&<p id={`${prefijo}-consentimiento`} role="alert">{errores.consentimiento}</p>}
+ <p className="asesoria-siguiente-paso">{t('regreso')}</p>{error&&<p role="alert">{t('errorSolicitud')}</p>}
+ <button className="boton boton-azul" disabled={ocupado}>{t(ocupado?'preparando':'continuarWhatsapp')}<span className="sr-only">{n('nuevaPestana')}</span></button></form></Dialog.Content></Dialog.Portal></Dialog.Root>;
 }

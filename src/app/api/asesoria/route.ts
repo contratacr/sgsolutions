@@ -1,9 +1,9 @@
 import {origenPermitido} from '@/lib/origen-permitido';
-import {normalizarTelefonoWhatsApp} from '@/lib/telefono-whatsapp';
+import {esquemaContactoAsesoria} from '@/lib/contacto-asesoria';
 import {z} from 'zod';
 import {crearAsesoria,referenciaAsesoria} from '@/lib/asesorias';
 import {leerCatalogoPublico} from '@/lib/catalogo-servidor';
-const esquema=z.object({idioma:z.enum(['es','en']),articulos:z.array(z.object({id:z.string().regex(/^[a-z0-9-]{1,60}$/),cantidad:z.number().int().min(1).max(99)})).max(30),contacto:z.object({nombre:z.string().trim().min(2).max(100),telefono:z.string().max(25).transform(normalizarTelefonoWhatsApp).pipe(z.string()),necesidad:z.string().trim().max(1000).default('')}).strict().optional(),consentimiento:z.literal(true).optional()}).strict().refine(x=>x.contacto?x.consentimiento===true:x.articulos.length>0);
+const esquema=z.object({idioma:z.enum(['es','en']),articulos:z.array(z.object({id:z.string().regex(/^[a-z0-9-]{1,60}$/),cantidad:z.number().int().min(1).max(99)})).max(30),contacto:esquemaContactoAsesoria,consentimiento:z.literal(true)}).strict();
 
 export async function POST(request:Request){
  if(!origenPermitido(request))return Response.json({error:'origen'},{status:403});

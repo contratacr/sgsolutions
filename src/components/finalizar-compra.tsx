@@ -1,4 +1,5 @@
 "use client";
+import {adjuntarComprobantePedido} from '@/lib/adjuntar-comprobante';
 import {medir} from '@/lib/analitica-cliente';
 import type { Contenido } from "@/lib/contenido-modelo";
 import Link from "next/link";
@@ -28,7 +29,7 @@ const provincias = [
   "Puntarenas",
   "Limón",
 ];
-export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarjetaPruebaDisponible = false, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; aprobacion?: {id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaPruebaDisponible?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
+export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarjetaPruebaDisponible = false, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaPruebaDisponible?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
   const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
     l = useLocale(),
@@ -37,7 +38,9 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
   const lineas=aprobacion?aprobacion.articulos.map(x=>({id:x.producto.id,cantidad:x.cantidad})):carrito;
 
   const [errorAutorizacion,setErrorAutorizacion]=useState(false);
-  const [borrador, setBorrador] = useState<Record<string, string>>({});
+  const [borrador, setBorrador] = useState<Record<string, string>>(():Record<string,string>=>{const d=aprobacion?.contacto;if(!d)return {};const partes=d.nombre.trim().split(/\s+/);return {nombre:partes.slice(0,-1).join(' ')||d.nombre,apellidos:partes.length>1?partes.at(-1)!:'',correo:d.correo??'',telefono:d.telefono?(d.telefono.startsWith('+')?d.telefono:'+'+d.telefono):'+506 ',tipoIdentificacion:d.tipoIdentificacion??'fisica',identificacion:d.identificacion??'',correoFactura:d.correo??''};});
+  const [comprobante,setComprobante]=useState<File|null>(null),[errorComprobante,setErrorComprobante]=useState(false);
+  const pm=useTranslations('PedidoManual');
   const [entrega, setEntrega] = useState(false),
     [factura, setFactura] = useState(false),
     [otro, setOtro] = useState(false),
@@ -114,7 +117,9 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
       const datos = await respuesta.json();
       if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
       if (!respuesta.ok || typeof datos.url !== 'string' || !datos.url.startsWith('/finalizar-compra/pedido?')) throw new Error('PEDIDO_NO_DISPONIBLE');
-      window.location.assign(datos.url);
+      const destino=new URL(datos.url,window.location.origin);
+      await adjuntarComprobantePedido(destino,comprobante);
+      window.location.assign(destino.href);
     } catch { setErrorPedido(true); setProcesando(false); }
   }
   const campo = (
@@ -126,7 +131,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
     <label key={name}>
       {t(name)}
       <input
-        defaultValue={borrador[name] ?? ""}
+        defaultValue={borrador[name] ?? (type === "tel" ? "+506 " : "")}
         name={name}
         type={type}
         required={required}
@@ -163,7 +168,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                 <h2>{t("revisarTitulo")}</h2>
                 <dl className="pedido-datos">
                   {Object.entries(revision)
-                    .filter(([k, v]) => v && k !== "consentimiento")
+                    .filter(([k, v]) => v && k !== "consentimiento" && k !== "contacto")
                     .map(([k, v]) => (
                       <div key={k}>
                         <dt>{t(k)}</dt>
@@ -172,7 +177,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                             "modalidad",
                             "pago",
                             "contacto",
-                            "factura",
+                            "factura", "tipoIdentificacion",
                           ].includes(k)
                             ? t(v)
                             : v}
@@ -180,6 +185,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                       </div>
                     ))}
                 </dl>
+                {comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}
                 <p>{pago === 'tarjeta' && tarjetaPruebaDisponible ? t('tarjetaPruebaAviso') : t("confirmacion")}</p>
                 {pago === 'tarjeta' && tarjetaPruebaDisponible && !entrega && !pendiente && !bloqueado ? (
                   <button className="boton boton-naranja" type="button" onClick={pagarConTarjeta} disabled={procesando}>
@@ -213,17 +219,9 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                     {campo("apellidos", true, "text", "family-name")}
                     {campo("correo", true, "email", "email")}
                     {campo("telefono", true, "tel", "tel")}
-                    <label>
-                      {t("contacto")}
-                      <select
-                        name="contacto"
-                        defaultValue={borrador.contacto ?? "whatsapp"}
-                      >
-                        <option value="whatsapp">{t("whatsapp")}</option>
-                        <option value="llamada">{t("llamada")}</option>
-                        <option value="email">{t("email")}</option>
-                      </select>
-                    </label>
+                      <label>{a('tipoIdentificacion')}<select name="tipoIdentificacion" defaultValue={borrador.tipoIdentificacion??'fisica'}><option value="fisica">{a('fisica')}</option><option value="juridica">{a('juridica')}</option></select></label>
+                      {campo("identificacion", factura)}
+
                   </div>
                 </section>
                 <section className="compra-bloque">
@@ -303,7 +301,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                   <p className="texto-suave compra-ayuda-factura">{t(factura ? "electronicaAyuda" : "tiqueteAyuda")}</p>
                   {factura && (
                     <div className="compra-campos" ref={facturaCampos}>
-                      {campo("identificacion")}
+
                       {campo("razonSocial")}
                       {campo("actividad", false)}
                       {campo("correoFactura", true, "email")}
@@ -321,7 +319,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                     {[
                       { id: "sinpe", Icon: Smartphone },
                       { id: "transferencia", Icon: Landmark },
-                      { id: "tarjeta", Icon: CreditCard },
+
                     ].map(({ id, Icon }) => (
                       <label key={id} data-activo={pago === id}>
                         <input
@@ -339,6 +337,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                       </label>
                     ))}
                   </fieldset>
+                  <p className="compra-tarjeta-proximamente"><CreditCard size={20} aria-hidden="true"/><span><strong>{t("tarjeta")}</strong><small>{t("tarjetaDetalle")}</small></span></p>
                   <p className="compra-aviso">
                     <ShieldCheck size={19} />
                     {t(pago === "tarjeta" ? tarjetaPruebaDisponible ? entrega ? 'tarjetaSoloRetiro' : 'tarjetaPruebaAviso' : "tarjetaPendiente" : "pagoPendiente")}
@@ -362,6 +361,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                       <p>{t("referencia")}</p>
                     </details>
                   )}
+                  <div className="compra-comprobante"><label>{t('comprobanteOpcional')}<input type="file" accept="image/jpeg,image/png,application/pdf" onChange={e=>{const f=e.target.files?.[0]??null;const invalido=Boolean(f&&(f.size<100||f.size>5*1024*1024||!['image/jpeg','image/png','application/pdf'].includes(f.type)));setErrorComprobante(invalido);setComprobante(invalido?null:f);if(invalido)e.target.value='';}}/></label><p>{t('comprobanteAyuda')}</p>{comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}{errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}</div>
                   <label>
                     {t("notas")}
                     <textarea

@@ -194,7 +194,8 @@
     "avisoTitulo": "Cart update",
     "productoAgregado": "Added to cart",
     "noAgregado": "You reached the cart limit. Review your quantities.",
-    "verCarrito": "View cart"
+    "verCarrito": "View cart",
+    "resumenAgregado": "{cantidad, plural, one {# item added} other {# items added}} · {total, plural, one {# item in your cart} other {# items in your cart}}"
   },
   "Pedido": {
     "titulo": "Details for coordinating your order",
@@ -210,7 +211,7 @@
     "retiro": "Store pickup",
     "retiroDetalle": "SG Solutions, Plaza El Bosque, Atenas.",
     "entrega": "Correos de Costa Rica",
-    "entregaDetalle": "Flat shipping: ₡3,500",
+    "entregaDetalle": "Flat shipping: ₡4,000",
     "destino": "Delivery location",
     "destinoEjemplo": "Province, canton, district, and a clear reference",
     "notas": "Notes",
@@ -227,7 +228,7 @@
     "costoEnvio": "Shipping",
     "precioPendiente": "Price to be confirmed",
     "totalEstimado": "Estimated total",
-    "confirmacion": "Prices shown include VAT. The estimated total adds ₡3,500 if you chose Correos de Costa Rica. We will confirm availability before arranging payment.",
+    "confirmacion": "Prices shown include VAT. The estimated total adds ₡4,000 if you chose Correos de Costa Rica. We will confirm availability before arranging payment.",
     "mensajeConfirmacion": "Please confirm availability before arranging payment.",
     "mensajeSaludo": "Hello, SG Solutions. I would like to request this order:",
     "enviarWhatsapp": "Send request on WhatsApp",
@@ -389,7 +390,8 @@
     "pregunta1": "Is remote assistance available?",
     "respuesta1": "Depending on the issue, we can arrange remote or in-person assistance. Our team confirms the approach after reviewing your request.",
     "pregunta2": "What information should I have ready?",
-    "respuesta2": "The equipment type and model, a description of the issue and any error messages. Do not share passwords on WhatsApp."
+    "respuesta2": "The equipment type and model, a description of the issue and any error messages. Do not share passwords on WhatsApp.",
+    "contactoFinal": "Need help with your equipment?"
   },
   "Empresas": {
     "necesidades": "Solutions for your needs",
@@ -738,7 +740,7 @@
     "retiro": "Store pickup",
     "envio": "Correos de Costa Rica",
     "retiroDetalle": "No shipping charge",
-    "envioDetalle": "Flat shipping: ₡3,500",
+    "envioDetalle": "Flat shipping: ₡4,000",
     "provincia": "Province",
     "canton": "Canton",
     "distrito": "District",
@@ -795,7 +797,13 @@
     "carga": "Check availability and wait for all products to update before continuing.",
     "confirmacion": "Products and prices approved by your advisor. The total includes your chosen shipping.",
     "verCuentas": "View bank details",
-    "referencia": "Use the order reference provided by our team. The deposit is verified before processing the order."
+    "referencia": "Use the order reference provided by our team. The deposit is verified before processing the order.",
+    "comprobanteOpcional": "Attach payment receipt (optional)",
+    "comprobanteAyuda": "If you have already paid, attach an image or PDF up to 5 MB. You can also upload it after placing the order.",
+    "comprobanteSeleccionado": "Attached receipt: {nombre}",
+    "tipoIdentificacion": "Identification type",
+    "fisica": "Individual",
+    "juridica": "Legal entity"
   },
   "ResultadoPago": {
     "titulo": "Payment result",
@@ -837,7 +845,9 @@
     "archivoInvalido": "Choose a valid JPG, PNG or PDF file of up to 5 MB.",
     "error": "We could not receive the receipt. Please try again or contact our team.",
     "verificacion": "A receipt does not confirm payment. SG Solutions will check the funds in the bank before preparing the order.",
-    "volver": "Back to Solutions"
+    "volver": "Back to Solutions",
+    "reintentarComprobante": "Your order was saved, but the receipt could not be uploaded. Please select the file again here.",
+    "facturaGti": "The invoice is issued separately through GTI and sent to the billing email provided."
   },
   "PedidosAdmin": {
     "etiqueta": "Operations",
@@ -882,7 +892,7 @@
     "produccion": "Production",
     "resultado_enlace_generado": "Checkout link generated. Share it with the customer; no email was sent.",
     "correoOrigen": "Email notifications",
-    "correoExplicacion": "They are sent to the email address entered by the customer at checkout. Creating an advice request neither asks for nor sends an email.",
+    "correoExplicacion": "The consultation saves the customer details. Completing checkout attempts to send a confirmation to the customer and a notification to our team. The invoice is issued and sent separately through GTI.",
     "correoRemitente": "Configured sender: {correo}. Notifications are sent through Brevo.",
     "correoSinConfig": "Automatic email is not configured in this environment. Share the link with the customer.",
     "resultado_asesoria_cancelada": "Advice request canceled. The checkout link is no longer available.",
@@ -890,7 +900,11 @@
     "contactoTitulo": "Customer details",
     "sinTelefono": "No contact phone number was provided.",
     "telefonoInvalido": "Saved number is not in a valid WhatsApp format.",
-    "mensajeWhatsApp": "Hello, {nombre}. This is SG Solutions contacting you about reference {referencia}."
+    "mensajeWhatsApp": "Hello, {nombre}. This is SG Solutions contacting you about reference {referencia}.",
+    "facturacionGti": "GTI invoicing",
+    "facturacionGtiTexto": "After verifying payment, issue the invoice in GTI using the customer details. Send it from GTI to the billing email provided; you do not need to attach it again here.",
+    "abrirGti": "Open GTI",
+    "reenviarCorreo": "Resend order email"
   },
   "AdminContenido": {
     "titulo": "Manage content",
@@ -1241,10 +1255,9 @@
     "computadora": "Choose my computer",
     "mensajeNecesidad": "I need: {necesidad}.",
     "mensajeGeneral": "I would like to find the right solution for my home or business.",
-    "contactarme": "I would prefer to be contacted",
     "contactoTexto": "Leave your enquiry. Our team will contact you on WhatsApp.",
-    "nombre": "Name",
-    "telefono": "WhatsApp number",
+    "nombre": "Full name",
+    "telefono": "Phone number",
     "necesidad": "What do you need? (optional)",
     "consentimiento": "I authorize SG Solutions to use these details to respond to my enquiry.",
     "enviarConsulta": "Request contact",
@@ -1255,7 +1268,18 @@
     "telefonoAyuda": "Costa Rica: +506 and 8 digits. For another country, change the code. You can also paste your full number.",
     "errorNombre": "Enter your name (at least 2 characters).",
     "errorTelefono": "Check your number. For another country, include + and the country code.",
-    "errorConsentimiento": "Allow us to contact you before sending your inquiry."
+    "errorConsentimiento": "Allow us to contact you before sending your inquiry.",
+    "datosTitulo": "Get personalized advice",
+    "datosTexto": "Share your details to continue with our team. We will also use them to prefill your checkout.",
+    "correo": "Email address",
+    "tipoIdentificacion": "Identification type",
+    "fisica": "Individual",
+    "juridica": "Legal entity",
+    "identificacion": "Identification number",
+    "errorCorreo": "Enter a valid email address.",
+    "errorIdentificacion": "Check the identification number.",
+    "continuarWhatsapp": "Continue to WhatsApp",
+    "abrirWhatsapp": "Open conversation in WhatsApp"
   },
   "AsesoriaAdmin": {
     "titulo": "Advice requests",
@@ -1298,7 +1322,7 @@
     "privado": "Private catalog",
     "publico": "Published",
     "totalProductos": "Product total",
-    "totalAyuda": "Prices include VAT. The customer chooses delivery at checkout; Correos de Costa Rica adds ₡3,500.",
+    "totalAyuda": "Prices include VAT. The customer chooses delivery at checkout; Correos de Costa Rica adds ₡4,000.",
     "datosInvalidos": "Check quantities from 1 to 99, positive prices and a total no higher than ₡100,000,000.",
     "faltaConfirmar": "Confirm the customer agreement and availability before generating the link.",
     "compartirAyuda": "Link ready. Copy it and share it in the customer conversation.",

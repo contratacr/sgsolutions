@@ -233,3 +233,10 @@
 .contacto-asesoria small{color:#617386;font-size:.78rem;line-height:1.5}
 .contacto-asesoria .contacto-error{color:#a52b22;font-size:.83rem;line-height:1.5}
 .contacto-asesoria [aria-invalid=true]{border-color:#a52b22}
+.asesoria-siguiente-paso{padding:14px 16px;border-left:3px solid #ed5925;background:#fff4ed;border-radius:0 10px 10px 0;color:#173149!important;font-weight:600;line-height:1.6}
+.soporte-contacto-final{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:40px;margin-bottom:30px;border-top:1px solid #d8e1e6}
+.contacto-asesoria select{width:100%;min-height:46px;border:1px solid #bdccd6;border-radius:8px;padding:12px;background:white;color:#173149;font:inherit}
+.compra-tarjeta-proximamente{display:flex;align-items:center;gap:12px;padding:16px;background:#f1f5f8;border-radius:12px;color:#53697b}.compra-tarjeta-proximamente span{display:grid;gap:5px}.compra-tarjeta-proximamente small{font-size:.85rem}
+.compra-cuentas[open]>summary{margin-bottom:20px}.compra-cuentas>div,.pedido-pago-datos>p:has(code){padding:16px;margin:12px 0;border:1px solid #dae4eb;background:#f6f9fb;border-radius:10px;display:grid;gap:12px}.compra-cuentas code{margin:0;letter-spacing:.03em}.compra-cuentas>strong{display:block;font-size:1.2rem;margin:12px 0}.compra-comprobante{padding:18px;border:1px solid #d5dfe7;border-radius:12px;margin:20px 0}.compra-comprobante p{font-size:.85rem;line-height:1.6;margin-top:10px}
+.carrito-confirmacion small{display:block;font-size:.76rem;color:#4d6878;margin-top:5px}.carrito-confirmacion{border-top:3px solid #2d7048}.carrito-confirmacion [role=status]>svg{flex-shrink:0;color:#2d7048}
+@media(max-width:650px){.soporte-contacto-final{flex-direction:column;align-items:flex-start}.contacto-asesoria-modal .contacto-asesoria-datos{grid-template-columns:1fr}}

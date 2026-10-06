@@ -12,9 +12,9 @@ export async function generateMetadata() {
   return { title: t('titulo'), robots: { index: false, follow: false } };
 }
 
-export default async function PedidoManual({ searchParams }: { searchParams: Promise<{ pedido?: string; acceso?: string }> }) {
+export default async function PedidoManual({ searchParams }: { searchParams: Promise<{ pedido?: string; acceso?: string; comprobante?:string }> }) {
   const t = await getTranslations('PedidoManual');
-  const { pedido: id = '', acceso = '' } = await searchParams;
+  const { pedido: id = '', acceso = '', comprobante } = await searchParams;
   const config = configuracionPedidosManuales();
   let pedido: PedidoConsulta | null = null;
   if (config && accesoValido(config, id, acceso)) {
@@ -39,9 +39,11 @@ export default async function PedidoManual({ searchParams }: { searchParams: Pro
           <h2>{t('datosPago')}</h2><p>{t('montoConfirmado')}</p><p>{pagos.titular}</p>
           {pedido.metodo === 'sinpe' ? <strong>{pagos.sinpe.replace(/(\d{4})(\d{4})/, '$1 $2')}</strong> : pagos.cuentas.map(c => <p key={c.iban}><strong>{c.banco}</strong><br/><code>{c.iban}</code></p>)}
           <p>{t('usarReferencia', { numero: numeroPedido(id) })}</p>
+          {comprobante==='pendiente'&&<p role="alert">{t('reintentarComprobante')}</p>}
           <SubirComprobante pedido={id} acceso={acceso} />
           <p>{t('verificacion')}</p>
         </section>}
+        {pedido.estado === 'pagado'&&<p>{t('facturaGti')}</p>}
         {pedido.estado === 'comprobante_recibido' && <p>{t('verificacion')}</p>}
       </> : <p>{t('enlaceInvalido')}</p>}
       <Link className="boton boton-contorno" href="/soluciones">{t('volver')}</Link>

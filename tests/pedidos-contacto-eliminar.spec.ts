@@ -45,7 +45,7 @@ for(const idioma of ['es','en'])test(`historial conserva contacto y solo elimina
   await expect(bandeja.locator('article').filter({hasText:'SG-9910'})).toHaveCount(0);
   await page.reload();await expect(bandeja.locator('article').filter({hasText:'SG-9910'})).toHaveCount(0);
   const borrada=JSON.parse(await readFile(archivo,'utf8')).find((x:{id:string})=>x.id===cancelada.id);expect(borrada.eliminado_en).toBeTruthy();expect(borrada.token).toBeNull();
-  const r=await request.post('/api/asesoria',{headers:{origin:'http://127.0.0.1:3107'},data:{idioma,articulos:[],contacto:{nombre:'Siguiente consulta prueba',telefono:'50688888888',necesidad:''},consentimiento:true}});expect(r.status()).toBe(201);expect((await r.json()).referencia).toBe('SG-9911');
+  const r=await request.post('/api/asesoria',{headers:{origin:'http://127.0.0.1:3107'},data:{idioma,articulos:[],contacto:{nombre:'Siguiente consulta prueba',correo:'qa@example.com',tipoIdentificacion:'fisica',identificacion:'101230456',telefono:'50688888888',necesidad:''},consentimiento:true}});expect(r.status()).toBe(201);expect((await r.json()).referencia).toBe('SG-9911');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }finally{await writeFile(cuentaArchivo,cuentaOriginal);if(original!==null)await writeFile(archivo,original);else await unlink(archivo).catch(()=>{});}
 });

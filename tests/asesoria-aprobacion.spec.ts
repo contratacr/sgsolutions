@@ -1,3 +1,4 @@
+import {completarDatosAsesoria,contactoPrueba} from './datos-asesoria-fixture';
 import {test,expect} from '@playwright/test';
 import {readFile,writeFile,unlink} from 'node:fs/promises';
 import {randomBytes,createHash,randomUUID} from 'node:crypto';
@@ -18,14 +19,14 @@ for(const idioma of ['es','en'])test(`asesor prepara compra y servidor impide sa
   for(const ruta of ['/api/pedidos/manual','/api/pagos/tilopay/iniciar'])expect((await request.post(ruta,{headers:{origin:origen},data:{articulos:[{id:'portatil',cantidad:1}]}})).status()).toBe(403);
   // A callback enquiry is saved without billing/address or choosing products.
   expect((await request.post('/api/asesoria',{headers:{origin:origen},data:{idioma,articulos:[],contacto:{nombre:'Cliente prueba',telefono:'50688888888',necesidad:'Necesito mejorar la red'}}})).status()).toBe(400);
-  await page.goto('/soluciones');await page.locator('.contacto-asesoria-trigger').click();
+  await page.goto('/soluciones');await page.addInitScript(()=>{window.open=()=>null;});await page.evaluate(()=>{window.open=()=>null;});await page.locator('.asesoria-hero-acciones>.boton').first().click();await completarDatosAsesoria(page);
   await page.locator('.contacto-asesoria [name=nombre]').fill('Cliente prueba');await page.locator('.contacto-asesoria [name=telefono]').fill('+506 8888 8888');await page.locator('.contacto-asesoria [name=necesidad]').fill('Necesito mejorar la red');await page.locator('.contacto-asesoria [name=consentimiento]').check();await page.locator('.contacto-asesoria form button').click();
-  await expect(page.locator('.contacto-asesoria [role=status]')).toContainText('SG-');
+  await expect(page.locator('.contacto-asesoria')).toHaveCount(0);
   await page.goto('/panel/pedidos');const contacto=page.locator('.asesorias-admin:visible article').filter({hasText:'Cliente prueba'});await contacto.locator('.panel-pedido-detalle>summary').click();await expect(contacto).toContainText('Necesito mejorar la red');await expect(contacto.locator('a[href^="https://wa.me/"]')).toHaveAttribute('href',/^https:\/\/wa.me\/50688888888\?/);
   await page.screenshot({path:`/tmp/sg-consultas-${idioma}-${info.project.name}.png`});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   await page.goto('/finalizar-compra');await expect(page.locator('main form')).toHaveCount(0);
-  const solicitud=await request.post('/api/asesoria',{headers:{origin:origen},data:{idioma,articulos:[{id:'portatil',cantidad:2}]}});expect(solicitud.status()).toBe(201);const {referencia}=await solicitud.json();
+  const solicitud=await request.post('/api/asesoria',{headers:{origin:origen},data:{idioma,consentimiento:true,contacto:contactoPrueba,articulos:[{id:'portatil',cantidad:2}]}});expect(solicitud.status()).toBe(201);const {referencia}=await solicitud.json();
   await page.goto('/panel/pedidos');const tarjeta=page.locator('.asesorias-admin:visible article').filter({hasText:referencia});
   await tarjeta.locator('.panel-pedido-detalle>summary').click();await tarjeta.locator('[name=cantidad]').fill('3');await tarjeta.locator('[name=precio]').fill('555000');await tarjeta.locator('[name=confirmado]').check();await tarjeta.getByRole('button',{name:idioma==='es'?'Generar enlace de compra':'Generate checkout link',exact:true}).click();
   await expect(page.locator('main>p[role=status]')).toContainText(idioma==='es'?'no se envió ningún correo':'no email was sent');

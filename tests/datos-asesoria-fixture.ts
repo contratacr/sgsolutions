@@ -1,0 +1,3 @@
+import type {Page} from '@playwright/test';
+export const contactoPrueba={nombre:'Cliente QA',correo:'qa@example.com',telefono:'+50688888888',tipoIdentificacion:'fisica',identificacion:'101230456',necesidad:''};
+export async function completarDatosAsesoria(page:Page){const f=page.locator('.contacto-asesoria form');await f.locator('[name=nombre]').fill(contactoPrueba.nombre);await f.locator('[name=correo]').fill(contactoPrueba.correo);await f.locator('[name=telefono]').fill(contactoPrueba.telefono);await f.locator('[name=identificacion]').fill(contactoPrueba.identificacion);await f.locator('[name=consentimiento]').check();}

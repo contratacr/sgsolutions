@@ -32,7 +32,7 @@ for (const idioma of ["es", "en"])
     await expect(form.locator('label:has([value=envio])')).toContainText('Correos de Costa Rica');
     const importes = page.locator('.compra-resumen dl dd');
     const numero = async (indice: number) => Number((await importes.nth(indice).innerText()).replace(/\D/g, ''));
-    expect(await numero(1)).toBe(3500);
+    expect(await numero(1)).toBe(4000);
     expect(await numero(2)).toBe((await numero(0)) + costoEntrega('envio'));
     await form.locator("[name=provincia]").selectOption("Alajuela");
     for (const k of ["canton", "distrito", "direccion"])
@@ -51,11 +51,8 @@ for (const idioma of ["es", "en"])
     await form.locator("[value=transferencia]").check();
     await expect(form.locator(".compra-cuentas")).toHaveAttribute("open", "");
     await expect(form).toContainText("CR71015102120010448776");
-    await form.locator("[value=tarjeta]").check();
-    await expect(form.locator(".compra-cuentas")).toHaveCount(0);
-    await expect(form.locator(".compra-aviso")).toContainText(
-      idioma === "es" ? "aún no están habilitados" : "not enabled yet",
-    );
+    await expect(form.locator("[value=tarjeta]")).toHaveCount(0);
+    await expect(form.locator('.compra-tarjeta-proximamente')).toBeVisible();
     await form.locator("[value=sinpe]").check();
     await form.locator("[name=consentimiento]").check();
     await form.locator("[type=submit]").click();

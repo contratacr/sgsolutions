@@ -14,7 +14,7 @@ import { crearClienteServidor } from '@/lib/supabase/servidor';
 import { basePedidosAdministracion } from '@/lib/tilopay';
 import { colones } from '@/lib/catalogo-modelo';
 import { accesoPedido, basePedidosManuales, configuracionPedidosManuales, numeroPedido, type EstadoPedidoManual } from '@/lib/pedidos-manuales';
-import { actualizarPedidoManual } from './acciones';
+import { actualizarPedidoManual, reenviarCorreoPedido } from './acciones';
 import {costoEntrega} from '@/lib/envio';
 
 type Pedido = {
@@ -111,6 +111,8 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
           {p.estado === 'revision' && <p>{t('subtotalPendiente')}</p>}
           {comprobante?.data?.signedUrl && <p><a href={comprobante.data.signedUrl} target="_blank" rel="noopener noreferrer">{t('verComprobante')} <span className="sr-only">{t('nuevaPestana')}</span></a></p>}
           {(!p.correo_cliente_en || p.estado === 'pendiente_pago' && !p.correo_pago_en) && <div className="panel-aviso"><p>{t('correoPendiente')}</p><label>{t('enlaceCliente')}<input readOnly value={enlace.href} aria-label={t('enlaceCliente')} /></label></div>}
+          {['pendiente_pago','comprobante_recibido','pagado'].includes(p.estado)&&<form action={reenviarCorreoPedido}><input type="hidden" name="id" value={p.id}/><button className="boton boton-contorno">{t('reenviarCorreo')}</button></form>}
+          {p.estado==='pagado'&&<section className="panel-correo-info"><h3>{t('facturacionGti')}</h3><p>{t('facturacionGtiTexto')}</p><a className="boton boton-azul" href="https://www.facturaelectronica.cr/" target="_blank" rel="noopener noreferrer">{t('abrirGti')}<span className="sr-only">{t('nuevaPestana')}</span></a></section>}
           {p.estado === 'revision' && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pendiente_pago"/><button className="boton boton-azul">{t('confirmarYEnviar')}</button></form>}
           {(p.estado === 'pendiente_pago' || p.estado === 'comprobante_recibido') && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pagado"/><p>{t('verificarBanco')}</p><button className="boton boton-azul">{t('marcarPagado')}</button></form>}
           {(p.estado === 'revision' || p.estado === 'pendiente_pago' || p.estado === 'comprobante_recibido') && <form action={actualizarPedidoManual}><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="cancelado"/><button className="boton boton-contorno">{t('cancelar')}</button></form>}

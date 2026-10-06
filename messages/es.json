@@ -194,7 +194,8 @@
     "avisoTitulo": "Actualización del carrito",
     "productoAgregado": "Agregado al carrito",
     "noAgregado": "Alcanzó el límite del carrito. Revise sus cantidades.",
-    "verCarrito": "Ver carrito"
+    "verCarrito": "Ver carrito",
+    "resumenAgregado": "{cantidad, plural, one {# unidad agregada} other {# unidades agregadas}} · {total, plural, one {# producto en su carrito} other {# productos en su carrito}}"
   },
   "Pedido": {
     "titulo": "Datos para coordinar su pedido",
@@ -210,7 +211,7 @@
     "retiro": "Retiro en tienda",
     "retiroDetalle": "SG Solutions, Plaza El Bosque, Atenas.",
     "entrega": "Correos de Costa Rica",
-    "entregaDetalle": "Envío fijo: ₡3.500",
+    "entregaDetalle": "Envío fijo: ₡4.000",
     "destino": "Lugar de entrega",
     "destinoEjemplo": "Provincia, cantón, distrito y una referencia clara",
     "notas": "Notas",
@@ -227,7 +228,7 @@
     "costoEnvio": "Costo de envío",
     "precioPendiente": "Precio por confirmar",
     "totalEstimado": "Total estimado",
-    "confirmacion": "Los precios mostrados incluyen IVA. El total estimado suma ₡3.500 si eligió Correos de Costa Rica. Confirmaremos disponibilidad antes de coordinar el pago.",
+    "confirmacion": "Los precios mostrados incluyen IVA. El total estimado suma ₡4.000 si eligió Correos de Costa Rica. Confirmaremos disponibilidad antes de coordinar el pago.",
     "mensajeConfirmacion": "Agradezco confirmar disponibilidad antes de coordinar el pago.",
     "mensajeSaludo": "Hola, SG Solutions. Deseo solicitar este pedido:",
     "enviarWhatsapp": "Enviar solicitud por WhatsApp",
@@ -389,7 +390,8 @@
     "pregunta1": "¿La atención puede ser remota?",
     "respuesta1": "Según el problema, podemos coordinar soporte remoto o atención presencial. Nuestro equipo confirma la modalidad al revisar su consulta.",
     "pregunta2": "¿Qué información conviene tener a mano?",
-    "respuesta2": "El tipo y modelo de equipo, una descripción del problema y cualquier mensaje de error. No comparta contraseñas por WhatsApp."
+    "respuesta2": "El tipo y modelo de equipo, una descripción del problema y cualquier mensaje de error. No comparta contraseñas por WhatsApp.",
+    "contactoFinal": "¿Necesita ayuda con su equipo?"
   },
   "Empresas": {
     "necesidades": "Soluciones según su necesidad",
@@ -738,7 +740,7 @@
     "retiro": "Retiro en tienda",
     "envio": "Correos de Costa Rica",
     "retiroDetalle": "Sin costo de envío",
-    "envioDetalle": "Envío fijo: ₡3.500",
+    "envioDetalle": "Envío fijo: ₡4.000",
     "provincia": "Provincia",
     "canton": "Cantón",
     "distrito": "Distrito",
@@ -795,7 +797,13 @@
     "carga": "Verifique disponibilidad y espere a que se actualicen todos los productos antes de continuar.",
     "confirmacion": "Productos y precios aprobados por su asesor. El total incluye el envío elegido.",
     "verCuentas": "Ver datos bancarios",
-    "referencia": "Utilice la referencia de pedido que le comparta nuestro equipo. El depósito se verifica antes de procesar el pedido."
+    "referencia": "Utilice la referencia de pedido que le comparta nuestro equipo. El depósito se verifica antes de procesar el pedido.",
+    "comprobanteOpcional": "Adjuntar comprobante (opcional)",
+    "comprobanteAyuda": "Si ya realizó el pago, adjunte una imagen o PDF de hasta 5 MB. También podrá hacerlo después de generar el pedido.",
+    "comprobanteSeleccionado": "Comprobante adjunto: {nombre}",
+    "tipoIdentificacion": "Tipo de identificación",
+    "fisica": "Persona física",
+    "juridica": "Persona jurídica"
   },
   "ResultadoPago": {
     "titulo": "Resultado del pago",
@@ -837,7 +845,9 @@
     "archivoInvalido": "Seleccione un archivo JPG, PNG o PDF válido de hasta 5 MB.",
     "error": "No pudimos recibir el comprobante. Inténtelo de nuevo o comuníquese con nuestro equipo.",
     "verificacion": "El comprobante no confirma el pago. SG Solutions verificará el ingreso en el banco antes de preparar el pedido.",
-    "volver": "Volver a Soluciones"
+    "volver": "Volver a Soluciones",
+    "reintentarComprobante": "Su pedido quedó guardado, pero no pudimos adjuntar el comprobante. Seleccione el archivo nuevamente aquí.",
+    "facturaGti": "La factura se emite por separado mediante GTI y se envía al correo de facturación indicado."
   },
   "PedidosAdmin": {
     "etiqueta": "Operación",
@@ -882,7 +892,7 @@
     "produccion": "Producción",
     "resultado_enlace_generado": "Enlace de compra generado. Compártalo con el cliente; no se envió ningún correo.",
     "correoOrigen": "Avisos de correo",
-    "correoExplicacion": "Se envían al correo que el cliente escribe al completar la compra. Crear una asesoría no solicita ni envía correo.",
+    "correoExplicacion": "La asesoría guarda los datos del cliente. Al completar la compra se intenta enviar la confirmación a su correo y un aviso al equipo. La factura se emite y envía por separado desde GTI.",
     "correoRemitente": "Remitente configurado: {correo}. Los avisos se envían mediante Brevo.",
     "correoSinConfig": "El envío automático no está configurado en este entorno. Comparta el enlace con el cliente.",
     "resultado_asesoria_cancelada": "Asesoría cancelada. El enlace de compra ya no está disponible.",
@@ -890,7 +900,11 @@
     "contactoTitulo": "Datos del cliente",
     "sinTelefono": "No dejó un teléfono de contacto.",
     "telefonoInvalido": "Número guardado sin formato válido para WhatsApp.",
-    "mensajeWhatsApp": "Hola, {nombre}. Le contactamos de SG Solutions sobre la referencia {referencia}."
+    "mensajeWhatsApp": "Hola, {nombre}. Le contactamos de SG Solutions sobre la referencia {referencia}.",
+    "facturacionGti": "Facturación en GTI",
+    "facturacionGtiTexto": "Después de verificar el pago, emita la factura en GTI con los datos del cliente. Envíela desde GTI al correo de facturación indicado; no necesita adjuntarla de nuevo aquí.",
+    "abrirGti": "Abrir GTI",
+    "reenviarCorreo": "Reenviar correo del pedido"
   },
   "AdminContenido": {
     "titulo": "Administrar contenido",
@@ -1241,10 +1255,9 @@
     "computadora": "Elegir mi computadora",
     "mensajeNecesidad": "Necesito: {necesidad}.",
     "mensajeGeneral": "Quisiera encontrar la solución adecuada para mi hogar o negocio.",
-    "contactarme": "Prefiero que me contacten",
     "contactoTexto": "Deje su consulta. Nuestro equipo le contactará por WhatsApp.",
-    "nombre": "Nombre",
-    "telefono": "Número de WhatsApp",
+    "nombre": "Nombre completo",
+    "telefono": "Número de teléfono",
     "necesidad": "¿Qué necesita? (opcional)",
     "consentimiento": "Autorizo que SG Solutions utilice estos datos para atender mi consulta.",
     "enviarConsulta": "Solicitar contacto",
@@ -1255,7 +1268,18 @@
     "telefonoAyuda": "Costa Rica: +506 y 8 dígitos. Para otro país, cambie el código. También puede pegar su número completo.",
     "errorNombre": "Escriba su nombre (al menos 2 caracteres).",
     "errorTelefono": "Revise su número. Para otro país, incluya + y el código de país.",
-    "errorConsentimiento": "Autorice el contacto para enviar su consulta."
+    "errorConsentimiento": "Autorice el contacto para enviar su consulta.",
+    "datosTitulo": "Reciba asesoría personalizada",
+    "datosTexto": "Comparta sus datos para continuar con nuestro equipo. Los usaremos también al completar su compra.",
+    "correo": "Correo electrónico",
+    "tipoIdentificacion": "Tipo de identificación",
+    "fisica": "Persona física",
+    "juridica": "Persona jurídica",
+    "identificacion": "Número de identificación",
+    "errorCorreo": "Escriba un correo electrónico válido.",
+    "errorIdentificacion": "Revise el número de identificación.",
+    "continuarWhatsapp": "Continuar a WhatsApp",
+    "abrirWhatsapp": "Abrir conversación en WhatsApp"
   },
   "AsesoriaAdmin": {
     "titulo": "Solicitudes de asesoría",
@@ -1298,7 +1322,7 @@
     "privado": "Catálogo privado",
     "publico": "Publicado",
     "totalProductos": "Total de productos",
-    "totalAyuda": "Precios con IVA. El cliente elige la entrega al completar la compra; Correos de Costa Rica suma ₡3.500.",
+    "totalAyuda": "Precios con IVA. El cliente elige la entrega al completar la compra; Correos de Costa Rica suma ₡4.000.",
     "datosInvalidos": "Revise cantidades de 1 a 99, precios positivos y un total máximo de ₡100.000.000.",
     "faltaConfirmar": "Confirme el acuerdo con el cliente y la disponibilidad antes de generar el enlace.",
     "compartirAyuda": "Enlace listo. Cópielo y compártalo en la conversación con el cliente.",

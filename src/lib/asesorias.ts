@@ -4,7 +4,7 @@ import {randomBytes} from 'node:crypto';
 import {mkdir,readFile,writeFile,rename} from 'node:fs/promises';
 import {adminLocalDisponible} from './admin-local';
 import type {CatalogoPublico} from './catalogo-modelo';
-export type SolicitudAsesoria={id:string;numero?:number;eliminado_en?:string|null;creado_en:string;estado:'solicitada'|'aprobada'|'procesando'|'utilizada'|'cancelada';idioma:'es'|'en';articulos:{producto:CatalogoPublico['productos'][number];cantidad:number}[];token:string|null;vence_en:string|null;pedido_id:string|null;contacto?:{nombre:string;telefono:string;necesidad:string}|null};
+export type SolicitudAsesoria={id:string;numero?:number;eliminado_en?:string|null;creado_en:string;estado:'solicitada'|'aprobada'|'procesando'|'utilizada'|'cancelada';idioma:'es'|'en';articulos:{producto:CatalogoPublico['productos'][number];cantidad:number}[];token:string|null;vence_en:string|null;pedido_id:string|null;contacto?:{nombre:string;telefono:string;necesidad:string;correo?:string;tipoIdentificacion?:'fisica'|'juridica';identificacion?:string}|null};
 const archivo='.privado/admin-local/asesorias.json';
 let cola=Promise.resolve();
 async function localModificar<T>(fn:(filas:SolicitudAsesoria[])=>T){const anterior=cola;let liberar!:()=>void;cola=new Promise<void>(r=>liberar=r);await anterior;try{let filas:SolicitudAsesoria[]=[];try{filas=JSON.parse(await readFile(archivo,'utf8'));}catch(e){if((e as NodeJS.ErrnoException).code!=='ENOENT')throw e;}const resultado=fn(filas);await mkdir('.privado/admin-local',{recursive:true});const tmp=archivo+'.'+randomBytes(8).toString('hex');await writeFile(tmp,JSON.stringify(filas),{mode:0o600});await rename(tmp,archivo);return resultado;}finally{liberar();}}

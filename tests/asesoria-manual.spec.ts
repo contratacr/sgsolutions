@@ -1,3 +1,4 @@
+import {completarDatosAsesoria} from './datos-asesoria-fixture';
 import {test,expect} from '@playwright/test';
 import {esquemaCatalogo,publicarCatalogo,calcularPrecio} from '../src/lib/catalogo-modelo';
 import {migrarCatalogoManual,catalogoPublicoManual} from '../src/lib/catalogo-manual';
@@ -26,7 +27,7 @@ for(const idioma of ['es','en'])test(`asesoría, selección y regreso al pedido 
  await expect(page.locator('.asesoria-hero h1')).toHaveText('SG Solutions');
 
  await expect(page.locator('.solucion-necesidad')).toHaveCount(0);
- await page.locator('.contacto-asesoria-trigger').click();await page.locator('.contacto-asesoria form button').click();await expect(page.locator('.contacto-asesoria [role=alert]')).toHaveCount(3);
+ await page.locator('.asesoria-hero-acciones>.boton').first().click();await page.locator('.contacto-asesoria form button').click();await expect(page.locator('.contacto-asesoria [role=alert]')).toHaveCount(5);
  await page.keyboard.press('Escape');
  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
  await page.screenshot({path:`/tmp/sg-asesoria-${idioma}-${info.project.name}.png`});
@@ -34,21 +35,13 @@ for(const idioma of ['es','en'])test(`asesoría, selección y regreso al pedido 
  await expect(page.locator('.shop-producto')).toHaveCount(5);
  await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();
  await page.screenshot({path:`/tmp/sg-productos-${idioma}-${info.project.name}.png`});
- const producto=page.locator('.shop-producto').first(),consulta=producto.locator('a[href^="https://wa.me/"]');
- await expect(consulta).toHaveAttribute('rel','noopener noreferrer');
- const url=new URL((await consulta.getAttribute('href'))!);
- expect(url.pathname).toBe('/50664399417');
- expect(url.searchParams.get('text')).toContain(idioma==='es'?'¿Qué me recomiendan':'What would you recommend');
- expect(url.searchParams.get('text')).toContain('\n\n*1 × ');
- expect(url.searchParams.get('text')).not.toContain('\n\n\n');
- const codigo=await producto.locator('.shop-codigo').innerText();
- expect(url.searchParams.get('text')).toContain(codigo.split(' ').at(-1));
+ const producto=page.locator('.shop-producto').first(),consulta=producto.locator('button.boton-naranja');
  await context.route('**/api/asesoria',route=>route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({referencia:'SG-PRUEBA'})}));
  await context.route('https://wa.me/**',route=>route.fulfill({status:200,body:'WhatsApp test — no message sent'}));
- const popupPromise=page.waitForEvent('popup');await consulta.click();const popup=await popupPromise;await popup.waitForURL("https://wa.me/**");expect(new URL(popup.url()).searchParams.get("text")).toContain("SG-PRUEBA");await popup.close();
+ await consulta.click();await completarDatosAsesoria(page);const popupPromise=page.waitForEvent('popup');await page.locator('.contacto-asesoria form>button').click();const popup=await popupPromise;await popup.waitForURL("https://wa.me/**");expect(new URL(popup.url()).searchParams.get("text")).toContain("SG-PRUEBA");await popup.close();
  await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();
  await expect(page.locator('.carrito-lineas li')).toHaveCount(1);
- await expect(page.locator('.carrito-resumen a[href^="https://wa.me/"]')).toBeVisible();
+ await expect(page.locator('.carrito-resumen button.boton-naranja')).toBeVisible();
  await expect(page.locator('.carrito-resumen a[href="/finalizar-compra"]')).toHaveCount(0);
  await page.goto('/finalizar-compra');
  await expect(page.locator('main form')).toHaveCount(0);
