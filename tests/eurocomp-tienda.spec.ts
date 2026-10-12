@@ -45,3 +45,11 @@ test('Eurocomp respeta la misma fórmula histórica, incluido adicional cambiari
  const ajustes={cambio:500,adicional:15,iva:13,utilidad:20};
  for(const costo of [9.56,100,799.99]){expect(precioVentaEurocomp(costo,'USD',ajustes.cambio,ajustes.utilidad,ajustes.iva,ajustes.adicional)).toBe(calcularPrecio(costo,ajustes));expect(precioVentaEurocomp(costo,'CRC',ajustes.cambio,ajustes.utilidad,ajustes.iva,ajustes.adicional)).toBe(calcularPrecio(null,ajustes,null,costo));}
 });
+
+test('la actualización conserva categorías de productos manuales existentes',async()=>{
+ const {reconciliarEurocomp}=await import('../src/lib/eurocomp-catalogo');
+ const inicial=esquemaCatalogo.parse(base),manual={...inicial.productos[0],id:'manual-existente',categoria:'categoria-manual',codigoEurocomp:undefined,eurocomp:undefined};
+ inicial.categorias.push({id:'categoria-manual',nombre:{es:'Categoría manual',en:'Manual category'}});inicial.productos=[manual];
+ const result=reconciliarEurocomp(inicial,{fecha:new Date().toISOString(),bodega:0,articulos:[]});
+ expect(esquemaCatalogo.safeParse(result).success).toBe(true);expect(result.categorias.some(c=>c.id==='categoria-manual')).toBe(true);expect(result.productos[0].id).toBe(manual.id);
+});

@@ -18,5 +18,8 @@ export function reconciliarEurocomp(base:CatalogoAdmin,copia:CatalogoEurocomp):C
   productos.push({...nuevo,...anterior,subcategoria:anterior?.subcategoria ?? subcategoriaEurocomp(a.familia),codigoEurocomp:a.codigo,precioManual:precioVentaEurocomp(a.precio,a.moneda,base.ajustes.cambio,base.ajustes.utilidad,base.ajustes.iva,base.ajustes.adicional),eurocomp:{codigo:a.codigo,stock:a.stock??0,costo:a.precio,moneda:a.moneda as 'USD'|'CRC',actualizado:copia.fecha}});
  }
  for(const [codigo,p]of anteriores)if(!recibidos.has(codigo))productos.push({...p,eurocomp:{codigo,stock:0,costo:p.eurocomp?.costo??0,moneda:p.eurocomp?.moneda??'USD',actualizado:copia.fecha}});
- return {...base,gestion:'manual',categorias:categoriasEurocomp,productos};
+ const ids=new Set(categoriasEurocomp.map(c=>c.id));
+ const usadas=new Set(productos.map(p=>p.categoria));
+ const categorias=[...categoriasEurocomp,...base.categorias.filter(c=>!ids.has(c.id)&&usadas.has(c.id))];
+ return {...base,gestion:'manual',categorias,productos};
 }
