@@ -1,3 +1,5 @@
+import {cookies} from 'next/headers';
+import {crearClienteCuenta} from '@/lib/supabase/cuenta';
 import {Medicion} from '@/components/medicion';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
@@ -31,5 +33,9 @@ export default async function DisenoRaiz({children}: {children: React.ReactNode}
   const t = await getTranslations('Navegacion');
   const idioma = await getLocale();
   const catalogo = await leerCatalogoPublico();
-  return <html lang={idioma}><body><FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><ValidacionNativa/><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera/>{children}<Pie/><Medicion pixel={META_PIXEL_ID}/></DatosCatalogo></NextIntlClientProvider></body></html>;
+  let sesionIniciada=false;
+  if((await cookies()).getAll().some(c=>/^sb-.*-auth-token(?:\.\d+)?$/.test(c.name))){
+    try{const cliente=await crearClienteCuenta();sesionIniciada=Boolean((await cliente?.auth.getUser())?.data.user);}catch{/* La navegación pública sigue disponible si Auth no responde. */}
+  }
+  return <html lang={idioma}><body><FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><ValidacionNativa/><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera sesionIniciada={sesionIniciada}/>{children}<Pie/><Medicion pixel={META_PIXEL_ID}/></DatosCatalogo></NextIntlClientProvider></body></html>;
 }

@@ -1,0 +1,117 @@
+[
+  {
+    "id": "confirmation",
+    "titulo": [
+      "Confirme su correo",
+      "Confirm your email"
+    ],
+    "boton": [
+      "Confirmar mi correo",
+      "Confirm my email"
+    ]
+  },
+  {
+    "id": "recovery",
+    "titulo": [
+      "Recupere su contraseña",
+      "Reset your password"
+    ],
+    "boton": [
+      "Crear nueva contraseña",
+      "Create a new password"
+    ]
+  },
+  {
+    "id": "magic_link",
+    "titulo": [
+      "Acceda a su cuenta",
+      "Sign in to your account"
+    ],
+    "boton": [
+      "Ingresar a mi cuenta",
+      "Sign in to my account"
+    ]
+  },
+  {
+    "id": "invite",
+    "titulo": [
+      "Su cuenta en SG Solutions",
+      "Your SG Solutions account"
+    ],
+    "boton": [
+      "Aceptar invitación",
+      "Accept invitation"
+    ]
+  },
+  {
+    "id": "email_change",
+    "titulo": [
+      "Confirme el cambio de correo",
+      "Confirm your email change"
+    ],
+    "boton": [
+      "Confirmar cambio",
+      "Confirm email change"
+    ]
+  },
+  {
+    "id": "reauthentication",
+    "titulo": [
+      "Verifique su identidad",
+      "Verify your identity"
+    ]
+  },
+  {
+    "id": "password_changed_notification",
+    "titulo": [
+      "Su contraseña cambió",
+      "Your password was changed"
+    ],
+    "boton": [
+      "Revisar mi cuenta",
+      "Review my account"
+    ]
+  },
+  {
+    "id": "email_changed_notification",
+    "titulo": [
+      "Su correo cambió",
+      "Your email was changed"
+    ]
+  },
+  {
+    "id": "phone_changed_notification",
+    "titulo": [
+      "Su teléfono cambió",
+      "Your phone number was changed"
+    ]
+  },
+  {
+    "id": "identity_linked_notification",
+    "titulo": [
+      "Nuevo método de acceso",
+      "New sign-in method"
+    ]
+  },
+  {
+    "id": "identity_unlinked_notification",
+    "titulo": [
+      "Método de acceso eliminado",
+      "Sign-in method removed"
+    ]
+  },
+  {
+    "id": "mfa_factor_enrolled_notification",
+    "titulo": [
+      "Nueva verificación de seguridad",
+      "New security verification method"
+    ]
+  },
+  {
+    "id": "mfa_factor_unenrolled_notification",
+    "titulo": [
+      "Verificación de seguridad eliminada",
+      "Security verification method removed"
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "confirmation": "Confirme su correo / Confirm your email | SG Solutions",
+  "recovery": "Recupere su contraseña / Reset your password | SG Solutions",
+  "magic_link": "Acceda a su cuenta / Sign in to your account | SG Solutions",
+  "invite": "Su cuenta en SG Solutions / Your SG Solutions account | SG Solutions",
+  "email_change": "Confirme el cambio de correo / Confirm your email change | SG Solutions",
+  "reauthentication": "Verifique su identidad / Verify your identity | SG Solutions",
+  "password_changed_notification": "Su contraseña cambió / Your password was changed | SG Solutions",
+  "email_changed_notification": "Su correo cambió / Your email was changed | SG Solutions",
+  "phone_changed_notification": "Su teléfono cambió / Your phone number was changed | SG Solutions",
+  "identity_linked_notification": "Nuevo método de acceso / New sign-in method | SG Solutions",
+  "identity_unlinked_notification": "Método de acceso eliminado / Sign-in method removed | SG Solutions",
+  "mfa_factor_enrolled_notification": "Nueva verificación de seguridad / New security verification method | SG Solutions",
+  "mfa_factor_unenrolled_notification": "Verificación de seguridad eliminada / Security verification method removed | SG Solutions"
+}

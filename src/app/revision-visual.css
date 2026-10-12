@@ -157,3 +157,60 @@ body:has(.inicio-triptico) .pie { border-top: 0; }
   .inicio-triptico .inicio-triptico-contenido strong { font-size: clamp(1.7rem,8vw,2.4rem); }
 }
 @media (max-width: 380px) { .nosotros-pagina .area-acciones { grid-template-columns: 1fr; } }
+.menu-panel-fondo{position:fixed;inset:0;z-index:200;background:#07142180;backdrop-filter:blur(3px)}
+.menu-panel{position:fixed;inset:0 0 0 auto;z-index:201;width:min(380px,90vw);height:100dvh;background:#f8fafb;color:#183347;display:flex;flex-direction:column;box-shadow:-20px 0 60px #0002;overflow-y:auto}
+.menu-panel-cabecera{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:23px 24px;background:#0b1e2e}
+.menu-panel-cerrar{width:44px;height:44px;display:grid;place-items:center;border:1px solid #ffffff30;border-radius:50%;color:#fff;background:transparent;cursor:pointer}
+.menu-panel-titulo{margin:26px 26px 10px;font-size:.7rem;font-weight:650;text-transform:uppercase;letter-spacing:.12em;color:#6b7f8d}
+.menu-panel-enlaces{display:grid;padding:20px 16px 0;gap:5px}
+.menu-panel-enlaces a{min-height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-radius:10px;font-size:1.15rem;font-weight:650;color:#183347}
+.menu-panel-enlaces a svg{color:#91a4b2}.menu-panel-enlaces a:hover{background:#edf2f6}.menu-panel-enlaces a[aria-current=page]{background:#e6edf3;color:#193e5c;box-shadow:inset 3px 0 #e45338}
+.menu-panel-base{margin-top:auto;padding:28px 26px max(28px,env(safe-area-inset-bottom));display:grid;gap:22px}
+.menu-panel-cuenta{display:flex;align-items:center;gap:12px;min-height:50px;border-top:1px solid #dce5eb;padding-top:20px;font-weight:650}.menu-panel-cuenta svg:last-child{margin-left:auto}
+.menu-panel-idioma{display:flex;gap:5px}.menu-panel-idioma>span{margin-right:auto;font-size:.8rem;color:#60788a}.menu-panel-idioma button{color:#60788a}.menu-panel-idioma button[aria-pressed=true],.menu-panel-idioma button:hover{color:#183347}.menu-panel-idioma button+button::before{background:#18334740}
+.menu-panel a:focus-visible,.menu-panel button:focus-visible{outline:3px solid #e68b69;outline-offset:2px}
+@keyframes menu-entrar{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes menu-salir{from{transform:translateX(0)}to{transform:translateX(100%)}}
+@keyframes menu-fondo-entrar{from{opacity:0}to{opacity:1}}
+@keyframes menu-fondo-salir{from{opacity:1}to{opacity:0}}
+@media(prefers-reduced-motion:no-preference){.menu-panel[data-state=open]{animation:menu-entrar .25s cubic-bezier(.2,.8,.2,1)}.menu-panel[data-state=closed]{animation:menu-salir .2s ease-in}.menu-panel-fondo[data-state=open]{animation:menu-fondo-entrar .2s}.menu-panel-fondo[data-state=closed]{animation:menu-fondo-salir .2s}}
+/* En móvil, las acciones secundarias viven dentro del menú lateral. */
+@media(max-width:900px){
+ .navegacion .nav-acciones>.idioma-directo,
+ .navegacion .nav-acciones>.cuenta-nav{display:none}
+ .navegacion .nav-acciones{gap:8px}
+}
+/* Ritmo consistente entre cabecera cerrada y cabecera del menú. */
+:root{--sg-altura-nav:84px;--sg-ancho-logo:132px;--sg-margen-nav:clamp(20px,4vw,32px)}
+.navegacion{height:var(--sg-altura-nav);min-height:var(--sg-altura-nav)}
+.navegacion .logo,.menu-panel-logo{width:var(--sg-ancho-logo);height:auto}
+.menu-panel-cabecera{height:var(--sg-altura-nav);min-height:var(--sg-altura-nav);box-sizing:border-box;padding:0 var(--sg-margen-nav);flex-shrink:0}
+.menu-panel-cerrar{border:0;border-radius:8px;width:42px;height:42px}
+@media(max-width:900px){:root{--sg-altura-nav:76px;--sg-ancho-logo:113px;--sg-margen-nav:20px}.barra-local{display:none}.navegacion .boton-icono{width:42px;min-width:42px;height:42px;min-height:42px}}
+@media(max-width:380px){:root{--sg-ancho-logo:96px}}
+/* Respuesta al tocar: mover solo imagen/texto, nunca el tamaño del panel. */
+@media (max-width:700px), (hover:none) {
+  .inicio-triptico .inicio-triptico-panel,
+  .inicio-triptico .inicio-triptico-panel:hover { transform:none; }
+  .inicio-triptico .inicio-triptico-panel > img,
+  .inicio-triptico .inicio-triptico-panel:hover > img { transform:none; filter:saturate(.88); transition:transform .16s ease-out,filter .16s ease-out; }
+  .inicio-triptico .inicio-triptico-contenido strong { transition:transform .16s ease-out; }
+  .inicio-triptico .inicio-triptico-panel:active > img { transform:scale(1.025); filter:saturate(1) brightness(1.08); }
+  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido strong { transform:translateX(4px); }
+  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido::before { width:68px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .inicio-triptico .inicio-triptico-panel > img,
+  .inicio-triptico .inicio-triptico-contenido strong { transition:none; }
+  .inicio-triptico .inicio-triptico-panel:active > img { transform:none; }
+  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido strong { transform:none; }
+}
+/* Un único foco discreto en los campos; mantener foco visible en botones/enlaces. */
+html :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]),textarea,select):is(:focus,:focus-visible){outline:none!important;outline-offset:0!important;border-color:#406985;box-shadow:0 0 0 2px #40698520}
+html :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]),textarea,select)[aria-invalid=true]:is(:focus,:focus-visible){border-color:#b42318;box-shadow:0 0 0 2px #b423181a}
+html :is(.shop-buscador,.panel-buscador,.busqueda-equipo) input:is(:focus,:focus-visible){outline:none!important;box-shadow:none!important}
+.validacion-campo-error{display:block;font-size:.8rem;font-weight:400;line-height:1.5;color:#a12d35;margin-top:6px;flex-basis:100%;width:100%}
+
+.compra-guardar-datos{display:flex;align-items:flex-start;gap:10px;font-size:.9rem;margin-bottom:18px}.compra-guardar-datos input{width:18px;height:18px;flex:none;margin:2px 0 0;accent-color:#315a78}
+
+.compra-aviso-datos{padding:14px 18px;border:1px solid #d8e3eb;background:#f2f7fa;border-radius:10px;color:#315a78;font-size:.9rem;line-height:1.6}

@@ -4,7 +4,9 @@ for (const idioma of ['es', 'en'] as const) {
   test(`acceso a cuenta en ${idioma}`, async ({ page, context }) => {
     await context.addCookies([{ name: 'sg-idioma', value: idioma, domain: '127.0.0.1', path: '/' }]);
     await page.goto('/');
-    const acceso = page.getByRole('link', { name: idioma === 'es' ? 'Mi cuenta' : 'My account' }).first();
+    const menu=page.getByRole('button',{name:idioma==='es'?'Abrir menú':'Open menu',exact:true});
+    if(await menu.isVisible())await menu.click();
+    const acceso = page.getByRole('link', { name: idioma === 'es' ? 'Ingresar' : 'Sign in' }).first();
     await expect(acceso).toHaveAttribute('href', '/cuenta');
     await acceso.click();
     await expect(page).toHaveURL(/\/cuenta$/);

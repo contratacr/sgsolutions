@@ -4,9 +4,10 @@ import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { crearClienteCuenta } from '@/lib/supabase/cuenta';
 import { correoCuenta, claveCuenta, registroCuenta } from '@/lib/cuenta-validacion';
+import {errorCuenta, solicitudCuenta, type ErrorCuenta} from '@/lib/cuenta-errores';
 import {proveedoresCuenta} from '@/lib/supabase/proveedores-cuenta';
 
-export type EstadoAccesoCliente = 'inicio' | 'invalido' | 'noDisponible' | 'error' | 'credenciales' | 'confirmarCorreo' | 'aceptacionRequerida' | 'clavesDistintas' | 'claveCorta' | 'registroEnviado' | 'recuperacionEnviada' | 'confirmacionEnviada';
+export type EstadoAccesoCliente = ErrorCuenta | 'correoInvalido' | 'nombreInvalido' | 'inicio' | 'invalido' | 'noDisponible' | 'error' | 'credenciales' | 'confirmarCorreo' | 'aceptacionRequerida' | 'clavesDistintas' | 'claveCorta' | 'registroEnviado' | 'recuperacionEnviada' | 'confirmacionEnviada';
 async function origenPublico() {
   const origenPeticion = (await headers()).get('origin');
   if (process.env.NODE_ENV === 'development' && origenPeticion === 'http://127.0.0.1:3107') return origenPeticion;
@@ -23,6 +24,8 @@ export async function accederCliente(_anterior: EstadoAccesoCliente, formulario:
   const datos = Object.fromEntries(formulario);
   if (modo === 'registro') {
     if(formulario.get('acepta')!=='si') return 'aceptacionRequerida';
+    if (!correoCuenta.safeParse(datos.correo).success) return 'correoInvalido';
+    if (!z.string().trim().min(2).max(150).safeParse(datos.nombre).success) return 'nombreInvalido';
     if (typeof datos.clave === 'string' && !claveCuenta.safeParse(datos.clave).success) return 'claveCorta';
     if (datos.clave !== datos.confirmar) return 'clavesDistintas';
     const validado = registroCuenta.safeParse(datos);
@@ -31,26 +34,28 @@ export async function accederCliente(_anterior: EstadoAccesoCliente, formulario:
     const origen = await origenPublico();
     if (!cliente || !origen) return 'noDisponible';
     const idioma = (await cookies()).get('sg-idioma')?.value === 'en' ? 'en' : 'es';
-    const {error} = await cliente.auth.signUp({email:validado.data.correo,password:validado.data.clave,options:{emailRedirectTo:`${origen}/cuenta/confirmar`,data:{nombre_completo:validado.data.nombre,idioma,aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:'2026-10-11'}}});
-    if (error) return 'error';
+    const {error} = await solicitudCuenta(()=>cliente.auth.signUp({email:validado.data.correo,password:validado.data.clave,options:{emailRedirectTo:`${origen}/cuenta/confirmar`,data:{nombre_completo:validado.data.nombre,idioma,aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:'2026-10-11'}}}));
+    if (error && !['email_exists','user_already_exists'].includes('code' in error ? String(error.code):'')) return errorCuenta(error);
     return 'registroEnviado';
   }
   const correo = correoCuenta.safeParse(datos.correo);
-  if (!correo.success) return 'invalido';
+  if (!correo.success) return 'correoInvalido';
   const cliente = await crearClienteCuenta();
   if (!cliente) return 'noDisponible';
   if (modo === 'recuperar' || modo === 'reenviar') {
     const origen = await origenPublico();
     if (!origen) return 'noDisponible';
-    const {error} = modo === 'recuperar'
-      ? await cliente.auth.resetPasswordForEmail(correo.data,{redirectTo:`${origen}/cuenta/confirmar?flujo=recuperar`})
-      : await cliente.auth.resend({type:'signup',email:correo.data,options:{emailRedirectTo:`${origen}/cuenta/confirmar`}});
-    if (error) return 'error';
+    const {error} = await solicitudCuenta(async()=>{const resultado=await (modo === 'recuperar'
+      ? cliente.auth.resetPasswordForEmail(correo.data,{redirectTo:`${origen}/cuenta/confirmar?flujo=recuperar`})
+      : cliente.auth.resend({type:'signup',email:correo.data,options:{emailRedirectTo:`${origen}/cuenta/confirmar`}}));return {error:resultado.error};});
+    if (error && !['user_not_found','email_not_confirmed'].includes('code' in error ? String(error.code):'')) return errorCuenta(error);
     return modo === 'recuperar' ? 'recuperacionEnviada' : 'confirmacionEnviada';
   }
   if (modo !== 'login' || !z.string().min(1).max(128).safeParse(datos.clave).success) return 'invalido';
-  const {error} = await cliente.auth.signInWithPassword({email:correo.data,password:String(datos.clave)});
-  if (error) return error.code === 'email_not_confirmed' ? 'confirmarCorreo' : 'credenciales';
+  const {error} = await solicitudCuenta(()=>cliente.auth.signInWithPassword({email:correo.data,password:String(datos.clave)}));
+  if (error) return errorCuenta(error,true);
+  const habilitada=await solicitudCuenta(()=>cliente.rpc('cuenta_habilitada'));
+  if('data' in habilitada&&habilitada.data===false){await solicitudCuenta(()=>cliente.auth.signOut());return 'cuentaBloqueada';}
   redirect('/cuenta');
 }
 export async function actualizarClaveCliente(_anterior: EstadoAccesoCliente, formulario: FormData): Promise<EstadoAccesoCliente> {
@@ -59,10 +64,11 @@ export async function actualizarClaveCliente(_anterior: EstadoAccesoCliente, for
   if (clave.data !== formulario.get('confirmar')) return 'clavesDistintas';
   const cliente = await crearClienteCuenta();
   const almacen = await cookies();
-  const usuario = cliente ? (await cliente.auth.getUser()).data.user : null;
-  if (!cliente || !usuario || almacen.get('sg-recuperacion')?.value !== usuario.id) return 'error';
-  const {error} = await cliente.auth.updateUser({password:clave.data});
-  if (error) return 'error';
+  const respuesta = cliente ? await solicitudCuenta(()=>cliente.auth.getUser()) : null;
+  const usuario = respuesta && 'data' in respuesta ? respuesta.data.user : null;
+  if (!cliente || !usuario || almacen.get('sg-recuperacion')?.value !== usuario.id) return 'sesionVencida';
+  const {error} = await solicitudCuenta(()=>cliente.auth.updateUser({password:clave.data}));
+  if (error) return errorCuenta(error);
   almacen.delete('sg-recuperacion');
   redirect('/cuenta?clave=actualizada');
 }
@@ -82,8 +88,10 @@ export async function accederCuentaSocial(_anterior:EstadoAccesoCliente,formular
   const cliente=await crearClienteCuenta();
   const origen=await origenPublico();
   if (!cliente || !origen) return 'noDisponible';
-  const {data,error}=await cliente.auth.signInWithOAuth({provider:proveedor,options:{redirectTo:`${origen}/cuenta/confirmar`,skipBrowserRedirect:true,...(proveedor==='facebook'?{scopes:'email'}:{})}});
-  if (error || !data.url) return 'error';
+  const respuesta=await solicitudCuenta(()=>cliente.auth.signInWithOAuth({provider:proveedor,options:{redirectTo:`${origen}/cuenta/confirmar`,skipBrowserRedirect:true,...(proveedor==='facebook'?{scopes:'email'}:{})}}));
+  if(respuesta.error) return errorCuenta(respuesta.error);
+  const data='data' in respuesta?respuesta.data:null;
+  if(!data?.url)return 'error';
   if(formulario.get('modo')==='registro') (await cookies()).set('sg-aceptacion-oauth',new Date().toISOString(),{httpOnly:true,secure:origen.startsWith('https:'),sameSite:'lax',path:'/cuenta',maxAge:600});
   redirect(data.url);
 }

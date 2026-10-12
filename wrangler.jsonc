@@ -6,7 +6,7 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {"directory": ".open-next/assets", "binding": "ASSETS"},
   "services": [{"binding": "WORKER_SELF_REFERENCE", "service": "sgsolutions"}],
-  "vars": {"SG_ENTORNO": "produccion"},
+  "vars": {"SG_ENTORNO": "produccion", "PEDIDOS_ORIGEN_PUBLICO": "https://sgsolutions.sgsolutions.workers.dev"},
   "env": {
     "preview": {
       "name": "sg-preview",

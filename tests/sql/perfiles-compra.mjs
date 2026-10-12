@@ -1,0 +1,13 @@
+import {readFile} from 'node:fs/promises';import assert from 'node:assert/strict';
+const {PGlite}=await import(process.env.SG_PGLITE_MODULE);const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create schema auth;grant usage on schema auth to authenticated;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;`);
+await db.exec(await readFile('supabase/migrations/20261012000300_perfiles_compra_clientes.sql','utf8'));
+const a='00000000-0000-4000-8000-000000000001',b='00000000-0000-4000-8000-000000000002';await db.query('insert into auth.users values($1),($2)',[a,b]);
+await db.exec(`set role authenticated;set request.jwt.claim.sub='${a}'`);await db.query('insert into public.perfiles_compra_clientes values($1,$2)',[a,{nombre:'Ana',apellidos:'López'}]);
+assert.equal((await db.query('select * from public.perfiles_compra_clientes')).rows.length,1);
+await assert.rejects(()=>db.query('insert into public.perfiles_compra_clientes values($1,$2)',[b,{}]),/row-level security/);
+await db.exec(`set request.jwt.claim.sub='${b}'`);assert.equal((await db.query('select * from public.perfiles_compra_clientes')).rows.length,0);
+await db.query("update public.perfiles_compra_clientes set datos='{}' where usuario_id=$1",[a]);
+await db.exec(`set request.jwt.claim.sub='${a}'`);assert.equal((await db.query('select datos from public.perfiles_compra_clientes')).rows[0].datos.nombre,'Ana');
+await db.exec('reset role;set role anon');await assert.rejects(()=>db.query('select * from public.perfiles_compra_clientes'),/permission denied/);
+await db.exec('reset role');await db.query('delete from auth.users where id=$1',[a]);assert.equal((await db.query('select * from public.perfiles_compra_clientes')).rows.length,0);await db.close();console.log('OK: aislamiento entre clientes, acceso anónimo rechazado y eliminación por cascada.');

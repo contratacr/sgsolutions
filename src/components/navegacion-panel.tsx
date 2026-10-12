@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import {LayoutDashboard,Package,FileText,MessagesSquare,ChartNoAxesCombined,Truck} from 'lucide-react';
+import {LayoutDashboard,Package,FileText,MessagesSquare,ChartNoAxesCombined,Truck,Users} from 'lucide-react';
 import {usePathname} from 'next/navigation';
 import {useTranslations} from 'next-intl';
 import {cerrarSesion} from '@/app/acceso/acciones';
@@ -14,10 +14,11 @@ export function NavegacionPanel() {
   const enlaces = [
     {href:'/panel', texto:t('titulo'),Icono:LayoutDashboard},
     {href:'/panel/catalogo', texto:t('productos'),Icono:Package},
-    {href:'/panel/proveedores', texto:t('proveedores'),Icono:Truck},
+    {href:'/panel/proveedores', texto:t('proveedores'),Icono:Truck,Users},
     {href:'/panel/contenido', texto:t('contenido'),Icono:FileText},
     {href:'/panel/pedidos', texto:t('pedidos'),Icono:MessagesSquare},
-    {href:'/panel/estadisticas', texto:m('tituloPanel'),Icono:ChartNoAxesCombined,Truck},
+    {href:'/panel/usuarios',texto:t('usuarios'),Icono:Users},
+    {href:'/panel/estadisticas', texto:m('tituloPanel'),Icono:ChartNoAxesCombined,Truck,Users},
   ];
   return <nav className="panel-navegacion contenedor" aria-label={t('titulo')}>
     {enlaces.map(({href,texto,Icono}) => <Link key={href} href={href} aria-current={ruta === href || href !== '/panel' && ruta.startsWith(`${href}/`) ? 'page' : undefined}><Icono size={18} aria-hidden="true"/>{texto}</Link>)}

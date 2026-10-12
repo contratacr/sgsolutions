@@ -12,7 +12,7 @@ export function FocoInteraccion() {
     const raiz = document.documentElement;
     const puntero = () => { raiz.dataset.interaccion = 'puntero'; };
     const teclado = (evento: KeyboardEvent) => {
-      if (!evento.metaKey && !evento.ctrlKey && !evento.altKey) {
+      if (evento.key === 'Tab' && !evento.metaKey && !evento.ctrlKey && !evento.altKey) {
         raiz.dataset.interaccion = 'teclado';
       }
     };

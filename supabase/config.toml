@@ -45,3 +45,27 @@ enable_confirmations = true
 
 [analytics]
 enabled = false
+
+[auth.email.template.confirmation]
+subject = "Confirme su correo / Confirm your email | SG Solutions"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Recupere su contraseña / Reset your password | SG Solutions"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.email.template.magic_link]
+subject = "Acceda a su cuenta / Sign in to your account | SG Solutions"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.invite]
+subject = "Su cuenta en SG Solutions / Your SG Solutions account | SG Solutions"
+content_path = "./supabase/templates/invite.html"
+
+[auth.email.template.email_change]
+subject = "Confirme el cambio de correo / Confirm your email change | SG Solutions"
+content_path = "./supabase/templates/email_change.html"
+
+[auth.email.template.reauthentication]
+subject = "Verifique su identidad / Verify your identity | SG Solutions"
+content_path = "./supabase/templates/reauthentication.html"

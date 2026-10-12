@@ -1,3 +1,6 @@
+import {DatosCuenta} from './datos';
+import {leerPerfilCompra} from '@/lib/perfil-compra-servidor';
+import {solicitudCuenta} from '@/lib/cuenta-errores';
 import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { crearClienteCuenta } from '@/lib/supabase/cuenta';
@@ -28,8 +31,11 @@ export default async function CuentaCliente({ searchParams }: { searchParams: Pr
   const idioma = await getLocale();
   const { error, clave } = await searchParams;
   const cliente = await crearClienteCuenta();
-  const { data: { user } } = cliente ? await cliente.auth.getUser() : { data: { user: null } };
-  const confirmado = Boolean(user?.email && user.email_confirmed_at);
+  const sesion=cliente?await solicitudCuenta(()=>cliente.auth.getUser()):null;
+  const user=sesion&&'data' in sesion?sesion.data.user:null;
+  const habilitada=user&&cliente?await solicitudCuenta(()=>cliente.rpc('cuenta_habilitada')):null;
+  const bloqueada=habilitada&&'data' in habilitada&&habilitada.data===false;
+  const confirmado = Boolean(user?.email && user.email_confirmed_at&&!bloqueada);
   const proveedores=confirmado?{google:false,facebook:false}:await proveedoresCuenta();
   let pedidos: PedidoCuenta[] = [];
   let errorPedidos = false;
@@ -38,11 +44,13 @@ export default async function CuentaCliente({ searchParams }: { searchParams: Pr
     errorPedidos = Boolean(respuesta.error);
     pedidos = (respuesta.data ?? []) as PedidoCuenta[];
   }
+  const perfilCompra=confirmado?await leerPerfilCompra():null;
   return <main id="contenido" className={`contenedor seccion cuenta-pagina${confirmado?'':' cuenta-entrada'}`}>
     {confirmado?<div className="cuenta-intro"><p className="etiqueta">{marca('nombre')}</p><h1>{t('titulo')}</h1><p>{t('descripcion')}</p></div>:<h1 className="sr-only">{t('titulo')}</h1>}
     {!confirmado ? <section className="cuenta-bloque" aria-labelledby="cuenta-acceso">
       <h2 id="cuenta-acceso" className="sr-only">{t('opcionesAcceso')}</h2>
-      {error && <p className="cuenta-aviso cuenta-error" role="alert">{t('enlaceInvalido')}</p>}
+      {bloqueada&&<p className="cuenta-aviso cuenta-error" role="alert">{t('cuentaBloqueada')}</p>}
+      {error && <p className="cuenta-aviso cuenta-error" role="alert">{t(error==='bloqueada'?'cuentaBloqueada':error==='configuracion'?'noDisponible':error==='conexion'?'conexion':error==='cancelado'?'googleCancelado':error==='oauth'?'googleVencido':'enlaceInvalido')}</p>}
       <FormularioCuenta proveedores={proveedores}/>
     </section> : <>
       {clave === 'actualizada' && <p className="cuenta-aviso" role="status">{t('claveActualizada')}</p>}
@@ -50,6 +58,7 @@ export default async function CuentaCliente({ searchParams }: { searchParams: Pr
         <div>{typeof user?.user_metadata.nombre_completo === 'string' && <strong>{user.user_metadata.nombre_completo}</strong>}<span>{t('correo')}</span><strong>{user?.email}</strong></div>
         <form action={cerrarSesionCliente}><button className="boton boton-contorno">{t('salir')}</button></form>
       </section>
+      {perfilCompra&&<DatosCuenta datos={perfilCompra.datos} error={perfilCompra.error}/>}
       <section className="cuenta-pedidos" aria-labelledby="cuenta-pedidos-titulo">
         <div className="cuenta-pedidos-titulo"><h2 id="cuenta-pedidos-titulo">{t('pedidos')}</h2><span>{pedidos.length}</span></div>
         {errorPedidos ? <p role="alert">{t('pedidosError')}</p> : pedidos.length === 0 ? <div className="cuenta-bloque"><p>{t('sinPedidos')}</p><Link className="boton boton-azul" href="/tienda">{t('verTienda')}</Link></div> : <ol className="cuenta-lista">{pedidos.map(pedido => <li className="cuenta-pedido" key={`${pedido.origen}-${pedido.id}`}>

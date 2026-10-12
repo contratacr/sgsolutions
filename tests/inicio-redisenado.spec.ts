@@ -52,3 +52,26 @@ test('los paneles no cambian de tamaño al pasar el cursor en ancho móvil', asy
     expect(await paneles.evaluateAll(elementos => elementos.map(elemento => Math.round(elemento.getBoundingClientRect().height)))).toEqual(alturas);
   }
 });
+
+test('toque móvil con respuesta visual, sin saltos y respetando movimiento reducido',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto('/');
+ const panel=page.locator('.inicio-camino-soporte');
+ const imagen=panel.locator('img');
+ const alturas=await page.locator('.inicio-triptico-panel').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height));
+ await panel.hover();
+ await expect.poll(()=>imagen.evaluate(e=>getComputedStyle(e).transform)).toBe('none');
+ await page.mouse.down();
+ await expect.poll(()=>imagen.evaluate(e=>getComputedStyle(e).transform)).not.toBe('none');
+ expect(await page.locator('.inicio-triptico-panel').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height))).toEqual(alturas);
+ // Cancelar el toque al salir: no navegar ni dejar un hover permanente.
+ await page.mouse.move(2,2);
+ await page.mouse.up();
+ await expect.poll(()=>imagen.evaluate(e=>getComputedStyle(e).transform)).toBe('none');
+ await expect(page).toHaveURL(/\/$/);
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await panel.hover();await page.mouse.down();
+ await expect(imagen).toHaveCSS('transform','none');
+ await page.mouse.up();
+ await expect(page).toHaveURL(/\/soporte$/);
+});

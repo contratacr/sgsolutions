@@ -1,4 +1,6 @@
 "use client";
+import {combinarDatosCompra} from '@/lib/perfil-compra';
+import {guardarDatosCompra,type EstadoDatosCompra} from '@/app/cuenta/datos-acciones';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import {adjuntarComprobantePedido} from '@/lib/adjuntar-comprobante';
 import {medir} from '@/lib/analitica-cliente';
@@ -30,7 +32,7 @@ const provincias = [
   "Puntarenas",
   "Limón",
 ];
-export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
+export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
   const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
     l = useLocale(),
@@ -40,7 +42,8 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
 
   const [errorStock,setErrorStock]=useState(false);
   const [errorAutorizacion,setErrorAutorizacion]=useState(false);
-  const [borrador, setBorrador] = useState<Record<string, string>>(():Record<string,string>=>{const d=aprobacion?.contacto;if(!d)return {};const partes=d.nombre.trim().split(/\s+/);return {nombre:partes.slice(0,-1).join(' ')||d.nombre,apellidos:partes.length>1?partes.at(-1)!:'',correo:d.correo??'',telefono:d.telefono?(d.telefono.startsWith('+')?d.telefono:'+'+d.telefono):'+506 ',tipoIdentificacion:d.tipoIdentificacion??'fisica',identificacion:d.identificacion??'',correoFactura:d.correo??''};});
+  const [borrador, setBorrador] = useState<Record<string, string>>(():Record<string,string>=>{const d=aprobacion?.contacto;if(!d)return datosGuardados;const partes=d.nombre.trim().split(/\s+/);return combinarDatosCompra(datosGuardados,{nombre:partes.slice(0,-1).join(' ')||d.nombre,apellidos:partes.length>1?partes.at(-1)!:'',correo:d.correo??'',telefono:d.telefono?(d.telefono.startsWith('+')?d.telefono:'+'+d.telefono):'',tipoIdentificacion:d.tipoIdentificacion??'fisica',identificacion:d.identificacion??'',correoFactura:d.correo??''});});
+  const dc=useTranslations('DatosCuenta');const [guardadoPerfil,setGuardadoPerfil]=useState<EstadoDatosCompra>('inicio');
   const [comprobante,setComprobante]=useState<File|null>(null),[errorComprobante,setErrorComprobante]=useState(false);
   const pm=useTranslations('PedidoManual');
   const [entrega, setEntrega] = useState(false),
@@ -75,15 +78,19 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
     subtotal = productos.reduce((s, x) => s + (x.p.precio ?? 0) * x.cantidad, 0),
     envio = costoEntrega(entrega ? 'envio' : 'retiro'),
     total = subtotal + envio;
-  function revisar(e: FormEvent<HTMLFormElement>) {
+  async function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setErrorFormulario(false);
+    setErrorFormulario(false);setGuardadoPerfil('inicio');
+    const formulario=new FormData(e.currentTarget);
     const datos = Object.fromEntries(
-      new FormData(e.currentTarget).entries(),
+      formulario.entries(),
     ) as Record<string, string>;
     setBorrador(datos);
     setRevision(datos);
     medir('pedido_revisado');
+    if(cuentaDisponible&&formulario.get('guardarDatos')==='on'){
+      try{setGuardadoPerfil(await guardarDatosCompra('inicio',formulario));}catch{setGuardadoPerfil('error');}
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   async function accesoCompra(){
@@ -142,7 +149,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
     <label key={name}>
       {t(name)}
       <input
-        defaultValue={borrador[name] ?? (type === "tel" ? "+506 " : "")}
+        defaultValue={borrador[name] || (type === "tel" ? "+506 " : "")}
         name={name}
         type={type}
         required={required}
@@ -157,6 +164,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
         <ArrowLeft size={17} />
         {t("volver")}
       </Link>
+      {guardadoPerfil!=='inicio'&&<p className="compra-aviso-datos" role={guardadoPerfil==='guardado'?'status':'alert'}>{dc(guardadoPerfil==='guardado'?'guardado':'errorCompra')}</p>}
       {errorStock&&<p role="alert">{t('stockCambio')}</p>}
       <header className="compra-cabecera">
         <p className="etiqueta">{t("etiqueta")}</p>
@@ -179,7 +187,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                 <h2>{t("revisarTitulo")}</h2>
                 <dl className="pedido-datos">
                   {Object.entries(revision)
-                    .filter(([k, v]) => v && k !== "consentimiento" && k !== "contacto")
+                    .filter(([k, v]) => v && k !== "consentimiento" && k !== "contacto" && k !== "guardarDatos")
                     .map(([k, v]) => (
                       <div key={k}>
                         <dt>{t(k)}</dt>
@@ -220,6 +228,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
               </section>
             ) : (
               <form onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
+                {cuentaDisponible&&<label className="compra-guardar-datos"><input type="checkbox" name="guardarDatos"/>{dc('guardarProxima')}</label>}
                 <section className="compra-bloque">
                   <h2>
                     <span>01</span>

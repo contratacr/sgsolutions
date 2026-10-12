@@ -1,0 +1,15 @@
+# Correos de cuentas de SG Solutions
+
+Las 13 plantillas usan el logo gráfico oficial, azul #2f4e73, texto #17354b, fondo blanco y acento #f05a28. El contenido selecciona inglés cuando `Data.idioma` es `en`; español es el valor predeterminado. Los asuntos son bilingües para que no dependan del soporte de metadatos en asuntos.
+
+Regenerar: `node scripts/plantillas-cuenta.mjs`. Este script es la fuente de los HTML y los manifiestos; no editar cada copia manualmente.
+
+Las seis plantillas de autenticación están enlazadas en `supabase/config.toml`. Los archivos de notificaciones no activan correos ni cambian la seguridad de Supabase. Para el proyecto alojado se deben guardar el HTML y el asunto correspondiente en Authentication → Email → Templates; conservar los interruptores de avisos existentes.
+
+Confirmación y recuperación conservan el callback de SG Solutions con `TokenHash` para la verificación del lado del servidor. Recuperación conserva el parámetro `flujo=recuperar` enviado por la app. Invitaciones, cambios de correo y enlaces mágicos conservan `ConfirmationURL`. Reautenticación muestra `Token` y no un enlace.
+
+El logo carga desde el Worker de SG Solutions, ya publicado, mediante HTTPS. Se usa esta URL mientras el dominio principal no esté conectado a la web nueva. El archivo es `public/imagenes/logo-principal.png`; no usar un logo solo de texto ni una URL privada de Storage.
+
+Pruebas visuales con datos ficticios: `npx playwright test tests/plantillas-correo.spec.ts --config=.privado/testing/correos.config.ts`. No envían correos. Verifican las 13 plantillas en ambos idiomas, escritorio/móvil, carga del logo, ancho y enlaces de confirmación/recuperación con y sin RedirectTo. No reemplazan una recepción real en Gmail/Outlook ni la validación del editor de Supabase.
+
+Referencia: https://supabase.com/docs/guides/auth/auth-email-templates

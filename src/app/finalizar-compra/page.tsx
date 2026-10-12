@@ -1,3 +1,4 @@
+import {leerPerfilCompra} from '@/lib/perfil-compra-servidor';
 import {leerAprobacion} from '@/lib/asesorias';
 import { getTranslations } from "next-intl/server";
 import { leerContenido } from "@/lib/contenido-servidor";
@@ -12,10 +13,11 @@ export default async function Compra({searchParams}:{searchParams:Promise<{aseso
   const parametros=await searchParams;
   const solicitud=await leerAprobacion(parametros.asesoria??"",parametros.acceso??"");
   const aprobacion=solicitud?{id:solicitud.id,token:solicitud.token!,articulos:solicitud.articulos,contacto:solicitud.contacto}:null;
+  const perfilCompra=await leerPerfilCompra();
   const { pagos } = await leerContenido();
   return (
     <main id="contenido" className="contenedor compra-pagina">
-      <FinalizarCompra enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
+      <FinalizarCompra datosGuardados={perfilCompra?.datos} cuentaDisponible={Boolean(perfilCompra)} enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
     </main>
   );
 }
