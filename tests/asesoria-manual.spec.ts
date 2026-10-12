@@ -5,7 +5,7 @@ import {migrarCatalogoManual,catalogoPublicoManual} from '../src/lib/catalogo-ma
 import base from '../src/lib/catalogo-base.json';
 
 test('migración manual conserva productos, precios y decisiones posteriores',()=>{
- const original=esquemaCatalogo.parse(base),antes=structuredClone(original);
+ const original=esquemaCatalogo.parse(base);delete original.gestion;const antes=structuredClone(original);
  const manual=migrarCatalogoManual(original),publico=publicarCatalogo(manual);
  expect(original).toEqual(antes);
  expect(manual.productos.length).toBe(original.productos.length);
@@ -18,37 +18,19 @@ test('migración manual conserva productos, precios y decisiones posteriores',()
  expect(catalogoPublicoManual(publicarCatalogo(manual)).productos.some(p=>p.id===extra.id)).toBe(true);
 });
 
-for(const idioma of ['es','en'])test(`asesoría, selección y regreso al pedido ${idioma}`,async({page,context},info)=>{
+for(const idioma of ['es','en'])test(`asesoría opcional y compra directa ${idioma}`,async({page,context})=>{
  const errores:string[]=[];page.on('pageerror',e=>errores.push(e.message));
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
- await page.goto('/soluciones');
- await expect(page.locator('html')).toHaveAttribute('lang',idioma);
- await expect(page.locator('.medicion-aviso')).toHaveCount(0);
- await expect(page.locator('.asesoria-hero h1')).toHaveText('SG Solutions');
-
- await expect(page.locator('.solucion-necesidad')).toHaveCount(0);
- await page.locator('.asesoria-hero-acciones>.boton').first().click();await page.locator('.contacto-asesoria form button').click();await expect(page.locator('.contacto-asesoria [role=alert]')).toHaveCount(5);
- await page.keyboard.press('Escape');
- await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
- await page.screenshot({path:`/tmp/sg-asesoria-${idioma}-${info.project.name}.png`});
- await page.locator('.shop-categorias button').nth(1).click();
- await expect(page.locator('.shop-producto')).toHaveCount(5);
- await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();
- await page.screenshot({path:`/tmp/sg-productos-${idioma}-${info.project.name}.png`});
- const producto=page.locator('.shop-producto').first(),consulta=producto.locator('button.boton-naranja');
- await context.route('**/api/asesoria',route=>route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({referencia:'SG-PRUEBA'})}));
- await context.route('https://wa.me/**',route=>route.fulfill({status:200,body:'WhatsApp test — no message sent'}));
- await consulta.click();await completarDatosAsesoria(page);const popupPromise=page.waitForEvent('popup');await page.locator('.contacto-asesoria form>button').click();const popup=await popupPromise;await popup.waitForURL("https://wa.me/**");expect(new URL(popup.url()).searchParams.get("text")).toContain("SG-PRUEBA");await popup.close();
- await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();
- await expect(page.locator('.carrito-lineas li')).toHaveCount(1);
- await expect(page.locator('.carrito-resumen button.boton-naranja')).toBeVisible();
- await expect(page.locator('.carrito-resumen a[href="/finalizar-compra"]')).toHaveCount(0);
- await page.goto('/finalizar-compra');
- await expect(page.locator('main form')).toHaveCount(0);
- await expect(page.locator('.compra-paso-asesoria button')).toHaveCount(0);
- await page.reload();await expect(page.locator('main form')).toHaveCount(0);
- expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
- expect(errores).toEqual([]);
+ await context.route('**/api/asesoria',r=>r.fulfill({status:201,json:{referencia:'SG-PRUEBA'}}));
+ await context.route('https://wa.me/**',r=>r.fulfill({status:200,body:'WhatsApp simulado'}));
+ await page.goto('/tienda');await expect(page.locator('.asesoria-hero h1')).toHaveText(idioma==='es'?'Tienda':'Store');
+ await page.locator('.asesoria-hero-acciones>.boton').first().click();await completarDatosAsesoria(page);
+ const ventana=page.waitForEvent('popup');await page.locator('.contacto-asesoria form>button').click();const popup=await ventana;await popup.waitForURL('https://wa.me/**');await popup.close();
+ await expect(page).toHaveURL(/\/tienda$/);
+ await page.locator('.shop-producto .guardar-seleccion').first().click();await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();
+ await expect(page.locator('.carrito-lineas li')).toHaveCount(1);await page.locator('.carrito-resumen a[href="/finalizar-compra"]').click();
+ await expect(page.locator('main form input[name=nombre]')).toBeVisible();
+ await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',idioma);expect(errores).toEqual([]);
 });
 
 test('rutas de importación retiradas',async({request})=>{

@@ -1,7 +1,7 @@
 export const empresa = {
   whatsapp: '50664399417',
   telefono: '+50624467846',
-  correo: 'soporte@sgsolutionscr.com',
+  correo: 'asesor@sgsolutionscr.com',
   instagram: 'https://www.instagram.com/sgsolutionscr/?hl=es-la',
   facebook: 'https://www.facebook.com/sgsolutionscr?locale=es_LA',
   mapa: 'https://www.google.com/maps/search/?api=1&query=SG+Solutions+Plaza+El+Bosque+Atenas+Costa+Rica',

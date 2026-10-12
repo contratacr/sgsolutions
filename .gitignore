@@ -22,3 +22,5 @@ supabase/.branches/
 *.sql.age
 # Costos de proveedor para la prueba local; nunca versionar.
 src/lib/catalogo-inicial.json
+
+.next-pruebas/

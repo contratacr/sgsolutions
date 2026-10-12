@@ -37,6 +37,7 @@ export const esquemaContenido = z
         .array(
           z.object({
             banco: z.string().min(1).max(80),
+            cuentaCorta: z.string().regex(/^[0-9-]{0,40}$/).optional(),
             iban: z.string().regex(/^CR\d{20}$/),
           }),
         )

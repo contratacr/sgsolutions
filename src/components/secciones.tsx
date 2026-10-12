@@ -25,7 +25,7 @@ export async function Planes() {
 
 export async function InvitacionTienda() {
   const t = await getTranslations('Inicio');
-  return <section className="tienda-invitacion"><div className="contenedor tienda-invitacion-grid"><div><p className="etiqueta etiqueta-clara">{t('tiendaEtiqueta')}</p><h2>{t('tiendaTitulo')}</h2><p>{t('tiendaTexto')}</p><Link className="boton boton-naranja" href="/soluciones">{t('tiendaAccion')}<ShoppingBag size={18} aria-hidden="true"/></Link></div><div className="tienda-imagen"><Image src="/imagenes/portatil.webp" alt={t('tiendaAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div></div></section>;
+  return <section className="tienda-invitacion"><div className="contenedor tienda-invitacion-grid"><div><p className="etiqueta etiqueta-clara">{t('tiendaEtiqueta')}</p><h2>{t('tiendaTitulo')}</h2><p>{t('tiendaTexto')}</p><Link className="boton boton-naranja" href="/tienda">{t('tiendaAccion')}<ShoppingBag size={18} aria-hidden="true"/></Link></div><div className="tienda-imagen"><Image src="/imagenes/portatil.webp" alt={t('tiendaAlt')} fill sizes="(max-width: 760px) 100vw, 45vw"/></div></div></section>;
 }
 
 export async function Nosotros() {

@@ -16,7 +16,7 @@ import {
   type CatalogoPublico,
   type Texto,
 } from "@/lib/catalogo-modelo";
-import { agregarProducto, useCarrito } from "@/lib/carrito";
+import { agregarProducto } from "@/lib/carrito";
 import { useCatalogo } from "./datos-catalogo";
 export function FichaProducto({
   producto: p,
@@ -34,10 +34,9 @@ export function FichaProducto({
   const [cantidad,setCantidad]=useState(1);
   const [foto, setFoto] = useState(0);
   const fotos = [...new Set([p.imagen, ...(p.imagenes ?? [])])];
-  const agregado = useCarrito().some((x) => x.id === p.id);
   return (
     <>
-      <Link className="ficha-volver" href="/soluciones">
+      <Link className="ficha-volver" href="/tienda">
         <ArrowLeft size={17} />
         {t("volver")}
       </Link>
@@ -77,11 +76,9 @@ export function FichaProducto({
             {p.precio !== null && <small>{a("precioConIva")}</small>}
           </div>
           {p.disponibilidad==='agotado'&&<p className="ficha-stock">{s('agotado')}</p>}
-          <p className="ficha-asesoria-nota">{a('fichaAyuda')}</p>
-          <AsesoriaWhatsApp lineas={[{producto:p,cantidad}]} onSolicitar={()=>{datos.recordar([p]);if(!agregado&&p.disponibilidad!=='agotado')agregarProducto(p.id,cantidad,false);}}/>
           <div className="ficha-cantidad"><span>{t("cantidad")}</span><ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/></div>
           <button
-            className="boton boton-contorno ficha-agregar"
+            className="boton boton-azul ficha-agregar"
             disabled={p.disponibilidad === "agotado"}
             onClick={() => {
               datos.recordar([p]);
@@ -100,6 +97,7 @@ export function FichaProducto({
           </div>
         </section>
       </div>
+      <aside className="tienda-ayuda"><p>{a('ayudaOpcional')}</p><AsesoriaWhatsApp etiqueta="asesorar"/></aside>
       <section className="ficha-detalles">
         <div>
           <p className="etiqueta">{t("detalleEtiqueta")}</p>

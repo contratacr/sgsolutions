@@ -1,4 +1,5 @@
 import 'server-only';
+import {servicioPruebas} from './servicio-pruebas';
 import { createClient } from '@supabase/supabase-js';
 
 const api = 'https://app.tilopay.com/api/v1';
@@ -10,12 +11,14 @@ export function configuracionTilopay(requerirVerificacionReciente = true) {
   const url = process.env.SUPABASE_URL;
   const serviceRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const verificado = Date.parse(process.env.TILOPAY_PRUEBA_VERIFICADA_EN ?? '');
-  // El primer despliegue no puede habilitar cobros reales por accidente.
-  if (process.env.TILOPAY_MODO !== 'pruebas' || process.env.SG_ENTORNO === 'produccion') return null;
+  const modo = process.env.TILOPAY_MODO;
+  if (modo !== 'pruebas' && modo !== 'produccion') return null;
+  if (modo === 'pruebas' && process.env.SG_ENTORNO === 'produccion') return null;
+  if (modo === 'produccion' && (process.env.SG_ENTORNO !== 'produccion' || !Number.isFinite(Date.parse(process.env.TILOPAY_PRODUCCION_VERIFICADA_EN ?? '')) || !process.env.TILOPAY_ENTORNO_RESPUESTA || process.env.TILOPAY_ENTORNO_RESPUESTA.toLowerCase() === 'test')) return null;
   // Tilopay comparte el host de pruebas y producción. Exigir revisión reciente del portal.
-  if (requerirVerificacionReciente && (!Number.isFinite(verificado) || verificado > Date.now() || Date.now() - verificado > 15 * 60 * 1000)) return null;
+  if (modo === 'pruebas' && requerirVerificacionReciente && (!Number.isFinite(verificado) || verificado > Date.now() || Date.now() - verificado > 15 * 60 * 1000)) return null;
   if (!usuario || !contrasena || !llave || !url || !serviceRole) return null;
-  return { usuario, contrasena, llave, url, serviceRole };
+  return { usuario, contrasena, llave, url, serviceRole, modo, entornoRespuesta: modo === 'pruebas' ? 'Test' : process.env.TILOPAY_ENTORNO_RESPUESTA! };
 }
 
 export function basePedidos(config: NonNullable<ReturnType<typeof configuracionTilopay>>) {
@@ -30,7 +33,9 @@ export function basePedidosAdministracion() {
 }
 
 async function respuestaJson(url: string, body: object, token?: string) {
-  const respuesta = await fetch(url, {
+  const prueba=servicioPruebas('tilopay');
+  const destino=prueba?`${prueba}/${new URL(url).pathname.split('/').at(-1)}`:url;
+  const respuesta = await fetch(destino, {
     method: 'POST',
     headers: { 'content-type': 'application/json', ...(token ? { authorization: `bearer ${token}` } : {}) },
     body: JSON.stringify(body),

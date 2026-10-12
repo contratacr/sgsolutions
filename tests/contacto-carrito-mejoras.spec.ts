@@ -12,7 +12,7 @@ for(const idioma of ['es','en'])test(`datos previos, validación y confirmación
  let datos:Record<string,unknown>|null=null,fallar=false;
  await page.route('**/api/asesoria',async r=>{datos=r.request().postDataJSON();await r.fulfill({status:fallar?503:201,json:fallar?{error:'no_disponible'}:{referencia:'SG-0001'}});});
  await page.addInitScript(()=>{window.open=()=>null;});
- await page.goto('/soluciones');await page.locator('.asesoria-hero-acciones>.boton').first().click();
+ await page.goto('/tienda');await page.locator('.asesoria-hero-acciones>.boton').first().click();
  const formulario=page.locator('.contacto-asesoria form');
  await expect(page.getByRole('dialog').getByRole('button',{name:idioma==='es'?'Cerrar':'Close',exact:true})).toBeVisible();
  await expect(formulario.locator('[name=telefono]')).toHaveValue('+506 ');
@@ -30,29 +30,29 @@ for(const idioma of ['es','en'])test(`datos previos, validación y confirmación
  await expect(page.locator('.carrito-panel')).toBeVisible();await expect(page.locator('.carrito-lineas li')).toHaveCount(1);
  await page.locator('.carrito-cabecera button').click();await expect(page.locator('.carrito-panel')).toHaveCount(0);
  await page.screenshot({path:`/tmp/sg-contacto-mejorado-${idioma}-${test.info().project.name}.png`});
- await page.goto('/');await expect(page.locator('.portal-menu')).toContainText(idioma==='es'?'Para empresas':'For businesses');await expect(page.locator('.portal-menu')).toContainText(idioma==='es'?'Ver planes':'View plans');
+ await page.goto('/');await expect(page.locator('.inicio-camino-empresas')).toContainText(idioma==='es'?'Soluciones empresariales':'Business solutions');await expect(page.locator('.inicio-camino-empresas')).toContainText(idioma==='es'?'Ver planes':'View plans');
 });
 
 test('WhatsApp conserva la app y abre una página útil durante la preparación',async({page,context})=>{
  let liberar!:()=>void;const espera=new Promise<void>(r=>liberar=r);
  await context.route('**/api/asesoria',async r=>{await espera;await r.fulfill({status:201,json:{referencia:'SG-0002'}});});
  await context.route('https://wa.me/**',r=>r.fulfill({status:200,body:'WhatsApp simulado: no se envía ningún mensaje'}));
- await page.goto('/soluciones');await page.locator('.shop-producto .boton-naranja').first().click();await completarDatosAsesoria(page);const popupPromesa=page.waitForEvent('popup');
+ await page.goto('/tienda');await page.locator('.asesoria-hero-acciones>.boton').first().click();await completarDatosAsesoria(page);const popupPromesa=page.waitForEvent('popup');
  await page.locator('.contacto-asesoria form>button').click();const popup=await popupPromesa;
- await popup.waitForURL('**/soluciones');await expect(popup.locator('main')).toBeVisible();await expect(page).toHaveURL(/\/soluciones$/);
+ await popup.waitForURL('**/tienda');await expect(popup.locator('main')).toBeVisible();await expect(page).toHaveURL(/\/tienda$/);
  liberar();await popup.waitForURL('https://wa.me/**');await popup.close();
- await expect(page.locator('.shop-grid')).toBeVisible();await expect(page).toHaveURL(/\/soluciones$/);
+ await expect(page.locator('.shop-grid')).toBeVisible();await expect(page).toHaveURL(/\/tienda$/);
 });
 
 test('pocas marcas llenan la ventana durante todo el ciclo',async({page})=>{
  test.skip(process.env.SG_TEST_ALTAS!=='1','Requiere catálogo local aislado');
  const archivo='.privado/admin-local/catalogo.json',original=await readFile(archivo,'utf8');
  const catalogo=JSON.parse(original);catalogo.contenido.gestion='manual';
- catalogo.contenido.productos=catalogo.contenido.productos.filter((p:{id:string})=>p.id==='portatil');
+ catalogo.contenido.productos=catalogo.contenido.productos.filter((p:{marca:string;publicado:boolean})=>p.publicado&&p.marca==='LENOVO').slice(0,1);
  try{
   await writeFile(archivo,JSON.stringify(catalogo));
   await page.emulateMedia({reducedMotion:'no-preference'});
-  await page.goto('/soluciones');const banda=page.locator('.marcas-grupo').first();
+  await page.goto('/tienda');const banda=page.locator('.marcas-grupo').first();
   await expect(banda.locator('button:not([aria-hidden=true])')).toHaveCount(1);
   await expect(banda.locator('button')).not.toHaveCount(1);
   const geometria=await page.locator('.marcas-ventana').evaluate(e=>{const grupos=e.querySelectorAll('.marcas-grupo');return {ventana:e.clientWidth,primera:grupos[0].getBoundingClientRect().width,segunda:grupos[1].getBoundingClientRect().width};});

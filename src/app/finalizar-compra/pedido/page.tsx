@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import { getTranslations } from 'next-intl/server';
 import { accesoValido, basePedidosManuales, configuracionPedidosManuales, numeroPedido, type EstadoPedidoManual } from '@/lib/pedidos-manuales';
 import { leerContenido } from '@/lib/contenido-servidor';
@@ -37,7 +38,7 @@ export default async function PedidoManual({ searchParams }: { searchParams: Pro
         {pedido.estado === 'revision' && <p>{t('esperarRevision')}</p>}
         {pedido.estado === 'pendiente_pago' && pagos && <section className="pedido-pago-datos">
           <h2>{t('datosPago')}</h2><p>{t('montoConfirmado')}</p><p>{pagos.titular}</p>
-          {pedido.metodo === 'sinpe' ? <strong>{pagos.sinpe.replace(/(\d{4})(\d{4})/, '$1 $2')}</strong> : pagos.cuentas.map(c => <p key={c.iban}><strong>{c.banco}</strong><br/><code>{c.iban}</code></p>)}
+          {pedido.metodo === 'sinpe' ? <strong>{pagos.sinpe.replace(/(\d{4})(\d{4})/, '$1 $2')}</strong> : pagos.cuentas.map(c => <p key={c.iban}><strong>{c.banco}</strong>{cuentaCorta(c) && <span>{t('cuentaCorta')}: <code>{cuentaCorta(c)}</code></span>}<span>{t('iban')}: <code>{c.iban}</code></span></p>)}
           <p>{t('usarReferencia', { numero: numeroPedido(id) })}</p>
           {comprobante==='pendiente'&&<p role="alert">{t('reintentarComprobante')}</p>}
           <SubirComprobante pedido={id} acceso={acceso} />
@@ -46,7 +47,7 @@ export default async function PedidoManual({ searchParams }: { searchParams: Pro
         {pedido.estado === 'pagado'&&<p>{t('facturaGti')}</p>}
         {pedido.estado === 'comprobante_recibido' && <p>{t('verificacion')}</p>}
       </> : <p>{t('enlaceInvalido')}</p>}
-      <Link className="boton boton-contorno" href="/soluciones">{t('volver')}</Link>
+      <Link className="boton boton-contorno" href="/tienda">{t('volver')}</Link>
     </section>
   </main>;
 }

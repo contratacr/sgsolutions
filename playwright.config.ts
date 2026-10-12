@@ -14,6 +14,6 @@ export default defineConfig({
     command: 'npm run start',
     url: baseURL,
     reuseExistingServer: !process.env.CI,
-    env: {SG_ENTORNO: 'local', NEXT_PUBLIC_SUPABASE_URL: '', NEXT_PUBLIC_SUPABASE_ANON_KEY: ''}
+    env: {SG_ENTORNO: 'local', NEXT_PUBLIC_SUPABASE_URL: '', NEXT_PUBLIC_SUPABASE_ANON_KEY: '', CUENTAS_SUPABASE_URL: '', CUENTAS_SUPABASE_ANON_KEY: ''}
   }
 });

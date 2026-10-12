@@ -464,3 +464,26 @@ svg { flex-shrink: 0; }
 .carrito-confirmacion{position:fixed;z-index:60;right:24px;top:92px;width:min(360px,calc(100vw - 48px));padding:18px;border:1px solid #dce6e2;border-radius:18px;background:white;box-shadow:0 14px 45px #0b243322;color:#142e42}
 .carrito-confirmacion [role=status]{display:flex;align-items:start;gap:12px;padding-right:24px}.carrito-confirmacion [role=status]>svg{box-sizing:content-box;color:#2b7048;flex:none;padding:8px;background:#edf6f0;border-radius:50%}.carrito-confirmacion [role=status]>div{min-width:0}.carrito-confirmacion strong{font-size:.9rem;line-height:1.5}.carrito-confirmacion p{font-size:.78rem;color:#617386;margin:4px 0 0;line-height:1.5;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.carrito-confirmacion .boton{margin-top:14px;width:100%;justify-content:center;min-height:42px;padding:9px 16px;gap:9px;border-radius:10px;font-size:.8rem}.carrito-confirmacion-cerrar{position:absolute;right:6px;top:6px;width:32px;height:32px;padding:7px}
 @media(max-width:650px){.carrito-confirmacion{left:16px;right:16px;top:80px;width:auto;padding:16px;border-radius:16px}}
+
+.eurocomp-panel .panel-cabecera>div { max-width: 760px; }
+.eurocomp-busqueda { margin: 24px 0; }
+.eurocomp-busqueda label { display: block; margin-bottom: 8px; }
+.eurocomp-busqueda>div { display: flex; gap: 12px; }
+.eurocomp-busqueda input { min-width: 0; flex: 1; padding: 12px; border: 1px solid #bdcbd3; border-radius: 12px; }
+.eurocomp-productos { display: grid; gap: 14px; }
+.eurocomp-productos article { padding: 22px; border: 1px solid #d4e0e7; border-radius: 16px; display: flex; gap: 24px; justify-content: space-between; background: white; }
+.eurocomp-productos article>div { min-width: 0; flex: 1; overflow-wrap: anywhere; }
+.eurocomp-productos h2 { font-size: 1.1rem; margin: 0 0 8px; }
+.eurocomp-productos p { margin: 6px 0; }
+.eurocomp-productos dl { margin: 0; min-width: 170px; }
+.eurocomp-productos dt { font-size: .85rem; }
+.eurocomp-productos dd { margin: 0 0 12px; font-weight: 700; }
+.eurocomp-paginacion { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
+@media (max-width: 640px) { .eurocomp-productos article { flex-direction: column; gap: 12px; } .eurocomp-productos dl { display: flex; gap: 24px; } .eurocomp-busqueda>div { flex-direction: column; } }
+.shop-producto-info>.contador-cantidad { margin: 12px 0; align-self: flex-start; }
+.shop-producto-info .guardar-seleccion { width: 100%; }
+.tienda-ayuda { display:flex; align-items:center; justify-content:space-between; gap:20px; margin:24px 0; padding:20px; background:#eef4f7; border-radius:16px; }
+@media(max-width:640px){.tienda-ayuda{flex-direction:column;align-items:flex-start;}}
+@media (max-width: 520px) {
+ .shop-grid { grid-template-columns: minmax(0,1fr); }
+}

@@ -4,7 +4,8 @@ test('una foto remota fallida muestra respaldo accesible en ES y EN',async({page
  await page.route('**/imagenes/productos/**',route=>route.abort());
  await page.route('https://store.intcomex.com/**',route=>route.abort());
  await page.route('https://p3-ofp.static.pub/**',route=>route.abort());
- await page.goto('/soluciones');
+ await page.route('https://eurocompcr.com/upload/**',route=>route.abort());
+ await page.goto('/tienda');
  const codigo=await page.locator('.shop-producto .shop-codigo').first().innerText();
  await page.locator('#buscar-equipo').fill(codigo.split(' ').at(-1)!);
  await expect(page.locator('.shop-producto')).toHaveCount(1);

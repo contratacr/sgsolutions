@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 const archivos = execFileSync('git', ['ls-files', '-co', '--exclude-standard', '-z'], {encoding: 'utf8'}).split('\0').filter(Boolean);
 const patrones = [
+  /\bsirett_(?:cli|prv|sys)_[a-fA-F0-9]{48}\b/,
   /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,
   /\bgh[pousr]_[A-Za-z0-9]{30,}\b/,
   /\b(?:sk_live_|onvo_live_)[A-Za-z0-9_]{20,}\b/,

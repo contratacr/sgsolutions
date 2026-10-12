@@ -1,14 +1,13 @@
-import {abrirCompraAprobada,limpiarAprobacionesTrasPrueba} from './aprobacion-fixture';
 import { test, expect } from "@playwright/test";
 import { esquemaContenido } from "../src/lib/contenido-modelo";
 import contenido from "../src/lib/contenido-base.json";
 import {costoEntrega} from '../src/lib/envio';
-limpiarAprobacionesTrasPrueba();
+
 for (const idioma of ["es", "en"])
   test(`ficha y checkout completos ${idioma}`, async ({ page }, info) => {
     const errores: string[] = [];
     page.on("pageerror", (e) => errores.push(e.message));
-    await page.goto("/soluciones");
+    await page.goto("/tienda");
     if (idioma === "en")
       await page
         .getByRole("button", { name: "Read this page in English" })
@@ -16,12 +15,12 @@ for (const idioma of ["es", "en"])
     await expect(page.locator('html')).toHaveAttribute('lang', idioma);
     await expect(page.locator(".shop-producto").first()).toBeVisible();
     await page.locator(".shop-producto h3 a").first().click();
-    await expect(page).toHaveURL(/\/soluciones\/[^/]+$/);
+    await expect(page).toHaveURL(/\/tienda\/[^/]+$/);
     await expect(page.locator("h1")).toBeVisible();
-    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/sgsolutions\.soportecontratacr\.workers\.dev\/imagenes\//);
-    await expect(page.locator(".ficha-codigo")).toContainText("21H2S1NH00");
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/(?:sgsolutions\.soportecontratacr\.workers\.dev\/imagenes\/|eurocompcr\.com\/upload\/)/);
+    await expect(page.locator(".ficha-codigo")).not.toBeEmpty();
     await page.locator(".ficha-agregar").click();
-    await abrirCompraAprobada(page);
+    await page.goto('/finalizar-compra');
     await expect(page.locator("html")).toHaveAttribute("lang", idioma);
     const form = page.locator("main form");
     await form.locator("[name=nombre]").fill("Alex");
@@ -51,9 +50,12 @@ for (const idioma of ["es", "en"])
     await form.locator("[value=transferencia]").check();
     await expect(form.locator(".compra-cuentas")).toHaveAttribute("open", "");
     await expect(form).toContainText("CR71015102120010448776");
-    await expect(form.locator("[value=tarjeta]")).toHaveCount(0);
-    await expect(form.locator('.compra-tarjeta-proximamente')).toBeVisible();
+    for (const cuenta of ["200-01-021-044877-2", "001-42464617-2", "972147995"])
+      await expect(form.locator(".compra-cuentas")).toContainText(cuenta);
+    await form.locator("[value=tarjeta]").check();
+    await expect(form.locator(".compra-comprobante")).toHaveCount(0);
     await form.locator("[value=sinpe]").check();
+    await expect(form.locator(".compra-comprobante")).toBeVisible();
     await form.locator("[name=consentimiento]").check();
     await form.locator("[type=submit]").click();
     await expect(page.locator('main a[href^="https://wa.me/"]')).toHaveCount(0);
@@ -74,9 +76,9 @@ for (const idioma of ["es", "en"])
     expect(errores).toEqual([]);
   });
 test('retiro no suma costo de envío', async ({page}) => {
-  await page.goto('/soluciones/portatil');
+  await page.goto('/tienda'); await page.locator('.shop-producto h3 a').first().click();
   await page.locator('.ficha-agregar').click();
-  await abrirCompraAprobada(page);
+  await page.goto('/finalizar-compra');
   const importes = page.locator('.compra-resumen dl dd');
   const numero = async (indice: number) => Number((await importes.nth(indice).innerText()).replace(/\D/g, ''));
   expect(await numero(1)).toBe(0);
@@ -89,6 +91,6 @@ test("contenido valida imágenes y protege administrador", async ({ page }) => {
   expect(esquemaContenido.safeParse(malo).success).toBe(false);
   await page.goto("/panel/contenido");
   await expect(page).toHaveURL(/\/admin/);
-  await page.goto("/soluciones/no-existe");
+  await page.goto("/tienda/no-existe");
   await expect(page.locator("main")).toBeVisible();
 });

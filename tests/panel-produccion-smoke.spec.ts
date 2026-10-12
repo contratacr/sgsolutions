@@ -5,10 +5,13 @@ for(const idioma of ['es','en'])test(`acceso al panel protegido sin errores de r
   const errores:string[]=[];
   page.on('pageerror',error=>errores.push(error.message));
   await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
-  for(const ruta of ['/panel','/panel/catalogo','/panel/contenido','/panel/pedidos','/panel/estadisticas']){
+  for(const ruta of ['/panel','/panel/catalogo','/panel/contenido','/panel/pedidos','/panel/estadisticas','/panel/proveedores']){
     await page.goto(ruta);
     await expect(page).toHaveURL(/\/admin$/);
-    await expect(page.locator('[name=correo]')).toBeVisible();
+    await expect(page.locator('.acceso-tarjeta h1')).toBeVisible();
+    if(await page.locator('[name=correo]').count())await expect(page.locator('[name=correo]')).toBeVisible();
+    else await expect(page.locator('.acceso-tarjeta [role=status]')).toBeVisible();
+    await expect(page.locator('.admin-producto-editor,.panel-pedidos-seccion,.eurocomp-productos')).toHaveCount(0);
     await expect(page.locator('html')).toHaveAttribute('lang',idioma);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   }

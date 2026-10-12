@@ -8,12 +8,12 @@ for(const idioma of ['es','en'])test(`navegación compacta y marcas animadas ${i
   await page.locator('main .entrada').click({position:{x:10,y:10}});await expect(menu).toHaveAttribute('aria-expanded','false');
   await menu.click();await page.keyboard.press('Escape');await expect(menu).toHaveAttribute('aria-expanded','false');await expect(menu).toBeFocused();
  }
- await page.goto('/soluciones');await expect(page.locator('.solucion-necesidad')).toHaveCount(0);
+ await page.goto('/tienda');await expect(page.locator('.solucion-necesidad')).toHaveCount(0);
  const pista=page.locator('.marcas-pista');await expect(pista).toHaveAttribute('data-lista','true');
  await page.mouse.move(0,0);await expect(pista).toHaveCSS('animation-play-state','running');
  const inicial=await pista.evaluate(e=>getComputedStyle(e).transform);
  await expect.poll(()=>pista.evaluate(e=>getComputedStyle(e).transform)).not.toBe(inicial);
- await page.locator('.marcas-grupo').first().getByRole('button',{name:idioma==='es'?'Ver productos de Lenovo':'View Lenovo products',exact:true}).focus();
+ await page.locator('.marcas-grupo').first().getByRole('button',{name:idioma==='es'?'Ver productos de LENOVO':'View LENOVO products',exact:true}).focus();
  await page.keyboard.press('Enter');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
  await expect.poll(()=>page.locator('.shop-grid').evaluate(e=>Math.round(e.getBoundingClientRect().top))).toBeGreaterThan(20);
  await expect.poll(()=>page.locator('.shop-grid').evaluate(e=>Math.round(e.getBoundingClientRect().top))).toBeLessThan(250);

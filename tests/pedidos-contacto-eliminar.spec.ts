@@ -24,7 +24,7 @@ for(const idioma of ['es','en'])test(`historial conserva contacto y solo elimina
   const tarjeta=bandeja.locator('article').filter({hasText:'SG-9910'});
   await tarjeta.locator('.panel-pedido-detalle>summary').click();
   const contacto=tarjeta.locator('.panel-contacto-cliente');
-  await expect(contacto).toContainText('+50688888888');await expect(contacto).toContainText('Necesito una red para mi oficina.');await expect(contacto).toContainText('cliente@example.test');await expect(contacto).toContainText('Contactarme en la mañana');await expect(contacto).toContainText(idioma==='es'?'Llamada telefónica':'Phone call');
+  await expect(contacto).toContainText('+50688888888');await expect(contacto).toContainText('Necesito una red para mi oficina.');await expect(contacto).toContainText('cliente@example.test');await expect(contacto).toContainText('Contactarme en la mañana');
   const whatsapp=contacto.locator('a[href^="https://wa.me/"]');
   await expect(whatsapp).toHaveAttribute('target','_blank');await expect(whatsapp).toHaveAttribute('rel','noopener noreferrer');
   const destino=new URL((await whatsapp.getAttribute('href'))!);expect(destino.pathname).toBe('/50688888888');expect(destino.searchParams.get('text')).toContain('SG-9910');

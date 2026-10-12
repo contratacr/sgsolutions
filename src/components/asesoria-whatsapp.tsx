@@ -22,14 +22,14 @@ export function AsesoriaWhatsApp({lineas=[],onSolicitar,className='boton boton-n
   `*${cantidad} × ${limpio(traducir(p.nombre,idioma))}*`,
   p.codigoFabricante?`${t('codigo')}: ${limpio(p.codigoFabricante)}`:'',
   p.precio!==null?`${t('precioReferencia')}: ${colones(p.precio)}`:'',
-  origen?`${origen}/soluciones/${p.id}`:''
+  origen?`${origen}/tienda/${p.id}`:''
  ].filter(Boolean).join('\n'));
  const mensaje=[t('mensajeInicio'),necesidad?t('mensajeNecesidad',{necesidad:t(necesidad)}):'',...productos,
   lineas.length?t('mensajeCierre'):necesidad?'':t('mensajeGeneral')
  ].filter(Boolean).join('\n\n');
  async function solicitar(contacto:ContactoAsesoriaDatos){
   if(ocupado)return;setOcupado(true);setError(false);
-  const ventana=window.open('/soluciones','_blank');if(ventana)ventana.opener=null;
+  const ventana=window.open('/tienda','_blank');if(ventana)ventana.opener=null;
   try{const respuesta=await fetch('/api/asesoria',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({idioma,contacto,consentimiento:true,articulos:lineas.map(x=>({id:x.producto.id,cantidad:x.cantidad}))})});const datos=await respuesta.json();if(!respuesta.ok||typeof datos.referencia!=='string')throw new Error('SOLICITUD');onSolicitar?.();const url=enlaceWhatsApp(`${mensaje}\n\n${t('nombre')}: ${limpio(contacto.nombre)}\n${contacto.necesidad?limpio(contacto.necesidad)+'\n':''}\n*${t('referencia')}: ${datos.referencia}*`);setPreparado({clave,url});setAbierto(false);if(ventana&&!ventana.closed)ventana.location.assign(url);}catch{ventana?.close();setError(true);}finally{setOcupado(false);}
  }
  return <><button type="button" className={className} onClick={()=>{setError(false);setAbierto(true);}} disabled={ocupado}>{Icono?<Icono size={20} aria-hidden="true"/>:<IconoWhatsApp width={20} height={20}/>} {t(necesidad??etiqueta)}</button><DatosAsesoria abierto={abierto} cerrar={()=>setAbierto(false)} enviar={solicitar} ocupado={ocupado} error={error}/>{enlacePreparado&&<p className="asesoria-siguiente-paso"><a href={enlacePreparado} target="_blank" rel="noopener noreferrer">{t('abrirWhatsapp')}<span className="sr-only">{n('nuevaPestana')}</span></a></p>}</>;

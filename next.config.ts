@@ -2,13 +2,14 @@ import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const configuracion: NextConfig = {
+  ...(process.env.SG_PRUEBAS_INTEGRACION === '1' && process.env.SG_ENTORNO === 'local' ? {distDir: '.next-pruebas'} : {}),
   images: { unoptimized: true },
   poweredByHeader: false,
   experimental: {serverActions: {bodySizeLimit: '32mb'}},
   async redirects() {
     return [
-      {source: '/tienda', destination: '/soluciones', permanent: true},
-      {source: '/tienda/:path*', destination: '/soluciones/:path*', permanent: true}
+      {source: '/soluciones', destination: '/tienda', permanent: true},
+      {source: '/soluciones/:path*', destination: '/tienda/:path*', permanent: true}
     ];
   },
   async headers() {

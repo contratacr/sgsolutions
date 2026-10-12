@@ -376,3 +376,153 @@ body:has(.portal) .portal{box-shadow:none}
 .nosotros-pagina .contacto .boton-contorno{color:#f3f7fa;border-color:#a8c0d0;background:#ffffff08}
 .nosotros-pagina .contacto .boton-contorno:hover{color:#fff;background:#ffffff18;border-color:#e1ebf2}
 @media(max-width:760px){.contacto-acciones{justify-self:start}.contacto .contacto-acciones .boton{font-size:.85rem;padding:12px}}
+
+/* Light home palette, with photographs and SG red accents. */
+.entrada.portal{background:linear-gradient(135deg,var(--fondo),#edf3f7);color:var(--oscuro)}
+.portal h1{color:var(--oscuro)}
+.portal h1>span{background:none;color:var(--azul);-webkit-text-fill-color:var(--azul)}
+.portal .entrada-eyebrow,.portal .portal-introduccion>p{color:#496277}
+.portal .entrada-eyebrow>span,.portal .portal-menu-cabecera::before{background:#ed1c24;box-shadow:none}
+.portal .portal-menu-cabecera{border-top-color:#bdcdd8;color:var(--azul)}
+.portal .portal-menu-cabecera>span:last-child{color:#496277}
+.portal .portal-menu{gap:20px;background:transparent;border:0;padding:0;box-shadow:none}
+.portal .portal-menu .portal-tarjeta{height:300px;color:var(--oscuro);background:#fff;border:1px solid #d7e2ea;border-radius:18px;box-shadow:0 8px 24px #18354b0a}
+.portal .portal-menu .portal-tarjeta:hover,.portal .portal-menu .portal-tarjeta:focus-visible{background:#fff;border-color:#b7cad8;box-shadow:0 12px 30px #18354b14}
+.portal .portal-menu .portal-tarjeta:focus-visible{outline:3px solid var(--azul);outline-offset:4px}
+.portal .portal-menu .portal-foto{inset:0 0 auto;height:140px;opacity:1;transform:none}
+.portal .portal-menu .portal-foto img{filter:none;object-fit:cover;object-position:center;transform:none}
+.portal .portal-menu .portal-velo,.portal .portal-menu .portal-reflejo{display:none}
+.portal .portal-menu .portal-tarjeta-cabecera{inset:0;padding:16px;align-items:flex-start}
+.portal .portal-menu .portal-icono{position:static;width:40px;height:40px;border-radius:12px;color:var(--azul);background:#fffffff2;border:1px solid #fff;box-shadow:0 2px 8px #14283b12}
+.portal .portal-menu .portal-tarjeta-contenido{padding:156px 22px 18px;justify-content:flex-end;height:100%}
+.portal .portal-menu .portal-tarjeta h2{color:var(--oscuro)}
+.portal .portal-menu .portal-tarjeta p{color:#496277;min-height:36px}
+.portal .portal-menu .portal-tarjeta-base{color:var(--azul);border-top-color:#e0e8ee}
+.portal .portal-menu .portal-flecha,.portal .portal-menu .portal-tienda .portal-flecha{position:static;color:var(--azul);background:#edf3f7;border-color:#dae5ec;transform:none}
+.portal .portal-menu .portal-tarjeta:hover .portal-flecha,.portal .portal-menu .portal-tarjeta:focus-visible .portal-flecha{background:#fdebed;color:#b8151d;border-color:#f4c5c8;transform:none}
+.portal .portal-menu .portal-tarjeta::after{background:#ed1c24}
+@media(max-width:899px){
+ .portal .portal-menu{gap:16px}
+ .portal .portal-menu .portal-tarjeta{height:272px}
+ .portal .portal-menu .portal-foto{height:128px}
+ .portal .portal-menu .portal-tarjeta-contenido{padding:142px 20px 16px}
+ .portal .portal-menu .portal-tarjeta h2{font-size:1.35rem;margin:0}
+ .portal .portal-menu .portal-tarjeta p{display:block;font-size:.85rem;max-width:none;margin-top:6px;min-height:30px}
+ .portal .portal-menu .portal-tarjeta-base{margin-top:8px;padding-top:10px;min-height:36px}
+}
+
+/* Equipment composition and three clear destinations, with a featured SG project. */
+.portal .portal-presentacion{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;padding-bottom:40px}
+.portal .portal-mensaje{pointer-events:auto}
+.portal .entrada-eyebrow{margin-bottom:24px}
+.portal h1{font-size:clamp(2.6rem,4.8vw,4.6rem);line-height:1.04}
+.portal .portal-introduccion{margin-top:24px;max-width:510px}
+.portal .portal-cta{margin-top:24px;gap:10px}
+.portal .portal-composicion{position:relative;height:340px;background:linear-gradient(135deg,#dce9f1,#f5f8fa);border-radius:30px;pointer-events:none}
+.portal .portal-composicion>div{position:absolute;overflow:hidden;border:5px solid #fff;box-shadow:0 14px 30px #19384e16;border-radius:20px;background:#fff}
+.portal .portal-composicion img{object-fit:cover}
+.portal .portal-equipo-principal{inset:24px 60px 38px 24px;transform:rotate(-4deg)}
+.portal .portal-equipo-red{width:42%;height:42%;right:-8px;bottom:12px;transform:rotate(5deg)}
+.portal .portal-equipo-camara{width:29%;height:33%;right:4px;top:-14px;transform:rotate(4deg)}
+.portal .portal-composicion-etiqueta{position:absolute;bottom:18px;left:24px;background:var(--azul);color:#fff;border-radius:8px;padding:10px 14px;font-size:.8rem}
+.portal .portal-menu{grid-template-columns:1.2fr 1fr;grid-template-rows:repeat(2,150px);gap:18px}
+.portal .portal-tarjeta-marco:first-child{grid-row:1/3}
+.portal .portal-menu .portal-tarjeta{height:100%}
+.portal .portal-menu .portal-tarjeta-marco:first-child .portal-foto{height:155px}
+.portal .portal-menu .portal-tarjeta-marco:first-child .portal-tarjeta-contenido{padding-top:171px}
+.portal .portal-menu .portal-tarjeta-marco:not(:first-child) .portal-foto{left:62%;height:100%;width:38%}
+.portal .portal-menu .portal-tarjeta-marco:not(:first-child) .portal-tarjeta-contenido{padding:18px 42% 14px 20px;justify-content:center}
+.portal .portal-menu .portal-tarjeta-marco:not(:first-child) .portal-tarjeta-cabecera{display:none}
+.portal .portal-menu .portal-tarjeta-marco:not(:first-child) h2{font-size:1.25rem}
+.portal .portal-menu .portal-tarjeta-marco:not(:first-child) p{min-height:0;font-size:.82rem}
+.portal .portal-menu .portal-tarjeta-marco:not(:first-child) .portal-tarjeta-base{min-height:30px;margin-top:8px;padding-top:8px}
+@media(max-width:899px){
+ .portal .portal-presentacion{grid-template-columns:1fr;gap:28px;padding-bottom:28px}
+ .portal .portal-composicion{height:260px;margin:0 8px}
+ .portal .portal-equipo-principal{inset:20px 44px 36px 16px}
+ .portal .portal-composicion-etiqueta{font-size:.72rem;left:16px;bottom:12px}
+ .portal .portal-menu{grid-template-columns:1fr;grid-template-rows:auto;gap:16px}
+ .portal .portal-tarjeta-marco:first-child{grid-row:auto}
+ .portal .portal-menu .portal-tarjeta-marco:first-child .portal-tarjeta{height:300px}
+ .portal .portal-menu .portal-tarjeta-marco:not(:first-child) .portal-tarjeta{height:166px}
+}
+@media(max-width:599px){
+ .portal .portal-menu .portal-tarjeta-marco:not(:first-child) .portal-foto{left:72%;width:28%}
+ .portal .portal-menu .portal-tarjeta-marco:not(:first-child) .portal-tarjeta-contenido{padding-right:30%;padding-left:18px}
+ .portal .portal-menu .portal-tarjeta-marco:not(:first-child) h2{font-size:1.13rem;line-height:1.25}
+ .portal .portal-menu .portal-tarjeta-marco:not(:first-child) .portal-tarjeta-base{font-size:.8rem}
+}
+
+/* Home: one SG story, with three distinct ways to continue. */
+.inicio-portada{background:#f0f5f7;color:var(--oscuro);overflow:hidden}
+.inicio-portada-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.04fr);align-items:center;gap:clamp(32px,5vw,82px);min-height:620px;padding-block:64px}
+.inicio-portada-mensaje{padding-block:26px}
+.inicio-sobrelinea{color:#ae2029;font-size:.72rem;font-weight:750;letter-spacing:.15em;text-transform:uppercase;margin:0 0 20px}
+.inicio-portada h1{font-size:clamp(3.2rem,5.7vw,6.2rem);line-height:1.01;letter-spacing:-.065em;max-width:750px;margin:0;color:#102d42;font-weight:550}
+.inicio-portada h1 span{display:block;color:#a51c27}
+.inicio-portada-descripcion{max-width:520px;font-size:clamp(1.05rem,1.35vw,1.25rem);line-height:1.6;color:#486073;margin:28px 0 0}
+.inicio-portada-acciones{display:flex;align-items:center;flex-wrap:wrap;gap:12px 26px;margin-top:34px}
+.inicio-portada-acciones .boton{min-height:52px;display:inline-flex;align-items:center;gap:11px}
+.inicio-enlace-proyecto{display:inline-flex;align-items:center;gap:10px;min-height:52px;color:#173b58;font-weight:700;text-decoration:underline;text-decoration-color:#b4c7d3;text-underline-offset:6px}
+.inicio-enlace-proyecto:hover{text-decoration-color:#173b58}
+.inicio-portada-foto{position:relative;min-height:510px;height:100%;margin:0;border-radius:28px;overflow:hidden;background:#dbe5e9}
+.inicio-portada-foto img{object-fit:cover;object-position:center 52%}
+.inicio-portada-foto figcaption{position:absolute;left:22px;right:22px;bottom:22px;display:flex;flex-direction:column;gap:5px;padding:18px 20px;background:#102d42ed;color:white;border-radius:14px;backdrop-filter:blur(8px)}
+.inicio-portada-foto figcaption span{font-size:.65rem;letter-spacing:.12em;font-weight:700;color:#dce8ee}
+.inicio-portada-foto figcaption strong{font-size:1rem;font-weight:550}
+.inicio-caminos{padding-block:96px 76px}
+.inicio-caminos-intro{max-width:760px;margin-bottom:35px}
+.inicio-caminos-intro h2{color:#102d42;font-size:clamp(2.25rem,4vw,4rem);font-weight:550;letter-spacing:-.05em;line-height:1.08;margin:0}
+.inicio-caminos-intro>p:last-child{color:#496277;font-size:1.08rem;line-height:1.65;margin:18px 0 0;max-width:660px}
+.inicio-caminos-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:16px}
+.inicio-camino{display:flex;flex-direction:column;overflow:hidden;background:#f1f5f7;border:1px solid #dbe5eb;border-radius:22px;color:#102d42;min-height:510px;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.inicio-camino:hover{transform:translateY(-5px);border-color:#b5cbd8;box-shadow:0 18px 32px #17344a17}
+.inicio-camino:focus-visible{outline:3px solid #173b58;outline-offset:4px}
+.inicio-camino-foto{position:relative;height:46%;min-height:210px;overflow:hidden;background:#dbe5e9}
+.inicio-camino-foto img{object-fit:cover;transition:transform .4s ease}
+.inicio-camino:hover .inicio-camino-foto img{transform:scale(1.04)}
+.inicio-camino-contenido{display:flex;gap:17px;padding:28px 25px 30px;flex:1}
+.inicio-camino-icono{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;background:#e0eaf0;color:#173b58;border-radius:12px}
+.inicio-camino-categoria{margin:0 0 12px;color:#a51c27;font-weight:750;font-size:.66rem;letter-spacing:.11em}
+.inicio-camino h3{font-size:clamp(1.45rem,2vw,1.9rem);line-height:1.1;letter-spacing:-.035em;font-weight:600;margin:0 0 11px;color:#102d42}
+.inicio-camino-contenido p:not(.inicio-camino-categoria){line-height:1.55;color:#4b6374;margin:0}
+.inicio-camino-accion{display:inline-block;color:#173b58;font-weight:750;margin-top:22px;border-bottom:1px solid #a9c0ce;padding-bottom:4px}
+.inicio-camino-empresas{background:#15354c;border-color:#15354c;color:white}
+.inicio-camino-empresas h3,.inicio-camino-empresas .inicio-camino-accion{color:white}
+.inicio-camino-empresas .inicio-camino-contenido p:not(.inicio-camino-categoria){color:#d5e2e9}
+.inicio-camino-empresas .inicio-camino-icono{background:#ffffff23;color:#fff}
+.inicio-camino-empresas .inicio-camino-categoria{color:#ffb4b9}
+.inicio-camino-empresas .inicio-camino-accion{border-color:#9db8c7}
+@media(max-width:1050px){.inicio-portada-grid{gap:30px}.inicio-caminos-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.inicio-camino-empresas{grid-column:1/-1;min-height:360px;display:grid;grid-template-columns:1fr 1fr}.inicio-camino-empresas .inicio-camino-foto{height:100%;min-height:0}.inicio-camino-empresas .inicio-camino-contenido{align-items:center}}
+@media(max-width:899px){.inicio-portada-grid{grid-template-columns:1fr;min-height:0;padding-block:44px;gap:32px}.inicio-portada-mensaje{padding:0}.inicio-portada h1{font-size:clamp(3.1rem,8vw,5rem)}.inicio-portada-foto{height:420px;min-height:0}.inicio-caminos{padding-block:62px 42px}}
+@media(max-width:620px){.inicio-portada-grid{padding-block:34px;gap:26px}.inicio-portada h1{font-size:clamp(2.8rem,12vw,4.5rem)}.inicio-portada-descripcion{font-size:1rem;margin-top:20px}.inicio-portada-acciones{margin-top:24px;align-items:flex-start;flex-direction:column;gap:10px}.inicio-portada-acciones .boton{width:100%;justify-content:center}.inicio-portada-foto{height:370px;border-radius:18px}.inicio-portada-foto figcaption{left:12px;right:12px;bottom:12px;padding:13px}.inicio-portada-foto figcaption strong{font-size:.9rem}.inicio-caminos{padding-block:50px 30px}.inicio-caminos-grid{grid-template-columns:1fr}.inicio-camino,.inicio-camino-empresas{display:flex;min-height:0;grid-column:auto}.inicio-camino-foto,.inicio-camino-empresas .inicio-camino-foto{height:190px;min-height:190px}.inicio-camino-contenido{padding:23px 20px 25px}.inicio-caminos-intro h2{font-size:2.25rem}.inicio-caminos-intro>p:last-child{font-size:.98rem}}
+@media(prefers-reduced-motion:reduce){.inicio-camino,.inicio-camino-foto img{transition:none}.inicio-camino:hover,.inicio-camino:hover .inicio-camino-foto img{transform:none}}
+
+/* Three clear destinations in the first viewport. */
+.inicio-triptico{background:#f1f5f7;padding:42px 0 24px;color:#102d42}
+.inicio-triptico-cabecera{text-align:center;padding-bottom:31px}
+.inicio-triptico .inicio-sobrelinea{margin:0 0 11px}
+.inicio-triptico h1{font-size:clamp(2.6rem,4vw,4.3rem);line-height:1.05;letter-spacing:-.055em;color:#102d42;font-weight:570;margin:0}
+.inicio-triptico-cabecera>p:last-child{font-size:1rem;color:#526b7e;line-height:1.55;margin:13px 0 0}
+.inicio-triptico .inicio-triptico-paneles{display:flex;gap:10px;grid-template-columns:none;align-items:stretch;width:min(100% - 48px,1600px);height:clamp(460px,60vh,670px);margin:0 auto}
+.inicio-triptico .inicio-triptico-panel{position:relative;display:block;flex:1 1 0;min-width:0;min-height:0;height:100%;border:0;border-radius:18px;overflow:hidden;background:#17354b;color:#fff;box-shadow:none;isolation:isolate;transform:none;transition:flex-grow .5s cubic-bezier(.2,.7,.25,1),box-shadow .25s ease}
+.inicio-triptico .inicio-triptico-panel:hover,.inicio-triptico .inicio-triptico-panel:focus-visible{flex-grow:1.34;transform:none;box-shadow:0 16px 32px #14314629}
+.inicio-triptico .inicio-triptico-panel:focus-visible{outline:3px solid #af2029;outline-offset:3px}
+.inicio-triptico .inicio-triptico-panel>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease,filter .35s ease}
+.inicio-triptico .inicio-triptico-panel:hover>img,.inicio-triptico .inicio-triptico-panel:focus-visible>img{transform:scale(1.045)}
+.inicio-triptico .inicio-camino-tienda>img{object-position:55% 49%}
+.inicio-triptico .inicio-camino-soporte>img{object-position:50% 38%}
+.inicio-triptico .inicio-camino-empresas>img{object-position:50% 56%}
+.inicio-triptico-sombra{position:absolute;inset:0;background:linear-gradient(180deg,#071b2d3d 0%,#071b2d15 32%,#071b2d78 62%,#071b2de8 100%);z-index:1}
+.inicio-triptico-numero{position:absolute;top:24px;left:26px;z-index:2;color:#fff;border:1px solid #ffffff8a;border-radius:999px;padding:7px 10px;font-size:.72rem;font-weight:650;letter-spacing:.05em}
+.inicio-triptico-contenido{position:absolute;z-index:2;left:clamp(24px,3vw,44px);right:clamp(24px,3vw,44px);bottom:clamp(28px,4vw,52px);display:flex;align-items:flex-start;flex-direction:column;min-width:0}
+.inicio-triptico-icono{width:48px;height:48px;border-radius:13px;background:#fff;display:grid;place-items:center;color:#14354c;margin-bottom:22px}
+.inicio-triptico-categoria{font-size:.67rem;color:#ffbfc2;font-weight:750;letter-spacing:.13em;text-transform:uppercase;margin-bottom:10px}
+.inicio-triptico-contenido strong{font-size:clamp(1.8rem,2.5vw,3rem);font-weight:600;line-height:1.06;letter-spacing:-.04em;color:#fff}
+.inicio-triptico-texto{color:#e5edf3;font-size:.95rem;line-height:1.5;margin-top:12px;max-width:330px}
+.inicio-triptico-accion{color:#fff;font-size:.87rem;font-weight:750;border-bottom:2px solid #f34b51;padding-bottom:5px;margin-top:23px}
+.inicio-triptico-pie{text-align:center}
+.inicio-triptico-pie p{font-size:.82rem;color:#526b7e;letter-spacing:.02em;margin:23px 0 0}
+@media(max-width:900px){.inicio-triptico{padding-top:30px}.inicio-triptico .inicio-triptico-paneles{width:min(100% - 32px,900px);height:500px}.inicio-triptico-contenido{left:20px;right:20px;bottom:26px}.inicio-triptico-contenido strong{font-size:1.7rem}.inicio-triptico-texto{font-size:.82rem}.inicio-triptico-numero{left:20px;top:20px}}
+@media(max-width:700px){.inicio-triptico{padding-top:27px}.inicio-triptico-cabecera{padding-bottom:22px;text-align:left}.inicio-triptico h1{font-size:clamp(2.45rem,10vw,3.5rem)}.inicio-triptico-cabecera>p:last-child{font-size:.9rem;max-width:360px}.inicio-triptico .inicio-triptico-paneles{display:flex;flex-direction:column;width:calc(100% - 32px);height:auto;gap:9px}.inicio-triptico .inicio-triptico-panel{flex:none;height:190px;border-radius:15px}.inicio-triptico .inicio-triptico-panel:hover,.inicio-triptico .inicio-triptico-panel:focus-visible{flex-grow:0}.inicio-triptico .inicio-triptico-panel>img{object-position:center 48%}.inicio-triptico .inicio-camino-soporte>img{object-position:center 56%}.inicio-triptico .inicio-camino-empresas>img{object-position:center 58%}.inicio-triptico-sombra{background:linear-gradient(90deg,#071b2de5 0%,#071b2da8 58%,#071b2d30 100%)}.inicio-triptico-numero{top:14px;right:14px;left:auto;padding:5px 8px}.inicio-triptico-contenido{top:19px;bottom:17px;left:19px;right:80px;justify-content:center}.inicio-triptico-icono{width:32px;height:32px;margin-bottom:9px;border-radius:9px}.inicio-triptico-icono svg{width:18px;height:18px}.inicio-triptico-categoria{font-size:.56rem;margin-bottom:5px}.inicio-triptico-contenido strong{font-size:1.65rem}.inicio-triptico-texto{font-size:.75rem;margin-top:5px}.inicio-triptico-accion{font-size:.72rem;margin-top:8px;padding-bottom:2px}.inicio-triptico-pie p{margin-top:15px;font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){.inicio-triptico .inicio-triptico-panel,.inicio-triptico .inicio-triptico-panel>img{transition:none}.inicio-triptico .inicio-triptico-panel:hover>img,.inicio-triptico .inicio-triptico-panel:focus-visible>img{transform:none}}

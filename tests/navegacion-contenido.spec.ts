@@ -17,17 +17,18 @@ async function esperarInicioSeccion(elemento: Locator) {
 
 test('los filtros de tienda llevan al contenido actualizado', async ({page}) => {
   await page.emulateMedia({reducedMotion: 'reduce'});
-  await page.goto('/soluciones');
+  await page.goto('/tienda');
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy', 'false');
 
   const marca = page.locator('.marca-logo').first();
   await marca.click();
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy', 'false');
-  const titulo = page.locator('.shop-resultados h2');
-  await expect(titulo).toBeFocused();
+  const conteo = page.locator('.shop-resultados .conteo');
+  await expect(conteo).toBeFocused();
   await esperarProductos(page.locator('.shop-grid'));
 
-  const categoria = page.locator('.shop-categorias button').nth(1);
+  if (page.viewportSize()!.width <= 650) await page.locator('.shop-abrir-filtros').click();
+  const categoria = page.locator(page.viewportSize()!.width <= 650 ? '.shop-panel-filtros .shop-categorias button' : '.shop-sidebar .shop-categorias button').first();
   await categoria.click();
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy', 'false');
   await expect(categoria).toHaveAttribute('aria-pressed', 'true');
@@ -36,7 +37,7 @@ test('los filtros de tienda llevan al contenido actualizado', async ({page}) => 
 
 test('la selección de marca espera los productos nuevos y los muestra con desplazamiento suave', async ({page}, info) => {
   await page.emulateMedia({reducedMotion: 'no-preference'});
-  await page.goto('/soluciones');
+  await page.goto('/tienda');
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy', 'false');
   await page.route('**/api/catalogo?*', async ruta => {
     if (new URL(ruta.request().url()).searchParams.get('marca')) await new Promise(resolve => setTimeout(resolve, 300));
@@ -44,7 +45,7 @@ test('la selección de marca espera los productos nuevos y los muestra con despl
   });
   const marca = page.locator('.marca-ficha').first();
   if (info.project.name === 'escritorio') await page.locator('.marcas-ventana').hover({force:true});
-  await marca.click();
+  await marca.click({force:true});
   await expect(marca).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy', 'false');
   await esperarProductos(page.locator('.shop-grid'));

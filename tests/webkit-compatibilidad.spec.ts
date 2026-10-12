@@ -4,12 +4,13 @@ test.skip(process.env.SG_TEST_WEBKIT!=='1','Ejecutar con WebKit instalado y SG_T
 for(const idioma of ['es','en'])test(`Safari conserva precios, contacto y carrito sin errores ${idioma}`,async({page,context})=>{
  const errores:string[]=[];page.on('pageerror',e=>errores.push(e.message));
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
- for(const ruta of ['/soluciones','/soluciones/portatil','/nosotros']){
+ const c=await(await page.request.get('/api/catalogo')).json();
+ for(const ruta of ['/tienda','/tienda/'+c.productos[0].id,'/nosotros']){
   await page.goto(ruta);await page.waitForLoadState('networkidle');
   await expect(page.locator('html')).toHaveAttribute('lang',idioma);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }
- await page.goto('/soluciones');await page.waitForLoadState('networkidle');
+ await page.goto('/tienda');await page.waitForLoadState('networkidle');
  await expect(page.locator('.shop-precio strong').first()).toHaveText(/₡\d{1,3}(\s\d{3})*/);
  await page.locator('.asesoria-hero-acciones>.boton').first().click();
  await page.getByRole('dialog').getByRole('button',{name:idioma==='es'?'Cerrar':'Close',exact:true}).click();

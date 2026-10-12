@@ -221,15 +221,18 @@
     "cuentas": [
       {
         "banco": "Banco Nacional",
-        "iban": "CR71015102120010448776"
+        "iban": "CR71015102120010448776",
+        "cuentaCorta": "200-01-021-044877-2"
       },
       {
         "banco": "Banco de Costa Rica",
-        "iban": "CR49015202001424646172"
+        "iban": "CR49015202001424646172",
+        "cuentaCorta": "001-42464617-2"
       },
       {
         "banco": "BAC",
-        "iban": "CR84010200009721479951"
+        "iban": "CR84010200009721479951",
+        "cuentaCorta": "972147995"
       }
     ]
   }

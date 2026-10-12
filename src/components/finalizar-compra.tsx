@@ -1,4 +1,5 @@
 "use client";
+import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import {adjuntarComprobantePedido} from '@/lib/adjuntar-comprobante';
 import {medir} from '@/lib/analitica-cliente';
 import type { Contenido } from "@/lib/contenido-modelo";
@@ -29,7 +30,7 @@ const provincias = [
   "Puntarenas",
   "Limón",
 ];
-export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarjetaPruebaDisponible = false, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaPruebaDisponible?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
+export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
   const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
     l = useLocale(),
@@ -37,6 +38,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
     carrito = useCarrito();
   const lineas=aprobacion?aprobacion.articulos.map(x=>({id:x.producto.id,cantidad:x.cantidad})):carrito;
 
+  const [errorStock,setErrorStock]=useState(false);
   const [errorAutorizacion,setErrorAutorizacion]=useState(false);
   const [borrador, setBorrador] = useState<Record<string, string>>(():Record<string,string>=>{const d=aprobacion?.contacto;if(!d)return {};const partes=d.nombre.trim().split(/\s+/);return {nombre:partes.slice(0,-1).join(' ')||d.nombre,apellidos:partes.length>1?partes.at(-1)!:'',correo:d.correo??'',telefono:d.telefono?(d.telefono.startsWith('+')?d.telefono:'+'+d.telefono):'+506 ',tipoIdentificacion:d.tipoIdentificacion??'fisica',identificacion:d.identificacion??'',correoFactura:d.correo??''};});
   const [comprobante,setComprobante]=useState<File|null>(null),[errorComprobante,setErrorComprobante]=useState(false);
@@ -84,20 +86,27 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
     medir('pedido_revisado');
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+  async function accesoCompra(){
+    if(aprobacion)return {id:aprobacion.id,token:aprobacion.token};
+    const r=await fetch('/api/compra/verificar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idioma:l,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad,precio:x.p.precio}))})});
+    const d=await r.json();if(!r.ok||typeof d.id!=='string'||typeof d.token!=='string'){if(d.error==='catalogo_actualizado')setErrorStock(true);throw new Error('COMPRA_NO_DISPONIBLE');}return d as {id:string;token:string};
+  }
   async function pagarConTarjeta() {
-    if (!revision || procesando || entrega || pendiente || bloqueado) return;
+    if (!revision || procesando || pendiente || bloqueado) return;
     setProcesando(true);
     setErrorPago(false);
     try {
+      const acceso=await accesoCompra();
       const respuesta = await fetch('/api/pagos/tilopay/iniciar', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          asesoria:aprobacion?.id,acceso:aprobacion?.token, nombre: revision.nombre, apellidos: revision.apellidos, correo: revision.correo,
+          asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:revision, nombre: revision.nombre, apellidos: revision.apellidos, correo: revision.correo,
           telefono: revision.telefono, consentimiento: revision.consentimiento === 'on',
           articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })),
         }),
       });
       const datos = await respuesta.json();
+      if(datos.error==='catalogo_actualizado')setErrorStock(true);
       if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
       if (!respuesta.ok || typeof datos.url !== 'string') throw new Error('PAGO_NO_DISPONIBLE');
       window.location.assign(datos.url);
@@ -110,11 +119,13 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
     if (!revision || procesando || bloqueado || pendiente || !['sinpe', 'transferencia'].includes(pago)) return;
     setProcesando(true); setErrorPedido(false);
     try {
+      const acceso=await accesoCompra();
       const respuesta = await fetch('/api/pedidos/manual', {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ asesoria:aprobacion?.id,acceso:aprobacion?.token, idioma: l, datos: revision, metodo: pago, articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })) }),
+        body: JSON.stringify({ asesoria:acceso.id,acceso:acceso.token, idioma: l, datos: revision, metodo: pago, articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })) }),
       });
       const datos = await respuesta.json();
+      if(datos.error==='catalogo_actualizado')setErrorStock(true);
       if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
       if (!respuesta.ok || typeof datos.url !== 'string' || !datos.url.startsWith('/finalizar-compra/pedido?')) throw new Error('PEDIDO_NO_DISPONIBLE');
       const destino=new URL(datos.url,window.location.origin);
@@ -142,24 +153,24 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
   );
   return (
     <>
-      <Link className="ficha-volver" href="/soluciones">
+      <Link className="ficha-volver" href="/tienda">
         <ArrowLeft size={17} />
         {t("volver")}
       </Link>
+      {errorStock&&<p role="alert">{t('stockCambio')}</p>}
       <header className="compra-cabecera">
         <p className="etiqueta">{t("etiqueta")}</p>
         <h1>{t("titulo")}</h1>
         <p>{t("intro")}</p>
       </header>
-      {!enlaceInvalido&&!aprobacion&&productos.length>0&&<aside className="compra-asesoria"><div><strong>{a('antesPedido')}</strong><p>{a('antesPedidoTexto')}</p></div><AsesoriaWhatsApp etiqueta="consultarSeleccion" lineas={productos.map(x=>({producto:x.p,cantidad:x.cantidad}))}/></aside>}
       {enlaceInvalido||errorAutorizacion ? <section className="compra-bloque"><h2>{a('enlaceInvalido')}</h2><p role="status">{a('enlaceInvalidoTexto')}</p><AsesoriaWhatsApp etiqueta="asesorar"/></section> : !lineas.length ? (
         <div className="compra-bloque">
           <h2>{t("vacio")}</h2>
-          <Link className="boton boton-azul" href="/soluciones">
+          <Link className="boton boton-azul" href="/tienda">
             {t("volver")}
           </Link>
         </div>
-      ) : !aprobacion ? <section className="compra-bloque compra-paso-asesoria"><h2>{a('despuesAsesoria')}</h2><p>{a('despuesAsesoriaTexto')}</p></section> : (
+      ) : (
         <div className="compra-grid">
           <div>
             {revision ? (
@@ -186,10 +197,10 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                     ))}
                 </dl>
                 {comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}
-                <p>{pago === 'tarjeta' && tarjetaPruebaDisponible ? t('tarjetaPruebaAviso') : t("confirmacion")}</p>
-                {pago === 'tarjeta' && tarjetaPruebaDisponible && !entrega && !pendiente && !bloqueado ? (
+                <p>{pago === 'tarjeta' && tarjetaDisponible ? t(tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso') : t("confirmacion")}</p>
+                {pago === 'tarjeta' && tarjetaDisponible && !pendiente && !bloqueado ? (
                   <button className="boton boton-naranja" type="button" onClick={pagarConTarjeta} disabled={procesando}>
-                    {t(procesando ? 'procesandoPago' : 'pagarPrueba')}
+                    {t(procesando ? 'procesandoPago' : tarjetaEnPruebas ? 'pagarPrueba' : 'pagarTarjeta')}
                     <CreditCard size={18} aria-hidden="true" />
                   </button>
                 ) : pedidosManualesDisponibles && (pago === 'sinpe' || pago === 'transferencia') && !pendiente && !bloqueado ? (
@@ -319,6 +330,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                     {[
                       { id: "sinpe", Icon: Smartphone },
                       { id: "transferencia", Icon: Landmark },
+                      { id: "tarjeta", Icon: CreditCard },
 
                     ].map(({ id, Icon }) => (
                       <label key={id} data-activo={pago === id}>
@@ -332,15 +344,14 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                         <Icon size={23} />
                         <span>
                           <strong>{t(id)}</strong>
-                          <small>{id === 'tarjeta' && tarjetaPruebaDisponible ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
+                          <small>{id === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
                         </span>
                       </label>
                     ))}
                   </fieldset>
-                  <p className="compra-tarjeta-proximamente"><CreditCard size={20} aria-hidden="true"/><span><strong>{t("tarjeta")}</strong><small>{t("tarjetaDetalle")}</small></span></p>
                   <p className="compra-aviso">
                     <ShieldCheck size={19} />
-                    {t(pago === "tarjeta" ? tarjetaPruebaDisponible ? entrega ? 'tarjetaSoloRetiro' : 'tarjetaPruebaAviso' : "tarjetaPendiente" : "pagoPendiente")}
+                    {t(pago === "tarjeta" ? tarjetaDisponible ? tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso' : "tarjetaPendiente" : "pagoPendiente")}
                   </p>
                   {pago !== "tarjeta" && !pedidosManualesDisponibles && (
                     <details key={pago} className="compra-cuentas" open ref={pagoDatos}>
@@ -354,14 +365,17 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                         pagos.cuentas.map((c) => (
                           <div key={c.iban}>
                             <strong>{c.banco}</strong>
-                            <code>{c.iban}</code>
+                            {cuentaCorta(c) && <span>{t('cuentaCorta')}: <code>{cuentaCorta(c)}</code></span>}
+                            <span>{t('iban')}: <code>{c.iban}</code></span>
                           </div>
                         ))
                       )}
                       <p>{t("referencia")}</p>
                     </details>
                   )}
+                  {(pago === "sinpe" || pago === "transferencia") && (
                   <div className="compra-comprobante"><label>{t('comprobanteOpcional')}<input type="file" accept="image/jpeg,image/png,application/pdf" onChange={e=>{const f=e.target.files?.[0]??null;const invalido=Boolean(f&&(f.size<100||f.size>5*1024*1024||!['image/jpeg','image/png','application/pdf'].includes(f.type)));setErrorComprobante(invalido);setComprobante(invalido?null:f);if(invalido)e.target.value='';}}/></label><p>{t('comprobanteAyuda')}</p>{comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}{errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}</div>
+                  )}
                   <label>
                     {t("notas")}
                     <textarea
@@ -397,7 +411,7 @@ export function FinalizarCompra({ pagos, aprobacion, enlaceInvalido=false, tarje
                   <FotoProducto src={p.imagen} alt={traducir(p.nombre, l)} />
                 </div>
                 <p>
-                  <Link href={`/soluciones/${p.id}`}>{traducir(p.nombre, l)}</Link>
+                  <Link href={`/tienda/${p.id}`}>{traducir(p.nombre, l)}</Link>
                   <small>
                     {cantidad} ×{" "}
                     {p.precio === null ? t("pendiente") : colones(p.precio)}

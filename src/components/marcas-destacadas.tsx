@@ -7,9 +7,14 @@ import {useTranslations} from 'next-intl';
 import fuentes from '@/lib/marcas-logos.json';
 
 const logos:Record<string,{archivo:string;fuente:string}>=fuentes;
+const normalizarMarca=(nombre:string)=>nombre.toUpperCase().replace(/[^A-Z0-9]/g,'');
+const porNombre=new Map(Object.entries(logos).map(([nombre,logo])=>[normalizarMarca(nombre),logo]));
+porNombre.set('CUSTOMAMERICA',logos.Custom);
+export const logoMarca=(nombre:string)=>porNombre.get(normalizarMarca(nombre));
 
-export function MarcasDestacadas({marcas,seleccionada,seleccionar}:{marcas:string[];seleccionada:string;seleccionar:(marca:string)=>void}) {
+export function MarcasDestacadas({marcas:marcasEntrada,seleccionada,seleccionar}:{marcas:string[];seleccionada:string;seleccionar:(marca:string)=>void}) {
   const t=useTranslations('Tienda');
+  const marcas=marcasEntrada.filter(nombre=>Boolean(logoMarca(nombre)));
   const pista=useRef<HTMLDivElement>(null);
   const ventana=useRef<HTMLDivElement>(null);
   const [repeticiones,setRepeticiones]=useState(1);
@@ -32,17 +37,18 @@ export function MarcasDestacadas({marcas,seleccionada,seleccionar}:{marcas:strin
     const ajustar=()=>{
       const botones=Array.from(pista.current?.querySelector('.marcas-grupo')?.querySelectorAll('button')??[]).slice(0,marcas.length);
       const ancho=botones.reduce((total,b)=>total+b.getBoundingClientRect().width+14,0);
-      if(ancho>0)setRepeticiones(Math.max(1,Math.ceil(contenedor.clientWidth/ancho)));
+      if(ancho>0){const n=Math.max(1,Math.ceil(contenedor.clientWidth/ancho));setRepeticiones(n);pista.current?.style.setProperty('--marcas-duracion',`${ancho*n/20}s`);}
     };
     const observador=new ResizeObserver(ajustar);observador.observe(contenedor);ajustar();
     return()=>observador.disconnect();
   },[clave,marcas.length]);
   const lista=carga?.clave===clave;
+  if(!marcas.length)return null;
   return <section className="marcas-cinta" aria-label={t('marcas')}>
     <div className="marcas-encabezado"><div><p className="etiqueta">{t('marcasEtiqueta')}</p><h2>{t('marcas')}</h2><p className="marcas-descripcion">{t('marcasDescripcion')}</p></div>
     </div>
     <div className="marcas-ventana" ref={ventana} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))e.currentTarget.scrollLeft=0;}}><div className="marcas-pista" ref={pista} data-lista={lista}>{[0,1].map(copia=><div className="marcas-grupo" key={copia} aria-hidden={copia===1?true:undefined}>{Array.from({length:repeticiones},(_,repeticion)=>marcas.map(nombre=><button className="marca-ficha" key={`${repeticion}-${nombre}`} aria-hidden={repeticion>0?true:undefined} tabIndex={copia===1||repeticion>0?-1:0} aria-label={t('filtrarMarca',{marca:nombre})} aria-pressed={seleccionada===nombre} onClick={()=>seleccionar(nombre)}>
-      <span className="marca-logo">{logos[nombre]&&!carga?.fallos.includes(`/imagenes/marcas/${logos[nombre].archivo}`)?<Image src={`/imagenes/marcas/${logos[nombre].archivo}`} alt="" width={140} height={56} loading="eager" unoptimized/>:<strong>{nombre}</strong>}</span><span className="marca-pie"><span>{nombre}</span></span>
+      <span className="marca-logo">{logoMarca(nombre)!&&!carga?.fallos.includes(`/imagenes/marcas/${logoMarca(nombre)!.archivo}`)?<Image src={`/imagenes/marcas/${logoMarca(nombre)!.archivo}`} alt="" width={140} height={56} loading="eager" unoptimized/>:<strong>{nombre}</strong>}</span><span className="marca-pie"><span>{nombre}</span></span>
     </button>))}</div>)}</div></div>
   </section>;
 }

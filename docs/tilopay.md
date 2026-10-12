@@ -1,6 +1,6 @@
 # Integración de Tilopay
 
-El checkout público conserva SINPE Móvil manual y transferencia. La integración de Tilopay se limita a tarjetas y, por ahora, a pruebas locales con retiro en tienda. El costo de envío se confirma después de revisar el pedido, por lo que no se incluye en un cobro automático.
+El checkout público conserva SINPE Móvil manual y transferencia. La integración de Tilopay se limita a tarjetas y, por ahora, a pruebas locales. El checkout admite retiro y envío por Correos de Costa Rica; el servidor agrega ₡4.000 al total del envío y conserva los datos de entrega y facturación en el pedido privado.
 
 ## Estado actual
 
@@ -20,7 +20,7 @@ El checkout público conserva SINPE Móvil manual y transferencia. La integraci�
 2. Configurar en un archivo privado las variables `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `TILOPAY_API_USER`, `TILOPAY_API_PASSWORD`, `TILOPAY_API_KEY` y `TILOPAY_RETORNO_URL`. Esta última debe apuntar a `/api/pagos/tilopay/resultado`, no a la página pública de resultado.
 3. Activar el modo de prueba en el panel de Tilopay y comprobar visualmente que está activo. Definir `TILOPAY_MODO=pruebas` y `TILOPAY_PRUEBA_VERIFICADA_EN` con la hora UTC de esa comprobación.
 4. Repetir las pruebas aprobada y rechazada, además de los casos adversos anteriores, cuando cambie el flujo. Confirmar que un pedido solo se marque pagado cuando `consult` indique aprobación, importe y moneda correctos y `environment=Test`.
-5. Antes de cobros reales, agregar avisos operativos, protección contra abuso y pruebas de compra completas. Revisar también el flujo de envío con un total definitivo.
+5. Antes de cobros reales, agregar avisos operativos, protección contra abuso y pruebas de compra completas. El envío y los datos fiscales se verifican con servicios simulados; falta validar el flujo contra el comercio real al publicar.
 
 La documentación oficial de Tilopay para este flujo está en [Hosted payment page](https://tilopay.com/developers/hosted-payment-page), [processPayment](https://tilopay.com/developers/api/hosted-payment-page/process-payment), [consult](https://tilopay.com/developers/api/procesos-operativos/consult) y [entornos](https://tilopay.com/developers/entornos).
 
@@ -44,3 +44,15 @@ node scripts/probar-pedido-aprobado.mjs
 Este último usa un servidor REST simulado únicamente en 127.0.0.1:54329 y la aplicación en 3108; los detiene al finalizar. No prueba Postgres, RLS, Storage, Supabase Auth ni un pago real o sandbox de Tilopay. No se envían correos ni se realizan cobros.
 
 Supabase local completo sigue requiriendo Docker compatible, todavía ausente en esta computadora. Cuando esté disponible, `npm run db:iniciar` inicia el entorno y aplica sus migraciones; `npm run db:detener` lo detiene. Para repetir un pago alojado de Tilopay, hacen falta además su modo sandbox confirmado y una URL de retorno accesible por el navegador. No se necesita otra cuenta de Supabase para estas pruebas locales.
+
+## Revisión del portal — 9 de octubre de 2026
+
+Se verificó visualmente la cuenta SG Solutions: tarjetas habilitadas y modo de pruebas activado. No se cambió el interruptor. El portal no mostró una confirmación explícita de aprobación comercial. La prueba real se hará después de completar y publicar la web en el dominio definitivo, con el usuario ingresando su tarjeta.
+
+## Preparación de tarjeta — 10 de octubre de 2026
+
+La tarjeta vuelve a ser una opción del checkout. El comprobante solo se muestra para SINPE o transferencia. Pruebas y producción tienen mensajes distintos en español e inglés.
+
+El servidor permite producción únicamente con `SG_ENTORNO=produccion`, `TILOPAY_MODO=produccion`, `TILOPAY_PRODUCCION_VERIFICADA_EN` válido y `TILOPAY_ENTORNO_RESPUESTA` confirmado con el proveedor (no puede ser Test). Además requiere credenciales, base y retorno HTTPS configurados. La consulta verifica el entorno del pedido y la respuesta del proveedor antes de marcarlo pagado.
+
+Todavía no se han configurado esas variables ni cambiado el modo del comercio: la sesión del portal venció. La activación real está pendiente de verificar el portal y el valor exacto de environment de producción.

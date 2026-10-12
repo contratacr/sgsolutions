@@ -5,8 +5,8 @@ test('portada real, imágenes, cabeceras y tamaño de descarga', async ({page}, 
   const errores: string[] = [];
   page.on('pageerror', error => errores.push(error.message));
   const respuesta = await page.goto('/');
-  await expect(page.getByRole('heading', {level: 1})).toHaveText('Somos su aliado tecnológico.');
-  await expect(page.locator('.entrada-eyebrow')).toContainText('SOLUCIONES INFORMÁTICAS');
+  await expect(page.getByRole('heading', {level: 1})).toHaveText('¿Qué necesita hoy?');
+  await expect(page.locator('.inicio-sobrelinea').first()).toContainText('SOLUCIONES INFORMÁTICAS');
   await expect(page.locator('header img[alt="SG Solutions"]')).toHaveCount(1);
   await expect(page.locator('footer img[alt="SG Solutions"]')).toHaveCount(1);
   await expect(page.locator('main img[alt="SG Solutions"]')).toHaveCount(0);
@@ -44,13 +44,13 @@ test('cambio de idioma persistente y navegación', async ({page}, prueba) => {
   await page.getByRole('button', {name: 'Read this page in English'}).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('.selector-idioma button[value="en"]')).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.getByRole('heading', {level: 1})).toHaveText('We are your technology partner.');
-  await expect(page.locator('.entrada-eyebrow')).toContainText('IT SOLUTIONS');
+  await expect(page.getByRole('heading', {level: 1})).toHaveText('What do you need today?');
+  await expect(page.locator('.inicio-sobrelinea').first()).toContainText('IT SOLUTIONS');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   if (prueba.project.name === 'movil') await page.getByRole('button', {name: 'Open menu'}).click();
-  await page.locator('header').getByRole('link', {name: 'Solutions', exact: true}).click();
-  await expect(page.getByRole('heading', {level: 1})).toHaveText('SG Solutions');
+  await page.locator('header').getByRole('link', {name: 'Store', exact: true}).click();
+  await expect(page.getByRole('heading', {level: 1})).toHaveText('Store');
   await page.getByRole('button', {name: 'Leer esta página en español'}).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
   await expect(page.locator('.selector-idioma button[value="es"]')).toHaveAttribute('aria-pressed', 'true');
@@ -63,77 +63,34 @@ test('panel sin sesión no revela datos y carrito ignora almacenamiento manipula
   await expect(page.locator('.admin-editor')).toHaveCount(0);
   await expect(page.getByRole('heading',{level:1})).toBeVisible();
   await page.evaluate(() => localStorage.setItem('sg-carrito-v1', '[{"id":"desconocido","cantidad":3},{"id":"gamer","cantidad":-9}]'));
-  await page.goto('/soluciones');
+  await page.goto('/tienda');
   await page.getByRole('button', {name: 'Abrir carrito'}).click();
   await expect(page.getByText('Todavía no ha agregado equipo.')).toBeVisible();
 });
 
-test('entrada inicia neutral, navega y muestra animación única', async ({page}, prueba) => {
-  await page.goto('/');
-  const menu = page.getByRole('navigation', {name: 'Elija una solución'});
-  await expect(menu.getByRole('link')).toHaveCount(3);
-  await expect(menu.getByRole('link', {name: /Soporte técnico/})).toHaveAttribute('href', '/soporte');
-  await expect(menu.getByRole('link', {name: /Para empresas/})).toHaveAttribute('href', '/empresas');
-  await expect(menu.getByRole('link', {name: /Soluciones/})).toHaveAttribute('data-activa','false');
-  await expect(menu.getByRole('link', {name: /Soporte técnico/})).toHaveAttribute('data-activa','false');
-  await expect(menu.getByRole('link', {name: /Para empresas/})).toHaveAttribute('data-activa','false');
-  await expect(page.getByRole('button', {name: 'Pausar movimiento'})).toHaveCount(0);
-  if (prueba.project.name === 'escritorio') {
-    await expect(page.locator('.escenario')).toHaveAttribute('data-escena', '3d');
-    await expect(page.locator('.escena-canvas canvas')).toBeVisible();
-    await expect(page.locator('.escenario canvas')).toHaveCount(1);
-    await menu.getByRole('link', {name: /Para empresas/}).focus();
-    await expect(menu.getByRole('link', {name: /Para empresas/})).toBeFocused();
-  } else {
-    await expect(page.locator('.escenario canvas')).toHaveCount(1);
-    await menu.getByRole('link', {name: /Para empresas/}).scrollIntoViewIfNeeded();
-    await expect(menu.getByRole('link', {name: /Para empresas/})).toBeInViewport({ratio: 1});
-  }
-  await menu.getByRole('link', {name: /Explorar productos/}).click();
-  await expect(page).toHaveURL(/\/soluciones$/);
-});
-
-test('movimiento reducido mantiene menú y versión estática', async ({page}) => {
+test('las rutas del inicio son claras y funcionan sin animación', async ({page}) => {
   await page.emulateMedia({reducedMotion: 'reduce'});
   await page.goto('/');
-  await expect(page.getByRole('navigation', {name: 'Elija una solución'})).toBeVisible();
-  await expect(page.locator('.escenario')).toHaveAttribute('data-escena', '3d');
-  await expect(page.getByRole('button', {name: 'Pausar movimiento'})).toHaveCount(0);
-  await expect(page.locator('.escenario canvas')).toHaveCount(1);
-});
-
-test('la ilustración sin WebGL conserva la navegación', async ({page}) => {
-  await page.addInitScript(() => {
-    const original = HTMLCanvasElement.prototype.getContext;
-    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, tipo: string, opciones?: unknown) {
-      if (tipo === 'webgl' || tipo === 'webgl2' || tipo === 'experimental-webgl') return null;
-      return original.call(this, tipo as '2d', opciones);
-    } as typeof original;
-  });
-  await page.goto('/');
-  await expect(page.getByRole('navigation', {name: 'Elija una solución'})).toBeVisible();
-  await expect(page.locator('.escenario')).toHaveAttribute('data-escena', 'fallo');
-  await expect(page.locator('.escenario canvas')).toHaveCount(0);
-  await page.getByRole('link', {name: /Ver planes/}).click();
+  await expect(page.locator('.inicio-camino')).toHaveCount(3);
+  await expect(page.locator('.inicio-triptico-panel img').first()).toBeVisible();
+  await page.locator('.inicio-camino[href="/empresas"]').click();
   await expect(page).toHaveURL(/\/empresas$/);
 });
 
 test.describe('navegación sin JavaScript', () => {
   test.use({javaScriptEnabled: false});
-  test('el menú inicial sigue permitiendo entrar a la tienda', async ({page}) => {
+  test('el inicio sigue permitiendo entrar a la tienda', async ({page}) => {
     await page.goto('/');
-    await expect(page.getByRole('navigation', {name: 'Elija una solución'})).toBeVisible();
-    await page.getByRole('link', {name: /Explorar productos/}).click();
-    await expect(page).toHaveURL(/\/soluciones$/);
-    await expect(page.getByRole('heading', {level: 1})).toBeVisible();
+    await page.locator('.inicio-camino[href="/tienda"]').click();
+    await expect(page).toHaveURL(/\/tienda$/);
   });
 });
 
 test('las tres áreas navegan en la misma pestaña y conservan el idioma', async ({page}) => {
   await page.goto('/');
   await page.getByRole('button', {name: 'Read this page in English'}).click();
-  const menu = page.getByRole('navigation', {name: 'Choose a solution'});
-  for (const ruta of ['/soluciones', '/soporte', '/empresas']) {
+  const menu = page.locator('.inicio-caminos-grid');
+  for (const ruta of ['/tienda', '/soporte', '/empresas']) {
     const enlace = menu.locator(`a[href="${ruta}"]`);
     await expect(enlace).not.toHaveAttribute('target', '_blank');
     await enlace.click();
@@ -223,24 +180,18 @@ for (const [ruta,tituloEs,tituloEn] of [
 }
 
 test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page}, prueba) => {
-  await page.goto('/soluciones');
-  const buscar = page.getByRole('searchbox', {name:'Buscar productos'});
-  await buscar.fill('PORTATIL');
-  await expect(page.getByRole('article')).toHaveCount((await (await page.request.get('/api/catalogo?q=PORTATIL')).json()).productos.length);
-  await expect(page.getByRole('article').first()).toContainText('Lenovo ThinkPad L14');
-  await page.getByRole('button', {name:'Seguridad', exact:true}).click();
-  await expect(page.getByText('No encontramos esa opción.')).toBeVisible();
-  await page.getByRole('button', {name:'Ver todo el equipo', exact:true}).click();
-  await expect(buscar).toHaveValue('');
-  await expect(page.getByRole('article')).toHaveCount(24);
-  await buscar.fill('CAMARA');
-  await expect.poll(() => page.getByRole('article').count()).toBeGreaterThan(1);
-  await expect(page.getByRole('article').first()).toContainText(/Cámara|Camara/);
+  await page.goto('/tienda');
+  const buscar = page.getByRole('searchbox', {name:'Busque productos, marcas o modelos'});
+  const catalogo=await (await page.request.get('/api/catalogo')).json();
+  const codigo=catalogo.productos[0].codigoFabricante;
+  await buscar.fill(codigo);
+  await expect(page.getByRole('article')).toHaveCount((await (await page.request.get('/api/catalogo?q='+encodeURIComponent(codigo))).json()).productos.length);
+  await expect(page.getByRole('article').first()).toContainText(codigo);
   await page.getByRole('button', {name:'Read this page in English'}).click();
-  await expect(page.getByRole('searchbox', {name:'Search products'})).toHaveValue('');
+  await expect(page.getByRole('searchbox', {name:'Search products, brands or models'})).toHaveValue('');
   await expect(page.getByRole('article')).toHaveCount(24);
-  await page.getByRole('searchbox', {name:'Search products'}).fill('Flex Mini');
-  await expect(page.getByRole('article')).toHaveCount(1);
+  await page.getByRole('searchbox', {name:'Search products, brands or models'}).fill(codigo);
+  await expect.poll(()=>page.getByRole('article').count()).toBeGreaterThan(0);
   await page.getByRole('button', {name:'Clear search'}).click();
   await expect(page.getByRole('article')).toHaveCount(24);
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
@@ -252,29 +203,19 @@ test('la búsqueda de tienda combina categoría, acentos e idioma', async ({page
     await imagen.evaluate(async elemento => { await (elemento as HTMLImageElement).decode(); });
   }
   await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
-  await page.screenshot({path:`evidencias/soluciones-editorial-${prueba.project.name}.png`, fullPage:true, animations:'disabled', scale:'css'});
+  await page.screenshot({path:`evidencias/tienda-editorial-${prueba.project.name}.png`, fullPage:true, animations:'disabled', scale:'css'});
 });
 
-test('tarjetas inmersivas conservan foco, idioma y movimiento reducido', async ({page}, prueba) => {
+test('caminos del inicio conservan foco e idioma', async ({page}, prueba) => {
   await page.goto('/');
-  const tienda = page.locator('.portal-tienda');
-  if (prueba.project.name === 'escritorio') {
-    await tienda.hover({position: {x: 35,y: 35}});
-    await expect.poll(() => tienda.evaluate(e => getComputedStyle(e).transform)).toBe('none');
-    await page.emulateMedia({reducedMotion: 'reduce'});
-    await expect.poll(() => tienda.evaluate(e => getComputedStyle(e).transform)).toBe('none');
-    await expect(page.locator('.escenario canvas')).toHaveCount(1);
-  }
+  const tienda = page.locator('.inicio-camino-tienda');
   await tienda.focus();
   await expect(tienda).toBeFocused();
   await expect(tienda).toHaveCSS('outline-style','solid');
   await page.getByRole('button', {name: 'Read this page in English'}).click();
-  await expect(page.locator('.portal-tienda')).toContainText('Explore products');
-  await expect(page.locator('.portal-soporte')).toContainText('Get support');
-  await expect(page.locator('.portal-empresas')).toContainText('View plans');
+  await expect(page.locator('.inicio-camino-tienda')).toContainText('Explore store');
+  await expect(page.locator('.inicio-camino-soporte')).toContainText('Get support');
+  await expect(page.locator('.inicio-camino-empresas')).toContainText('View plans');
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
-  await page.locator('footer img').scrollIntoViewIfNeeded();
-  await expect(page.locator('footer img')).toBeVisible();
-  await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
   await page.screenshot({path:`evidencias/portal-en-${prueba.project.name}.png`,fullPage:true,animations:'disabled',scale:'css'});
 });

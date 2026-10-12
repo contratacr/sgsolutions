@@ -38,6 +38,7 @@ for (const idioma of ['es', 'en'] as const) test(`recorrido completo del panel $
       '/panel/contenido',
       '/panel/pedidos',
       '/panel/estadisticas',
+      '/panel/proveedores',
     ];
     for (const ruta of rutas) {
       await page.goto(ruta);

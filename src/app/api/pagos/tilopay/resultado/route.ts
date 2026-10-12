@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   try { id = atob(parametros.get('returnData') ?? ''); } catch { /* Callback incompleto. */ }
   if (!config || !/^[0-9a-f-]{36}$/.test(id)) return Response.redirect(new URL('/finalizar-compra/resultado?estado=pendiente', request.url));
   const db = basePedidos(config);
-  const { data: pedido } = await db.from('pedidos_tilopay').select('id,total,moneda,estado').eq('id', id).maybeSingle();
+  const { data: pedido } = await db.from('pedidos_tilopay').select('id,total,moneda,estado,entorno').eq('id', id).maybeSingle();
   if (!pedido) return Response.redirect(new URL('/finalizar-compra/resultado?estado=pendiente', request.url));
   if (pedido.estado === 'pagado') return Response.redirect(new URL(`/finalizar-compra/resultado?estado=pagado&pedido=${id}`, request.url));
   let estado = 'pendiente';
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
       const numero = (fila as Record<string, unknown>).orderNumber;
       return typeof numero === 'string' && (numero === id || numero.endsWith(`-${id}`));
     });
-    if (respuesta.type === '200' && transaccion && Number(transaccion.amount) === Number(pedido.total) && transaccion.currency === pedido.moneda && transaccion.environment === 'Test') {
+    if (respuesta.type === '200' && transaccion && Number(transaccion.amount) === Number(pedido.total) && transaccion.currency === pedido.moneda && pedido.entorno === config.modo && transaccion.environment === config.entornoRespuesta) {
       estado = transaccion.code === '1' ? 'pagado' : 'rechazado';
       await db.from('pedidos_tilopay').update({ estado, transaccion_tilopay: String(transaccion.id_tilopay ?? ''), resultado_tilopay: String(transaccion.response ?? '').slice(0, 200), actualizado_en: new Date().toISOString() }).eq('id', id).eq('estado', 'pendiente');
     }

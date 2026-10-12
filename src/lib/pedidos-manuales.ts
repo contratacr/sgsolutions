@@ -16,7 +16,7 @@ export function configuracionPedidosManuales() {
     const hostname = new URL(url).hostname;
     if (process.env.SG_ENTORNO === 'local' && !['localhost', '127.0.0.1', '[::1]'].includes(hostname)) return null;
     const sitio = new URL(origen);
-    if (sitio.protocol !== 'https:' && !(['local', 'test'].includes(process.env.SG_ENTORNO ?? '') && sitio.origin === 'http://127.0.0.1:3107')) return null;
+    if (sitio.protocol !== 'https:' && !(['local', 'test'].includes(process.env.SG_ENTORNO ?? '') && (sitio.origin === 'http://127.0.0.1:3107' || process.env.SG_ENTORNO==='local'&&process.env.SG_PRUEBAS_INTEGRACION==='1'&&['127.0.0.1','localhost'].includes(sitio.hostname)))) return null;
     return { url, llave, secreto, origen: sitio.origin };
   } catch { return null; }
 }

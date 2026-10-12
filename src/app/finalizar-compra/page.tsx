@@ -15,7 +15,7 @@ export default async function Compra({searchParams}:{searchParams:Promise<{aseso
   const { pagos } = await leerContenido();
   return (
     <main id="contenido" className="contenedor compra-pagina">
-      <FinalizarCompra enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaPruebaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
+      <FinalizarCompra enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
     </main>
   );
 }

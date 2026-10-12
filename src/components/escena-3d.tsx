@@ -27,8 +27,8 @@ const fragmentShader = `
       float n = float(i);
       float ribbon = center + .045 * sin(p.y * 8.0 + t + n * 1.15) + n * .012;
       float d = abs(p.x-ribbon);
-      float core = exp(-d*450.0) * .27;
-      float glow = exp(-d*35.0) * .1;
+      float core = exp(-d*450.0) * .44;
+      float glow = exp(-d*35.0) * .07;
       vec3 blue = mix(vec3(.15,.35,.60),vec3(.50,.77,1.0),n/6.0);
       color += blue * (core+glow);
     }
@@ -36,7 +36,8 @@ const fragmentShader = `
     color += vec3(.94,.36,.16)*(exp(-orange*360.0)*.55+exp(-orange*42.0)*.1);
     color += vec3(.10,.23,.38)*exp(-abs(p.x-center)*9.0)*.24;
     float fade = smoothstep(0.0,.2,p.y)*(1.0-smoothstep(.85,1.0,p.y));
-    gl_FragColor = vec4(color*fade,fade);
+    float alpha = clamp(max(max(color.r,color.g),color.b)*fade*1.8,0.0,.85);
+    gl_FragColor = vec4(color,alpha);
   }
 `;
 
@@ -63,7 +64,7 @@ export default function Escena3D({activo, punteroRef, invalidarRef, alCargar, al
     const camara = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
     const geometria = new THREE.PlaneGeometry(2,2);
     const material = new THREE.ShaderMaterial({
-      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      transparent: true, depthWrite: false, blending: THREE.NormalBlending,
       uniforms: {uTime: {value: 0}, uArea: {value: seleccion.current}, uPointer: {value: new THREE.Vector2()}},
       vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
       fragmentShader

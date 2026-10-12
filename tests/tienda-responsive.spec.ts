@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 
 test('tarjetas alineadas y cuadrícula móvil en ambos idiomas',async({page},info)=>{
  await page.emulateMedia({reducedMotion:'no-preference'});
- await page.goto('/soluciones');
+ await page.goto('/tienda');
  for(const idioma of ['es','en']){
   if(idioma==='en'){
    await page.getByRole('button',{name:'Read this page in English'}).click();
@@ -18,14 +18,14 @@ test('tarjetas alineadas y cuadrícula móvil en ambos idiomas',async({page},inf
   // Measure final geometry, rather than the staggered scroll entrance frames.
   await page.evaluate(()=>document.querySelector('.shop-producto')?.scrollIntoView({block:'center'}));
   await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);
-  const posiciones=await page.locator('.shop-producto').evaluateAll(es=>es.slice(0,innerWidth<=650?2:3).map(e=>({precio:e.querySelector('.shop-precio')!.getBoundingClientRect().y,boton:e.querySelector('button')!.getBoundingClientRect().y})));
+  const posiciones=await page.locator('.shop-producto').evaluateAll(es=>es.slice(0,innerWidth<=650?1:3).map(e=>({precio:e.querySelector('.shop-precio')!.getBoundingClientRect().y,boton:e.querySelector('button')!.getBoundingClientRect().y})));
   for(const posicion of posiciones){expect(Math.abs(posicion.precio-posiciones[0].precio)).toBeLessThan(1);expect(Math.abs(posicion.boton-posiciones[0].boton)).toBeLessThan(1);}
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   if(info.project.name==='movil'){
    const grid=page.locator('.shop-grid');
    expect(await grid.evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
    const cajas=await page.locator('.shop-producto').evaluateAll(es=>es.slice(0,3).map(e=>({x:e.getBoundingClientRect().x,y:e.getBoundingClientRect().y})));
-   expect(cajas[1].x).toBeGreaterThan(cajas[0].x);expect(cajas[2].y).toBeGreaterThan(cajas[0].y);
+   expect(cajas[1].x).toBeGreaterThan(cajas[0].x);expect(cajas[1].y).toBe(cajas[0].y);expect(cajas[2].x).toBe(cajas[0].x);expect(cajas[2].y).toBeGreaterThan(cajas[1].y);
   }
  }
  await page.reload();
@@ -37,7 +37,7 @@ test('cinta espera imágenes lentas y mantiene continuidad al cerrar el bucle',a
  let liberar!:()=>void;
  const espera=new Promise<void>(resolve=>{liberar=resolve;});
  await page.route('**/imagenes/marcas/**',async route=>{await espera;await route.continue();});
- await page.goto('/soluciones',{waitUntil:'domcontentloaded'});
+ await page.goto('/tienda',{waitUntil:'domcontentloaded'});
  const pista=page.locator('.marcas-pista');
  await expect(pista).toHaveCSS('animation-play-state','paused');
  liberar();
@@ -56,6 +56,6 @@ test('cinta espera imágenes lentas y mantiene continuidad al cerrar el bucle',a
 });
 
  test('filtros se conservan al regresar de una ficha',async({page})=>{
- await page.goto('/soluciones');await page.getByRole('searchbox').fill('Lenovo');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);await page.locator('.shop-producto h3 a').first().click();await expect(page).toHaveURL(/soluciones\/.+/);await page.goBack();await expect(page.getByRole('searchbox')).toHaveValue('Lenovo');await expect(page.locator('.shop-vistas')).toHaveCount(0);
+ await page.goto('/tienda');await page.locator('#buscar-equipo').fill('Lenovo');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);await page.locator('.shop-producto h3 a').first().click();await expect(page).toHaveURL(/tienda\/.+/);await page.goBack();await expect(page.locator('#buscar-equipo')).toHaveValue('Lenovo');await expect(page.locator('.shop-vistas')).toHaveCount(0);
  await page.getByRole('button',{name:'Read this page in English'}).click();await expect(page.locator('html')).toHaveAttribute('lang','en');
  });

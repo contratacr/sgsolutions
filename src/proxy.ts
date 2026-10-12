@@ -1,10 +1,11 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { configuracionSupabase } from '@/lib/supabase/configuracion';
+import { configuracionCuenta } from '@/lib/supabase/configuracion-cuenta';
 export async function proxy(solicitud: NextRequest) {
   let respuesta = NextResponse.next({request: solicitud});
   respuesta.headers.set('Cache-Control', 'private, no-store');
-  const configuracion = configuracionSupabase();
+  const configuracion = solicitud.nextUrl.pathname.startsWith('/cuenta') ? configuracionCuenta() : configuracionSupabase();
   if (!configuracion) return respuesta;
   const cliente = createServerClient(configuracion.url, configuracion.llave, {cookies: {
     getAll: () => solicitud.cookies.getAll(),
@@ -18,4 +19,4 @@ export async function proxy(solicitud: NextRequest) {
   respuesta.headers.set('Cache-Control', 'private, no-store');
   return respuesta;
 }
-export const config = {matcher: ['/panel/:path*', '/acceso', '/admin/:path*']};
+export const config = {matcher: ['/panel/:path*', '/acceso', '/admin/:path*', '/cuenta/:path*']};

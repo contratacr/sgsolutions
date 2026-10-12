@@ -1,0 +1,159 @@
+/* Ajustes editoriales compartidos para las rutas públicas. */
+:root { --sg-ritmo: clamp(48px, 6vw, 88px); }
+.navegacion{display:grid;grid-template-columns:1fr auto 1fr;gap:20px}
+.nav-escritorio{justify-content:center;gap:22px}
+.nav-escritorio a{font-size:.9rem;font-weight:650;color:#fff;letter-spacing:.01em}
+.nav-acciones{justify-self:end;gap:10px}
+.nav-acciones .cuenta-nav{width:auto;gap:7px;padding:0 9px;font-size:.82rem;font-weight:600;white-space:nowrap}
+.idioma-directo{display:inline-flex;align-items:center;gap:0;white-space:nowrap}
+.idioma-directo button{min-height:44px;min-width:30px;padding:0 5px;border:0;background:transparent;color:#aebfc9;font-size:.75rem;font-weight:600;cursor:pointer}
+.idioma-directo button+button{position:relative;margin-left:5px}
+.idioma-directo button+button::before{content:"";position:absolute;left:-3px;top:16px;height:12px;width:1px;background:#ffffff40}
+.idioma-directo button[aria-pressed="true"]{color:#fff;font-weight:750;text-decoration:underline;text-decoration-color:#ff8150;text-underline-offset:6px;text-decoration-thickness:2px}
+.idioma-directo button:hover{color:#fff}
+.idioma-directo button:focus-visible{outline:2px solid #f5a06e;outline-offset:1px;border-radius:4px}
+@media(max-width:1150px){.nav-escritorio{gap:14px}.nav-escritorio a{font-size:.82rem}.nav-acciones .cuenta-nav span{display:none}.navegacion{gap:14px}}
+@media(max-width:900px){.navegacion{grid-template-columns:1fr auto}.nav-escritorio{display:none}.menu-movil{display:inline-flex}.nav-acciones .cuenta-nav{width:42px;padding:0}.nav-acciones{gap:5px}}
+body:has(.inicio-triptico) .nav-escritorio a{font-weight:700;text-shadow:0 1px 8px #0008}
+/* Inicio: navegación sobre una portada fotográfica de tres rutas. */
+body:has(.inicio-triptico) .cabecera { position: absolute; z-index: 50; inset: 0 0 auto; width: 100%; background: linear-gradient(#061725bb, transparent); }
+body:has(.inicio-triptico) .barra-local { display: none; }
+body:has(.inicio-triptico) .nav-movil { background: #091725; }
+body:has(.inicio-triptico) .pie { border-top: 0; }
+.cuenta-nav{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;color:#fff;border-radius:9px;flex:none}.cuenta-nav:hover,.cuenta-nav[aria-current="page"]{background:#ffffff20}.cuenta-nav:focus-visible{outline:2px solid #f5a06e;outline-offset:2px}
+.inicio-triptico { height: 100svh; min-height: 580px; display: block; padding: 0; background: #091725; }
+.inicio-triptico .inicio-triptico-paneles { display: flex; min-height: 0; height: 100%; width: 100%; gap: 0; margin: 0; }
+.inicio-triptico .inicio-triptico-panel { flex: 1 1 0; height: 100%; min-height: 0; align-self: stretch; border-radius: 0; }
+.inicio-triptico .inicio-triptico-panel:last-child { flex-grow: 1.65; }
+.inicio-triptico .inicio-triptico-panel + .inicio-triptico-panel { border: 0; }
+.inicio-triptico .inicio-triptico-panel { background: #091725; }
+.inicio-triptico .inicio-triptico-panel > img { z-index: 1; transform: none; filter: saturate(.88); }
+.inicio-triptico .inicio-triptico-panel:hover > img,
+.inicio-triptico .inicio-triptico-panel:focus-visible > img { transform: none; filter: saturate(1); }
+.inicio-triptico .inicio-triptico-sombra { z-index: 2; background: linear-gradient(180deg,#091725b0 0%,#0917250a 31%,#09172530 57%,#091725f2 100%); }
+.inicio-triptico .inicio-triptico-contenido { z-index: 3; }
+.inicio-triptico .inicio-triptico-contenido { inset: auto 24px clamp(42px,7vh,82px); gap: 0; }
+.inicio-triptico .inicio-triptico-contenido strong { font-size: clamp(2rem,3.3vw,4rem); line-height: 1.05; text-shadow: 0 3px 18px #061725aa; }
+.inicio-triptico .inicio-triptico-contenido::before { content:''; width:44px; height:4px; background:#f44d39; margin-bottom:18px; transition:width .3s ease; }
+.inicio-triptico .inicio-triptico-contenido strong { text-transform:uppercase; letter-spacing:.015em; font-weight:750; }
+.inicio-triptico .inicio-camino-empresas > img { object-position:62% 57%; }
+@media(hover:hover) { .inicio-triptico .inicio-triptico-panel:hover .inicio-triptico-contenido::before { width:72px; } }
+@media(prefers-reduced-motion:reduce) { .inicio-triptico .inicio-triptico-contenido::before { transition:none; } }
+/* En escritorio, la portada y el footer comparten la primera pantalla. */
+@media (min-width:1024px) {
+  body:has(.inicio-triptico) { display:flex; flex-direction:column; height:100svh; }
+  body:has(.inicio-triptico) > main { flex:1 0 380px; min-height:380px; }
+  body:has(.inicio-triptico) .inicio-triptico { height:100%; min-height:0; }
+  body:has(.inicio-triptico) .cabecera-interior { padding-block:14px; }
+  body:has(.inicio-triptico) .pie { flex:none; }
+  body:has(.inicio-triptico) .pie-grid { grid-template-columns:1.25fr .85fr 1fr; gap:32px; padding-block:20px 16px; }
+  body:has(.inicio-triptico) .pie-firma img { width:104px; height:auto; }
+  body:has(.inicio-triptico) .pie-identidad > p { margin-block:8px 0; max-width:340px; }
+  body:has(.inicio-triptico) .pie-explorar { margin-top:8px; gap:4px 16px; max-width:none; }
+  body:has(.inicio-triptico) .pie h3 { margin-block:0 8px; }
+  body:has(.inicio-triptico) .pie p,
+  body:has(.inicio-triptico) .pie a { font-size:.8rem; line-height:1.5; }
+  body:has(.inicio-triptico) .pie-direccion { margin-block:0 8px; }
+  body:has(.inicio-triptico) .pie-redes { margin-top:10px; }
+  body:has(.inicio-triptico) .pie-redes a { width:32px; height:32px; }
+  body:has(.inicio-triptico) .pie-base { padding-block:12px; }
+  body:has(.inicio-triptico) .inicio-triptico-contenido { inset:auto clamp(28px,3vw,48px) clamp(36px,6vh,70px); }
+  body:has(.inicio-triptico) .inicio-triptico-contenido strong { font-size:clamp(2.5rem,4.15vw,4.5rem); font-weight:750; letter-spacing:.015em; }
+  body:has(.inicio-triptico) .inicio-triptico-sombra { background:linear-gradient(180deg,#061725c4 0%,#09172512 32%,#09172555 62%,#091725ed 100%); }
+}
+@media (hover:hover) and (min-width:701px) {
+  .inicio-triptico .inicio-triptico-paneles:hover .inicio-triptico-panel:last-child { flex-grow: 1; }
+  .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:hover { flex-grow: 1.65; }
+  body:has(.cabecera:hover) .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel { flex-grow: 1; }
+  body:has(.cabecera:hover) .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:last-child { flex-grow: 1.65; }
+}
+@media (min-width:701px) {
+  .inicio-triptico .inicio-triptico-paneles:focus-within .inicio-triptico-panel:last-child { flex-grow: 1; }
+  .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:focus-visible { flex-grow: 1.65; }
+}
+:where(.soporte-editorial,.empresas-editorial,.nosotros-pagina,.contacto-pagina,.historias) :is(h1,h2,h3) { text-wrap: balance; }
+:where(.soporte-editorial,.empresas-editorial,.nosotros-pagina,.contacto-pagina,.historias) :is(p,li) { text-wrap: pretty; }
+:where(.soporte-editorial,.empresas-editorial,.nosotros-pagina,.contacto-pagina,.historias) a:focus-visible { outline: 3px solid #e76d3f; outline-offset: 4px; }
+
+/* Catálogo: el contenido no debe desaparecer mientras se espera la animación. */
+.tienda-compacta [data-revelar-pendiente] { opacity: 1; }
+.tienda-compacta .shop-buscador { margin-bottom: 20px; }
+.tienda-compacta .shop-resultados-cabecera { margin-bottom: 18px; }
+.tienda-compacta .shop-foto { background: #f5f7f9; border-radius: 12px; overflow: hidden; }
+.tienda-compacta .shop-foto > a { padding: 10px; }
+.tienda-compacta .shop-foto img { background: transparent; }
+.tienda-compacta .shop-foto .guardar-seleccion { border-radius: 0 10px 0 0; }
+.tienda-compacta .shop-producto h3 { text-wrap: pretty; }
+.ficha-pagina .ficha-foto { background: #f6f8fa; border: 1px solid #e1e8ed; border-radius: 18px; }
+.ficha-pagina .ficha-compra { min-width: 0; }
+
+/* Soporte y empresas: jerarquía más compacta y tres rutas distinguibles. */
+.soporte-editorial .soporte-bienvenida { box-shadow: 0 8px 28px #17344a08; }
+.soporte-editorial .soporte-resumen li { min-height: 68px; }
+.empresas-editorial .empresa-necesidades a > svg { color: #315f78; }
+.empresas-editorial .empresa-necesidades a:nth-child(2) > svg { color: #a94927; }
+.empresas-editorial .empresa-necesidades a:nth-child(3) > svg { color: #476b9a; }
+
+/* Historias: las fotos llevan el peso visual. */
+.historias .casos-intro { margin-bottom: 24px; }
+.historias .historia-foto { border-radius: 14px; }
+.historias .historia-cierre { box-shadow: none; }
+
+/* Contacto y compra: acciones distinguibles sin tarjetas sobredimensionadas. */
+.contacto-pagina .contactos-grid > a { min-height: 158px; justify-content: center; }
+.contacto-pagina .contactos-grid svg { flex: none; }
+.compra-pagina > .compra-bloque { max-width: 760px; }
+.compra-pagina > .compra-bloque .boton { width: fit-content; min-width: 190px; }
+
+/* Panel: módulos y formularios comparten una escala de radios y espacios. */
+.panel-diseno .panel-modulos { gap: 16px; }
+.panel-diseno .panel-modulos a { border-radius: 16px; padding: 26px; transition: border-color .18s, box-shadow .18s, transform .18s; }
+.panel-diseno .panel-modulos a:hover { box-shadow: 0 12px 28px #17344a0e; transform: translateY(-2px); }
+.panel-diseno .panel-modulos a:focus-visible { outline: 3px solid #e76d3f; outline-offset: 4px; }
+.panel-diseno select { background-position: right 16px center; padding-right: 44px; }
+.panel-diseno .panel-cabecera { gap: 16px; }
+.panel-diseno .panel-descripcion { max-width: 70ch; line-height: 1.65; }
+
+@media (max-width: 760px) {
+  :root { --sg-ritmo: 44px; }
+  .tienda-compacta .shop-buscador { margin-bottom: 14px; }
+  .tienda-compacta .shop-resultados-cabecera { margin-bottom: 14px; }
+  .soporte-editorial .soporte-bienvenida { padding: 24px 20px; }
+  .soporte-editorial .soporte-resumen { margin-top: 18px; }
+  .soporte-editorial .soporte-resumen li { min-height: 0; padding: 10px 0; }
+  .empresa-portada-imagen { opacity: .48; }
+  .empresa-portada::after { background: linear-gradient(90deg,#10283df2 0%,#10283dbd 62%,#10283d75 100%); }
+  .empresas-editorial .empresa-necesidades a { min-height: 72px; }
+  .nosotros-pagina .area-hero-grid { display: flex; flex-direction: column; }
+  .nosotros-pagina .area-foto { order: -1; min-height: 230px; }
+  .nosotros-pagina .area-hero-grid > div { padding: 26px 22px; }
+  .nosotros-pagina .area-acciones { width: 100%; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .nosotros-pagina .area-hero .boton { min-width: 0; justify-content: center; gap: 6px; font-size: .73rem; }
+  .historias .casos-intro { margin-bottom: 18px; padding: 22px; }
+  .historias .casos-lista { gap: 20px; }
+  .historias .caso { display: flex; flex-direction: column; padding: 16px; }
+  .historias .historia-cabecera { display: contents; }
+  .historias .historia-cabecera > div { order: 0; margin-bottom: 16px; }
+  .historias .historia-fotos { order: 1; }
+  .historias .historia-descripcion { order: 2; margin-top: 18px; }
+  .historias .historia-cierre { order: 3; }
+  .historias .historia-foto:first-child { height: 260px; }
+  .contacto-pagina .contactos-grid { gap: 10px; }
+  .contacto-pagina .contactos-grid > a { min-height: 0; padding: 18px 20px; gap: 8px; }
+  .contacto-pagina .contactos-grid strong { font-size: 1rem; }
+  .compra-pagina > .compra-bloque .boton { width: 100%; }
+  .panel-diseno .panel-modulos { gap: 12px; }
+  .panel-diseno .panel-modulos a { padding: 20px; }
+}
+@media (max-width:700px) {
+  .inicio-triptico { height: 100svh; min-height: 600px; padding: 0; }
+  .inicio-triptico .inicio-triptico-paneles { min-height: 0; width: 100%; height: 100%; gap: 0; }
+  .inicio-triptico .inicio-triptico-panel,
+  .inicio-triptico .inicio-triptico-panel:hover,
+  .inicio-triptico .inicio-triptico-panel:focus-visible { flex: 1 1 0; min-height: 0; height: auto; border-radius: 0; box-shadow: none; transition: none; }
+  .inicio-triptico .inicio-triptico-panel:last-child { flex-grow: 1; }
+  .inicio-triptico .inicio-triptico-sombra { background: linear-gradient(90deg,#091725e8 0%,#0917257a 60%,#09172530 100%); }
+  .inicio-triptico .inicio-triptico-contenido { inset: auto 24px 42px; top: auto; right: 24px; justify-content: flex-end; }
+  .inicio-triptico .inicio-triptico-contenido strong { font-size: clamp(1.7rem,8vw,2.4rem); }
+}
+@media (max-width: 380px) { .nosotros-pagina .area-acciones { grid-template-columns: 1fr; } }

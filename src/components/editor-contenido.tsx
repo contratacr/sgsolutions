@@ -1,4 +1,5 @@
 "use client";
+import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import { useEffect, useState, useTransition } from "react";
 import { useTranslations,useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -204,11 +205,11 @@ export function EditorContenido({
             ))}
             </div><div className="admin-cuentas-grid">{datos.pagos.cuentas.map((c, i) => (
               <div className="admin-item" key={i}>
-                {(["banco", "iban"] as const).map((k) => (
+                {(["banco", "cuentaCorta", "iban"] as const).map((k) => (
                   <label key={k}>
                     {t(k)}
                     <input
-                      value={c[k]}
+                      value={k === "cuentaCorta" ? cuentaCorta(c) : c[k]}
                       onChange={(e) =>
                         setDatos((d) => ({
                           ...d,

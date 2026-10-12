@@ -9,7 +9,7 @@ const app=spawn('node',['node_modules/next/dist/bin/next','start','--hostname','
 const origen='http://127.0.0.1:3108';
 try{
  for(let i=0;i<50;i++){try{if((await fetch(origen+'/api/catalogo')).ok)break;}catch{}await new Promise(r=>setTimeout(r,200));}
- const rr=await fetch(origen+'/api/catalogo');assert.equal(rr.status,200);const catalogo=await rr.json();const producto={...catalogo.productos[0],precio:123000};
+ const rr=await fetch(origen+'/api/catalogo');assert.equal(rr.status,200);const catalogo=await rr.json();const producto={...catalogo.productos[0],precio:123000};delete producto.codigoEurocomp;
  const aprobar=()=>{const s={id:randomUUID(),creado_en:new Date().toISOString(),estado:'aprobada',idioma:'es',articulos:[{producto,cantidad:2}],token:randomBytes(32).toString('hex'),vence_en:new Date(Date.now()+3600000).toISOString(),pedido_id:null};tablas.solicitudes_asesoria.push(s);return s;};
  const cuerpo=s=>({asesoria:s.id,acceso:s.token,idioma:'es',metodo:'sinpe',articulos:[{id:producto.id,cantidad:2}],datos:{nombre:'Prueba',apellidos:'Aprobacion',correo:'prueba@example.com',telefono:'88888888',contacto:'whatsapp',modalidad:'envio',provincia:'Alajuela',canton:'Atenas',distrito:'Atenas',direccion:'Direccion de prueba',factura:'tiquete',consentimiento:'on'}});
  const enviar=datos=>fetch(origen+'/api/pedidos/manual',{method:'POST',headers:{origin:origen,'content-type':'application/json'},body:JSON.stringify(datos)});

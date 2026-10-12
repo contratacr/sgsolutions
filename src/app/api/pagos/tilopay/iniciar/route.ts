@@ -1,3 +1,6 @@
+import {datosClienteCompra} from '@/lib/datos-cliente-compra';
+import {costoEntrega} from '@/lib/envio';
+import {verificarCompraEurocomp} from '@/lib/eurocomp-compra';
 import {origenPermitido} from '@/lib/origen-permitido';
 import {validarAprobacion,reservarAprobacion,cambiarAsesoria} from '@/lib/asesorias';
 import { z } from 'zod';
@@ -11,6 +14,13 @@ const solicitud = z.object({
   telefono: z.string().trim().regex(/^\+?[0-9\s-]{8,20}$/),
   articulos: z.array(z.object({ id: z.string().regex(/^[a-z0-9-]{1,60}$/), cantidad: z.number().int().min(1).max(99) })).min(1).max(30),
   consentimiento: z.literal(true),
+  idioma: z.enum(['es','en']).default('es'),
+  datos: datosClienteCompra.optional(),
+}).superRefine((v,ctx)=>{
+  const d=v.datos;
+  if(d && (d.nombre!==v.nombre || d.apellidos!==v.apellidos || d.correo!==v.correo || d.telefono!==v.telefono))ctx.addIssue({code:'custom',message:'cliente'});
+  if(d?.modalidad==='envio' && (!d.provincia || !d.canton || !d.distrito || !d.direccion))ctx.addIssue({code:'custom',message:'entrega'});
+  if(d?.factura==='electronica' && (!d.identificacion || !d.razonSocial || !d.correoFactura || !d.direccionFiscal))ctx.addIssue({code:'custom',message:'factura'});
 });
 
 export async function POST(request: Request) {
@@ -46,15 +56,19 @@ export async function POST(request: Request) {
     total += producto.precio * linea.cantidad;
     articulos.push({ id: producto.id, codigo: producto.codigoFabricante, nombre: producto.nombre.es, cantidad: linea.cantidad, precio: producto.precio });
   }
+  const subtotal=total;
+  const envio=costoEntrega(entrada.datos?.modalidad ?? 'retiro');
+  total+=envio;
   if (!Number.isSafeInteger(total) || total <= 0 || total > 100000000) {
     return Response.json({ error: 'datos_invalidos' }, { status: 400 });
   }
+  try{await verificarCompraEurocomp(aprobacion.articulos);}catch{return Response.json({error:'catalogo_actualizado'},{status:409});}
   if(!await reservarAprobacion(aprobacion))return Response.json({error:"asesoria_requerida"},{status:403});
   const id = crypto.randomUUID();
   const db = basePedidos(config);
   const { error: guardarError } = await db.from('pedidos_tilopay').insert({
-    id, estado: 'iniciado', entorno: 'pruebas', total, moneda: 'CRC',
-    cliente: { nombre: entrada.nombre, apellidos: entrada.apellidos, correo: entrada.correo, telefono: entrada.telefono, modalidad: 'retiro' },
+    id, estado: 'iniciado', entorno: config.modo, total, moneda: 'CRC',
+    cliente: { ...(entrada.datos ?? {nombre:entrada.nombre,apellidos:entrada.apellidos,correo:entrada.correo,telefono:entrada.telefono,modalidad:'retiro'}), idioma:entrada.idioma, total_productos:subtotal, costo_envio:envio },
     articulos,
   });
   if (guardarError) {await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
@@ -63,12 +77,12 @@ export async function POST(request: Request) {
     const url = await iniciarTilopay(config, token, {
       redirect: retorno, amount: total.toFixed(2), currency: 'CRC', orderNumber: id,
       capture: '1', billToFirstName: entrada.nombre, billToLastName: entrada.apellidos,
-      billToAddress: 'Centro Comercial Plaza El Bosque, local 9', billToAddress2: 'Mercedes',
-      billToCity: 'Atenas', billToState: 'CR-A', billToZipPostCode: '20501', billToCountry: 'CR',
+      billToAddress: entrada.datos?.direccionFiscal || entrada.datos?.direccion || 'Centro Comercial Plaza El Bosque, local 9', billToAddress2: entrada.datos?.apartamento || 'Mercedes',
+      billToCity: entrada.datos?.canton || 'Atenas', billToState: 'CR-A', billToZipPostCode: '20501', billToCountry: 'CR',
       billToTelephone: entrada.telefono, billToEmail: entrada.correo,
       shipToFirstName: entrada.nombre, shipToLastName: entrada.apellidos,
-      shipToAddress: 'Centro Comercial Plaza El Bosque, local 9', shipToAddress2: 'Mercedes',
-      shipToCity: 'Atenas', shipToState: 'CR-A', shipToZipPostCode: '20501', shipToCountry: 'CR',
+      shipToAddress: entrada.datos?.direccion || 'Centro Comercial Plaza El Bosque, local 9', shipToAddress2: entrada.datos?.apartamento || 'Mercedes',
+      shipToCity: entrada.datos?.canton || 'Atenas', shipToState: 'CR-A', shipToZipPostCode: '20501', shipToCountry: 'CR',
       shipToTelephone: entrada.telefono, subscription: '0', platform: 'api',
       returnData: btoa(id), token_version: 'v2',
     });

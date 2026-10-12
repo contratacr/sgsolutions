@@ -1,23 +1,21 @@
 import {test,expect} from '@playwright/test';
 
 test('marcas filtran productos y se combinan con categorías en ambos idiomas',async({page})=>{
- await page.goto('/soluciones');
+ await page.goto('/tienda');
  await expect(page.locator('.shop-producto').first()).toContainText('Código de fabricante');
- await expect(page.locator('main')).toContainText('21H2S1NH00');
- await expect(page.locator('main')).not.toContainText('NT083LEN02');
- for(const nombre of ['Computadoras','Punto de venta','Software','Gaming','Componentes informáticos']) await expect(page.getByRole('button',{name:nombre,exact:true})).toBeVisible();
+ for(const nombre of ['Computadoras','Punto de venta','Componentes de PC']) await expect(page.getByRole('button',{name:nombre,exact:true})).toBeVisible();
  const seleccionarMarca=async(nombre:string)=>{
   const boton=page.getByRole('button',{name:nombre,exact:true});
   await boton.focus();
   await expect(page.locator('.marcas-pista')).toHaveCSS('animation-play-state','paused');
   await boton.press('Enter');
  };
- await seleccionarMarca('Ver productos de Lenovo');
- await expect(page.locator('.shop-producto')).toHaveCount((await (await page.request.get('/api/catalogo?marca=Lenovo')).json()).productos.length);
- await page.getByRole('button',{name:'Componentes informáticos',exact:true}).click();
- await expect(page.locator('.shop-producto')).toHaveCount((await (await page.request.get('/api/catalogo?marca=Lenovo&categoria=componentes')).json()).productos.length);
- await expect(page.locator('.shop-producto').first()).toContainText('Lenovo');
- await seleccionarMarca('Ver productos de Lenovo');
+ await seleccionarMarca('Ver productos de LENOVO');
+ await expect(page.locator('.shop-producto')).toHaveCount((await (await page.request.get('/api/catalogo?marca=LENOVO')).json()).productos.length);
+ await page.getByRole('button',{name:'Computadoras',exact:true}).click();
+ await expect(page.locator('.shop-producto')).toHaveCount((await (await page.request.get('/api/catalogo?marca=LENOVO&categoria=computadoras')).json()).productos.length);
+ await expect(page.locator('.shop-producto').first()).toContainText(/lenovo/i);
+ await seleccionarMarca('Ver productos de LENOVO');
  await expect(page.locator('.shop-producto')).toHaveCount(24);
  await page.getByRole('button',{name:'Read this page in English'}).click();
  await seleccionarMarca('View HP products');
@@ -43,16 +41,16 @@ test('planes envían consultas al correo correcto y soporte excluye iOS',async({
   await dialogo.getByRole('checkbox').check();
   await dialogo.getByRole('button',{name:'Preparar solicitud'}).click();
   const url=new URL((await dialogo.getByRole('link',{name:'Abrir solicitud en Outlook'}).getAttribute('href'))!);
-  expect(url.searchParams.get('to')).toBe('soporte@sgsolutionscr.com');
+  expect(url.searchParams.get('to')).toBe('asesor@sgsolutionscr.com');
   expect(url.searchParams.get('subject')).toContain(`plan ${nombre}`);
   expect(url.searchParams.get('body')).toContain('Empresa de prueba');
   await dialogo.getByRole('button',{name:'Volver a editar'}).click();
   await expect(dialogo.locator('input[name="empresa"]')).toHaveValue('Empresa de prueba');
   await page.keyboard.press('Escape');
  }
- const correoPie=await page.locator('footer').getByRole('link',{name:'soporte@sgsolutionscr.com'}).getAttribute('href');
+ const correoPie=await page.locator('a[href^="https://outlook.office.com/mail/deeplink/compose"]').first().getAttribute('href');
  const urlCorreoPie=new URL(correoPie!);
- expect(urlCorreoPie.searchParams.get('to')).toBe('soporte@sgsolutionscr.com');
+ expect(urlCorreoPie.searchParams.get('to')).toBe('asesor@sgsolutionscr.com');
  await page.goto('/soporte');
  await page.getByRole('heading',{name:'Apple',exact:true}).click();
  await expect(page.locator('.servicio-grupo').nth(2).locator('li')).toHaveCount(5);

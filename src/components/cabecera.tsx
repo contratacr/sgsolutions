@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, MapPin, Phone } from 'lucide-react';
+import { Menu, X, MapPin, Phone, CircleUserRound } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Carrito } from './carrito';
 import { cambiarIdioma } from '@/app/acciones-idioma';
@@ -23,10 +23,10 @@ export function Cabecera() {
     document.addEventListener('pointerdown',fuera);document.addEventListener('keydown',tecla);document.addEventListener('focusin',foco);
     return()=>{document.removeEventListener('pointerdown',fuera);document.removeEventListener('keydown',tecla);document.removeEventListener('focusin',foco);};
   },[abierto]);
-  const enlaces = [['/soluciones', 'tienda'], ['/soporte', 'soporte'], ['/empresas', 'empresas'], ['/casos-de-exito', 'casos'], ['/nosotros', 'nosotros']] as const;
+  const enlaces = [['/tienda', 'tienda'], ['/soporte', 'soporte'], ['/empresas', 'empresas'], ['/casos-de-exito', 'casos'], ['/nosotros', 'nosotros']] as const;
   return <header ref={cabecera} className="cabecera"><div className="barra-local"><div className="contenedor"><span><MapPin size={13}/>{marca('ubicacionCorta')}</span><a href="tel:+50624467846"><Phone size={13} aria-hidden="true"/>{marca('telefono')}</a></div></div><div className="contenedor navegacion">
-    <Link href="/" aria-label={t('inicio')}><Image className="logo" src="/imagenes/logo-principal.png" alt={marca('logo')} width={150} height={63} priority/></Link>
+    <Link href="/" aria-label={t('inicio')} onClick={(e)=>{setAbierto(false);if(ruta === '/' && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey){e.preventDefault();window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}}}><Image className="logo" src="/imagenes/logo-principal.png" alt={marca('logo')} width={150} height={63} priority/></Link>
     <nav aria-label={t('principal')} className="nav-escritorio">{enlaces.map(([href, texto]) => <Link href={href} key={texto} aria-current={ruta === href ? 'page' : undefined}>{t(texto)}</Link>)}</nav>
-    <div className="nav-acciones"><form className="selector-idioma" action={cambiarIdioma} role="group" aria-label={t('seleccionarIdioma')}>{(['es', 'en'] as const).map(opcion => <button key={opcion} type="submit" name="idioma" value={opcion} lang={opcion} aria-pressed={idioma === opcion} aria-label={idioma === opcion ? `${t(opcion === 'es' ? 'espanol' : 'ingles')} · ${t('idiomaActual')}` : t('cambiarIdioma')}>{opcion.toUpperCase()}</button>)}</form><Carrito/><button ref={botonMenu} className="boton-icono menu-movil" onClick={() => setAbierto(!abierto)} aria-label={abierto ? t('cerrar') : t('menu')} aria-expanded={abierto} aria-controls="navegacion-movil">{abierto ? <X/> : <Menu/>}</button></div>
-  </div>{abierto && <nav id="navegacion-movil" aria-label={t('principal')} className="nav-movil">{enlaces.map(([href, texto]) => <Link onClick={() => setAbierto(false)} href={href} key={texto} aria-current={ruta === href ? 'page' : undefined}>{t(texto)}</Link>)}</nav>}</header>;
+    <div className="nav-acciones"><form className="idioma-directo" action={cambiarIdioma} role="group" aria-label={t('seleccionarIdioma')}>{(['es','en'] as const).map(opcion=><button key={opcion} type="submit" name="idioma" value={opcion} lang={opcion} aria-pressed={idioma===opcion} aria-label={idioma===opcion ? `${t(opcion==='es'?'espanol':'ingles')} · ${t('idiomaActual')}` : t('cambiarIdioma')}>{opcion.toUpperCase()}</button>)}</form><Link className="cuenta-nav" href="/cuenta" aria-label={t('cuenta')} aria-current={ruta === '/cuenta' ? 'page' : undefined} title={t('cuenta')}><CircleUserRound size={21} aria-hidden="true"/><span>{t('cuenta')}</span></Link><Carrito/><button ref={botonMenu} className="boton-icono menu-movil" onClick={() => setAbierto(!abierto)} aria-label={abierto ? t('cerrar') : t('menu')} aria-expanded={abierto} aria-controls="navegacion-movil">{abierto ? <X/> : <Menu/>}</button></div>
+  </div>{abierto && <nav id="navegacion-movil" aria-label={t('principal')} className="nav-movil">{enlaces.map(([href, texto]) => <Link onClick={() => setAbierto(false)} href={href} key={texto} aria-current={ruta === href ? 'page' : undefined}>{t(texto)}</Link>)}<Link onClick={() => setAbierto(false)} href="/cuenta" aria-current={ruta === '/cuenta' ? 'page' : undefined}>{t('cuenta')}</Link></nav>}</header>;
 }

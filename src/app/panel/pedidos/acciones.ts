@@ -1,4 +1,5 @@
 'use server';
+import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { crearClienteServidor } from '@/lib/supabase/servidor';
@@ -48,7 +49,7 @@ export async function actualizarPedidoManual(form: FormData) {
     const pagos = (await leerContenido()).pagos;
     const destino = new URL('/finalizar-compra/pedido', config.origen);
     destino.searchParams.set('pedido', id); destino.searchParams.set('acceso', accesoPedido(config, id));
-    const cuenta = pedido.metodo === 'sinpe' ? pagos.sinpe : pagos.cuentas.map(c => `${c.banco}: ${c.iban}`).join('\n');
+    const cuenta = pedido.metodo === 'sinpe' ? pagos.sinpe : pagos.cuentas.map(c => `${c.banco}: ${cuentaCorta(c) ? cuentaCorta(c) + " · " : ""}IBAN ${c.iban}`).join('\n');
     try {
       await enviarCorreo({ destinatario: pedido.cliente.correo,
         asunto: ingles ? `Payment details for order ${numero}` : `Datos de pago del pedido ${numero}`,

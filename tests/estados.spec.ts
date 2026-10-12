@@ -16,7 +16,7 @@ for(const idioma of ['es','en']){
  test(`catálogo recuperable tras fallo de red ${idioma}`,async({page,context})=>{
   await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
   await page.route('**/api/catalogo?**',route=>route.abort());
-  await page.goto('/soluciones');
+  await page.goto('/tienda');
   await expect(page.locator('.shop-producto').first()).toBeVisible();
   await page.locator('#buscar-equipo').fill('Lenovo');
   await expect(page.locator('.estado-inline[role="alert"]')).toBeVisible();

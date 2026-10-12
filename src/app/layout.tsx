@@ -18,6 +18,7 @@ import './solicitud.css';
 import './movimiento-visual.css';
 import './estados.css';
 import './admin.css';
+import './revision-visual.css';
 import {RevelarScroll} from '@/components/revelar-scroll';
 import {META_PIXEL_ID} from '@/lib/meta-pixel';
 import {ValidacionNativa} from '@/components/validacion-nativa';

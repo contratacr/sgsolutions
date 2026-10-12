@@ -57,3 +57,12 @@
  .historias .casos-cta .boton{width:100%;justify-content:space-between}
  .historia-visor-cabecera,.historia-visor-pie{padding:10px;gap:10px}
 }
+@media(max-width:600px){
+ .historias .caso{display:flex;flex-direction:column}
+ .historias .historia-cabecera{display:contents}
+ .historias .historia-cabecera>div{order:0;margin-bottom:16px}
+ .historias .historia-fotos{order:1}
+ .historias .historia-descripcion{order:2;margin-top:18px}
+ .historias .historia-cierre{order:3}
+ .historias .historia-foto:first-child{height:260px}
+}

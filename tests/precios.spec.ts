@@ -21,14 +21,14 @@ test('fórmula CRC, prioridad manual y costos privados',()=>{
  const publico=publicarCatalogo(c);
  expect(publico.productos.some(p=>p.id===c.productos[1].id)).toBe(false);
  expect(JSON.stringify(publico)).not.toMatch(/costoUsd|precioManual|utilidad|cambio/);
- c.productos[0].revisionPrecio=true;
+ c.productos[0].revisionPrecio=true;c.productos[0].precioManual=null;
  expect(publicarCatalogo(c).productos.find(p=>p.id===c.productos[0].id)?.precio).toBeNull();
  expect(esquemaCatalogo.safeParse({...c,ajustes:{...ajustes,cambio:-1}}).success).toBe(false);
  expect(esquemaCatalogo.safeParse({...c,categorias:[]}).success).toBe(false);
  expect(esquemaCatalogo.safeParse({...c,productos:[{...c.productos[0],imagen:'javascript:alert(1)'}]}).success).toBe(false);
 });
 test('tienda mantiene CRC en inglés y ordena precios',async({page},prueba)=>{
- await page.goto('/soluciones');
+ await page.goto('/tienda');
  await page.getByRole('button',{name:'Read this page in English'}).click();
  await expect(page.locator('html')).toHaveAttribute('lang','en');
  await page.getByRole('combobox').selectOption('menor');
@@ -40,8 +40,8 @@ test('tienda mantiene CRC en inglés y ordena precios',async({page},prueba)=>{
  for(const p of await page.locator('.shop-precio strong').all())await expect(p).toContainText('₡');
  for(const img of await page.locator('.shop-foto img').all()){await img.scrollIntoViewIfNeeded();await expect.poll(()=>img.evaluate((e:HTMLImageElement)=>e.complete&&e.naturalWidth>0)).toBe(true);}
  await page.evaluate(()=>window.scrollTo(0,0));
- await page.screenshot({path:`evidencias/soluciones-en-${prueba.project.name}.png`,fullPage:true,animations:'disabled',scale:'css'});
- await page.getByRole('article').first().getByRole('button').click();
+ await page.screenshot({path:`evidencias/tienda-en-${prueba.project.name}.png`,fullPage:true,animations:'disabled',scale:'css'});
+ await page.getByRole('article').first().getByRole('button',{name:'Add to cart',exact:true}).click();
  await page.getByRole('button',{name:'Open cart'}).click();
  await expect(page.locator('.carrito-resumen')).toContainText('₡');
  await page.goto('/panel/catalogo');await expect(page).toHaveURL(/\/admin/);
