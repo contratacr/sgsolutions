@@ -55,4 +55,14 @@ La tarjeta vuelve a ser una opción del checkout. El comprobante solo se muestra
 
 El servidor permite producción únicamente con `SG_ENTORNO=produccion`, `TILOPAY_MODO=produccion`, `TILOPAY_PRODUCCION_VERIFICADA_EN` válido y `TILOPAY_ENTORNO_RESPUESTA` confirmado con el proveedor (no puede ser Test). Además requiere credenciales, base y retorno HTTPS configurados. La consulta verifica el entorno del pedido y la respuesta del proveedor antes de marcarlo pagado.
 
-Todavía no se han configurado esas variables ni cambiado el modo del comercio: la sesión del portal venció. La activación real está pendiente de verificar el portal y el valor exacto de environment de producción.
+Esta preparación quedó pendiente ese día por la sesión vencida del portal. Véase la revisión posterior.
+
+## Revisión y publicación — 12 de octubre de 2026
+
+- El portal de SG Solutions confirmó «Production mode activated successfully», con tarjetas habilitadas. Se verificó la autenticación del servidor sin iniciar un pago.
+- Se configuraron las variables privadas de producción en el Worker de la cuenta SG Solutions. El retorno usa `https://sgsolutionscr.com/api/pagos/tilopay/resultado` y la respuesta esperada es `Production`, documentada por Tilopay en https://tilopay.com/developers/api/procesos-operativos/consult-transactions.
+- Antes del cambio de modo, se probaron un pago aprobado y uno rechazado con tarjetas de prueba. Los retornos duplicados no duplicaron los correos de confirmación.
+- Pasó la prueba integrada aislada de compras: existencias inferiores a 15, cambios de costo, envío, concurrencia, comprobantes, fallos de base/correo y estados administrativos. Los pagos simulados de esta prueba no sustituyen las dos transacciones sandbox anteriores.
+- Se aplicaron las migraciones de autogestión y cola de correos en el proyecto de producción `xkfiawkixcyzpfdwccxz`. La sincronización remota terminó con 1.639 productos visibles, ninguno de Eurocomp por debajo de 15 unidades, y 1.448 precios de Eurocomp coincidentes con la fórmula y el redondeo configurados.
+- El Worker está publicado en la cuenta `e4cb0e4b96ca5f70e2512772084ae184`, con rutas para el dominio y www. Al registrar esta revisión, el cambio de servidores de nombres de GoDaddy y la nueva clave Brevo para correos de pedidos esperan verificación del propietario. La compra manual en el dominio definitivo debe esperar la resolución de ambos pasos y la validación de HTTPS.
+- No se ejecutaron cobros reales ni órdenes o reservas en Eurocomp. La compra real final la realizará el propietario. La facturación electrónica sigue siendo un proceso administrativo, no una integración automática con GTI.
