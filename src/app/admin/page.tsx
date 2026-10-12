@@ -3,9 +3,14 @@ import {redirect} from 'next/navigation';
 import {FormularioAcceso} from '@/components/formulario-acceso';
 import {configuracionSupabase} from '@/lib/supabase/configuracion';
 import {adminLocalDisponible,sesionLocal} from '@/lib/admin-local';
+import {leerAccesoPanel} from '@/lib/acceso-panel';
+import {AccesoDenegado} from '@/components/acceso-denegado';
 export const metadata={robots:{index:false,follow:false}};
 export default async function Admin(){
  if(await sesionLocal())redirect('/panel');
+ const acceso=await leerAccesoPanel();
+ if(acceso==='administrador')redirect('/panel');
+ if(acceso==='sinPermiso'||acceso==='error')return <AccesoDenegado error={acceso==='error'}/>;
  const t=await getTranslations('Acceso');
  const local=await adminLocalDisponible();
  const disponible=local||!!configuracionSupabase();

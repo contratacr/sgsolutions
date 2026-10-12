@@ -29,6 +29,7 @@ button, input { font: inherit; }
 button, a, input { -webkit-tap-highlight-color: transparent; }
 button, a { touch-action: manipulation; }
 button { cursor: pointer; }
+.acceso-denegado{max-width:680px;min-height:420px}.acceso-denegado>section{padding:32px;border:1px solid #dbe5ec;border-radius:16px;background:#f4f7fa}.acceso-denegado svg{color:#315a78;margin-bottom:18px}.acceso-denegado h1{font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.2;margin:0 0 14px}.acceso-denegado p{font-size:.95rem;line-height:1.6;color:#536c7e;margin-bottom:24px}
 button:disabled { cursor: not-allowed; opacity: .5; }
 button, input { color: inherit; }
 :is(input, select, textarea)[aria-invalid="true"] { border-color: #b42318; box-shadow: 0 0 0 2px #b4231830; }
@@ -487,3 +488,5 @@ svg { flex-shrink: 0; }
 @media (max-width: 520px) {
  .shop-grid { grid-template-columns: minmax(0,1fr); }
 }
+
+.aviso-qa-local{position:fixed;bottom:8px;left:8px;z-index:1000;padding:7px 12px;border-radius:6px;background:#fff3cc;border:1px solid #c9a959;color:#5c4716;font-size:12px;pointer-events:none;box-shadow:0 2px 8px #0001}

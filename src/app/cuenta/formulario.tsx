@@ -1,7 +1,10 @@
 'use client';
 import { useActionState, useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import { Eye, EyeOff, Facebook } from 'lucide-react';
+import { Eye, EyeOff, Facebook, Mail } from 'lucide-react';
+import { MINIMO_CLAVE_CUENTA } from '@/lib/cuenta-validacion';
+import {IndicadorCampo,NotaCampos} from '@/components/indicador-campo';
+import {RequisitosClave} from '@/components/requisitos-clave';
 import { accederCliente, actualizarClaveCliente, accederCuentaSocial, type EstadoAccesoCliente } from './acciones';
 
 // También manejar fallos de transporte de Server Actions sin desmontar el formulario.
@@ -19,13 +22,13 @@ function CampoClave({confirmar=false,nueva=false}:{confirmar?:boolean;nueva?:boo
   const [visible,setVisible]=useState(false);
   const [valor,setValor]=useState('');
   const id=confirmar?'confirmar-cuenta':'clave-cuenta';
-  return <div className="cuenta-campo"><label htmlFor={id}>{t(confirmar?'confirmarClave':'clave')}</label><div className="cuenta-clave"><input id={id} name={confirmar?'confirmar':'clave'} type={visible?'text':'password'} autoComplete={nueva?'new-password':'current-password'} placeholder={t(confirmar?'confirmarClaveEjemplo':'claveEjemplo')} required minLength={nueva?10:1} maxLength={128} value={valor} onChange={e=>setValor(e.target.value)}/><button type="button" aria-label={t(visible?'ocultarClave':'mostrarClave')} aria-pressed={visible} onClick={()=>setVisible(!visible)}>{visible?<EyeOff size={20} aria-hidden="true"/>:<Eye size={20} aria-hidden="true"/>}</button></div></div>;
+  return <div className="cuenta-campo"><label htmlFor={id}>{t(confirmar?'confirmarClave':'clave')}<IndicadorCampo obligatorio/></label><div className="cuenta-clave"><input id={id} name={confirmar?'confirmar':'clave'} type={visible?'text':'password'} autoComplete={nueva?'new-password':'current-password'} placeholder={t(confirmar?'confirmarClaveEjemplo':'claveEjemplo')} required minLength={nueva?MINIMO_CLAVE_CUENTA:1} maxLength={128} value={valor} onChange={e=>setValor(e.target.value)}/><button type="button" aria-label={t(visible?'ocultarClave':'mostrarClave')} aria-pressed={visible} onClick={()=>setVisible(!visible)}>{visible?<Eye size={20} aria-hidden="true"/>:<EyeOff size={20} aria-hidden="true"/>}</button></div>{nueva&&!confirmar&&<RequisitosClave valor={valor}/>}</div>;
 }
 function AceptacionCuenta({aceptado,cambiar}:{aceptado:boolean;cambiar:(valor:boolean)=>void}) {
   const t=useTranslations('CuentaCliente');
-  return <label className="cuenta-aceptacion"><input type="checkbox" name="acepta" value="si" checked={aceptado} onChange={e=>cambiar(e.target.checked)} required/><span>{t('aceptoInicio')} <a href="/terminos">{t('terminos')}</a> {t('aceptoDatos')} <a href="/privacidad">{t('privacidad')}</a> {t('aceptoFin')}</span></label>;
+  return <label className="cuenta-aceptacion"><input type="checkbox" name="acepta" value="si" checked={aceptado} onChange={e=>cambiar(e.target.checked)} required/><span>{t('aceptoInicio')} <a href="/terminos">{t('terminos')}</a> {t('aceptoDatos')} <a href="/privacidad">{t('privacidad')}</a> {t('aceptoFin')}<IndicadorCampo obligatorio/></span></label>;
 }
-function AccesoFormulario({modo,cambiar,aceptado,cambiarAceptacion,aceptacionExterna=false}:{modo:Modo;cambiar:(modo:Modo)=>void;aceptado:boolean;cambiarAceptacion:(valor:boolean)=>void;aceptacionExterna?:boolean}) {
+function AccesoFormulario({modo,cambiar,aceptado,cambiarAceptacion}:{modo:Modo;cambiar:(modo:Modo)=>void;aceptado:boolean;cambiarAceptacion:(valor:boolean)=>void}) {
   const t=useTranslations('CuentaCliente');
   const [estado,accion,pendiente]=useActionState(accederSeguro,'inicio' as EstadoAccesoCliente);
   const [nombre,setNombre]=useState(''),[correo,setCorreo]=useState('');
@@ -35,14 +38,14 @@ function AccesoFormulario({modo,cambiar,aceptado,cambiarAceptacion,aceptacionExt
   return <>
     {(modo==='recuperar'||modo==='reenviar')&&<p className="cuenta-explicacion">{t(modo==='recuperar'?'recuperarDetalle':'reenviarDetalle')}</p>}
     <form id={modo==='registro'?'cuenta-correo-registro':undefined} action={accion} className="cuenta-formulario" aria-busy={pendiente}>
-      <input type="hidden" name="modo" value={modo}/>{aceptacionExterna&&<input type="hidden" name="acepta" value={aceptado?'si':'no'}/>}
-      {modo==='registro'&&<div className="cuenta-campo"><label htmlFor="nombre-cuenta">{t('nombre')}</label><input id="nombre-cuenta" name="nombre" autoComplete="name" required minLength={2} maxLength={150} value={nombre} onChange={e=>setNombre(e.target.value)}/></div>}
-      <div className="cuenta-campo"><label htmlFor="correo-cuenta">{t('correo')}</label><input id="correo-cuenta" name="correo" type="email" required autoComplete="email" maxLength={254} placeholder={t('correoEjemplo')} value={correo} onChange={e=>setCorreo(e.target.value)}/></div>
+      <input type="hidden" name="modo" value={modo}/>{modo==='registro'&&<NotaCampos/>}
+      {modo==='registro'&&<div className="cuenta-campo"><label htmlFor="nombre-cuenta">{t('nombre')}<IndicadorCampo obligatorio/></label><input id="nombre-cuenta" name="nombre" autoComplete="name" required minLength={2} maxLength={150} value={nombre} onChange={e=>setNombre(e.target.value)}/></div>}
+      <div className="cuenta-campo"><label htmlFor="correo-cuenta">{t('correo')}<IndicadorCampo obligatorio/></label><input id="correo-cuenta" name="correo" type="email" required autoComplete="email" maxLength={254} placeholder={t('correoEjemplo')} value={correo} onChange={e=>setCorreo(e.target.value)}/></div>
       {(modo==='login'||modo==='registro')&&<CampoClave key={String(exito)} nueva={modo==='registro'}/>}
-      {modo==='registro'&&<><CampoClave key={String(exito)} confirmar nueva/><p className="cuenta-clave-ayuda">{t('claveAyuda')}</p></>}
+      {modo==='registro'&&<><CampoClave key={String(exito)} confirmar nueva/></>}
       {modo==='login'&&<button type="button" className="cuenta-enlace" onClick={()=>cambiar('recuperar')}>{t('olvidoClave')}</button>}
-      {estado!=='inicio'&&<p ref={aviso} tabIndex={-1} role={exito?'status':'alert'} className={exito?'cuenta-aviso':'cuenta-error-formulario'}>{t(estado)}</p>}
-      {modo==='registro'&&!aceptacionExterna&&<AceptacionCuenta aceptado={aceptado} cambiar={cambiarAceptacion}/>}
+      {estado!=='inicio'&&<p ref={aviso} tabIndex={-1} role={exito?'status':'alert'} className={exito?'cuenta-aviso':`cuenta-error-formulario${estado==='confirmarCorreo'?' cuenta-informacion':''}`}>{estado==='confirmarCorreo'&&<Mail size={20} aria-hidden="true"/>}<span>{t(estado)}</span></p>}
+      {modo==='registro'&&<AceptacionCuenta aceptado={aceptado} cambiar={cambiarAceptacion}/>}
       <button className="boton boton-azul cuenta-enviar" disabled={pendiente||exito}>{t(pendiente?'procesando':modo==='registro'?'registrarme':modo==='login'?'iniciarSesion':modo==='recuperar'?'enviarRecuperacion':'reenviarConfirmacion')}</button>
       {modo==='login'&&estado==='confirmarCorreo'&&<button type="button" className="cuenta-enlace" onClick={()=>cambiar('reenviar')}>{t('reenviarConfirmacion')}</button>}
       {(modo==='recuperar'||modo==='reenviar')&&<button type="button" className="cuenta-enlace" onClick={()=>cambiar('login')}>{t('volverLogin')}</button>}
@@ -69,10 +72,9 @@ export function FormularioCuenta({proveedores={google:false,facebook:false}}:{pr
     <h2 className="cuenta-acceso-titulo">{t(modo==='registro'?'crearCuenta':modo==='login'?'iniciarSesion':modo==='recuperar'?'olvidoClave':'reenviarConfirmacion')}</h2>
     {registroSocial&&<div className="cuenta-registro-social">
       <AccesoSocial key={modo} proveedores={proveedores} registro aceptado={aceptado}/>
-      <AceptacionCuenta aceptado={aceptado} cambiar={setAceptado}/>
-      <div className="cuenta-divisor"><span>{t('oCorreo')}</span></div>
+      <div className="cuenta-divisor"><span>{t('o')}</span></div>
     </div>}
-    <AccesoFormulario aceptacionExterna={registroSocial} key={modo} modo={modo} cambiar={setModo} aceptado={aceptado} cambiarAceptacion={setAceptado}/>
+    <AccesoFormulario key={modo} modo={modo} cambiar={setModo} aceptado={aceptado} cambiarAceptacion={setAceptado}/>
     {modo==='login'&&(proveedores.google||proveedores.facebook)&&<><div className="cuenta-divisor"><span>{t('o')}</span></div><AccesoSocial key={modo} proveedores={proveedores} registro={false} aceptado={aceptado}/></>}
     {modo==='login'&&<p className="cuenta-aviso-legal">{t('continuarAcepta')} <a href="/terminos">{t('terminosCorto')}</a> {t('yLa')} <a href="/privacidad">{t('privacidad')}</a> {t('aceptoFin')}</p>}
     {(modo==='login'||modo==='registro')&&<p className="cuenta-cambio">{t(modo==='login'?'sinCuenta':'conCuenta')} <button type="button" className="cuenta-enlace" onClick={()=>setModo(modo==='login'?'registro':'login')}>{t(modo==='login'?'registrarseEnlace':'iniciarSesion')}</button></p>}
@@ -82,5 +84,5 @@ export function FormularioCuenta({proveedores={google:false,facebook:false}}:{pr
 export function FormularioNuevaClave() {
   const t=useTranslations('CuentaCliente');
   const [estado,accion,pendiente]=useActionState(claveSegura,'inicio' as EstadoAccesoCliente);
-  return <form action={accion} className="cuenta-formulario" aria-busy={pendiente}><CampoClave nueva/><CampoClave confirmar nueva/><p className="cuenta-clave-ayuda">{t('claveAyuda')}</p>{estado!=='inicio'&&<p role="alert" className="cuenta-error-formulario">{t(estado)}</p>}{estado==='sesionVencida'&&<a className="cuenta-enlace" href="/cuenta">{t('olvidoClave')}</a>}<button className="boton boton-azul cuenta-enviar" disabled={pendiente}>{t(pendiente?'procesando':'guardarClave')}</button></form>;
+  return <form action={accion} className="cuenta-formulario" aria-busy={pendiente}><CampoClave nueva/><CampoClave confirmar nueva/>{estado!=='inicio'&&<p role="alert" className="cuenta-error-formulario">{t(estado)}</p>}{estado==='sesionVencida'&&<a className="cuenta-enlace" href="/cuenta">{t('olvidoClave')}</a>}<button className="boton boton-azul cuenta-enviar" disabled={pendiente}>{t(pendiente?'procesando':'guardarClave')}</button></form>;
 }

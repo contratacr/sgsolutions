@@ -1,3 +1,4 @@
+import {calcularPrecio} from './catalogo-modelo';
 export const MINIMO_EUROCOMP=15;
 const normalizar=(v:string)=>v.normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toUpperCase();
 export const categoriasEurocomp=[
@@ -20,6 +21,7 @@ export function categoriaEurocomp(a:{familiaPadre:string;familia:string;nombre?:
 export function precioVentaEurocomp(costo:number,moneda:string,cambio:number,utilidad:number,iva=13,adicional=0){
  if(!Number.isFinite(costo)||costo<=0||!['USD','CRC'].includes(moneda)||!Number.isFinite(cambio)||cambio<=0||!Number.isFinite(utilidad)||utilidad<0||!Number.isFinite(iva)||iva<0||iva>100||!Number.isFinite(adicional)||adicional<0)throw new Error('PRECIO_EUROCOMP_INVALIDO');
  // Eurocomp account verified on 2026-10-09: website and SOAP show the same net price, with IVA additional.
- return Math.ceil((costo*(moneda==='USD'?cambio+adicional:1)*(1+utilidad/100)*(1+iva/100))/1000)*1000;
+ const ajustes={cambio,utilidad,iva,adicional};
+ return calcularPrecio(moneda==='USD'?costo:null,ajustes,null,moneda==='CRC'?costo:null)!;
 }
 export function stockVendibleEurocomp(stock:number|null,cantidad=1){return stock!==null&&Number.isFinite(stock)&&stock>=MINIMO_EUROCOMP&&Number.isInteger(cantidad)&&cantidad>=1&&stock>=cantidad;}

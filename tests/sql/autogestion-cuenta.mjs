@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
+const {PGlite}=await import(process.env.SG_PGLITE_MODULE);const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create schema auth;grant usage on schema auth to authenticated;
+create table auth.users(id uuid primary key,email text,raw_user_meta_data jsonb default '{}'::jsonb,created_at timestamptz default now(),last_sign_in_at timestamptz,email_confirmed_at timestamptz default now(),banned_until timestamptz,deleted_at timestamptz);
+create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;`);
+for(const archivo of ['20260909000100_perfiles.sql','20261012000100_usuarios_panel.sql','20261012000200_gestion_usuarios.sql','20261012000400_autogestion_cuenta.sql'])await db.exec(await readFile(`supabase/migrations/${archivo}`,'utf8'));
+const id=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+for(let n=1;n<=3;n++)await db.query('insert into auth.users(id,email,email_confirmed_at) values($1,$2,$3)',[id(n),`fixture${n}@example.com`,n===3?null:new Date()]);
+await db.query("insert into public.perfiles(id,nombre,rol,activo) values($1,'Admin','administrador',true)",[id(1)]);
+async function sesion(rol,n){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[n?id(n):'']);await db.exec(`set role ${rol}`);}
+await sesion('anon');await assert.rejects(()=>db.query('select public.desactivar_mi_cuenta()'),/permission denied/);
+await sesion('authenticated',3);await assert.rejects(()=>db.query('select public.desactivar_mi_cuenta()'),/SIN_SESION/);
+await sesion('authenticated',1);await assert.rejects(()=>db.query('select public.desactivar_mi_cuenta()'),/ADMIN_PROTEGIDO/);
+await sesion('authenticated',2);await assert.rejects(()=>db.query('select public.desactivar_mi_cuenta()'),/REAUTENTICAR/);await db.exec('reset role');await db.query('update auth.users set last_sign_in_at=now() where id=$1',[id(2)]);await sesion('authenticated',2);await db.query('select public.desactivar_mi_cuenta()');assert.equal((await db.query('select public.cuenta_habilitada() as activo')).rows[0].activo,false);
+await assert.rejects(()=>db.query('select public.desactivar_mi_cuenta()'),/SIN_SESION/);
+await assert.rejects(()=>db.query("update public.estado_cuentas_usuario set estado='activo'"),/permission denied/);
+await db.exec('reset role');const estados=(await db.query('select * from public.estado_cuentas_usuario')).rows;assert.equal(estados.length,1);assert.equal(estados[0].usuario_id,id(2));assert.equal((await db.query('select count(*)::int as n from auth.users')).rows[0].n,3);
+await sesion('authenticated',1);await db.query("select public.gestionar_acceso_usuario($1,'desbloquear',null,1)",[id(2)]);
+await sesion('authenticated',2);assert.equal((await db.query('select public.cuenta_habilitada() as activo')).rows[0].activo,true);
+await db.close();console.log('OK: desactivación propia, aislamiento, protección administrativa y reactivación.');

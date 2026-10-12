@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
   const codigo = request.nextUrl.searchParams.get('code');
   const hash = request.nextUrl.searchParams.get('token_hash');
   const tipo = request.nextUrl.searchParams.get('type');
-  if ((codigo && codigo.length > 2048) || (!codigo && (!hash || hash.length > 2048 || !['email', 'magiclink', 'signup', 'recovery'].includes(tipo ?? '')))) {
+  if ((codigo && codigo.length > 2048) || (!codigo && (!hash || hash.length > 2048 || !['email', 'magiclink', 'signup', 'recovery', 'email_change'].includes(tipo ?? '')))) {
     destino.searchParams.set('error', 'acceso');
     return NextResponse.redirect(destino);
   }
@@ -56,5 +56,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/cuenta/recuperar',origen));
     } else destino.searchParams.set('error','acceso');
   }
+  if(!error&&tipo==='email_change')destino.searchParams.set('seccion','seguridad');
   return NextResponse.redirect(destino);
 }

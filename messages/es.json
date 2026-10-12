@@ -33,11 +33,13 @@
     "ingles": "Inglés",
     "casos": "Casos de éxito",
     "cuenta": "Ingresar",
-    "miCuenta": "Mi cuenta"
+    "miCuenta": "Mi cuenta",
+    "menuCuenta": "Abrir menú de cuenta",
+    "entornoPruebas": "Pruebas locales · Sin compras al proveedor"
   },
   "CuentaCliente": {
     "titulo": "Mi cuenta",
-    "descripcion": "Consulte sus pedidos y el estado de sus compras en un solo lugar.",
+    "descripcion": "Sus datos, compras y seguridad, en un solo lugar.",
     "accesoTitulo": "Entre con su correo",
     "accesoDetalle": "Le enviaremos un enlace de acceso. Si es su primera vez, su cuenta se crea al confirmar el correo.",
     "correo": "Correo electrónico",
@@ -81,7 +83,7 @@
     "registroDetalle": "Cree su cuenta y confirme su correo con el enlace que le enviaremos.",
     "recuperarDetalle": "Ingrese su correo para recibir un enlace y crear una nueva contraseña.",
     "reenviarDetalle": "Ingrese el correo con el que se registró para solicitar otro enlace de confirmación.",
-    "claveAyuda": "Use al menos 10 caracteres. Puede usar una frase fácil de recordar.",
+    "claveAyuda": "Use entre 15 y 128 caracteres. Puede usar una frase larga y única. No reutilice contraseñas.",
     "olvidoClave": "¿Olvidó su contraseña?",
     "volverLogin": "Volver a iniciar sesión",
     "procesando": "Procesando…",
@@ -90,7 +92,7 @@
     "credenciales": "El correo o la contraseña no son correctos.",
     "confirmarCorreo": "Confirme su correo antes de iniciar sesión. Puede solicitar otro enlace de confirmación.",
     "clavesDistintas": "Las contraseñas no coinciden.",
-    "claveCorta": "La contraseña debe tener entre 10 y 128 caracteres.",
+    "claveCorta": "La contraseña debe tener entre 15 y 128 caracteres.",
     "registroEnviado": "Revise su correo y abra el enlace para confirmar su cuenta. Si ya tiene una cuenta, puede iniciar sesión o recuperar su contraseña.",
     "recuperacionEnviada": "Si existe una cuenta con ese correo, recibirá un enlace para recuperar su contraseña.",
     "confirmacionEnviada": "Si su cuenta aún necesita confirmación, recibirá un nuevo enlace por correo.",
@@ -120,12 +122,14 @@
     "nombreInvalido": "Ingrese su nombre completo, entre 2 y 150 caracteres.",
     "limiteIntentos": "Ha realizado demasiados intentos. Espere unos minutos antes de volver a intentar.",
     "conexion": "No pudimos conectar con el servicio. Revise su conexión y vuelva a intentar.",
-    "claveDebil": "Elija una contraseña más segura y distinta de las que ya utiliza. Evite contraseñas comunes.",
+    "claveDebil": "La contraseña debe incluir una mayúscula, una minúscula, un número y un símbolo.",
     "claveRepetida": "La nueva contraseña debe ser diferente de la anterior.",
     "sesionVencida": "La sesión de recuperación venció. Solicite un nuevo enlace para cambiar su contraseña.",
     "googleCancelado": "No se completó el acceso con Google. Puede volver a intentar o ingresar con su correo.",
     "googleVencido": "El acceso con Google venció. Inicie nuevamente desde esta página.",
-    "cuentaBloqueada": "Esta cuenta no está disponible. Contacte a SG Solutions si necesita ayuda."
+    "cuentaBloqueada": "Esta cuenta no está disponible. Contacte a SG Solutions si necesita ayuda.",
+    "saludo": "Hola, {nombre}",
+    "saludoCliente": "bienvenido"
   },
   "Inicio": {
     "proyectoNegocioTitulo": "Su operación, mejor equipada",
@@ -952,7 +956,7 @@
     "rechazadoDetalle": "Puede volver a la tienda e intentarlo de nuevo.",
     "pendiente": "Estamos verificando el resultado.",
     "pendienteDetalle": "No marque el pedido como pagado todavía. Si necesita ayuda, comuníquese con nuestro equipo.",
-    "volver": "Volver a Soluciones"
+    "volver": "Volver a la tienda"
   },
   "PedidoManual": {
     "titulo": "Seguimiento del pedido",
@@ -983,7 +987,7 @@
     "archivoInvalido": "Seleccione un archivo JPG, PNG o PDF válido de hasta 5 MB.",
     "error": "No pudimos recibir el comprobante. Inténtelo de nuevo o comuníquese con nuestro equipo.",
     "verificacion": "El comprobante no confirma el pago. SG Solutions verificará el ingreso en el banco antes de preparar el pedido.",
-    "volver": "Volver a Soluciones",
+    "volver": "Volver a la tienda",
     "reintentarComprobante": "Su pedido quedó guardado, pero no pudimos adjuntar el comprobante. Seleccione el archivo nuevamente aquí.",
     "facturaGti": "La factura se emite por separado mediante GTI y se envía al correo de facturación indicado.",
     "cuentaCorta": "Cuenta corta",
@@ -1226,7 +1230,7 @@
     "invalido": "Este enlace venció, ya se utilizó o no es válido. Solicite un enlace nuevo al administrador del sitio.",
     "clave": "Nueva contraseña",
     "confirmacion": "Confirme su contraseña",
-    "longitud": "Utilice entre 12 y 128 caracteres. Puede usar una frase larga y única.",
+    "longitud": "Utilice entre 15 y 128 caracteres. Puede usar una frase larga y única.",
     "coincidencia": "Las contraseñas no coinciden.",
     "error": "No se pudo guardar la contraseña. Inténtelo de nuevo con una contraseña diferente.",
     "guardar": "Guardar contraseña",
@@ -1234,7 +1238,8 @@
     "listo": "Su contraseña quedó guardada. Ya puede iniciar sesión con su correo y su nueva contraseña.",
     "volver": "Volver al acceso",
     "entrar": "Iniciar sesión",
-    "marca": "SG Solutions"
+    "marca": "SG Solutions",
+    "requisitos": "La contraseña debe incluir una mayúscula, una minúscula, un número y un símbolo."
   },
   "AdminValidacion": {
     "instruccion": "No se guardaron los cambios. Complete o corrija estos campos. Seleccione uno para abrir el registro correspondiente.",
@@ -1499,7 +1504,7 @@
     "descripcion": "Consulte el catálogo de Eurocomp para preparar sus asesorías.",
     "actualizar": "Actualizar Eurocomp",
     "actualizando": "Actualizando catálogo…",
-    "aviso": "Información privada del proveedor. Actualice como máximo una vez por hora. Los precios incluyen IVA según Eurocomp y corresponden a su cuenta; revise su margen antes de definir el precio de venta. Los productos del sitio se siguen editando manualmente.",
+    "aviso": "Información privada del proveedor. Los precios son costos sin IVA de su cuenta Eurocomp; el precio de venta aplica la fórmula de SG Solutions. Las existencias y los precios se actualizan con la sincronización del catálogo.",
     "resumen": "{total} productos · Última actualización: {fecha}",
     "buscar": "Busque por nombre, marca o código",
     "buscarBoton": "Buscar",
@@ -1648,6 +1653,65 @@
     "guardarProxima": "Guardar estos datos para mis próximas compras",
     "errorCompra": "No pudimos guardar sus datos para próximas compras. Puede continuar con este pedido.",
     "facturacion": "Datos de facturación",
-    "envio": "Dirección de envío"
+    "envio": "Dirección de envío",
+    "misDatos": "Mis datos",
+    "misCompras": "Mis compras",
+    "navegacion": "Opciones de mi cuenta"
+  },
+  "CamposFormulario": {
+    "opcional": "Opcional",
+    "obligatorios": "Los campos con * son obligatorios."
+  },
+  "AdministracionCuenta": {
+    "abrir": "Panel administrativo",
+    "sinPermisoTitulo": "Acceso solo para administradores",
+    "sinPermisoDetalle": "Su cuenta no tiene permisos para acceder al panel administrativo.",
+    "errorTitulo": "No pudimos verificar su acceso",
+    "errorDetalle": "Intente nuevamente en unos minutos.",
+    "volver": "Volver a Mi cuenta"
+  },
+  "RequisitosClave": {
+    "titulo": "Requisitos de la contraseña",
+    "longitud": "Mínimo 15 caracteres",
+    "mayuscula": "Una letra mayúscula",
+    "minuscula": "Una letra minúscula",
+    "numero": "Un número",
+    "simbolo": "Un símbolo (!@#$%&*)",
+    "cumplido": "Cumplido",
+    "pendiente": "Pendiente"
+  },
+  "SeguridadCuenta": {
+    "titulo": "Cuenta y seguridad",
+    "datosDetalle": "Datos personales, facturación y dirección de envío.",
+    "comprasDetalle": "Historial y estado de sus pedidos.",
+    "seguridadDetalle": "Correo, contraseña y acceso a su cuenta.",
+    "volver": "Volver a Mi cuenta",
+    "correoTitulo": "Correo electrónico",
+    "correoActual": "Correo actual:",
+    "correoNuevo": "Nuevo correo electrónico",
+    "correoDetalle": "El cambio debe confirmarse desde su correo actual y el nuevo.",
+    "cambiarCorreo": "Cambiar correo",
+    "correoEnviado": "Revise su correo actual y el nuevo para confirmar el cambio. Su correo actual seguirá activo hasta completar la confirmación.",
+    "claveTitulo": "Contraseña",
+    "claveDetalle": "Le enviaremos un enlace a su correo para crear una nueva contraseña. También puede utilizarlo si se registró con Google.",
+    "cambiarClave": "Cambiar contraseña",
+    "recuperacionEnviada": "Enlace enviado a su correo. Ábralo para cambiar la contraseña.",
+    "desactivarTitulo": "Desactivar mi cuenta",
+    "desactivarDetalle": "Se cerrará su sesión y perderá el acceso a la cuenta. Sus datos y pedidos se conservarán. Contacte a SG Solutions si desea reactivarla.",
+    "confirmacion": "Escriba su correo para confirmar",
+    "aceptoDesactivar": "Confirmo que deseo desactivar mi cuenta.",
+    "desactivar": "Desactivar cuenta",
+    "enviando": "Enviando…",
+    "correoInvalido": "Ingrese un correo electrónico válido.",
+    "mismoCorreo": "Ingrese un correo diferente al actual.",
+    "error": "No pudimos completar la solicitud. Inténtelo nuevamente.",
+    "sinSesion": "Inicie sesión nuevamente para continuar.",
+    "limiteIntentos": "Espere unos minutos antes de volver a intentar.",
+    "confirmarDesactivacion": "Escriba el correo de esta cuenta y marque la confirmación.",
+    "adminProtegido": "Las cuentas administrativas se gestionan desde el panel.",
+    "noDisponible": "Esta opción no está disponible por el momento.",
+    "desactivada": "Su cuenta fue desactivada. Contacte a SG Solutions si desea reactivarla.",
+    "reautenticar": "Por seguridad, cierre sesión e ingrese nuevamente antes de desactivar su cuenta.",
+    "salirReautenticar": "Cerrar sesión e ingresar nuevamente"
   }
 }

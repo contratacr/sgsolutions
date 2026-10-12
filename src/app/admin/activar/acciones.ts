@@ -1,6 +1,7 @@
 'use server';
 import {z} from 'zod';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
+import {errorClaveCuenta} from '@/lib/cuenta-validacion';
 
 export async function aceptarInvitacion(accessToken:string,refreshToken:string){
  const tokens=z.object({accessToken:z.string().min(20).max(12000),refreshToken:z.string().min(10).max(4000)}).safeParse({accessToken,refreshToken});
@@ -11,20 +12,20 @@ export async function aceptarInvitacion(accessToken:string,refreshToken:string){
  if(error)return false;
  const {data:{user}}=await cliente.auth.getUser();
  if(!user)return false;
- const {data:perfil}=await cliente.from('perfiles').select('rol,activo').eq('id',user.id).single();
- if(!perfil?.activo||perfil.rol!=='administrador'){await cliente.auth.signOut();return false;}
+ const permiso=await cliente.rpc('es_administrador_activo');
+ if(permiso.error||permiso.data!==true){await cliente.auth.signOut();return false;}
  return true;
 }
 export async function guardarClave(_estado:string,form:FormData){
  const clave=String(form.get('clave')??'');
- if(clave.length<12||clave.length>128)return 'longitud';
+ const errorClave=errorClaveCuenta(clave);if(errorClave)return errorClave==='claveCorta'?'longitud':'requisitos';
  if(clave!==form.get('confirmacion'))return 'coincidencia';
  const cliente=await crearClienteServidor();
  if(!cliente)return 'invalido';
  const {data:{user}}=await cliente.auth.getUser();
  if(!user)return 'invalido';
- const {data:perfil}=await cliente.from('perfiles').select('rol,activo').eq('id',user.id).single();
- if(!perfil?.activo||perfil.rol!=='administrador')return 'invalido';
+ const permiso=await cliente.rpc('es_administrador_activo');
+ if(permiso.error||permiso.data!==true)return 'invalido';
  const {error}=await cliente.auth.updateUser({password:clave});
  if(error)return 'error';
  await cliente.auth.signOut();

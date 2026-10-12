@@ -14,19 +14,24 @@ async function sesion(context:BrowserContext,numero:number,idioma:string){
 }
 for(const idioma of ['es','en'] as const)test(`datos guardados, historial y checkout en ${idioma}`,async({page,context},info)=>{
  const n=(idioma==='es'?1:2)+(info.project.name==='movil'?2:0);await sesion(context,n,idioma);const d=(idioma==='es'?es:en).DatosCuenta,c=(idioma==='es'?es:en).Compra;
- await page.goto('/cuenta');await expect(page.getByRole('heading',{name:d.titulo})).toBeVisible();await expect(page.locator('.cuenta-pedidos')).toContainText('Producto de mi compra');
+ await page.goto('/cuenta');await expect(page.locator('.cuenta-menu-secciones a')).toHaveCount(3);await page.getByRole('link',{name:new RegExp(d.misDatos)}).click();await expect(page).toHaveURL(/seccion=datos/);await expect(page.getByRole('heading',{name:d.titulo})).toBeVisible();
+ await expect(page.locator('#datos-nombre')).toHaveAttribute('required','');
+ await expect(page.locator('#datos-apellidos')).toHaveAttribute('required','');
+ await expect(page.locator('#datos-telefono')).not.toHaveAttribute('required','');
+ await expect(page.locator('label[for=datos-telefono] .campo-requisito')).toHaveText(idioma==='es'?'· Opcional':'· Optional');
  await page.locator('#datos-telefono').fill('+506 88881111');await page.getByText(d.envio,{exact:true}).click();await page.locator('#datos-canton').fill('Atenas');await page.getByRole('button',{name:d.guardar,exact:true}).click();await expect(page.getByRole('status')).toContainText(d.guardado);
  await page.reload();await expect(page.locator('#datos-telefono')).toHaveValue('+506 88881111');await expect(page.locator('#datos-canton')).toHaveValue('Atenas');
  await page.evaluate(()=>{(document.activeElement as HTMLElement)?.blur();window.scrollTo({top:0,behavior:'instant'});});
  await page.screenshot({animations:'disabled',path:`.privado/evidencias/cuenta-datos-${idioma}-${info.project.name}.png`,fullPage:true});
+ if(info.project.name==='movil')await page.getByRole('link',{name:(idioma==='es'?es:en).SeguridadCuenta.volver,exact:true}).click();await page.getByRole('link',{name:new RegExp(d.misCompras)}).click();await expect(page).toHaveURL(/seccion=compras/);
  await page.locator('.cuenta-pedidos').screenshot({path:`.privado/evidencias/cuenta-historial-${idioma}-${info.project.name}.png`,animations:'disabled'});
  await page.goto('/tienda');await page.locator('.shop-producto').first().getByRole('button',{name:idioma==='es'?'Agregar al carrito':'Add to cart',exact:true}).click();
  await expect(page.getByText(idioma==='es'?'Ver carrito':'View cart',{exact:true}).first()).toBeVisible();await page.goto('/finalizar-compra');
  await expect(page.locator('input[name=nombre]')).toHaveValue('Ana');await expect(page.locator('input[name=telefono]')).toHaveValue('+506 88881111');await expect(page.locator('input[name=correo]')).toHaveValue(`cliente-${n}@example.com`);await expect(page.getByRole('checkbox',{name:d.guardarProxima})).not.toBeChecked();
  await page.locator('input[name=telefono]').fill('+506 88882222');await page.getByRole('checkbox',{name:d.guardarProxima}).check();await page.locator('input[name=consentimiento]').check();await page.getByRole('button',{name:c.revisar,exact:true}).click();await expect(page.locator('.compra-aviso-datos')).toHaveText(d.guardado);
- await page.goto('/cuenta');await expect(page.locator('#datos-telefono')).toHaveValue('+506 88882222');await expect(page.locator('#datos-canton')).toHaveValue('Atenas');
+ await page.goto('/cuenta?seccion=datos');await expect(page.locator('#datos-telefono')).toHaveValue('+506 88882222');await expect(page.locator('#datos-canton')).toHaveValue('Atenas');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
  await context.clearCookies();await page.goto('/finalizar-compra');await expect(page.locator('input[name=correo]')).toHaveValue('');await expect(page.getByRole('checkbox',{name:d.guardarProxima})).toHaveCount(0);
  // Otra cuenta no hereda los datos del cliente anterior.
- await sesion(context,9,idioma);await page.goto('/cuenta');await expect(page.locator('#datos-canton')).toHaveValue('');
+ await sesion(context,9,idioma);await page.goto('/cuenta?seccion=datos');await expect(page.locator('#datos-canton')).toHaveValue('');
 });

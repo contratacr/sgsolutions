@@ -8,6 +8,7 @@ const configuracion: NextConfig = {
   experimental: {serverActions: {bodySizeLimit: '32mb'}},
   async redirects() {
     return [
+      {source:'/:path*',has:[{type:'host',value:'www.sgsolutionscr.com'}],destination:'https://sgsolutionscr.com/:path*',permanent:true},
       {source: '/soluciones', destination: '/tienda', permanent: true},
       {source: '/soluciones/:path*', destination: '/tienda/:path*', permanent: true}
     ];

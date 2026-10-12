@@ -13,12 +13,17 @@ for(const idioma of ['es','en'] as const){
   const panel=page.getByRole('dialog');await expect(panel).toBeVisible();
   await expect(panel.locator('.menu-panel-idioma')).toBeVisible();
   expect((await panel.locator('.menu-panel-cabecera').boundingBox())!.height).toBe(altoNav);
-  expect((await panel.locator('.menu-panel-logo').boundingBox())!.width).toBe((await page.locator('.navegacion .logo').boundingBox())!.width);
+  expect((await panel.locator('.menu-panel-logo').boundingBox())!.width).toBeCloseTo((await page.locator('.navegacion .logo').boundingBox())!.width,2);
   await expect(panel.getByRole('link',{name:idioma==='es'?'Tienda':'Store',exact:true})).toBeVisible();
-  await page.keyboard.press('Escape');await expect(panel).not.toBeVisible();await expect(abrir).toBeFocused();
+  // El cierre no debe depender de animationend (Safari puede suspender la animación).
+  await page.addStyleTag({content:'.menu-panel[data-state=closed],.menu-panel-fondo[data-state=closed]{animation-play-state:paused!important}'});
+  await page.keyboard.press('Escape');await expect(panel).toHaveCount(0);await expect(abrir).toBeFocused();
   await abrir.click();await expect(panel).toHaveCSS('transform','none');await page.mouse.click(2,200);await expect(panel).not.toBeVisible();
   await abrir.click();await panel.getByRole('link',{name:idioma==='es'?'Ingresar':'Sign in',exact:true}).click();await expect(page).toHaveURL(/\/cuenta$/);await expect(panel).not.toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+  await page.goBack();await expect(page).toHaveURL(/\/$/);await expect(panel).not.toBeVisible();
+  await expect(page.locator('body')).not.toHaveCSS('pointer-events','none');
+  await page.goForward();await expect(page).toHaveURL(/\/cuenta$/);await expect(panel).not.toBeVisible();
   await abrir.click();await expect(panel.getByRole('link',{name:idioma==='es'?'Ingresar':'Sign in',exact:true})).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  });

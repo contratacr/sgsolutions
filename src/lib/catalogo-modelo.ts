@@ -22,7 +22,12 @@ export type CatalogoAdmin=z.infer<typeof esquemaCatalogo>;
 export type Texto=CatalogoAdmin['textos']['titulo'];
 export function traducir(texto:Texto,idioma:string){return idioma==='en'?texto.en:texto.es;}
 export function redondearPrecio(precio:number){
-  return Math.ceil(precio / 1000) * 1000;
+  // Precios bajos: ajuste comercial de ₡500 (p. ej. ₡9.424,20 → ₡9.500).
+  const paso=precio<50_000?500:1000;
+  const cociente=precio/paso,entero=Math.round(cociente);
+  // Evitar subir otro tramo por ruido de coma flotante en un múltiplo exacto.
+  const multiplo=Math.abs(cociente-entero)<=Number.EPSILON*Math.max(1,Math.abs(cociente))*4?entero:Math.ceil(cociente);
+  return multiplo*paso;
 }
 export function calcularPrecio(costo:number|null,ajustes:CatalogoAdmin['ajustes'],manual:number|null=null,costoCrc:number|null=null){
   if(manual!==null) return Math.round(manual);

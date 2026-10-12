@@ -12,7 +12,7 @@ test('fórmula CRC, prioridad manual y costos privados',()=>{
  expect(redondearPrecio(5999)).toBe(6000);
  expect(redondearPrecio(10987)).toBe(11000);
  expect(redondearPrecio(11000)).toBe(11000);
- expect(redondearPrecio(6001)).toBe(7000);
+ expect(redondearPrecio(6001)).toBe(6500);
  expect(redondearPrecio(49750)).toBe(50000);
  expect(redondearPrecio(67800)).toBe(68000);
  expect(redondearPrecio(251000)).toBe(251000);
@@ -26,6 +26,17 @@ test('fórmula CRC, prioridad manual y costos privados',()=>{
  expect(esquemaCatalogo.safeParse({...c,ajustes:{...ajustes,cambio:-1}}).success).toBe(false);
  expect(esquemaCatalogo.safeParse({...c,categorias:[]}).success).toBe(false);
  expect(esquemaCatalogo.safeParse({...c,productos:[{...c.productos[0],imagen:'javascript:alert(1)'}]}).success).toBe(false);
+});
+test('ejemplo del Excel: costo USD 13,90, recargo del 20%, IVA y ajuste comercial',()=>{
+ // Copia de Calculos (004)v.xlsx, D5 = B5*500*1.13*1.2; G5 es manual.
+ expect(13.9*500*1.13*1.2).toBeCloseTo(9424.20,2);
+ expect(calcularPrecio(13.9,politicaPrecios)).toBe(9500);
+ expect(calcularPrecio(null,politicaPrecios,null,6950)).toBe(9500);
+ expect(calcularPrecio(13.9,politicaPrecios,9500)).toBe(9500);
+ // I5 = ROUNDUP(G5/(0.9*1.13),2): cálculo inverso independiente del precio público.
+ expect(Math.ceil(9500/(0.9*1.13)*100)/100).toBe(9341.20);
+ for(const [entrada,salida] of [[500,500],[500.01,1000],[9424.20,9500],[9500,9500],[49500.01,50000],[50000,50000],[50000.01,51000]])expect(redondearPrecio(entrada)).toBe(salida);
+ expect(redondearPrecio(500.00000000000006)).toBe(500);
 });
 test('tienda mantiene CRC en inglés y ordena precios',async({page},prueba)=>{
  await page.goto('/tienda');

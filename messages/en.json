@@ -33,11 +33,13 @@
     "ingles": "English",
     "casos": "Success stories",
     "cuenta": "Sign in",
-    "miCuenta": "My account"
+    "miCuenta": "My account",
+    "menuCuenta": "Open account menu",
+    "entornoPruebas": "Local testing · No supplier orders"
   },
   "CuentaCliente": {
     "titulo": "My account",
-    "descripcion": "View your orders and purchase status in one place.",
+    "descripcion": "Your details, purchases and security in one place.",
     "accesoTitulo": "Sign in with your email",
     "accesoDetalle": "We will email you a sign-in link. If this is your first time, your account is created when you confirm your email.",
     "correo": "Email address",
@@ -81,7 +83,7 @@
     "registroDetalle": "Create your account and verify your email using the link we send you.",
     "recuperarDetalle": "Enter your email to receive a link and create a new password.",
     "reenviarDetalle": "Enter the email you registered with to request another confirmation link.",
-    "claveAyuda": "Use at least 10 characters. You can use a memorable phrase.",
+    "claveAyuda": "Use 15 to 128 characters. You can use a long, unique phrase. Do not reuse passwords.",
     "olvidoClave": "Forgot your password?",
     "volverLogin": "Back to sign in",
     "procesando": "Processing…",
@@ -90,7 +92,7 @@
     "credenciales": "The email or password is incorrect.",
     "confirmarCorreo": "Confirm your email before signing in. You can request another confirmation link.",
     "clavesDistintas": "The passwords do not match.",
-    "claveCorta": "Your password must contain between 10 and 128 characters.",
+    "claveCorta": "Your password must contain between 15 and 128 characters.",
     "registroEnviado": "Check your email and open the link to confirm your account. If you already have an account, sign in or reset your password.",
     "recuperacionEnviada": "If an account exists with this email, you will receive a password reset link.",
     "confirmacionEnviada": "If your account still needs verification, you will receive a new confirmation link by email.",
@@ -120,12 +122,14 @@
     "nombreInvalido": "Enter your full name, between 2 and 150 characters.",
     "limiteIntentos": "Too many attempts. Wait a few minutes before trying again.",
     "conexion": "We could not connect to the service. Check your connection and try again.",
-    "claveDebil": "Choose a stronger password that you do not use elsewhere. Avoid common passwords.",
+    "claveDebil": "Your password must include an uppercase letter, a lowercase letter, a number and a symbol.",
     "claveRepetida": "Your new password must differ from your previous password.",
     "sesionVencida": "Your recovery session expired. Request a new link to change your password.",
     "googleCancelado": "Google sign-in was not completed. Try again or sign in with your email.",
     "googleVencido": "Google sign-in expired. Start again from this page.",
-    "cuentaBloqueada": "This account is unavailable. Contact SG Solutions if you need help."
+    "cuentaBloqueada": "This account is unavailable. Contact SG Solutions if you need help.",
+    "saludo": "Hello, {nombre}",
+    "saludoCliente": "welcome"
   },
   "Inicio": {
     "proyectoNegocioTitulo": "Better equipped for business",
@@ -952,7 +956,7 @@
     "rechazadoDetalle": "You can return to the store and try again.",
     "pendiente": "We are checking the result.",
     "pendienteDetalle": "Do not mark the order as paid yet. Please contact our team if you need help.",
-    "volver": "Back to Solutions"
+    "volver": "Back to store"
   },
   "PedidoManual": {
     "titulo": "Order status",
@@ -983,7 +987,7 @@
     "archivoInvalido": "Choose a valid JPG, PNG or PDF file of up to 5 MB.",
     "error": "We could not receive the receipt. Please try again or contact our team.",
     "verificacion": "A receipt does not confirm payment. SG Solutions will check the funds in the bank before preparing the order.",
-    "volver": "Back to Solutions",
+    "volver": "Back to store",
     "reintentarComprobante": "Your order was saved, but the receipt could not be uploaded. Please select the file again here.",
     "facturaGti": "The invoice is issued separately through GTI and sent to the billing email provided.",
     "cuentaCorta": "Local account number",
@@ -1226,7 +1230,7 @@
     "invalido": "This link has expired, has already been used, or is invalid. Request a new link from the site administrator.",
     "clave": "New password",
     "confirmacion": "Confirm your password",
-    "longitud": "Use between 12 and 128 characters. You can use a long, unique passphrase.",
+    "longitud": "Use between 15 and 128 characters. You can use a long, unique passphrase.",
     "coincidencia": "The passwords do not match.",
     "error": "Your password could not be saved. Try again with a different password.",
     "guardar": "Save password",
@@ -1234,7 +1238,8 @@
     "listo": "Your password has been saved. You can now sign in with your email and new password.",
     "volver": "Back to sign in",
     "entrar": "Sign in",
-    "marca": "SG Solutions"
+    "marca": "SG Solutions",
+    "requisitos": "Your password must include an uppercase letter, a lowercase letter, a number and a symbol."
   },
   "AdminValidacion": {
     "instruccion": "Changes were not saved. Complete or correct these fields. Select one to open the corresponding record.",
@@ -1499,7 +1504,7 @@
     "descripcion": "Browse Eurocomp’s catalog to prepare customer advice.",
     "actualizar": "Update Eurocomp",
     "actualizando": "Updating catalog…",
-    "aviso": "Private supplier information. Update at most once per hour. Prices include VAT according to Eurocomp and apply to your account; review your margin before setting a sale price. Website products are still edited manually.",
+    "aviso": "Private supplier information. Prices are your Eurocomp account costs before VAT; selling prices use the SG Solutions formula. Stock and prices are refreshed through catalog synchronization.",
     "resumen": "{total} products · Last updated: {fecha}",
     "buscar": "Search by name, brand or code",
     "buscarBoton": "Search",
@@ -1648,6 +1653,65 @@
     "guardarProxima": "Save these details for my next purchases",
     "errorCompra": "We could not save your details for future purchases. You can continue with this order.",
     "facturacion": "Billing details",
-    "envio": "Shipping address"
+    "envio": "Shipping address",
+    "misDatos": "My details",
+    "misCompras": "My purchases",
+    "navegacion": "Account options"
+  },
+  "CamposFormulario": {
+    "opcional": "Optional",
+    "obligatorios": "Fields marked * are required."
+  },
+  "AdministracionCuenta": {
+    "abrir": "Admin dashboard",
+    "sinPermisoTitulo": "Administrators only",
+    "sinPermisoDetalle": "Your account does not have permission to access the admin dashboard.",
+    "errorTitulo": "We could not verify your access",
+    "errorDetalle": "Please try again in a few minutes.",
+    "volver": "Back to My account"
+  },
+  "RequisitosClave": {
+    "titulo": "Password requirements",
+    "longitud": "At least 15 characters",
+    "mayuscula": "One uppercase letter",
+    "minuscula": "One lowercase letter",
+    "numero": "One number",
+    "simbolo": "One symbol (!@#$%&*)",
+    "cumplido": "Met",
+    "pendiente": "Not yet met"
+  },
+  "SeguridadCuenta": {
+    "titulo": "Account and security",
+    "datosDetalle": "Personal details, billing and shipping address.",
+    "comprasDetalle": "Order history and status.",
+    "seguridadDetalle": "Email, password and account access.",
+    "volver": "Back to My account",
+    "correoTitulo": "Email address",
+    "correoActual": "Current email:",
+    "correoNuevo": "New email address",
+    "correoDetalle": "Confirm the change from both your current and new email addresses.",
+    "cambiarCorreo": "Change email",
+    "correoEnviado": "Check your current and new email addresses to confirm the change. Your current email stays active until confirmation is complete.",
+    "claveTitulo": "Password",
+    "claveDetalle": "We will email you a secure link to create a new password. You can also use it if you signed up with Google.",
+    "cambiarClave": "Change password",
+    "recuperacionEnviada": "Link sent to your email. Open it to change your password.",
+    "desactivarTitulo": "Deactivate my account",
+    "desactivarDetalle": "You will be signed out and lose access to your account. Your details and orders will be preserved. Contact SG Solutions to reactivate it.",
+    "confirmacion": "Enter your email to confirm",
+    "aceptoDesactivar": "I confirm that I want to deactivate my account.",
+    "desactivar": "Deactivate account",
+    "enviando": "Sending…",
+    "correoInvalido": "Enter a valid email address.",
+    "mismoCorreo": "Enter a different email address.",
+    "error": "We could not complete your request. Please try again.",
+    "sinSesion": "Sign in again to continue.",
+    "limiteIntentos": "Wait a few minutes before trying again.",
+    "confirmarDesactivacion": "Enter this account’s email and check the confirmation.",
+    "adminProtegido": "Admin accounts are managed from the dashboard.",
+    "noDisponible": "This option is currently unavailable.",
+    "desactivada": "Your account was deactivated. Contact SG Solutions to reactivate it.",
+    "reautenticar": "For security, sign out and sign in again before deactivating your account.",
+    "salirReautenticar": "Sign out and sign in again"
   }
 }

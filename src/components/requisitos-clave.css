@@ -1,0 +1,1 @@
+.clave-requisitos{display:grid;gap:7px;list-style:none;padding:0;margin:12px 0 23px;font-size:.78rem;line-height:1.45;color:#647787}.clave-requisitos li{display:flex;align-items:flex-start;gap:8px}.clave-requisitos svg{flex:none;margin-top:1px;color:#b5c3ce}.clave-requisitos li[data-cumplido=true],.clave-requisitos li[data-cumplido=true] svg{color:#16764a}

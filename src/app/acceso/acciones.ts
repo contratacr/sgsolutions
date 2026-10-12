@@ -15,6 +15,9 @@ export async function iniciarSesion(_estado: string, datos: FormData): Promise<s
   if (!cliente) return 'noDisponible';
   const {error} = await cliente.auth.signInWithPassword({email: validado.data.correo, password: validado.data.clave});
   if (error) return 'error';
+  const permiso=await cliente.rpc('es_administrador_activo');
+  if(permiso.error)return 'error';
+  if(permiso.data!==true)return 'sinPermiso';
   redirect('/panel');
 }
 export async function cerrarSesion() {

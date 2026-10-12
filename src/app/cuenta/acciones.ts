@@ -3,12 +3,12 @@ import { z } from 'zod';
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { crearClienteCuenta } from '@/lib/supabase/cuenta';
-import { correoCuenta, claveCuenta, registroCuenta } from '@/lib/cuenta-validacion';
+import { correoCuenta, claveCuenta, registroCuenta, errorClaveCuenta } from '@/lib/cuenta-validacion';
 import {errorCuenta, solicitudCuenta, type ErrorCuenta} from '@/lib/cuenta-errores';
 import {proveedoresCuenta} from '@/lib/supabase/proveedores-cuenta';
 
 export type EstadoAccesoCliente = ErrorCuenta | 'correoInvalido' | 'nombreInvalido' | 'inicio' | 'invalido' | 'noDisponible' | 'error' | 'credenciales' | 'confirmarCorreo' | 'aceptacionRequerida' | 'clavesDistintas' | 'claveCorta' | 'registroEnviado' | 'recuperacionEnviada' | 'confirmacionEnviada';
-async function origenPublico() {
+export async function origenPublico() {
   const origenPeticion = (await headers()).get('origin');
   if (process.env.NODE_ENV === 'development' && origenPeticion === 'http://127.0.0.1:3107') return origenPeticion;
   const valor = process.env.PEDIDOS_ORIGEN_PUBLICO;
@@ -26,7 +26,7 @@ export async function accederCliente(_anterior: EstadoAccesoCliente, formulario:
     if(formulario.get('acepta')!=='si') return 'aceptacionRequerida';
     if (!correoCuenta.safeParse(datos.correo).success) return 'correoInvalido';
     if (!z.string().trim().min(2).max(150).safeParse(datos.nombre).success) return 'nombreInvalido';
-    if (typeof datos.clave === 'string' && !claveCuenta.safeParse(datos.clave).success) return 'claveCorta';
+    const errorClave=errorClaveCuenta(datos.clave);if(errorClave)return errorClave;
     if (datos.clave !== datos.confirmar) return 'clavesDistintas';
     const validado = registroCuenta.safeParse(datos);
     if (!validado.success) return 'invalido';
@@ -60,7 +60,7 @@ export async function accederCliente(_anterior: EstadoAccesoCliente, formulario:
 }
 export async function actualizarClaveCliente(_anterior: EstadoAccesoCliente, formulario: FormData): Promise<EstadoAccesoCliente> {
   const clave = claveCuenta.safeParse(formulario.get('clave'));
-  if (!clave.success) return 'claveCorta';
+  if (!clave.success) return errorClaveCuenta(formulario.get('clave'))??'claveDebil';
   if (clave.data !== formulario.get('confirmar')) return 'clavesDistintas';
   const cliente = await crearClienteCuenta();
   const almacen = await cookies();

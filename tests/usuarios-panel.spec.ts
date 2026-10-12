@@ -26,8 +26,27 @@ for(const idioma of ['es','en'] as const){test(`usuarios: búsqueda y roles simp
 });}
 test('usuarios: visitantes y comerciales no acceden',async({page,context})=>{
  await page.goto('/panel/usuarios');await expect(page).toHaveURL(/\/admin$/);
- await sesion(context,9,'es');await page.goto('/panel/usuarios');await expect(page).toHaveURL(/\/admin$/);
+ await sesion(context,9,'es');await page.goto('/panel/usuarios');await expect(page.getByRole('heading',{name:es.AdministracionCuenta.sinPermisoTitulo,exact:true})).toBeVisible();
  await expect(page.locator('.usuario-tarjeta:visible')).toHaveCount(0);
+});
+
+for(const idioma of ['es','en'] as const)test(`acceso administrativo desde Mi cuenta y rutas protegidas ${idioma}`,async({page,context},info)=>{
+ const t=(idioma==='es'?es:en).AdministracionCuenta;
+ await sesion(context,41,idioma);
+ await page.goto('/cuenta');await expect(page.getByRole('link',{name:t.abrir,exact:true})).toHaveAttribute('href','/admin');
+ await page.screenshot({path:`.privado/evidencias/cuenta-acceso-admin-${idioma}-${info.project.name}.png`,fullPage:true});
+ await page.getByRole('link',{name:t.abrir,exact:true}).click();await expect(page).toHaveURL(/\/panel$/);await expect(page.locator('.panel-navegacion')).toBeVisible();
+ await context.clearCookies();await sesion(context,9,idioma);
+ await page.goto('/cuenta');await expect(page.getByRole('link',{name:t.abrir,exact:true})).toHaveCount(0);
+ for(const ruta of ['/admin','/panel','/panel/usuarios','/panel/pedidos','/panel/catalogo','/panel/contenido','/panel/estadisticas','/panel/proveedores']){
+  await page.goto(`${ruta}?rol=administrador`);
+  await expect(page.getByRole('heading',{name:t.sinPermisoTitulo,exact:true})).toBeVisible();
+  await expect(page.locator('.panel-navegacion,.panel-modulos,.usuario-tarjeta')).toHaveCount(0);
+ }
+ await page.screenshot({path:`.privado/evidencias/acceso-denegado-${idioma}-${info.project.name}.png`,fullPage:true});
+ await page.getByRole('link',{name:t.volver,exact:true}).click();await expect(page).toHaveURL(/\/cuenta$/);
+ await expect(page.locator('.cuenta-panel')).toBeVisible();
+ await context.clearCookies();await page.goto('/panel');await expect(page).toHaveURL(/\/admin$/);await expect(page.locator('.acceso-denegado')).toHaveCount(0);
 });
 
 for(const idioma of ['es','en'] as const){test(`gestión completa de una cuenta ${idioma}`,async({page,context},info)=>{

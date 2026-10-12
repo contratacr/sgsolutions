@@ -193,10 +193,10 @@ body:has(.inicio-triptico) .pie { border-top: 0; }
   .inicio-triptico .inicio-triptico-panel,
   .inicio-triptico .inicio-triptico-panel:hover { transform:none; }
   .inicio-triptico .inicio-triptico-panel > img,
-  .inicio-triptico .inicio-triptico-panel:hover > img { transform:none; filter:saturate(.88); transition:transform .16s ease-out,filter .16s ease-out; }
-  .inicio-triptico .inicio-triptico-contenido strong { transition:transform .16s ease-out; }
-  .inicio-triptico .inicio-triptico-panel:active > img { transform:scale(1.025); filter:saturate(1) brightness(1.08); }
-  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido strong { transform:translateX(4px); }
+  .inicio-triptico .inicio-triptico-panel:hover > img { transform:none; filter:saturate(.88); transition:transform .1s ease-out,filter .1s ease-out; }
+  .inicio-triptico .inicio-triptico-contenido strong { transition:transform .1s ease-out; }
+  .inicio-triptico .inicio-triptico-panel:active > img { transform:scale(1.055); filter:saturate(1) brightness(1.12); }
+  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido strong { transform:translateX(7px); }
   .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido::before { width:68px; }
 }
 @media (prefers-reduced-motion:reduce) {
@@ -214,3 +214,9 @@ html :is(.shop-buscador,.panel-buscador,.busqueda-equipo) input:is(:focus,:focus
 .compra-guardar-datos{display:flex;align-items:flex-start;gap:10px;font-size:.9rem;margin-bottom:18px}.compra-guardar-datos input{width:18px;height:18px;flex:none;margin:2px 0 0;accent-color:#315a78}
 
 .compra-aviso-datos{padding:14px 18px;border:1px solid #d8e3eb;background:#f2f7fa;border-radius:10px;color:#315a78;font-size:.9rem;line-height:1.6}
+/* El logo conserva un área de enlace ajustada a su tamaño. */
+.navegacion>a:first-child,.menu-panel-cabecera>a{display:inline-flex;align-items:center;justify-self:start;width:fit-content;cursor:pointer;border-radius:4px;transition:opacity .15s}
+.navegacion>a:first-child img,.menu-panel-cabecera>a img{cursor:pointer}
+.navegacion>a:first-child:hover,.menu-panel-cabecera>a:hover{opacity:.85}
+.navegacion>a:first-child:focus-visible,.menu-panel-cabecera>a:focus-visible{outline:2px solid #f5a06e;outline-offset:6px}
+.pie-firma,.pie-firma img{cursor:pointer}

@@ -8,7 +8,9 @@ const raiz='.privado/admin-local',archivos=['asesorias.json','cuenta.json'];
 const originales=await Promise.all(archivos.map(async a=>{try{return await readFile(`${raiz}/${a}`);}catch{return null;}}));
 const catalogo=JSON.parse(await readFile(`${raiz}/catalogo.json`,'utf8')).contenido;
 const fuente=catalogo.productos.find(p=>p.publicado&&p.eurocomp?.stock>=15),codigo=fuente.eurocomp.codigo;
-const base='http://127.0.0.1:3108',servicios='http://127.0.0.1:54329';
+const puertoApp=Number(process.env.SG_QA_PUERTO??3108),puertoServicios=Number(process.env.SG_QA_SERVICIOS_PUERTO??54329);
+if(![puertoApp,puertoServicios].every(p=>Number.isInteger(p)&&p>=1024&&p<=65535)||puertoApp===puertoServicios)throw new Error('PUERTOS_DE_PRUEBA_INVALIDOS');
+const base=`http://127.0.0.1:${puertoApp}`,servicios=`http://127.0.0.1:${puertoServicios}`;
 const tablas={pedidos_manuales:[],pedidos_tilopay:[],catalogo_privado:[{id:1,contenido:catalogo,revision:1}]};
 const correos=[],almacen=new Map();let stock=48,costo=fuente.eurocomp.costo,falloCorreo=false,falloDb=false,falloArchivo=false,tarjetaAprobada=true;
 const soap=()=>`<?xml version="1.0"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:t="urn:server"><s:Body><result>0</result><data><item xsi:type="t:items_Row"><codigo>${codigo}</codigo><parte>DEMO</parte><descripcion>Producto de prueba</descripcion><marca>Demo</marca><familia>Redes</familia><precio>${costo}</precio><currency_code>${fuente.eurocomp.moneda}</currency_code><stock>${stock}</stock></item></data></s:Body></s:Envelope>`;
@@ -28,9 +30,9 @@ const servidor=createServer(async(req,res)=>{
  if(req.method==='PATCH'){const encontrados=filas.filter(coincidir);for(const f of encontrados)Object.assign(f,JSON.parse(bytes.toString()));enviar(req.headers.accept?.includes('vnd.pgrst.object')?encontrados[0]??null:encontrados);return;}
  enviar([]);
 });
-await new Promise(r=>servidor.listen(54329,'127.0.0.1',r));
+await new Promise(r=>servidor.listen(puertoServicios,'127.0.0.1',r));
 const adminToken=randomBytes(32).toString('hex');const cuenta=JSON.parse(originales[1]);cuenta.sesiones.push({hash:createHash('sha256').update(adminToken).digest('hex'),vence:Date.now()+600000});await writeFile(`${raiz}/cuenta.json`,JSON.stringify(cuenta),{mode:0o600});
-const app=spawn('node',['node_modules/next/dist/bin/next','dev','--hostname','127.0.0.1','--port','3108'],{env:{...process.env,NODE_ENV:'development',SG_ENTORNO:'local',SG_ADMIN_LOCAL:'1',SG_PRUEBAS_INTEGRACION:'1',SG_SERVICIOS_PRUEBA_ORIGEN:servicios,SUPABASE_URL:servicios,SUPABASE_SERVICE_ROLE_KEY:'prueba',NEXT_PUBLIC_SUPABASE_URL:'',NEXT_PUBLIC_SUPABASE_ANON_KEY:'',PEDIDOS_MANUALES_ACTIVOS:'1',PEDIDOS_ENLACE_SECRET:randomBytes(32).toString('hex'),PEDIDOS_ORIGEN_PUBLICO:base,TILOPAY_MODO:'pruebas',TILOPAY_API_USER:'prueba',TILOPAY_API_PASSWORD:'prueba',TILOPAY_API_KEY:'prueba',TILOPAY_PRUEBA_VERIFICADA_EN:new Date().toISOString(),TILOPAY_RETORNO_URL:'http://127.0.0.1:3107/api/pagos/tilopay/resultado',BREVO_API_KEY:'prueba-local',BREVO_REMITENTE:'prueba@example.com',EUROCOMP_WEB_SERVICE_ID:'0',EUROCOMP_PASSWORD:'prueba-local',EUROCOMP_API_KEY:''},stdio:'ignore'});
+const app=spawn('node',['node_modules/next/dist/bin/next','dev','--hostname','127.0.0.1','--port',String(puertoApp)],{env:{...process.env,NODE_ENV:'development',SG_ENTORNO:'local',SG_ADMIN_LOCAL:'1',SG_QA_LOCAL:'0',SG_PRUEBAS_INTEGRACION:'1',SG_SERVICIOS_PRUEBA_ORIGEN:servicios,SUPABASE_URL:servicios,SUPABASE_SERVICE_ROLE_KEY:'prueba',NEXT_PUBLIC_SUPABASE_URL:'',NEXT_PUBLIC_SUPABASE_ANON_KEY:'',PEDIDOS_MANUALES_ACTIVOS:'1',PEDIDOS_ENLACE_SECRET:randomBytes(32).toString('hex'),PEDIDOS_ORIGEN_PUBLICO:base,TILOPAY_MODO:'pruebas',TILOPAY_API_USER:'prueba',TILOPAY_API_PASSWORD:'prueba',TILOPAY_API_KEY:'prueba',TILOPAY_PRUEBA_VERIFICADA_EN:new Date().toISOString(),TILOPAY_RETORNO_URL:'http://127.0.0.1:3107/api/pagos/tilopay/resultado',BREVO_API_KEY:'prueba-local',BREVO_REMITENTE:'prueba@example.com',EUROCOMP_WEB_SERVICE_ID:'0',EUROCOMP_PASSWORD:'prueba-local',EUROCOMP_API_KEY:''},stdio:'ignore'});
 let navegador;
 const post=(ruta,datos,ip='1')=>fetch(base+ruta,{method:'POST',headers:{origin:base,'content-type':'application/json','cf-connecting-ip':ip},body:JSON.stringify(datos)});
 const verificar=idioma=>post('/api/compra/verificar',{idioma,articulos:[{id:fuente.id,cantidad:2,precio:fuente.precioManual}]},randomBytes(3).toString('hex'));

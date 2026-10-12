@@ -1,0 +1,39 @@
+.menu { position: relative; flex: none; }
+.menu > .activador { cursor: pointer; list-style: none; background: transparent; padding: 0 5px; border-radius: 0; }
+.activador::-webkit-details-marker { display: none; }
+.menu[open] > .activador > svg:last-child { transform: rotate(180deg); }
+.desplegable {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  width: 270px;
+  max-width: calc(100vw - 40px);
+  padding: 8px;
+  background: #fff;
+  color: #17354b;
+  border: 1px solid #dbe5ec;
+  border-radius: 12px;
+  box-shadow: 0 16px 44px #102d4524;
+  z-index: 70;
+}
+.desplegable a, .desplegable button {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 13px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: #244967;
+  font: inherit;
+  font-size: .85rem;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+.desplegable svg { flex: none; }
+.desplegable a:hover, .desplegable button:hover { background: #f1f5f8; }
+.desplegable form { border-top: 1px solid #e1e8ed; margin-top: 5px; padding-top: 5px; }
+.desplegable a:focus-visible, .desplegable button:focus-visible { outline: 2px solid #406985; outline-offset: -2px; }
+@media (max-width: 900px) { .menu { display: none; } }

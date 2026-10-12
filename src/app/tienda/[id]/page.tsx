@@ -12,8 +12,8 @@ export async function generateMetadata({ params }: Props) {
   if (!p) return {};
   const l = await getLocale();
   const host = (await headers()).get('host');
-  const origen = host && /^(sgsolutions\.soportecontratacr\.workers\.dev|(?:www\.)?sgsolutionscr\.com)$/.test(host)
-    ? `https://${host}` : 'https://sgsolutions.soportecontratacr.workers.dev';
+  const origen = host && /^(sgsolutions\.sgsolutions\.workers\.dev|(?:www\.)?sgsolutionscr\.com)$/.test(host)
+    ? `https://${host}` : 'https://sgsolutionscr.com';
   const nombre = traducir(p.nombre, l);
   const descripcion = traducir(p.descripcion, l);
   return {
