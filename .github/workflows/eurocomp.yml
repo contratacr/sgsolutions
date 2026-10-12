@@ -1,0 +1,32 @@
+name: Actualizar catálogo Eurocomp
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: eurocomp-sincronizacion
+  cancel-in-progress: false
+jobs:
+  actualizar:
+    if: vars.EUROCOMP_SYNC_ACTIVA == '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright test --config=playwright.eurocomp.config.ts
+      - run: npm run sincronizar:eurocomp
+        env:
+          EUROCOMP_SYNC_ACTIVA: '1'
+          EUROCOMP_WEB_SERVICE_ID: ${{ secrets.EUROCOMP_WEB_SERVICE_ID }}
+          EUROCOMP_PASSWORD: ${{ secrets.EUROCOMP_PASSWORD }}
+          EUROCOMP_API_KEY: ${{ secrets.EUROCOMP_API_KEY }}
+          EUROCOMP_BODEGA_ID: ${{ vars.EUROCOMP_BODEGA_ID || '0' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

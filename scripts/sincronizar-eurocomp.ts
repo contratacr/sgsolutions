@@ -14,6 +14,8 @@ async function ejecutar(){
  if(bloqueo.error){if(bloqueo.error.message.includes('ESPERA')){console.log('Actualización omitida: ya hubo un intento en la última hora.');return;}throw new Error('BLOQUEO');}
  // The 33 MiB XML is parsed in Node, outside the Cloudflare request CPU budget.
  const copia=await consultarEurocomp({id,clave,bodega:Number(process.env.EUROCOMP_BODEGA_ID??'0')});
+ // Una respuesta vacía no debe borrar el catálogo vigente.
+ if(copia.articulos.length===0)throw new Error('CATALOGO_VACIO');
  const lectura=await db.from('catalogo_privado').select('contenido,revision').eq('id',1).single();
  if(lectura.error||!lectura.data)throw new Error('LECTURA');
  const privado=esquemaCatalogo.parse(reconciliarEurocomp(esquemaCatalogo.parse(lectura.data.contenido),copia));
