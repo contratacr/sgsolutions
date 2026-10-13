@@ -64,5 +64,11 @@
  .historias .historia-fotos{order:1}
  .historias .historia-descripcion{order:2;margin-top:18px}
  .historias .historia-cierre{order:3}
- .historias .historia-foto:first-child{height:260px}
+ .historias .historia-foto:first-child{height:320px}
 }
+
+/* Todas las fotos usan una misma medida, incluso en proyectos con dos fotos. */
+.historias .historia-fotos,.historias .historia-fotos[data-total="2"]{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.historias .historia-foto,.historias .historia-foto:first-child,.historias .historia-fotos[data-total="2"] .historia-foto:last-child{flex:0 0 calc((100% - 24px)/3);width:calc((100% - 24px)/3);height:410px}
+@media(max-width:900px){.historias .historia-foto,.historias .historia-foto:first-child,.historias .historia-fotos[data-total="2"] .historia-foto:last-child{flex-basis:calc((100% - 12px)/2);width:calc((100% - 12px)/2);height:330px}}
+@media(max-width:600px){.historias .historia-foto,.historias .historia-foto:first-child,.historias .historia-fotos[data-total="2"] .historia-foto:last-child{flex-basis:100%;width:100%;height:320px}}

@@ -14,6 +14,8 @@ for(const idioma of ['es','en'])test(`casos visibles al navegar aunque no funcio
  }else await page.locator('header').getByRole('link',{name:idioma==='es'?'Casos de éxito':'Success stories',exact:true}).click();
  await expect(page).toHaveURL(/\/casos-de-exito$/);
  await expect(page.locator('.caso')).toHaveCount(4);
+ const medidas=await page.locator('.historia-foto').evaluateAll(fotos=>fotos.map(foto=>{const r=foto.getBoundingClientRect();return {ancho:r.width,alto:r.height};}));
+ for(const medida of medidas){expect(medida.ancho).toBeCloseTo(medidas[0].ancho,0);expect(medida.alto).toBe(medidas[0].alto);}
  await expect(page.locator('.historias [data-revelar-pendiente],.historias [data-revelando]')).toHaveCount(0);
  for(const foto of await page.locator('.historia-foto').all()){
   await foto.scrollIntoViewIfNeeded();

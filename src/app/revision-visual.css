@@ -137,7 +137,7 @@ body:has(.inicio-triptico) .pie { border-top: 0; }
   .historias .historia-fotos { order: 1; }
   .historias .historia-descripcion { order: 2; margin-top: 18px; }
   .historias .historia-cierre { order: 3; }
-  .historias .historia-foto:first-child { height: 260px; }
+  .historias .historia-foto:first-child { height: 320px; }
   .contacto-pagina .contactos-grid { gap: 10px; }
   .contacto-pagina .contactos-grid > a { min-height: 0; padding: 18px 20px; gap: 8px; }
   .contacto-pagina .contactos-grid strong { font-size: 1rem; }
