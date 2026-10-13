@@ -1,3 +1,4 @@
+import {asignarRutasProductos} from './rutas-productos';
 import {calcularPrecio, publicarCatalogo, type CatalogoAdmin, type CatalogoPublico} from './catalogo-modelo';
 
 const textos={
@@ -17,6 +18,7 @@ export function seleccionarIniciales(productos:CatalogoPublico['productos']){
  });
 }
 export function catalogoPublicoManual(c:CatalogoPublico):CatalogoPublico{
+ c={...c,productos:asignarRutasProductos(c.productos)};
  if(c.gestion==='manual')return actualizarPromesa(c);
  return {...c,gestion:'manual',textos,productos:seleccionarIniciales(c.productos).map(p=>({...p,disponibilidad:'consultar',actualizado:null}))};
 }

@@ -1,4 +1,5 @@
 "use client";
+import {rutaProducto} from "@/lib/rutas-productos";
 import {datosClienteCompra} from '@/lib/datos-cliente-compra';
 import {AccesoCompra} from './acceso-compra';
 import {combinarDatosCompra} from '@/lib/perfil-compra';
@@ -458,7 +459,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                   <FotoProducto src={p.imagen} alt={traducir(p.nombre, l)} />
                 </div>
                 <p>
-                  <Link href={`/tienda/${p.id}`}>{traducir(p.nombre, l)}</Link>
+                  <Link href={rutaProducto(p)}>{traducir(p.nombre, l)}</Link>
                   <small>
                     {cantidad} ×{" "}
                     {p.precio === null ? t("pendiente") : colones(p.precio)}

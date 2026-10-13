@@ -23,6 +23,8 @@ jobs:
       - run: npx playwright install --with-deps chromium webkit
       - name: Verificar código y traducciones
         run: npm run verificar
+      - name: Probar acceso Google con proveedor simulado
+        run: npx playwright test --config=playwright.google.config.ts
       - name: Crear Supabase efímero y aplicar las migraciones
         run: |
           npx supabase start > "$RUNNER_TEMP/supabase-inicio.log" 2>&1

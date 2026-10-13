@@ -1,11 +1,12 @@
 'use client';
 import { useActionState, useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import { Eye, EyeOff, Facebook, Mail } from 'lucide-react';
+import { Eye, EyeOff, Mail } from 'lucide-react';
 import { MINIMO_CLAVE_CUENTA } from '@/lib/cuenta-validacion';
 import {IndicadorCampo} from '@/components/indicador-campo';
+import {AccesoGoogle} from '@/components/acceso-google';
 import {RequisitosClave} from '@/components/requisitos-clave';
-import { accederCliente, actualizarClaveCliente, accederCuentaSocial, type EstadoAccesoCliente } from './acciones';
+import { accederCliente, actualizarClaveCliente, type EstadoAccesoCliente } from './acciones';
 
 // También manejar fallos de transporte de Server Actions sin desmontar el formulario.
 function accionSegura(accion:(estado:EstadoAccesoCliente,datos:FormData)=>Promise<EstadoAccesoCliente>) {
@@ -14,7 +15,7 @@ function accionSegura(accion:(estado:EstadoAccesoCliente,datos:FormData)=>Promis
   };
 }
 const accederSeguro=accionSegura(accederCliente);
-const socialSeguro=accionSegura(accederCuentaSocial);
+
 const claveSegura=accionSegura(actualizarClaveCliente);
 type Modo = 'login' | 'registro' | 'recuperar' | 'reenviar';
 function CampoClave({confirmar=false,nueva=false}:{confirmar?:boolean;nueva?:boolean}) {
@@ -53,16 +54,9 @@ function AccesoFormulario({modo,cambiar,aceptado,cambiarAceptacion,retorno}:{mod
   </>;
 }
 export function AccesoSocial({proveedores,registro,aceptado,retorno}:{proveedores:{google:boolean;facebook:boolean};registro:boolean;aceptado:boolean;retorno?:string}) {
-  const t=useTranslations('CuentaCliente');
-  const [estado,accion,pendiente]=useActionState(socialSeguro,'inicio' as EstadoAccesoCliente);
-  if (!proveedores.google&&!proveedores.facebook) return null;
-  return <div className="cuenta-social"><form action={accion}>
-    <input type="hidden" name="modo" value={registro?'registro':'login'}/><input type="hidden" name="retorno" value={retorno??''}/>
-    <input type="hidden" name="acepta" value={aceptado?'si':'no'}/>
-    {proveedores.google&&<button className="cuenta-social-boton" name="proveedor" value="google" disabled={pendiente}><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.88h5.38a4.6 4.6 0 0 1-1.99 3.02v2.51h3.23c1.89-1.74 2.98-4.31 2.98-7.36Z"/><path fill="#34A853" d="M12 22c2.7 0 4.96-.89 6.62-2.41l-3.23-2.51c-.9.6-2.05.96-3.39.96-2.6 0-4.8-1.76-5.59-4.12H3.07v2.59A10 10 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.41 13.92A6 6 0 0 1 6.1 12c0-.67.11-1.31.31-1.92V7.49H3.07A10 10 0 0 0 2 12c0 1.61.38 3.14 1.07 4.51l3.34-2.59Z"/><path fill="#EA4335" d="M12 5.96c1.47 0 2.79.51 3.83 1.51l2.87-2.87A9.6 9.6 0 0 0 12 2a10 10 0 0 0-8.93 5.49l3.34 2.59A5.99 5.99 0 0 1 12 5.96Z"/></svg>{t('continuarGoogle')}</button>}
-    {proveedores.facebook&&<button className="cuenta-social-boton" name="proveedor" value="facebook" disabled={pendiente}><Facebook aria-hidden="true" size={20}/>{t('continuarFacebook')}</button>}
-  </form>{estado!=='inicio'&&<p role="alert" className="cuenta-error-formulario">{t(estado)}</p>}</div>;
+  return proveedores.google?<div className="cuenta-social"><AccesoGoogle registro={registro} aceptado={aceptado} retorno={retorno}/></div>:null;
 }
+
 export function FormularioCuenta({proveedores={google:false,facebook:false},retorno,inicial='login'}:{proveedores?:{google:boolean;facebook:boolean};retorno?:string;inicial?:'login'|'registro'}) {
   const t=useTranslations('CuentaCliente');
   const [modo,setModo]=useState<Modo>(inicial);

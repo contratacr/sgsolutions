@@ -1,0 +1,42 @@
+import {test,expect} from '@playwright/test';
+import {asignarRutasProductos,buscarProductoPorRuta,rutaProducto} from '../src/lib/rutas-productos';
+const producto=(id:string,nombre='Procesador AMD Ryzen 5 3600',modelo='100-100000031BOX')=>({id,nombre:{es:nombre},codigoFabricante:modelo,marca:'AMD',slug:undefined as string|undefined});
+test('nombres legibles, colisiones y rutas persistentes',()=>{
+ const productos=[producto('eurocomp-b'),producto('eurocomp-a'),producto('eurocomp-c','Cámara Wi-Fi / Ñandú','CAM 1')];
+ const rutas=asignarRutasProductos(productos);
+ expect(new Set(rutas.map(p=>p.slug)).size).toBe(3);
+ expect(rutas.every(p=>/^[a-z0-9-]{1,100}$/.test(p.slug!))).toBe(true);
+ expect(rutas[0].slug).toContain('procesador-amd-ryzen-5-3600');
+ expect(rutas[0].slug).not.toContain('eurocomp');
+ expect(asignarRutasProductos([...productos].reverse()).find(p=>p.id==='eurocomp-a')?.slug).toBe(rutas[1].slug);
+ const guardados=rutas.map(p=>({...p,nombre:{es:'Nombre corregido'},codigoFabricante:'NUEVO'}));
+ expect(asignarRutasProductos(guardados).map(p=>p.slug)).toEqual(rutas.map(p=>p.slug));
+ expect(buscarProductoPorRuta(rutas,rutas[0].id)?.id).toBe(rutas[0].id);
+ expect(buscarProductoPorRuta(rutas,rutas[0].slug!)?.id).toBe(rutas[0].id);
+ expect(buscarProductoPorRuta(rutas,'inexistente')).toBeUndefined();
+ const ampliados=asignarRutasProductos([...guardados,producto('eurocomp-0')]);
+ expect(ampliados.slice(0,3).map(p=>p.slug)).toEqual(rutas.map(p=>p.slug));
+});
+test('reserva identificadores anteriores y limita nombres largos',()=>{
+ const base=producto('uno','Producto','');
+ const rutas=asignarRutasProductos([base,producto('producto','Otro',''),producto('tres','Palabra '.repeat(100),'ABC-'.repeat(40))]);
+ expect(rutas[0].slug).not.toBe('producto');
+ expect(rutas.every(p=>p.slug!.length<=100)).toBe(true);
+});
+for(const idioma of ['es','en'])test('ficha, enlace anterior, idioma y carrito '+idioma,async({page,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
+ const respuesta=await page.request.get('/api/catalogo');
+ const {productos}=await respuesta.json();const p=productos.find((x:{precio:number|null;disponibilidad:string})=>x.precio!==null&&x.disponibilidad!=='agotado');
+ expect(p.slug).toBeTruthy();
+ await page.goto('/tienda/'+p.id);
+ await expect(page).toHaveURL(new RegExp('/tienda/'+p.slug+'$'));
+ await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+ await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href','https://sgsolutionscr.com'+rutaProducto(p));
+ await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content','https://sgsolutionscr.com'+rutaProducto(p));
+ await page.locator('.ficha-agregar').click();
+ await expect.poll(()=>page.evaluate(()=>localStorage.getItem('sg-carrito-v1'))).toContain(p.id);
+ await page.goto('/pagar');
+ await expect(page.locator('main a[href="'+rutaProducto(p)+'"]')).toBeVisible();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.goto('/tienda/este-producto-no-existe-qa');await expect(page.locator('.ficha-agregar')).toHaveCount(0);
+});

@@ -1,4 +1,5 @@
 'use client';
+import {rutaProducto} from '@/lib/rutas-productos';
 import {useState,useSyncExternalStore} from 'react';
 import {useLocale,useTranslations} from 'next-intl';
 import {Wifi,Building2,ShieldCheck,Laptop} from 'lucide-react';
@@ -22,7 +23,7 @@ export function AsesoriaWhatsApp({lineas=[],onSolicitar,className='boton boton-n
   `*${cantidad} × ${limpio(traducir(p.nombre,idioma))}*`,
   p.codigoFabricante?`${t('codigo')}: ${limpio(p.codigoFabricante)}`:'',
   p.precio!==null?`${t('precioReferencia')}: ${colones(p.precio)}`:'',
-  origen?`${origen}/tienda/${p.id}`:''
+  origen?`${origen}${rutaProducto(p)}`:''
  ].filter(Boolean).join('\n'));
  const mensaje=[t('mensajeInicio'),necesidad?t('mensajeNecesidad',{necesidad:t(necesidad)}):'',...productos,
   lineas.length?t('mensajeCierre'):necesidad?'':t('mensajeGeneral')
