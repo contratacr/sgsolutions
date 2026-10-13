@@ -1716,5 +1716,14 @@
     "desactivada": "Your account was deactivated. Contact SG Solutions to reactivate it.",
     "reautenticar": "For security, sign out and sign in again before deactivating your account.",
     "salirReautenticar": "Sign out and sign in again"
+  },
+  "AccesoCompra": {
+    "titulo": "Already have an account?",
+    "detalle": "Sign in to use your saved details.",
+    "ingresar": "Sign in",
+    "sinCuenta": "New here?",
+    "registro": "Sign up",
+    "invitado": "You can also continue as a guest.",
+    "carrito": "Already have an account? Sign in"
   }
 }

@@ -457,3 +457,11 @@
 .compra-archivo-nombre{font-size:.82rem;color:#536c7e;overflow-wrap:anywhere;min-width:0;flex:1}
 .compra-archivo-control .validacion-campo-error{position:relative;pointer-events:none}
 @media(max-width:600px){.compra-archivo-control{flex-direction:column;align-items:stretch}.compra-archivo-boton{text-align:center}.compra-archivo-nombre{flex:auto}}
+
+.compra-acceso{padding:22px 24px;margin-bottom:24px;background:#f2f6f9;border:1px solid #d8e3eb;border-radius:14px;color:#19394f}
+.compra-acceso-titulo{display:flex;align-items:flex-start;gap:12px}.compra-acceso-titulo>svg{flex:none;margin-top:2px;color:#315a78}.compra-acceso-titulo strong{font-size:1rem}.compra-acceso-titulo p{font-size:.9rem;color:#536d80;margin-top:4px;line-height:1.5}
+.compra-acceso-acciones{display:flex;align-items:flex-start;gap:12px;margin-top:18px;flex-wrap:wrap}.compra-acceso-acciones>.boton,.compra-acceso .cuenta-social-boton{min-height:46px;padding:12px 18px;background:white;border:1px solid #bdccd8;border-radius:9px;font:inherit;font-size:.9rem;font-weight:600;color:#234b68;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none}.compra-acceso-acciones>.boton:hover,.compra-acceso .cuenta-social-boton:hover{background:#e8eff4;border-color:#7798af}.compra-acceso .cuenta-social form{margin:0}.compra-acceso .cuenta-social-boton:disabled{cursor:wait}.compra-acceso .cuenta-error-formulario{font-size:.85rem;color:#a12d35;margin-top:8px}
+.compra-acceso-invitado{font-size:.85rem;line-height:1.6;margin-top:16px;color:#536d80}.compra-acceso-invitado a,.compra-acceso-legal a{color:#234b68;font-weight:600;text-decoration:underline;text-underline-offset:3px}.compra-acceso-invitado span{display:block;margin-top:4px}.compra-acceso-legal{font-size:.75rem;line-height:1.55;margin-top:12px;color:#607789}.carrito-ingreso{display:block;text-align:center;margin-top:14px;font-size:.85rem;color:#315a78;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:650px){.compra-acceso{padding:20px}.compra-acceso-acciones{display:grid;grid-template-columns:1fr}.compra-acceso .cuenta-social-boton{width:100%}.compra-acceso-titulo>svg{width:22px}}
+
+.compra-acceso .cuenta-social{margin:0;min-width:0}

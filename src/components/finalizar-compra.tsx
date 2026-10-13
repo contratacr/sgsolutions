@@ -1,4 +1,5 @@
 "use client";
+import {AccesoCompra} from './acceso-compra';
 import {combinarDatosCompra} from '@/lib/perfil-compra';
 import {guardarDatosCompra,type EstadoDatosCompra} from '@/app/cuenta/datos-acciones';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
@@ -33,7 +34,7 @@ const provincias = [
   "Puntarenas",
   "Limón",
 ];
-export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
+export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googleDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;googleDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
   const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
     l = useLocale(),
@@ -196,6 +197,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
       ) : (
         <div className="compra-grid">
           <div>
+            {!cuentaDisponible&&!revision&&<AccesoCompra google={googleDisponible} retorno={aprobacion?'/finalizar-compra?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}):'/finalizar-compra'}/>}
             {revision ? (
               <section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
                 <p className="etiqueta">{t("revision")}</p>

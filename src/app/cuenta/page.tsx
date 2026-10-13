@@ -1,3 +1,5 @@
+import {retornoCompra} from '@/lib/retorno-compra';
+import {redirect} from 'next/navigation';
 import {DatosCuenta} from './datos';
 import {PanelCuenta} from './panel-cuenta';
 import {SeguridadCuenta} from './seguridad';
@@ -26,16 +28,18 @@ export async function generateMetadata() {
   return { title: t('titulo'), description: t('descripcion'), robots: { index: false, follow: false } };
 }
 
-export default async function CuentaCliente({ searchParams }: { searchParams: Promise<{ error?: string; clave?: string; seccion?:string; desactivada?:string }> }) {
+export default async function CuentaCliente({ searchParams }: { searchParams: Promise<{ error?: string; clave?: string; seccion?:string; desactivada?:string;retorno?:string;modo?:string }> }) {
   const t = await getTranslations('CuentaCliente');
   const idioma = await getLocale();
-  const { error, clave, seccion, desactivada } = await searchParams;
+  const { error, clave, seccion, desactivada,retorno,modo } = await searchParams;
   const cliente = await crearClienteCuenta();
   const sesion=cliente?await solicitudCuenta(()=>cliente.auth.getUser()):null;
   const user=sesion&&'data' in sesion?sesion.data.user:null;
   const habilitada=user&&cliente?await solicitudCuenta(()=>cliente.rpc('cuenta_habilitada')):null;
   const bloqueada=habilitada&&'data' in habilitada&&habilitada.data===false;
   const confirmado = Boolean(user?.email && user.email_confirmed_at&&!bloqueada);
+  const destinoCompra=retornoCompra(retorno);
+  if(confirmado&&destinoCompra)redirect(destinoCompra);
   const permisoAdmin=confirmado&&cliente?await solicitudCuenta(()=>cliente.rpc('es_administrador_activo')):null;
   const administrador=permisoAdmin&&'data' in permisoAdmin&&permisoAdmin.data===true;
   const seguridad=await getTranslations('SeguridadCuenta');
@@ -55,7 +59,7 @@ export default async function CuentaCliente({ searchParams }: { searchParams: Pr
       {desactivada==='si'&&<p className="cuenta-aviso" role="status">{seguridad('desactivada')}</p>}
       {bloqueada&&<p className="cuenta-aviso cuenta-error" role="alert">{t('cuentaBloqueada')}</p>}
       {error && <p className="cuenta-aviso cuenta-error" role="alert">{t(error==='bloqueada'?'cuentaBloqueada':error==='configuracion'?'noDisponible':error==='conexion'?'conexion':error==='cancelado'?'googleCancelado':error==='oauth'?'googleVencido':'enlaceInvalido')}</p>}
-      <FormularioCuenta proveedores={proveedores}/>
+      <FormularioCuenta proveedores={proveedores} retorno={destinoCompra??undefined} inicial={modo==='registro'?'registro':'login'}/>
     </section> : <>
       {clave === 'actualizada' && <p className="cuenta-aviso" role="status">{t('claveActualizada')}</p>}
       <PanelCuenta administrador={Boolean(administrador)} seccion={seccion} seguridad={<SeguridadCuenta correo={user!.email!} administrador={Boolean(administrador)}/>} datos={perfilCompra&&<DatosCuenta datos={perfilCompra.datos} error={perfilCompra.error}/>} compras={

@@ -7,6 +7,7 @@ import { ShoppingCart, X, Trash2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import Link from 'next/link';
+import {enlaceIngresoCompra} from '@/lib/retorno-compra';
 import { cambiarCantidad, useCarrito } from '@/lib/carrito';
 import {useCatalogo} from './datos-catalogo';
 import {colones,traducir} from '@/lib/catalogo-modelo';
@@ -14,7 +15,8 @@ import {ContadorCantidad} from './contador-cantidad';
 import {EsqueletoCarrito} from './esqueletos';
 
 
-export function Carrito() {
+export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
+  const acceso=useTranslations('AccesoCompra');
   const t = useTranslations('Carrito');
 
   const {productos,noDisponibles,errorCarrito,reintentar}=useCatalogo();
@@ -45,7 +47,7 @@ export function Carrito() {
           const producto = productos.find(p => p.id === linea.id)!;
           return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><span>{producto.precio===null?tienda('precioPendiente'):colones(producto.precio)}</span><ContadorCantidad cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;
         })}</ul>
-        <div className="carrito-resumen"><div><strong>{t('total')}</strong><strong>{lineas.some(l=>productos.find(p=>p.id===l.id)!.precio===null)?t('pendiente'):colones(lineas.reduce((a,l)=>a+productos.find(p=>p.id===l.id)!.precio!*l.cantidad,0))}</strong></div><p>{t('nota')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/finalizar-compra">{t('finalizar')}</Link></Dialog.Close></div>
+        <div className="carrito-resumen"><div><strong>{t('total')}</strong><strong>{lineas.some(l=>productos.find(p=>p.id===l.id)!.precio===null)?t('pendiente'):colones(lineas.reduce((a,l)=>a+productos.find(p=>p.id===l.id)!.precio!*l.cantidad,0))}</strong></div><p>{t('nota')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/finalizar-compra">{t('finalizar')}</Link></Dialog.Close>{!sesionIniciada&&<Dialog.Close asChild><Link className="carrito-ingreso" href={enlaceIngresoCompra()}>{acceso('carrito')}</Link></Dialog.Close>}</div>
       </>}
     </Dialog.Content></Dialog.Portal>
   </Dialog.Root><AnimatePresence>{aviso&&<motion.aside className="carrito-confirmacion" aria-label={t('avisoTitulo')} initial={{opacity:0,y:reducirMovimiento?0:-12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:reducirMovimiento?0:-8}} transition={{duration:reducirMovimiento?0:.28,ease:[.22,1,.36,1]}} onPointerEnter={()=>setPausado(true)} onPointerLeave={e=>{if(!e.currentTarget.contains(document.activeElement))setPausado(false);}} onFocusCapture={()=>setPausado(true)} onBlurCapture={e=>{if(!e.currentTarget.contains(e.relatedTarget))setPausado(false);}}><div role="status" aria-atomic="true"><div><strong>{t(aviso.agregadas>0?'productoAgregado':'noAgregado')}</strong>{aviso.agregadas>0&&<small>{t('resumenAgregado',{cantidad:aviso.agregadas,total:cantidad})}</small>}{aviso.agregadas>0&&<p className="carrito-confirmacion-producto">{productoAviso&&<Image src={productoAviso.imagen} alt="" width={56} height={56}/>}<span>{traducir(productoAviso?.nombre??{es:'',en:''},idioma)}</span></p>}</div></div><button type="button" className="boton boton-azul" onClick={()=>{setAviso(null);setAbierto(true);}}><ShoppingCart size={17} aria-hidden="true"/>{t('verCarrito')}</button><button type="button" className="boton-icono carrito-confirmacion-cerrar" aria-label={n('cerrar')} onClick={()=>setAviso(null)}><X size={18}/></button></motion.aside>}</AnimatePresence></>;

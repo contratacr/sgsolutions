@@ -1,3 +1,4 @@
+import {retornoCompra} from '@/lib/retorno-compra';
 import {solicitudCuenta,errorCuenta} from '@/lib/cuenta-errores';
 import { NextRequest, NextResponse } from 'next/server';
 import type { EmailOtpType } from '@supabase/supabase-js';
@@ -9,7 +10,10 @@ export async function GET(request: NextRequest) {
   const host=request.headers.get('host')??'';
   const origen = process.env.NODE_ENV === 'development' && /^(127\.0\.0\.1|localhost):\d{1,5}$/.test(host)
     ? `http://${host}` : new URL(request.url).origin;
+  const almacenRetorno=await cookies();
+  const regreso=retornoCompra(almacenRetorno.get('sg-retorno-compra')?.value);
   const destino = new URL('/cuenta', origen);
+  if(regreso)destino.searchParams.set('retorno',regreso);
   const fallo=request.nextUrl.searchParams.get('error');
   if(fallo){
     destino.searchParams.set('error',request.nextUrl.searchParams.get('error_code')==='user_banned'?'bloqueada':fallo==='access_denied'?'cancelado':'oauth');
@@ -56,6 +60,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/cuenta/recuperar',origen));
     } else destino.searchParams.set('error','acceso');
   }
-  if(!error&&tipo==='email_change')destino.searchParams.set('seccion','seguridad');
+  if(!error&&tipo==='email_change'){destino.searchParams.delete('retorno');destino.searchParams.set('seccion','seguridad');}
+  else if(!error&&regreso){
+    const habilitada=await solicitudCuenta(()=>cliente.rpc('cuenta_habilitada'));
+    if('data' in habilitada&&habilitada.data===false){await cliente.auth.signOut();destino.searchParams.set('error','bloqueada');}
+    else{almacenRetorno.set('sg-retorno-compra','',{path:'/cuenta',maxAge:0});return NextResponse.redirect(new URL(regreso,origen));}
+  }
   return NextResponse.redirect(destino);
 }

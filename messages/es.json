@@ -1716,5 +1716,14 @@
     "desactivada": "Su cuenta fue desactivada. Contacte a SG Solutions si desea reactivarla.",
     "reautenticar": "Por seguridad, cierre sesión e ingrese nuevamente antes de desactivar su cuenta.",
     "salirReautenticar": "Cerrar sesión e ingresar nuevamente"
+  },
+  "AccesoCompra": {
+    "titulo": "¿Ya tiene cuenta?",
+    "detalle": "Ingrese para usar sus datos guardados.",
+    "ingresar": "Ingresar",
+    "sinCuenta": "¿No tiene cuenta?",
+    "registro": "Regístrese",
+    "invitado": "También puede continuar sin cuenta.",
+    "carrito": "¿Ya tiene cuenta? Ingresar"
   }
 }

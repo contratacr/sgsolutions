@@ -1,4 +1,5 @@
 'use server';
+import {retornoCompra} from '@/lib/retorno-compra';
 import { z } from 'zod';
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -19,6 +20,10 @@ export async function origenPublico() {
   } catch { /* El origen no está configurado. */ }
   return null;
 }
+async function guardarRetorno(valor:unknown,origen:string){
+ const almacen=await cookies(),destino=retornoCompra(valor);
+ if(destino)almacen.set('sg-retorno-compra',destino,{httpOnly:true,secure:origen.startsWith('https:'),sameSite:'lax',path:'/cuenta',maxAge:3600});else almacen.set('sg-retorno-compra','',{path:'/cuenta',maxAge:0});
+}
 export async function accederCliente(_anterior: EstadoAccesoCliente, formulario: FormData): Promise<EstadoAccesoCliente> {
   const modo = formulario.get('modo');
   const datos = Object.fromEntries(formulario);
@@ -34,6 +39,7 @@ export async function accederCliente(_anterior: EstadoAccesoCliente, formulario:
     const origen = await origenPublico();
     if (!cliente || !origen) return 'noDisponible';
     const idioma = (await cookies()).get('sg-idioma')?.value === 'en' ? 'en' : 'es';
+    await guardarRetorno(formulario.get('retorno'),origen);
     const {error} = await solicitudCuenta(()=>cliente.auth.signUp({email:validado.data.correo,password:validado.data.clave,options:{emailRedirectTo:`${origen}/cuenta/confirmar`,data:{nombre_completo:validado.data.nombre,idioma,aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:'2026-10-11'}}}));
     if (error && !['email_exists','user_already_exists'].includes('code' in error ? String(error.code):'')) return errorCuenta(error);
     return 'registroEnviado';
@@ -56,7 +62,8 @@ export async function accederCliente(_anterior: EstadoAccesoCliente, formulario:
   if (error) return errorCuenta(error,true);
   const habilitada=await solicitudCuenta(()=>cliente.rpc('cuenta_habilitada'));
   if('data' in habilitada&&habilitada.data===false){await solicitudCuenta(()=>cliente.auth.signOut());return 'cuentaBloqueada';}
-  redirect('/cuenta');
+  (await cookies()).set('sg-retorno-compra','',{path:'/cuenta',maxAge:0});
+  redirect(retornoCompra(formulario.get('retorno'))??'/cuenta');
 }
 export async function actualizarClaveCliente(_anterior: EstadoAccesoCliente, formulario: FormData): Promise<EstadoAccesoCliente> {
   const clave = claveCuenta.safeParse(formulario.get('clave'));
@@ -88,6 +95,7 @@ export async function accederCuentaSocial(_anterior:EstadoAccesoCliente,formular
   const cliente=await crearClienteCuenta();
   const origen=await origenPublico();
   if (!cliente || !origen) return 'noDisponible';
+  await guardarRetorno(formulario.get('retorno'),origen);
   const respuesta=await solicitudCuenta(()=>cliente.auth.signInWithOAuth({provider:proveedor,options:{redirectTo:`${origen}/cuenta/confirmar`,skipBrowserRedirect:true,...(proveedor==='facebook'?{scopes:'email'}:{})}}));
   if(respuesta.error) return errorCuenta(respuesta.error);
   const data='data' in respuesta?respuesta.data:null;
