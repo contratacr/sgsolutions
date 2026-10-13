@@ -14,6 +14,6 @@ export async function guardarDatosCompra(_estado:EstadoDatosCompra,formulario:Fo
   const datos=esquemaPerfilCompra.safeParse({...anterior.success?anterior.data:{},...Object.fromEntries(formulario)});if(!datos.success)return 'invalido';
   const respuesta=await cliente.from('perfiles_compra_clientes').upsert({usuario_id:user.id,datos:datos.data},{onConflict:'usuario_id'});
   if(respuesta.error)return 'error';
-  revalidatePath('/cuenta');revalidatePath('/finalizar-compra');return 'guardado';
+  revalidatePath('/cuenta');revalidatePath('/finalizar-compra');revalidatePath('/pagar');return 'guardado';
  }catch{return 'error';}
 }

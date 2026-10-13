@@ -7,7 +7,7 @@ export function RevelarScroll(){
  const ruta=usePathname();
  useEffect(()=>{
   const preferencia=matchMedia('(prefers-reduced-motion: reduce)');
-  if(!('IntersectionObserver' in window) || ruta==='/' || ruta==='/casos-de-exito' || ruta.startsWith('/panel') || ruta==='/admin' || ruta==='/acceso' || ruta==='/finalizar-compra')return;
+  if(!('IntersectionObserver' in window) || ruta==='/' || ruta==='/casos-de-exito' || ruta.startsWith('/panel') || ruta==='/admin' || ruta==='/acceso' || ruta==='/finalizar-compra' || ruta==='/pagar')return;
   const vistos=new WeakSet<Element>();
   const animaciones=new Map<Element,Animation>();
   const pendientes=new Set<Element>();

@@ -156,8 +156,9 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
       const datos = await respuesta.json();
       if(datos.error==='catalogo_actualizado')setErrorStock(true);
       if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
-      if (!respuesta.ok || typeof datos.url !== 'string' || !datos.url.startsWith('/finalizar-compra/pedido?')) throw new Error('PEDIDO_NO_DISPONIBLE');
-      const destino=new URL(datos.url,window.location.origin);
+      const ruta = datos.urlCorta ?? datos.url;
+      if (!respuesta.ok || typeof ruta !== 'string' || !(/^\/pedido\/[A-Za-z0-9_-]{64}$/.test(ruta) || ruta.startsWith('/finalizar-compra/pedido?'))) throw new Error('PEDIDO_NO_DISPONIBLE');
+      const destino=new URL(ruta,window.location.origin);
       await adjuntarComprobantePedido(destino,comprobante);
       window.location.assign(destino.href);
     } catch { setErrorPedido(true); setProcesando(false); }
@@ -210,7 +211,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
       ) : (
         <div className="compra-grid">
           <div>
-            {!cuentaDisponible&&!revision&&<AccesoCompra google={googleDisponible} retorno={aprobacion?'/finalizar-compra?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}):'/finalizar-compra'}/>}
+            {!cuentaDisponible&&!revision&&<AccesoCompra google={googleDisponible} retorno={aprobacion?'/pagar?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}) :'/pagar'}/>}
             {revision ? (
               <section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
                 <p className="etiqueta">{t("revision")}</p>

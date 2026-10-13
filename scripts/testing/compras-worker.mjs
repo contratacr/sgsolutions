@@ -1,3 +1,4 @@
+import {datosEnlacePedido} from '../../src/lib/enlace-pedido.ts';
 // Exercises a production Worker build against LOCAL Supabase. No production credentials.
 import { createServer } from "node:http";
 import { spawn, execFileSync } from "node:child_process";
@@ -238,7 +239,7 @@ async function order(v, method) {
   const r = await post("/api/pedidos/manual", payload(v, method));
   const d = await r.json();
   if (d.url) {
-    const id = new URL(d.url, base).searchParams.get("pedido");
+    const id = datosEnlacePedido(new URL(d.url, base)).pedido;
     orders.push(id);
   }
   return { r, d };
@@ -338,10 +339,10 @@ try {
     assert.deepEqual(attempts.map((x) => x.r.status).sort(), [201, 403]);
     const d = attempts.find((x) => x.r.status === 201).d;
     const url = new URL(d.url, base),
-      id = url.searchParams.get("pedido");
+      id = datosEnlacePedido(url).pedido;
     const f = new FormData();
     f.set("pedido", id);
-    f.set("acceso", url.searchParams.get("acceso"));
+    f.set("acceso", datosEnlacePedido(url).acceso);
     f.set(
       "archivo",
       new Blob(["%PDF-1.7\n" + "0".repeat(200)], { type: "application/pdf" }),
@@ -498,8 +499,8 @@ try {
             exact: true,
           })
           .click();
-        await p.waitForURL(/\/finalizar-compra\/pedido\?/);
-        const id = new URL(p.url()).searchParams.get("pedido");
+        await p.waitForURL(/\/pedido\/[A-Za-z0-9_-]{64}/);
+        const id = datosEnlacePedido(new URL(p.url())).pedido;
         orders.push(id);
         const row = await db
           .from("pedidos_manuales")

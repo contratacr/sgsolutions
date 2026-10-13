@@ -13,7 +13,7 @@ import { sesionLocal } from '@/lib/admin-local';
 import { crearClienteServidor } from '@/lib/supabase/servidor';
 import { basePedidosAdministracion } from '@/lib/tilopay';
 import { colones } from '@/lib/catalogo-modelo';
-import { accesoPedido, basePedidosManuales, configuracionPedidosManuales, numeroPedido, type EstadoPedidoManual } from '@/lib/pedidos-manuales';
+import { enlacePedido, basePedidosManuales, configuracionPedidosManuales, numeroPedido, type EstadoPedidoManual } from '@/lib/pedidos-manuales';
 import { actualizarPedidoManual, reenviarCorreoPedido } from './acciones';
 import {costoEntrega} from '@/lib/envio';
 
@@ -98,8 +98,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
       <ListaPanel filtros={[{id:'todos',texto:lista('todos')},{id:'activos',texto:lista('activos'),estados:['revision','pendiente_pago','comprobante_recibido']},{id:'historial',texto:lista('historial'),estados:['pagado','cancelado']}]} items={await Promise.all(manuales.map(async p => {
         const envio = p.costo_envio ?? (p.estado === 'revision' ? costoEntrega(p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro') : null);
         const total = p.total_cobrar ?? p.total_productos + (envio ?? 0);
-        const enlace = new URL('/finalizar-compra/pedido', configManual!.origen);
-        enlace.searchParams.set('pedido', p.id); enlace.searchParams.set('acceso', accesoPedido(configManual!, p.id));
+        const enlace = new URL(enlacePedido(configManual!, p.id, configManual!.origen));
         const comprobante = p.comprobante_path ? await manualDb.storage.from('comprobantes-pedidos').createSignedUrl(p.comprobante_path, 300) : null;
         return {id:p.id,estado:p.estado,busqueda:[numeroPedido(p.id),p.cliente.nombre,p.cliente.apellidos,p.cliente.correo,p.cliente.telefono,...p.articulos.map(x=>x.nombre)].join(' '),contenido:<article className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{p.cliente.nombre} {p.cliente.apellidos}</strong><small>{numeroPedido(p.id)} · {colones(total)}</small></div><span className="pedidos-admin-estado">{t(`manual_${p.estado}`)}</span></summary><div className="panel-pedido-cuerpo">
           <div className="pedidos-admin-encabezado"><div><strong>{p.cliente?.nombre} {p.cliente?.apellidos}</strong><small>{p.cliente?.correo} · {p.cliente?.telefono}</small></div><span className="pedidos-admin-estado">{t(`manual_${p.estado}`)}</span></div>

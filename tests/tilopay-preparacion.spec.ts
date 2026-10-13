@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
 
 for (const idioma of ['es', 'en'] as const) {
-  test(`el checkout no inicia cobros sin configuración ${idioma}`, async ({ page, request }) => {
+  test(`el checkout no inicia cobros sin configuración ${idioma}`, async ({ page, request, context, baseURL }) => {
+    await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
     await page.goto('/finalizar-compra');
-    if (idioma === 'en') await page.getByRole('button', { name: 'Read this page in English' }).click();
+    await expect(page).toHaveURL(/\/pagar$/);
     await expect(page.locator('html')).toHaveAttribute('lang', idioma);
     await expect(page.locator('main')).toBeVisible();
     const respuesta = await request.post('/api/pagos/tilopay/iniciar', {headers:{origin:'http://127.0.0.1:3107'}, data: {} });

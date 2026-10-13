@@ -1,4 +1,5 @@
 import 'server-only';
+import {rutaPedido} from './enlace-pedido';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
 
@@ -35,10 +36,7 @@ export function accesoValido(config: NonNullable<ReturnType<typeof configuracion
 }
 
 export function enlacePedido(config: NonNullable<ReturnType<typeof configuracionPedidosManuales>>, id: string, origen: string) {
-  const url = new URL('/finalizar-compra/pedido', origen);
-  url.searchParams.set('pedido', id);
-  url.searchParams.set('acceso', accesoPedido(config, id));
-  return url.href;
+  return new URL(rutaPedido(id, accesoPedido(config, id)), origen).href;
 }
 
 export const estadosPermitidos: Record<EstadoPedidoManual, EstadoPedidoManual[]> = {

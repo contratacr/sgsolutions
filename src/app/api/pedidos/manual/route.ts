@@ -3,7 +3,7 @@ import {verificarCompraEurocomp} from '@/lib/eurocomp-compra';
 import {origenPermitido} from '@/lib/origen-permitido';
 import {validarAprobacion,reservarAprobacion,cambiarAsesoria} from '@/lib/asesorias';
 import { z } from 'zod';
-import { basePedidosManuales, configuracionPedidosManuales, enlacePedido, numeroPedido } from '@/lib/pedidos-manuales';
+import { accesoPedido, basePedidosManuales, configuracionPedidosManuales, enlacePedido, numeroPedido } from '@/lib/pedidos-manuales';
 import { enviarCorreo } from '@/lib/email/send';
 import { empresa } from '@/lib/empresa';
 import {costoEntrega} from '@/lib/envio';
@@ -60,6 +60,7 @@ export async function POST(request: Request) {
   const enlace = enlacePedido(config, id, config.origen);
   const ingles = datos.idioma === 'en';
   const cliente = enviarCorreo({ destinatario: datos.datos.correo,
+    accion: {texto: ingles ? 'View my order' : 'Ver mi pedido', url: enlace},
     asunto: ingles ? `SG Solutions order ${numero} received` : `Recibimos su pedido ${numero} de SG Solutions`,
     texto: ingles
       ? `We received your order ${numero}. Products: ${colones(total)}. ${datos.datos.modalidad === 'envio' ? 'Correos de Costa Rica shipping' : 'Store pickup'}: ${colones(envio)}. Total: ${colones(totalConEnvio)}. Review your order details. Open the link for payment instructions and to upload your receipt: ${enlace}`
@@ -73,5 +74,9 @@ export async function POST(request: Request) {
     ...(correoCliente.status === 'fulfilled' ? { correo_cliente_en: new Date().toISOString(),correo_pago_en:new Date().toISOString() } : {}),
     ...(correoEquipo.status === 'fulfilled' ? { correo_equipo_en: new Date().toISOString() } : {}),
   }).eq('id', id);
-  return Response.json({ numero, url: new URL(enlace).pathname + new URL(enlace).search, correoEnviado: correoCliente.status === 'fulfilled' }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
+  // Keep the old response field for checkout tabs loaded before this release.
+  const anterior = new URL('/finalizar-compra/pedido', config.origen);
+  anterior.searchParams.set('pedido', id);
+  anterior.searchParams.set('acceso', accesoPedido(config, id));
+  return Response.json({ numero, url: anterior.pathname + anterior.search, urlCorta: new URL(enlace).pathname, correoEnviado: correoCliente.status === 'fulfilled' }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
 }
