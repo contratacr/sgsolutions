@@ -27,7 +27,7 @@ async function ejecutar(){
  const visible=publicarCatalogo(privado);
  fase='publicacion';
  const escritura=await db.rpc('publicar_eurocomp',{token_esperado:token,nuevo_catalogo:copia,privado,visible,revision_esperada:lectura.data.revision});
- if(escritura.error)throw new Error('PUBLICACION');
+ if(escritura.error){const codigo=/^[A-Z0-9]{5}$/.test(escritura.error.code??'')?escritura.error.code:'DESCONOCIDO';console.error(`Publicación SQL: ${codigo}; HTTP ${escritura.status}`);throw new Error('PUBLICACION');}
  console.log(`Actualización completada: ${visible.productos.length} productos visibles. Sin órdenes ni reservas al proveedor.`);
 }
 ejecutar().catch(error=>{console.error(`Etapa: ${fase}${error instanceof ErrorEurocomp?'; '+error.codigo:''}`);console.error('Sincronización fallida. Se conserva el catálogo publicado. Revisar configuración, permisos o disponibilidad; no se reintentó ni se imprimieron credenciales.');process.exitCode=1;});
