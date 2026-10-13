@@ -1,10 +1,12 @@
 'use client';
+import {IndicadorCampo} from './indicador-campo';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 export function SubirComprobante({ pedido, acceso }: { pedido: string; acceso: string }) {
   const t = useTranslations('PedidoManual');
+  const compra=useTranslations('Compra');
   const router = useRouter();
   const [archivo, setArchivo] = useState<File | null>(null);
   const [ocupado, setOcupado] = useState(false);
@@ -23,7 +25,8 @@ export function SubirComprobante({ pedido, acceso }: { pedido: string; acceso: s
     finally { setOcupado(false); }
   }
   return <div className="pedido-comprobante">
-    <label>{t('adjuntar')}<input type="file" accept="image/jpeg,image/png,application/pdf" onChange={e => setArchivo(e.target.files?.[0] ?? null)} /></label>
+    <label htmlFor="pedido-comprobante"><span>{t('adjuntar')}<IndicadorCampo obligatorio/></span></label>
+    <div className="compra-archivo-control"><input id="pedido-comprobante" type="file" required aria-label={t('adjuntar')} accept="image/jpeg,image/png,application/pdf" onChange={e => setArchivo(e.target.files?.[0] ?? null)}/><span className="compra-archivo-boton" aria-hidden="true">{compra('seleccionarArchivo')}</span><span className="compra-archivo-nombre" aria-live="polite">{archivo?archivo.name:compra('ningunArchivo')}</span></div>
     <p>{t('formato')}</p>
     <button type="button" className="boton boton-azul" disabled={!archivo || ocupado} onClick={enviar}>{t(ocupado ? 'enviando' : 'enviar')}</button>
     {estado && <p role={estado === 'recibido' ? 'status' : 'alert'}>{t(estado)}</p>}

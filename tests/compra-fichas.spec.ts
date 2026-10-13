@@ -4,20 +4,17 @@ import contenido from "../src/lib/contenido-base.json";
 import {costoEntrega} from '../src/lib/envio';
 
 for (const idioma of ["es", "en"])
-  test(`ficha y checkout completos ${idioma}`, async ({ page }, info) => {
+  test(`ficha y checkout completos ${idioma}`, async ({ page, context }, info) => {
     const errores: string[] = [];
     page.on("pageerror", (e) => errores.push(e.message));
+    await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
     await page.goto("/tienda");
-    if (idioma === "en")
-      await page
-        .getByRole("button", { name: "Read this page in English" })
-        .click();
     await expect(page.locator('html')).toHaveAttribute('lang', idioma);
     await expect(page.locator(".shop-producto").first()).toBeVisible();
     await page.locator(".shop-producto h3 a").first().click();
     await expect(page).toHaveURL(/\/tienda\/[^/]+$/);
     await expect(page.locator("h1")).toBeVisible();
-    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/(?:sgsolutions\.soportecontratacr\.workers\.dev\/imagenes\/|eurocompcr\.com\/upload\/)/);
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/(?:(?:sgsolutionscr\.com|sgsolutions\.sgsolutions\.workers\.dev)\/imagenes\/|eurocompcr\.com\/upload\/)/);
     await expect(page.locator(".ficha-codigo")).not.toBeEmpty();
     await page.locator(".ficha-agregar").click();
     await page.goto('/finalizar-compra');
@@ -56,6 +53,7 @@ for (const idioma of ["es", "en"])
     await expect(form.locator(".compra-comprobante")).toHaveCount(0);
     await form.locator("[value=sinpe]").check();
     await expect(form.locator(".compra-comprobante")).toBeVisible();
+    await form.locator('input[type=file]').setInputFiles({name:'comprobante.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\n'+'0'.repeat(200))});
     await form.locator("[name=consentimiento]").check();
     await form.locator("[type=submit]").click();
     await expect(page.locator('main a[href^="https://wa.me/"]')).toHaveCount(0);

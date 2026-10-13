@@ -1,9 +1,10 @@
 import {test,expect} from '@playwright/test';
 
-test('galería abre la foto seleccionada, navega y devuelve el foco en ambos idiomas',async({page})=>{
+test('galería abre la foto seleccionada, navega y devuelve el foco en ambos idiomas',async({page,context})=>{
  await page.goto('/casos-de-exito');
  for(const idioma of ['es','en']){
-  if(idioma==='en')await page.getByRole('button',{name:'Read this page in English'}).click();
+  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+  await page.goto('/casos-de-exito');
   const abrir=page.locator('.historia-fotos').nth(1).getByRole('button').nth(1);
   await abrir.click();
   const dialogo=page.getByRole('dialog');

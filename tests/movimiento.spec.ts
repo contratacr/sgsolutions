@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 
-test('las fotografías aparecen al desplazarse una sola vez y respetan movimiento reducido',async({page})=>{
+test('las fotografías de casos permanecen visibles sin animaciones y respetan movimiento reducido',async({page})=>{
  await page.addInitScript(()=>{
   const original=Element.prototype.animate;
   Element.prototype.animate=function(...args:Parameters<Element['animate']>){
@@ -12,10 +12,12 @@ test('las fotografías aparecen al desplazarse una sola vez y respetan movimient
  await expect(page.locator('.historia-foto[data-entradas]')).toHaveCount(0);
  const foto=page.locator('.historia-foto').last();
  await foto.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
- await expect(foto).toHaveAttribute('data-entradas','1');
+ await expect(foto).not.toHaveAttribute('data-entradas');
+ await expect(foto).toHaveCSS('opacity','1');
  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
  await foto.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
- await expect(foto).toHaveAttribute('data-entradas','1');
+ await expect(foto).not.toHaveAttribute('data-entradas');
+ await expect(foto).toHaveCSS('opacity','1');
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.reload();
  await foto.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));

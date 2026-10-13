@@ -3,6 +3,7 @@ import {combinarDatosCompra} from '@/lib/perfil-compra';
 import {guardarDatosCompra,type EstadoDatosCompra} from '@/app/cuenta/datos-acciones';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import {adjuntarComprobantePedido} from '@/lib/adjuntar-comprobante';
+import {IndicadorCampo,NotaCampos} from './indicador-campo';
 import {medir} from '@/lib/analitica-cliente';
 import type { Contenido } from "@/lib/contenido-modelo";
 import Link from "next/link";
@@ -80,6 +81,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
     total = subtotal + envio;
   async function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if(pago!=='tarjeta'&&(!comprobante||errorComprobante)){setErrorFormulario(true);return;}
     setErrorFormulario(false);setGuardadoPerfil('inicio');
     const formulario=new FormData(e.currentTarget);
     const datos = Object.fromEntries(
@@ -123,7 +125,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
     }
   }
   async function crearPedidoManual() {
-    if (!revision || procesando || bloqueado || pendiente || !['sinpe', 'transferencia'].includes(pago)) return;
+    if (!revision || procesando || bloqueado || pendiente || !comprobante || errorComprobante || !['sinpe', 'transferencia'].includes(pago)) return;
     setProcesando(true); setErrorPedido(false);
     try {
       const acceso=await accesoCompra();
@@ -147,7 +149,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
     autoComplete?: string,
   ) => (
     <label key={name}>
-      {t(name)}
+      <span>{t(name)}{(required||!['apartamento','postal','actividad'].includes(name))&&<IndicadorCampo obligatorio={required}/>}</span>
       <input
         defaultValue={borrador[name] || (type === "tel" ? "+506 " : "")}
         name={name}
@@ -228,6 +230,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
               </section>
             ) : (
               <form onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
+                <NotaCampos/>
                 {cuentaDisponible&&<label className="compra-guardar-datos"><input type="checkbox" name="guardarDatos"/>{dc('guardarProxima')}</label>}
                 <section className="compra-bloque">
                   <h2>
@@ -239,7 +242,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                     {campo("apellidos", true, "text", "family-name")}
                     {campo("correo", true, "email", "email")}
                     {campo("telefono", true, "tel", "tel")}
-                      <label>{a('tipoIdentificacion')}<select name="tipoIdentificacion" defaultValue={borrador.tipoIdentificacion??'fisica'}><option value="fisica">{a('fisica')}</option><option value="juridica">{a('juridica')}</option></select></label>
+                      <label><span>{a('tipoIdentificacion')}<IndicadorCampo obligatorio/></span><select required name="tipoIdentificacion" defaultValue={borrador.tipoIdentificacion??'fisica'}><option value="fisica">{a('fisica')}</option><option value="juridica">{a('juridica')}</option></select></label>
                       {campo("identificacion", factura)}
 
                   </div>
@@ -250,11 +253,12 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                     {t("entregaTitulo")}
                   </h2>
                   <fieldset className="compra-opciones">
-                    <legend className="sr-only">{t("modalidad")}</legend>
+                    <legend>{t("modalidad")}<IndicadorCampo obligatorio/></legend>
                     {["retiro", "envio"].map((m, i) => (
                       <label key={m}>
                         <input
                           type="radio"
+                          required
                           name="modalidad"
                           value={m}
                           checked={entrega === (i === 1)}
@@ -268,7 +272,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                   {entrega && (
                     <div className="compra-campos" ref={entregaCampos}>
                       <label>
-                        {t("provincia")}
+                        <span>{t("provincia")}<IndicadorCampo obligatorio/></span>
                         <select
                           name="provincia"
                           defaultValue={borrador.provincia ?? ""}
@@ -308,8 +312,8 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                     {t("facturacionTitulo")}
                   </h2>
                   <label>
-                    {t("factura")}
-                    <select
+                    <span>{t("factura")}<IndicadorCampo obligatorio/></span>
+                    <select required
                       name="factura"
                       value={factura ? "electronica" : "tiquete"}
                       onChange={(e) => {const activa=e.target.value === "electronica";if(activa) desplazamientoPendiente.current="factura";setFactura(activa);}}
@@ -335,7 +339,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                     {t("pagoTitulo")}
                   </h2>
                   <fieldset className="compra-metodos">
-                    <legend>{t("pago")}</legend>
+                    <legend>{t("pago")}<IndicadorCampo obligatorio/></legend>
                     {[
                       { id: "sinpe", Icon: Smartphone },
                       { id: "transferencia", Icon: Landmark },
@@ -345,6 +349,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                       <label key={id} data-activo={pago === id}>
                         <input
                           type="radio"
+                          required
                           name="pago"
                           value={id}
                           checked={pago === id}
@@ -358,11 +363,8 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                       </label>
                     ))}
                   </fieldset>
-                  <p className="compra-aviso">
-                    <ShieldCheck size={19} />
-                    {t(pago === "tarjeta" ? tarjetaDisponible ? tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso' : "tarjetaPendiente" : "pagoPendiente")}
-                  </p>
-                  {pago !== "tarjeta" && !pedidosManualesDisponibles && (
+                  {pago === "tarjeta" && <p className="compra-aviso"><ShieldCheck size={19}/>{t(tarjetaDisponible ? tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso' : 'tarjetaPendiente')}</p>}
+                  {pago !== "tarjeta" && (
                     <details key={pago} className="compra-cuentas" open ref={pagoDatos}>
                       <summary>{t("verCuentas")}</summary>
                       <p>{pagos.titular}</p>
@@ -379,11 +381,18 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                           </div>
                         ))
                       )}
-                      <p>{t("referencia")}</p>
                     </details>
                   )}
                   {(pago === "sinpe" || pago === "transferencia") && (
-                  <div className="compra-comprobante"><label>{t('comprobanteOpcional')}<input type="file" accept="image/jpeg,image/png,application/pdf" onChange={e=>{const f=e.target.files?.[0]??null;const invalido=Boolean(f&&(f.size<100||f.size>5*1024*1024||!['image/jpeg','image/png','application/pdf'].includes(f.type)));setErrorComprobante(invalido);setComprobante(invalido?null:f);if(invalido)e.target.value='';}}/></label><p>{t('comprobanteAyuda')}</p>{comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}{errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}</div>
+                  <div className="compra-comprobante">
+                    <label htmlFor="compra-comprobante"><span>{t('comprobanteEtiqueta')}<IndicadorCampo obligatorio/></span></label>
+                    <div className="compra-archivo-control">
+                      <input id="compra-comprobante" type="file" required={!comprobante} aria-required="true" aria-label={t('comprobanteEtiqueta')} accept="image/jpeg,image/png,application/pdf" aria-invalid={errorComprobante||undefined} onChange={e=>{const f=e.target.files?.[0]??null;const invalido=Boolean(f&&(f.size<100||f.size>5*1024*1024||!['image/jpeg','image/png','application/pdf'].includes(f.type)));setErrorComprobante(invalido);setComprobante(invalido?null:f);if(invalido)e.target.value='';}}/>
+                      <span className="compra-archivo-boton" aria-hidden="true">{t('seleccionarArchivo')}</span>
+                      <span className="compra-archivo-nombre" aria-live="polite">{comprobante?comprobante.name:t('ningunArchivo')}</span>
+                    </div>
+                    {errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}
+                  </div>
                   )}
                   <label>
                     {t("notas")}
@@ -396,7 +405,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
                   </label>
                   <label className="compra-check">
                     <input type="checkbox" name="consentimiento" required />
-                    {t("consentimiento")}
+                    <span>{t("consentimiento")}<IndicadorCampo obligatorio/></span>
                   </label>
                   {errorFormulario && <p role="alert" className="aviso-formulario">{t('validacion')}</p>}
                   <button

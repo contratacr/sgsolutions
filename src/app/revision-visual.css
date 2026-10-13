@@ -188,16 +188,18 @@ body:has(.inicio-triptico) .pie { border-top: 0; }
 .menu-panel-cerrar{border:0;border-radius:8px;width:42px;height:42px}
 @media(max-width:900px){:root{--sg-altura-nav:76px;--sg-ancho-logo:113px;--sg-margen-nav:20px}.barra-local{display:none}.navegacion .boton-icono{width:42px;min-width:42px;height:42px;min-height:42px}}
 @media(max-width:380px){:root{--sg-ancho-logo:96px}}
-/* Respuesta al tocar: mover solo imagen/texto, nunca el tamaño del panel. */
+/* En táctil, un toque navega sin zoom ni desplazamientos del contenido. */
 @media (max-width:700px), (hover:none) {
+  .inicio-triptico .inicio-triptico-panel { touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
   .inicio-triptico .inicio-triptico-panel,
-  .inicio-triptico .inicio-triptico-panel:hover { transform:none; }
+  .inicio-triptico .inicio-triptico-panel:hover { transform:none; transition:none; }
   .inicio-triptico .inicio-triptico-panel > img,
-  .inicio-triptico .inicio-triptico-panel:hover > img { transform:none; filter:saturate(.88); transition:transform .1s ease-out,filter .1s ease-out; }
-  .inicio-triptico .inicio-triptico-contenido strong { transition:transform .1s ease-out; }
-  .inicio-triptico .inicio-triptico-panel:active > img { transform:scale(1.055); filter:saturate(1) brightness(1.12); }
-  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido strong { transform:translateX(7px); }
-  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido::before { width:68px; }
+  .inicio-triptico .inicio-triptico-panel:hover > img,
+  .inicio-triptico .inicio-triptico-panel:active > img { transform:none; filter:saturate(.88); transition:none; }
+  .inicio-triptico .inicio-triptico-contenido strong,
+  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-contenido strong { transform:none; transition:none; }
+  .inicio-triptico .inicio-triptico-contenido::before { transition:none; }
+  .inicio-triptico .inicio-triptico-panel:active .inicio-triptico-sombra { opacity:.85; }
 }
 @media (prefers-reduced-motion:reduce) {
   .inicio-triptico .inicio-triptico-panel > img,
