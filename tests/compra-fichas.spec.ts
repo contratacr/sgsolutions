@@ -23,7 +23,7 @@ for (const idioma of ["es", "en"])
     await form.locator("[name=nombre]").fill("Alex");
     await form.locator("[name=apellidos]").fill("Prueba");
     await form.locator("[name=correo]").fill("prueba@example.com");
-    await form.locator("[name=telefono]").fill("88888888");
+    await form.locator("[name=telefono]").locator('..').locator('input[type=tel]').fill("88888888");
     await form.locator("[value=envio]").check();
     await expect(form.locator('label:has([value=envio])')).toContainText('Correos de Costa Rica');
     const importes = page.locator('.compra-resumen dl dd');

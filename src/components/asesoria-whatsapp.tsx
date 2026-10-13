@@ -1,4 +1,5 @@
 'use client';
+import {useConfiguracionSitio} from '@/components/configuracion-sitio';
 import {rutaProducto} from '@/lib/rutas-productos';
 import {useState,useSyncExternalStore} from 'react';
 import {useLocale,useTranslations} from 'next-intl';
@@ -6,11 +7,11 @@ import {Wifi,Building2,ShieldCheck,Laptop} from 'lucide-react';
 import {DatosAsesoria} from './contacto-asesoria';
 import type {ContactoAsesoriaDatos} from '@/lib/contacto-asesoria';
 import {IconoWhatsApp} from './icono-whatsapp';
-import {enlaceWhatsApp} from '@/lib/empresa';
 import {colones,traducir,type CatalogoPublico} from '@/lib/catalogo-modelo';
 
 const suscribirOrigen=()=>()=>{};
 export function AsesoriaWhatsApp({lineas=[],onSolicitar,className='boton boton-naranja',etiqueta='consultar',necesidad}:{lineas?:{producto:CatalogoPublico['productos'][number];cantidad:number}[];onSolicitar?:()=>void;className?:string;etiqueta?:'consultar'|'asesorar'|'consultarSeleccion';necesidad?:'red'|'negocio'|'seguridad'|'computadora'}){
+ const {enlaceWhatsApp}=useConfiguracionSitio();
  const Icono=necesidad?{red:Wifi,negocio:Building2,seguridad:ShieldCheck,computadora:Laptop}[necesidad]:null;
  const t=useTranslations('Asesoria'),n=useTranslations('Navegacion'),idioma=useLocale();
  const [abierto,setAbierto]=useState(false);

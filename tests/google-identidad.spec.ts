@@ -32,6 +32,7 @@ for(const idioma of ['es','en'])test(`botón GIS y carrito se conservan al ingre
  await page.evaluate(()=>localStorage.setItem('sg-carrito-v1',JSON.stringify([{id:'eurocomp-2a118312d9683064',cantidad:2}])));
  await page.getByRole('button',{name:'Google fixture'}).click();
  await expect(page).toHaveURL(/\/pagar/);
+ await expect(page.locator('.compra-acceso')).toHaveCount(0);
  expect(await page.evaluate(()=>localStorage.getItem('sg-carrito-v1'))).toBe(JSON.stringify([{id:'eurocomp-2a118312d9683064',cantidad:2}]));
  const cookies=await context.cookies();expect(cookies.some(c=>c.name.includes('auth-token'))).toBeTruthy();
  await page.goto('/cuenta?seccion=compras');

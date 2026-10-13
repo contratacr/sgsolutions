@@ -13,7 +13,7 @@ for(const idioma of ['es','en']){
   await page.locator('.shop-producto button').first().click();await page.goto('/finalizar-compra');
   const form=page.locator('main form');
   await expect(page.locator('.campos-nota')).toHaveCount(0);
-  for(const [nombre,valor]of Object.entries({nombre:'Ana',apellidos:'Prueba',correo:'prueba@example.com',telefono:'+506 88888888'}))await form.locator(`[name=${nombre}]`).fill(valor);
+  for(const [nombre,valor]of Object.entries({nombre:'Ana',apellidos:'Prueba',correo:'prueba@example.com',telefono:'+506 88888888'}))await form.locator(nombre==='telefono'?'.campo-telefono input[type=tel]':`[name=${nombre}]`).fill(valor);
   await form.locator('input[type=file]').setInputFiles({name:'prueba.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\n'+'0'.repeat(200))});
   await form.locator('[name=consentimiento]').check();
   await form.locator('button[type=submit]').click();

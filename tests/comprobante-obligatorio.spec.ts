@@ -15,7 +15,7 @@ for(const idioma of ['es','en']){
    await expect(form.locator('.compra-comprobante')).not.toContainText(/opcional|optional|Si ya realizó|If you have already/);
   }
   await form.locator('.compra-comprobante').screenshot({path:`${process.cwd()}/.privado/qa-local/comprobante-${browserName}-${info.project.name}-${idioma}.png`});
-  for(const [nombre,valor] of Object.entries({nombre:'Ana',apellidos:'Prueba',correo:'prueba@example.com',telefono:'+506 88888888'}))await form.locator(`[name=${nombre}]`).fill(valor);
+  for(const [nombre,valor] of Object.entries({nombre:'Ana',apellidos:'Prueba',correo:'prueba@example.com',telefono:'+506 88888888'}))await form.locator(nombre==='telefono'?'.campo-telefono input[type=tel]':`[name=${nombre}]`).fill(valor);
   await form.locator('[name=consentimiento]').check();
   await form.locator('button[type=submit]').click();
   await expect(form).toBeVisible();

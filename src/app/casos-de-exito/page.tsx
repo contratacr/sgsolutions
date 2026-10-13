@@ -1,16 +1,17 @@
+import {contactoSitio} from '@/lib/contacto-sitio-servidor';
 import {GaleriaCaso} from '@/components/galeria-caso';
 import './casos.css';
 import {leerContenido} from '@/lib/contenido-servidor';
 import {traducir} from '@/lib/catalogo-modelo';
 import {getLocale,getTranslations} from 'next-intl/server';
 import {IconoWhatsApp} from '@/components/icono-whatsapp';
-import {enlaceWhatsApp} from '@/lib/empresa';
 
 export async function generateMetadata(){
  const t=await getTranslations('Casos');
  return {title:t('etiqueta'),description:t('descripcion')};
 }
 export default async function Casos(){
+ const {enlaceWhatsApp}=await contactoSitio();
  const t=await getTranslations('Casos');
  const n=await getTranslations('Navegacion');
  const idioma=await getLocale();
@@ -19,7 +20,7 @@ export default async function Casos(){
   <header className="contenedor casos-intro"><p className="etiqueta">{t('etiqueta')}</p><h1>{t('titulo')}</h1><p>{t('descripcion')}</p></header>
   <section className="contenedor casos-lista" aria-label={t('galeria')}>
    {casos.map((c,i)=><article className="caso" key={c.id}>
-    <div className="historia-cabecera"><div><p className="historia-categoria"><span>0{i+1}</span>{traducir(c.categoria,idioma)}</p><h2>{c.cliente}</h2><h3>{traducir(c.titulo,idioma)}</h3></div><p className="historia-descripcion">{traducir(c.descripcion,idioma)}</p></div>
+    <div className="historia-cabecera"><div><p className="historia-categoria"><span>{String(i+1).padStart(2,'0')}</span>{traducir(c.categoria,idioma)}</p><h2>{c.cliente}</h2><h3>{traducir(c.titulo,idioma)}</h3></div><p className="historia-descripcion">{traducir(c.descripcion,idioma)}</p></div>
     <GaleriaCaso cliente={c.cliente} fotos={c.fotos.map(f=>({src:f.src,alt:traducir(f.alt,idioma),caption:traducir(f.caption,idioma)}))} prioridad={i===0}/>
     <div className="historia-cierre"><p>{t('solucion')}<span>{traducir(c.solucion,idioma)}</span></p><a href={enlaceWhatsApp(t('consultaCaso',{cliente:c.cliente}))} target="_blank" rel="noopener noreferrer" title={n('nuevaPestana')}>{t('similar')}<IconoWhatsApp width={20} height={20}/></a></div>
    </article>)}

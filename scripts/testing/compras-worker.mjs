@@ -483,7 +483,7 @@ try {
           correo: "qa-browser@example.invalid",
           telefono: "+506 (8888) 3333",
         }))
-          await form.locator(`[name=${k}]`).fill(v);
+          await form.locator(k==='telefono'?'.campo-telefono input[type=tel]':`[name=${k}]`).fill(v);
         await form.locator("[name=consentimiento]").check();
         await form
           .locator("input[type=file]")

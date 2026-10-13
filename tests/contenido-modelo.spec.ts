@@ -1,0 +1,14 @@
+import {test,expect} from '@playwright/test';import es from '../messages/es.json';import en from '../messages/en.json';import base from '../src/lib/contenido-base.json';
+import {esquemaContenido} from '../src/lib/contenido-modelo';import {textosEditables,aplicarTexto,leerTexto,textoCompatible} from '../src/lib/textos-editables';
+test('textos anidados, compatibilidad ICU y rutas seguras',()=>{
+ const textos=textosEditables(es,en);expect(textos['Legal.privacidad.secciones.0.texto']).toBeDefined();expect(textos['AdminCatalogo.titulo']).toBeUndefined();expect(textos['Marca.telefono']).toBeUndefined();
+ const copia=structuredClone(es);aplicarTexto(copia,'Legal.privacidad.secciones.0.texto','Actualización');expect(leerTexto(copia,'Legal.privacidad.secciones.0.texto')).toBe('Actualización');expect(leerTexto(copia,'Legal.__proto__.texto')).toBeUndefined();
+ for(const [clave,t]of Object.entries(textos)){expect(textoCompatible(t.es,t.es),clave).toBe(true);expect(textoCompatible(t.en,t.en),clave).toBe(true);}
+ expect(textoCompatible('Hola {nombre}','Saludos {nombre}')).toBe(true);expect(textoCompatible('Hola {nombre}','Saludos')).toBe(false);expect(textoCompatible('<link>Términos</link>','<link>Condiciones</link>')).toBe(true);expect(textoCompatible('<link>Términos</link>','Condiciones')).toBe(false);expect(textoCompatible('{n, plural, one {Una} other {# cosas}}','{n, plural, one {Uno} other {# elementos}}')).toBe(true);
+});
+test('los borradores incompletos no bloquean otros cambios y publicar exige contenido accesible',()=>{
+ const draft={id:'borrador',publicado:false,cliente:'',categoria:{es:'',en:''},titulo:{es:'',en:''},descripcion:{es:'',en:''},solucion:{es:'',en:''},fotos:[]};
+ expect(esquemaContenido.safeParse({...base,casos:[draft]}).success).toBe(true);expect(esquemaContenido.safeParse({...base,casos:[{...draft,publicado:true}]}).success).toBe(false);
+ const caso=structuredClone(base.casos[0]);caso.fotos[0].caption={es:'',en:''};expect(esquemaContenido.safeParse({...base,casos:[caso]}).success).toBe(true);caso.fotos[0].alt.es='';expect(esquemaContenido.safeParse({...base,casos:[caso]}).success).toBe(false);
+ const guardado=esquemaContenido.parse(base);expect(esquemaContenido.safeParse({...guardado,pagos:{...guardado.pagos,cuentas:[{banco:'Demo',iban:'CR71015102120010448777'}]}}).success).toBe(false);expect(esquemaContenido.parse({...guardado,contacto:{...guardado.contacto,telefono:'8888-7777',whatsapp:'8888-7777'}}).contacto.telefono).toBe('+50688887777');expect(esquemaContenido.safeParse({...guardado,imagenes:{...guardado.imagenes,inicioTienda:'https://'}}).success).toBe(false);expect(guardado.contacto.whatsapp).toBe('50686065342');expect(guardado.imagenes.inicioTienda).toMatch(/^\/imagenes\//);expect(esquemaContenido.safeParse({...guardado,contacto:{...guardado.contacto,correo:'invalido'}}).success).toBe(false);
+});

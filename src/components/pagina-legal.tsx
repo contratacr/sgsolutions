@@ -1,10 +1,11 @@
+import {contactoSitio} from '@/lib/contacto-sitio-servidor';
 import Link from 'next/link';
 import {BotonPreferencias} from './boton-preferencias';
 import {getTranslations} from 'next-intl/server';
-import {enlaceCorreo} from '@/lib/empresa';
 import '@/app/legal.css';
 
 export async function PaginaLegal({tipo}:{tipo:'terminos'|'privacidad'}) {
+ const {enlaceCorreo}=await contactoSitio();
  const t=await getTranslations('Legal');
  const n=await getTranslations('Navegacion');
  const m=await getTranslations('Analitica');

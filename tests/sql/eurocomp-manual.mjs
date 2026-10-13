@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const {PGlite}=await import(process.env.SG_PGLITE_MODULE??'@electric-sql/pglite');
+const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;
+ create table auth.users(id uuid primary key);
+ create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;`);
+await db.exec(await readFile('supabase/migrations/20260909000100_perfiles.sql','utf8'));
+await db.exec(`create table public.catalogo_privado(id integer primary key,contenido jsonb,revision integer);create table public.catalogo_publico(id integer primary key,contenido jsonb);`);
+for(const archivo of ['20261009000100_eurocomp_privado.sql','20261009000200_eurocomp_sincronizacion.sql','20261013000200_eurocomp_manual.sql'])await db.exec(await readFile('supabase/migrations/'+archivo,'utf8'));
+const administrador='00000000-0000-4000-8000-000000000001',cliente='00000000-0000-4000-8000-000000000002',token='00000000-0000-4000-8000-000000000010';
+await db.query('insert into auth.users values($1),($2)',[administrador,cliente]);
+await db.query("insert into public.perfiles(id,nombre,rol,activo) values($1,'Administrador','administrador',true)",[administrador]);
+async function sesion(rol,usuario='') {await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[usuario]);await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({role:rol})]);await db.exec(`set role ${rol}`);}
+await sesion('anon');await assert.rejects(()=>db.query('select public.iniciar_eurocomp($1)',[token]),/permission denied/);
+await sesion('authenticated',cliente);await assert.rejects(()=>db.query('select public.iniciar_eurocomp($1)',[token]),/SIN_PERMISO/);
+await sesion('authenticated',administrador);await assert.rejects(()=>db.query('select public.iniciar_eurocomp(null)'),/VALIDACION/);
+await db.query('select public.iniciar_eurocomp($1)',[token]);await assert.rejects(()=>db.query('select public.iniciar_eurocomp($1)',[token]),/ESPERA/);
+await db.exec('reset role');await db.query("update public.eurocomp_privado set intento=now()-interval '6 minutes',catalogo=$1::jsonb",[JSON.stringify({fecha:'2026-10-13T00:00:00Z',articulos:[]})]);
+await sesion('service_role');await assert.rejects(()=>db.query('select public.iniciar_eurocomp_programado($1)',[token]),/ESPERA/);
+await sesion('authenticated',administrador);await db.query('select public.iniciar_eurocomp($1)',[token]);
+await db.exec('reset role');assert.equal((await db.query('select catalogo from public.eurocomp_privado')).rows[0].catalogo.fecha,'2026-10-13T00:00:00Z');
+await db.exec("update public.eurocomp_privado set intento=now()-interval '61 minutes'");await sesion('service_role');await db.query('select public.iniciar_eurocomp_programado($1)',[token]);
+await sesion('authenticated',administrador);await assert.rejects(()=>db.query('select public.iniciar_eurocomp($1)',[token]),/ESPERA/);
+await db.close();console.log('PASS: permisos, intervalo manual de cinco minutos, automático de una hora y conservación de la copia.');

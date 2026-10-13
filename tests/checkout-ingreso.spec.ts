@@ -27,7 +27,7 @@ test.describe('sesión real contra Auth local',()=>{
   await page.locator('.cuenta-formulario [name=correo]').fill(cuenta.email);await page.locator('.cuenta-formulario [name=clave]').fill('Incorrecta-123!');await page.locator('.cuenta-enviar').click();await expect(page.locator('.cuenta-formulario [role=alert]')).toBeVisible();
   await page.locator('.cuenta-formulario [name=clave]').fill(cuenta.password);await page.locator('.cuenta-enviar').click();await expect(page).toHaveURL(/\/pagar$/);
   expect(await page.evaluate(()=>localStorage.getItem('sg-carrito-v1'))).toBe(carrito);await expect(page.locator('.compra-acceso')).toHaveCount(0);
-  await expect(page.locator('main form [name=nombre]')).toHaveValue('Ana');await expect(page.locator('main form [name=apellidos]')).toHaveValue('Prueba');await expect(page.locator('main form [name=telefono]')).toHaveValue('+506 88883333');await expect(page.locator('main form [name=correo]')).toHaveValue(cuenta.email);
+  await expect(page.locator('main form [name=nombre]')).toHaveValue('Ana');await expect(page.locator('main form [name=apellidos]')).toHaveValue('Prueba');await expect(page.locator('main form [name=telefono]')).toHaveValue('+50688883333');await expect(page.locator('main form [name=correo]')).toHaveValue(cuenta.email);
   await page.locator('main form [name=modalidad][value=envio]').check();
   await expect(page.locator('main form [name=provincia]')).toHaveValue('Alajuela');await expect(page.locator('main form [name=canton]')).toHaveValue('Atenas');await expect(page.locator('main form [name=direccion]')).toHaveValue('DIRECCION DE PRUEBA');
   await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();await expect(page.locator('.carrito-ingreso')).toHaveCount(0);

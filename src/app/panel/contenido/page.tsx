@@ -6,11 +6,12 @@ import { esquemaContenido } from "@/lib/contenido-modelo";
 import { EditorContenido } from "@/components/editor-contenido";
 import es from "../../../../messages/es.json";
 import en from "../../../../messages/en.json";
+import {textosEditables} from '@/lib/textos-editables';
 import {sesionLocal,leerLocal} from '@/lib/admin-local';
-export const metadata = { robots: { index: false, follow: false } };
+export async function generateMetadata(){const t=await getTranslations('AdminContenido');return {title:t('titulo'),robots:{index:false,follow:false}};}
 export default async function Pagina() {
   const local=await sesionLocal();
-  const c = await crearClienteServidor();
+  const c = local?null:await crearClienteServidor();
   if (!local && !c) redirect("/admin");
   const {
     data: { user },
@@ -36,17 +37,7 @@ export default async function Pagina() {
         <p>{t("noDisponible")}</p>
       </main>
     );
-  const textos: Record<string, { es: string; en: string }> = {};
-  for (const [ns, entradas] of Object.entries(es)) {
-    if (ns.startsWith("Admin") || ["Panel", "Acceso", "AsesoriaAdmin", "PedidosAdmin", "PanelLista", "Analitica", "Activacion"].includes(ns)) continue;
-    for (const [k, v] of Object.entries(entradas)) {
-      const traduccion = (en as Record<string, Record<string, unknown>>)[ns]?.[
-        k
-      ];
-      if (typeof v === "string" && typeof traduccion === "string")
-        textos[`${ns}.${k}`] = { es: v, en: traduccion };
-    }
-  }
+  const textos=textosEditables(es,en);
   return (
     <main id="contenido" className="contenedor seccion">
       <h1>{t("titulo")}</h1>

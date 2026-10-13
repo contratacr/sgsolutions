@@ -27,12 +27,14 @@
     "test:compras": "node --import tsx scripts/testing/compras-worker.mjs"
   },
   "dependencies": {
+    "@formatjs/icu-messageformat-parser": "3.5.17",
     "@hookform/resolvers": "^5.0.0",
     "@opennextjs/cloudflare": "1.20.6",
     "@radix-ui/react-dialog": "^1.1.0",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.0.0",
     "image-size": "^2.0.4",
+    "libphonenumber-js": "1.13.15",
     "lucide-react": "^0.577.0",
     "motion": "^13.2.0",
     "next": "16.3.8",

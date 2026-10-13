@@ -1,4 +1,7 @@
 import Script from 'next/script';
+import {SesionCuentaProvider} from '@/components/sesion-cuenta';
+import {ConfiguracionSitio} from '@/components/configuracion-sitio';
+import {leerContenido} from '@/lib/contenido-servidor';
 import {cookies} from 'next/headers';
 import {crearClienteCuenta} from '@/lib/supabase/cuenta';
 import {Medicion} from '@/components/medicion';
@@ -33,11 +36,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function DisenoRaiz({children}: {children: React.ReactNode}) {
   const t = await getTranslations('Navegacion');
   const idioma = await getLocale();
-  const catalogo = await leerCatalogoPublico();
+  const [catalogo,contenido] = await Promise.all([leerCatalogoPublico(),leerContenido()]);
   let sesionIniciada=false;
   let nombreCuenta="";let administradorCuenta=false;
   if((await cookies()).getAll().some(c=>/^sb-.*-auth-token(?:\.\d+)?$/.test(c.name))){
     try{const cliente=await crearClienteCuenta();const usuario=(await cliente?.auth.getUser())?.data.user;sesionIniciada=Boolean(usuario);nombreCuenta=String(usuario?.user_metadata?.nombre_completo||usuario?.user_metadata?.full_name||usuario?.user_metadata?.name||'').split(' ')[0];if(usuario&&cliente)administradorCuenta=(await cliente.rpc('es_administrador_activo')).data===true;}catch{/* La navegación pública sigue disponible si Auth no responde. */}
   }
-  return <html lang={idioma}><body><Script src="/panel-history.js" strategy="beforeInteractive"/>{process.env.NODE_ENV==='development'&&process.env.SG_ENTORNO==='local'&&process.env.SG_QA_LOCAL==='1'&&<aside className="aviso-qa-local" role="status">{t('entornoPruebas')}</aside>}<FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><ValidacionNativa/><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera sesionIniciada={sesionIniciada} nombreCuenta={nombreCuenta} administrador={administradorCuenta}/>{children}<Pie/><Medicion pixel={META_PIXEL_ID}/></DatosCatalogo></NextIntlClientProvider></body></html>;
+  return <html lang={idioma}><body><Script src="/panel-history.js" strategy="beforeInteractive"/>{process.env.NODE_ENV==='development'&&process.env.SG_ENTORNO==='local'&&process.env.SG_QA_LOCAL==='1'&&<aside className="aviso-qa-local" role="status">{t('entornoPruebas')}</aside>}<FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><SesionCuentaProvider iniciada={sesionIniciada}><ConfiguracionSitio contacto={contenido.contacto} imagenes={contenido.imagenes}><ValidacionNativa/><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera sesionIniciada={sesionIniciada} nombreCuenta={nombreCuenta} administrador={administradorCuenta}/>{children}<Pie/><Medicion pixel={META_PIXEL_ID}/></DatosCatalogo></ConfiguracionSitio></SesionCuentaProvider></NextIntlClientProvider></body></html>;
 }

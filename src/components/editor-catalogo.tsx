@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { colones, esquemaCatalogo, traducir, type CatalogoAdmin, type Texto } from '@/lib/catalogo-modelo';
 import { useCambiosAdmin } from '@/components/use-cambios-admin';
 import { GestorImagenes } from '@/components/gestor-imagenes';
@@ -91,7 +90,6 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
   const u = useTranslations('AdminUX');
   const m = useTranslations('AdminImagenes');
   const idioma = useLocale();
-  const router = useRouter();
   const [datos, setDatos] = useState(inicial);
   const [ultimoGuardado, setUltimoGuardado] = useState(inicial);
   const [revision, setRevision] = useState(revisionInicial);
@@ -163,7 +161,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
       try {
         const respuesta = await guardarCatalogo(validado.data, revision);
         if (respuesta.error) setEstado(respuesta.error);
-        else { confirmarGuardado(); setUltimoGuardado(datos); setRevision(respuesta.revision!); setEstado('guardado'); router.refresh(); }
+        else { confirmarGuardado(); setUltimoGuardado(datos); setRevision(respuesta.revision!); setEstado('guardado'); }
       } catch { setEstado('error'); }
     });
   }
@@ -178,8 +176,6 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
   }
 
   return <div className="admin-editor admin-tienda">
-    <p>{t('descripcion')}</p>
-    <aside className="admin-guia"><strong>{t('seleccionManual')}</strong><p>{t('seleccionManualAyuda')}</p></aside>
     <div className="admin-tabs" role="group" aria-label={t('titulo')}>{['productos', 'categorias', 'textos'].map(k => <button type="button" aria-pressed={tab === k} onClick={() => { setTab(k); setEditorId(null); }} key={k}>{t(k)}</button>)}</div>
     <fieldset disabled={ocupado || cargandoImagenes} className="admin-tienda-cuerpo">
       {tab === 'productos' && editorId && productoAbierto >= 0 ? <div className="admin-edicion-vista">

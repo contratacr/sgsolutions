@@ -4,7 +4,7 @@ import {randomBytes,scryptSync,timingSafeEqual,createHash} from 'node:crypto';
 import {readFile,writeFile,mkdir,rename} from 'node:fs/promises';
 import path from 'node:path';
 
-const carpeta=path.join(process.cwd(),'.privado','admin-local');
+const carpeta=path.join(process.cwd(),'.privado',process.env.SG_PRUEBAS_INTEGRACION==='1'&&process.env.SG_ENTORNO==='local'&&process.env.SG_ADMIN_CONTENIDO_PRUEBAS==='1'?'contenido-pruebas':'admin-local');
 const cookie='sg-admin-local';
 type Cuenta={correo:string;salt:string;hash:string;intentos:number;bloqueadoHasta:number;sesiones:{hash:string;vence:number}[]};
 export async function adminLocalDisponible(){

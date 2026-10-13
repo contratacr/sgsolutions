@@ -17,7 +17,7 @@ for(const idioma of ['es','en'])test(`Eurocomp privado, búsqueda, paginación e
   const codigo=(await page.locator('.eurocomp-productos article').first().locator('p').last().textContent())!.split(':')[1].split('·')[0].trim();
   await page.locator('#buscar-proveedor').fill(codigo);await page.getByRole('button',{name:idioma==='es'?'Buscar':'Search',exact:true}).click();
   await expect(page.locator('.eurocomp-productos article').first()).toContainText(codigo);
-  await page.goto('/panel/proveedores?resultado=espera');await expect(page.locator('main [role=alert]')).toContainText(idioma==='es'?'última hora':'last hour');
+  await page.goto('/panel/proveedores?resultado=espera');await expect(page.locator('main [role=alert]')).toContainText(idioma==='es'?'cinco minutos':'five minutes');
   await page.goto('/tienda');expect(await page.locator('main').textContent()).not.toContain(idioma==='es'?'Precio del proveedor':'Supplier price');
   await page.goto('/panel/proveedores');await expect(page.locator('html')).toHaveAttribute('lang',idioma);
  }finally{await writeFile(ruta,original,{mode:0o600});}

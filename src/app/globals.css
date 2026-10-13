@@ -490,3 +490,4 @@ svg { flex-shrink: 0; }
 }
 
 .aviso-qa-local{position:fixed;bottom:8px;left:8px;z-index:1000;padding:7px 12px;border-radius:6px;background:#fff3cc;border:1px solid #c9a959;color:#5c4716;font-size:12px;pointer-events:none;box-shadow:0 2px 8px #0001}
+.campo-telefono{display:grid;grid-template-columns:minmax(110px,42%) minmax(0,1fr);gap:8px;width:100%;min-width:0}.campo-telefono>select,.campo-telefono>input:not([type=hidden]){width:100%;min-width:0;margin:0;min-height:46px;padding:12px 14px;border:1px solid #ccd8e0;border-radius:8px;background:#fff;color:#20394f;font:inherit}.campo-telefono>select{padding-right:28px}.campo-telefono>input[type=hidden]{display:none}

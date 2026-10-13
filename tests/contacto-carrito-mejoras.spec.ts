@@ -19,7 +19,7 @@ for(const idioma of ['es','en'])test(`datos previos, validación y confirmación
  await formulario.locator('button').click();await expect(formulario.locator('[name=nombre]')).toBeFocused();
  await expect(formulario.locator('[aria-invalid=true]')).toHaveCount(5);
  await completarDatosAsesoria(page);
- await formulario.locator('[name=nombre]').fill('Cliente QA');await formulario.locator('[name=telefono]').fill('8888 8888');await formulario.locator('[name=consentimiento]').check();
+ await formulario.locator('[name=nombre]').fill('Cliente QA');await formulario.locator('[name=telefono]').locator('..').locator('input[type=tel]').fill('8888 8888');await formulario.locator('[name=consentimiento]').check();
  fallar=true;await formulario.locator('button').click();await expect(formulario.locator('[role=alert]')).toBeVisible();await expect(formulario.locator('[name=nombre]')).toHaveValue('Cliente QA');
  fallar=false;await formulario.locator('button').click();await expect(page.locator('.contacto-asesoria')).toHaveCount(0);
  expect(datos).toMatchObject({contacto:{telefono:'50688888888',necesidad:''}});

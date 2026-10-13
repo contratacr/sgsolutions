@@ -23,9 +23,10 @@ export async function subirImagen(datos:FormData):Promise<{src?:string;error?:st
  const nombre=`${randomUUID()}.${extension}`;
  try{
   if(local){
-   const carpeta=path.join(process.cwd(),'public','imagenes','admin');
+   const directorio=process.env.SG_PRUEBAS_INTEGRACION==='1'&&process.env.SG_ENTORNO==='local'&&process.env.SG_ADMIN_CONTENIDO_PRUEBAS==='1'?'admin-contenido-pruebas':'admin';
+   const carpeta=path.join(process.cwd(),'public','imagenes',directorio);
    await mkdir(carpeta,{recursive:true});await writeFile(path.join(carpeta,nombre),bytes,{flag:'wx'});
-   return {src:`/imagenes/admin/${nombre}`};
+   return {src:`/imagenes/${directorio}/${nombre}`};
   }
   const {error}=await cliente!.storage.from('imagenes-admin').upload(nombre,bytes,{contentType:extension==='jpg'?'image/jpeg':`image/${extension}`,upsert:false});
   if(error)return {error:'errorCarga'};

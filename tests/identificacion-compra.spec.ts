@@ -27,8 +27,8 @@ test('acepta y normaliza teléfonos con formato; rechaza prefijos sin número',(
 
 for(const idioma of ['es','en'])test(`valida el teléfono antes de revisar y acepta su formato ${idioma}`,async({page,context})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);await page.goto('/tienda');await page.locator('.shop-producto button').first().click();await page.goto('/finalizar-compra');
- const form=page.locator('main form');for(const [nombre,valor]of Object.entries({nombre:'Ana',apellidos:'Prueba',correo:'qa@example.invalid',telefono:'+506'}))await form.locator(`[name=${nombre}]`).fill(valor);
+ const form=page.locator('main form');for(const [nombre,valor]of Object.entries({nombre:'Ana',apellidos:'Prueba',correo:'qa@example.invalid',telefono:'+506'}))await form.locator(nombre==='telefono'?'.campo-telefono input[type=tel]':`[name=${nombre}]`).fill(valor);
  await form.locator('[name=consentimiento]').check();await form.locator('input[type=file]').setInputFiles({name:'prueba.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\n'+'0'.repeat(200))});await form.locator('button[type=submit]').click();
  await expect(form.locator('[name=telefono]')).toHaveAttribute('aria-invalid','true');await expect(form.locator('.campo-error')).toContainText(idioma==='es'?'teléfono válido':'valid phone');await expect(page.getByRole('button',{name:idioma==='es'?'Completar pedido':'Complete order',exact:true})).toHaveCount(0);
- await form.locator('[name=telefono]').fill('+506 (8718) 4114');await form.locator('button[type=submit]').click();await expect(page.getByRole('button',{name:idioma==='es'?'Completar pedido':'Complete order',exact:true})).toBeVisible();
+ await form.locator('[name=telefono]').locator('..').locator('input[type=tel]').fill('+506 (8718) 4114');await form.locator('button[type=submit]').click();await expect(page.getByRole('button',{name:idioma==='es'?'Completar pedido':'Complete order',exact:true})).toBeVisible();
 });

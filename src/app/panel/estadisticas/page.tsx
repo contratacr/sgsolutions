@@ -1,16 +1,52 @@
+import Link from 'next/link';
 import {redirect} from 'next/navigation';
 import {leerCatalogoPublico} from '@/lib/catalogo-servidor';
 import {traducir} from '@/lib/catalogo-modelo';
 import {getLocale,getTranslations} from 'next-intl/server';
 import {sesionLocal} from '@/lib/admin-local';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
-import {resumenAnalitica} from '@/lib/analitica-servidor';
-import {META_PIXEL_ID} from '@/lib/meta-pixel';
-export default async function Estadisticas(){
+import {resumenAnalitica,fechasAnalitica} from '@/lib/analitica-servidor';
+import './estadisticas.css';
+export async function generateMetadata(){const t=await getTranslations('Analitica');return {title:t('tituloPanel'),robots:{index:false,follow:false}};}
+export default async function Estadisticas({searchParams}:{searchParams:Promise<{dias?:string}>}){
  const local=await sesionLocal();if(!local){const db=await crearClienteServidor();if(!db)redirect('/admin');const {data:{user}}=await db.auth.getUser();if(!user)redirect('/admin');const {data}=await db.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();if(!data?.activo||data.rol!=='administrador')redirect('/panel');}
- const t=await getTranslations('Analitica'),resumen=await resumenAnalitica();
- const idioma=await getLocale(),catalogo=await leerCatalogoPublico(),planes=await getTranslations('Inicio');
- const nombre=(tipo:string,detalle:string)=>['producto','busqueda_producto','carrito'].includes(tipo)?traducir(catalogo.productos.find(p=>p.id===detalle)?.nombre??{es:detalle,en:detalle},idioma):['plan','plan_revisado'].includes(tipo)&&['1','2','3'].includes(detalle)?planes(`plan${Number(detalle)-1}Nombre`):detalle;
- const pixel=/^\d{5,25}$/.test(META_PIXEL_ID);
- return <main id="contenido" className="contenedor seccion"><h1>{t('tituloPanel')}</h1><p>{t('periodo')}</p><p className="admin-guia">{t('ayudaPanel')}</p><details className="panel-correo-info"><summary>{t('detalleMedicion')}</summary><p>{t('limitacion')}</p></details><p>{t(pixel?'pixelListo':'pixelPendiente')}</p>{!resumen?<p role="status">{t('configurar')}</p>:<><div className="metricas-resumen"><article><strong>{resumen.sesiones}</strong><span>{t('sesiones')}</span></article><article><strong>{resumen.filas.filter(f=>f.tipo==='pagina').reduce((s,f)=>s+f.cantidad,0)}</strong><span>{t('pagina')}</span></article><article><strong>{resumen.filas.filter(f=>f.tipo==='whatsapp').reduce((s,f)=>s+f.cantidad,0)}</strong><span>{t('whatsapp')}</span></article></div>{!resumen.total?<p>{t('vacio')}</p>:<div className="metricas-grid">{['pagina','producto','busqueda_producto','carrito','plan','whatsapp','correo','telefono','mapa','red_social','galeria','pedido_revisado','plan_revisado','scroll','campana'].filter(tipo=>resumen.filas.some(f=>f.tipo===tipo)).map(tipo=><section key={tipo}><div className="metrica-encabezado"><h2>{t(tipo)}</h2><span>{resumen.filas.filter(f=>f.tipo===tipo).reduce((sum,f)=>sum+f.cantidad,0)}</span></div><ol>{resumen.filas.filter(f=>f.tipo===tipo).slice(0,20).map(f=><li key={f.detalle}><span>{nombre(tipo,f.detalle)||t('general')}</span><strong>{f.cantidad}</strong></li>)}</ol>{!resumen.filas.some(f=>f.tipo===tipo)&&<p>{t('sinDatos')}</p>}</section>)}</div>}</>}</main>;
+ const dias=(await searchParams).dias==='7'?7:30;
+ const t=await getTranslations('Analitica'),idioma=await getLocale();
+ const [resumen,catalogo,planes]=await Promise.all([resumenAnalitica(dias),leerCatalogoPublico(),getTranslations('Inicio')]);
+ const numero=(n:number|undefined)=>n===undefined?'—':new Intl.NumberFormat(idioma==='en'?'en-US':'es-CR').format(n);
+ const dinero=(n:number|undefined)=>n===undefined?'—':new Intl.NumberFormat(idioma==='en'?'en-US':'es-CR',{style:'currency',currency:'CRC',maximumFractionDigits:0}).format(n);
+ const total=(tipo:string)=>resumen?.filas.filter(f=>f.tipo===tipo).reduce((s,f)=>s+f.cantidad,0);
+ const contactos=['whatsapp','correo','telefono','mapa','red_social'];
+ const clics=resumen?.filas.filter(f=>contactos.includes(f.tipo)).reduce((s,f)=>s+f.cantidad,0);
+ const rutas:Record<string,string>={'/':'Navegacion.inicio','/tienda':'Navegacion.tienda','/soporte':'Navegacion.soporte','/empresas':'Navegacion.empresas','/casos-de-exito':'Navegacion.casos','/nosotros':'Navegacion.nosotros','/contacto':'Navegacion.contacto'};
+ const nav=await getTranslations('Navegacion');
+ const nombre=(tipo:string,detalle:string)=>{
+  if(['producto','busqueda_producto','carrito'].includes(tipo)){const p=catalogo.productos.find(p=>p.id===detalle||p.slug===detalle);return p?traducir(p.nombre,idioma):detalle;}
+  if(['plan','plan_revisado'].includes(tipo)&&['1','2','3'].includes(detalle))return planes(`plan${Number(detalle)-1}Nombre`);
+  if(tipo==='pagina'&&rutas[detalle])return nav(rutas[detalle].split('.')[1]);
+  return detalle||t('general');
+ };
+ const tarjeta=(etiqueta:string,valor:string,detalle?:string)=><article key={etiqueta}><span>{etiqueta}</span><strong>{valor}</strong>{detalle&&<small>{detalle}</small>}</article>;
+ const lista=(tipo:string)=>{
+  const grupos=new Map<string,number>();for(const f of resumen?.filas.filter(f=>f.tipo===tipo)??[]){const n=nombre(tipo,f.detalle);grupos.set(n,(grupos.get(n)??0)+f.cantidad);}
+  const filas=[...grupos].sort((a,b)=>b[1]-a[1]).slice(0,5);
+  return <section className="estadisticas-lista" key={tipo}><div className="metrica-encabezado"><h2>{t(tipo)}</h2><span>{numero(total(tipo))}</span></div>{filas.length?<ol>{filas.map(([n,c])=><li key={n}><span>{n}</span><strong>{numero(c)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>;
+ };
+ const diario=resumen?.diario??[],max=Math.max(1,...diario.map(d=>d.visitas));
+ const fechas=fechasAnalitica(dias);
+ return <main id="contenido" className="contenedor seccion estadisticas-panel">
+  <div className="estadisticas-cabecera"><h1>{t('tituloPanel')}</h1><nav aria-label={t('periodoFiltro')}>{([7,30] as const).map(n=><Link key={n} href={`/panel/estadisticas?dias=${n}`} aria-current={n===dias?'page':undefined}>{t(n===7?'periodo7':'periodo30')}</Link>)}</nav></div>
+  {!resumen&&<p role="alert" className="panel-aviso">{t('noDisponible')} <a href={`/panel/estadisticas?dias=${dias}`}>{t('reintentar')}</a></p>}
+  <section aria-labelledby="trafico-titulo"><h2 id="trafico-titulo" className="estadisticas-grupo" title={t('conPermiso')}>{t('trafico')}</h2><div className="estadisticas-tarjetas">
+   {tarjeta(t('visitas'),numero(resumen?.sesiones))}{tarjeta(t('visitantes'),numero(resumen?.visitantes))}{tarjeta(t('pagina'),numero(total('pagina')))}{tarjeta(t('clicsContacto'),numero(clics))}
+  </div></section>
+  <section className="estadisticas-grafico"><h2>{t('visitasDiarias')}</h2>{diario.some(d=>d.visitas)?<><div className="estadisticas-barras" role="img" aria-label={t('graficoDescripcion',{dias})}>{fechas.map(fecha=>{const valor=diario.find(d=>d.fecha===fecha)?.visitas??0;return <div key={fecha} title={`${fecha}: ${numero(valor)}`}><span style={{height:`${valor/max*100}%`}}/><span className="sr-only">{fecha}: {numero(valor)}</span></div>;})}</div><div className="estadisticas-fechas"><span>{fechas[0]}</span><span>{fechas.at(-1)}</span></div><details><summary>{t('verDatos')}</summary><table><thead><tr><th>{t('fecha')}</th><th>{t('visitas')}</th></tr></thead><tbody>{fechas.map(fecha=><tr key={fecha}><td>{fecha}</td><td>{numero(diario.find(d=>d.fecha===fecha)?.visitas??0)}</td></tr>)}</tbody></table></details></>:<p>{t('sinDatos')}</p>}</section>
+  <section aria-labelledby="clientes-titulo"><h2 id="clientes-titulo" className="estadisticas-grupo">{t('clientes')}</h2><div className="estadisticas-tarjetas estadisticas-tres">
+   {tarjeta(t('registrados'),numero(resumen?.clientes?.total),t('acumulado'))}{tarjeta(t('nuevosRegistros'),numero(resumen?.clientes?.nuevos))}{tarjeta(t('clientesActivos'),numero(resumen?.clientes?.activos))}
+  </div></section>
+  <section aria-labelledby="compras-titulo"><h2 id="compras-titulo" className="estadisticas-grupo">{t('compras')}</h2><div className="estadisticas-tarjetas">
+   {tarjeta(t('pedidos'),numero(resumen?.compras?.total))}{tarjeta(t('pedidosPagados'),numero(resumen?.compras?.pagados))}{tarjeta(t('ingresos'),dinero(resumen?.compras?.ingresos))}{tarjeta(t('ticketPromedio'),dinero(resumen?.compras?.promedio))}
+  </div>{resumen?.compras&&<p className="estadisticas-pendientes"><Link href="/panel/pedidos">{t('pendientesPago',{total:numero(resumen.compras.pendientes)})}</Link></p>}</section>
+  {resumen&&<div className="estadisticas-detalles">{['pagina','producto','carrito','busqueda_producto','campana','plan'].filter(tipo=>(total(tipo)??0)>0).map(lista)}{Boolean(clics)&&<section className="estadisticas-lista"><h2>{t('contactos')}</h2><ol>{contactos.map(tipo=><li key={tipo}><span>{t(tipo)}</span><strong>{numero(total(tipo))}</strong></li>)}</ol></section>}{(['dispositivos','idiomas'] as const).filter(tipo=>Boolean(resumen[tipo]?.length)).map(tipo=><section className="estadisticas-lista" key={tipo}><h2>{t(tipo)}</h2>{resumen[tipo]?.length?<ol>{resumen[tipo]!.map(f=><li key={f.detalle}><span>{t(f.detalle==='es'?'espanol':f.detalle==='en'?'ingles':f.detalle==='movil'?'movil':'escritorio')}</span><strong>{numero(f.cantidad)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>)}</div>}
+ </main>;
 }

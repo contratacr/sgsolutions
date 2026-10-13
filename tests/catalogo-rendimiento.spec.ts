@@ -20,7 +20,7 @@ test('el catálogo grande se recorre de forma lineal y las rutas persistidas no 
 test('buscar vacío conserva orden y páginas sin normalizar descripciones',()=>{
  const c=publicarCatalogo(esquemaCatalogo.parse(inicial));let lecturas=0;
  const productos=c.productos.map(p=>new Proxy(p,{get(target,key,receiver){if(key==='descripcion')lecturas++;return Reflect.get(target,key,receiver);}}));
- const pagina=consultarCatalogo({...c,productos},new URLSearchParams());
+ const pagina=consultarCatalogo({...c,productos},new URLSearchParams({orden:'menor'}));
  expect(pagina.total).toBe(productos.length);expect(lecturas).toBe(0);
  expect(pagina.productos).toEqual([...c.productos].sort((a,b)=>(a.precio??Infinity)-(b.precio??Infinity)).slice(0,24));
  consultarCatalogo({...c,productos},new URLSearchParams({q:'cámara',idioma:'en'}));expect(lecturas).toBeGreaterThan(0);

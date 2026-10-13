@@ -9,11 +9,13 @@ function esCampo(elemento:EventTarget|null):elemento is Campo{return elemento in
 export function ValidacionNativa(){
  const t=useTranslations('Validacion'),ruta=usePathname(),prefijo=useId();
  useEffect(()=>{
+  const aplicarCorreo=()=>document.querySelectorAll<HTMLInputElement>('input[type=email]').forEach(campo=>{if(!campo.hasAttribute('pattern')){campo.pattern='[^\\s@]+@[^\\s@]+\\.[^\\s@]+';campo.dataset.patronCorreo='true';}});
+  aplicarCorreo();const observador=new MutationObserver(aplicarCorreo);observador.observe(document.body,{childList:true,subtree:true});
   const errores=new Map<Campo,{elemento:HTMLSpanElement;anuncio?:HTMLSpanElement;descripcionId:string;mensaje:string;invalidOriginal:string|null}>();
   let contador=0,primero:Campo|null=null,activo=true,frame=0;
   function quitar(campo:Campo){
    const registro=errores.get(campo);if(!registro)return;
-   registro.elemento.remove();registro.anuncio?.remove();
+   registro.elemento.remove();registro.anuncio?.remove();campo.closest('label')?.classList.remove('validacion-opcion-con-error');
    if(campo.dataset.validacionNativa==='true'){
     if(campo.validationMessage===registro.mensaje)campo.setCustomValidity('');
     if(campo.getAttribute('aria-invalid')==='true'&&registro.invalidOriginal!=='true'){
@@ -41,13 +43,15 @@ export function ValidacionNativa(){
    else if(error.tooShort&&!(campo instanceof HTMLSelectElement))mensaje=t('minimo',{cantidad:campo.minLength});
    else if(error.tooLong&&!(campo instanceof HTMLSelectElement))mensaje=t('maximo',{cantidad:campo.maxLength});
    else if(error.rangeUnderflow||error.rangeOverflow||error.stepMismatch||error.badInput)mensaje=t('numero');
-   else if(error.patternMismatch)mensaje=t('formato');
+   else if(error.patternMismatch)mensaje=campo instanceof HTMLInputElement&&campo.dataset.longitudesTelefono?t('telefonoLongitud',{cantidad:campo.dataset.longitudesTelefono}):t('formato');
+   if(campo instanceof HTMLInputElement&&campo.type==='email'&&!error.valueMissing&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(campo.value.trim()))mensaje=t('correo');
    const elemento=document.createElement('span');
    elemento.id=`validacion-${prefijo}-${++contador}`;elemento.className='validacion-campo-error';elemento.textContent=mensaje;elemento.setAttribute('role','alert');
    const grupo=campo.closest('.cuenta-campo');const etiqueta=campo.closest('label');
    let anuncio:HTMLSpanElement|undefined;
    if(grupo)grupo.append(elemento);
-   else if(etiqueta&&!(campo instanceof HTMLInputElement&&['checkbox','radio'].includes(campo.type))){
+   else if(etiqueta){
+    if(campo instanceof HTMLInputElement&&['checkbox','radio'].includes(campo.type))etiqueta.classList.add('validacion-opcion-con-error');
     // No incorporar el error al nombre accesible de la etiqueta.
     elemento.setAttribute('aria-hidden','true');elemento.removeAttribute('role');etiqueta.append(elemento);
     anuncio=document.createElement('span');anuncio.id=elemento.id+'-descripcion';anuncio.className='sr-only';anuncio.textContent=mensaje;anuncio.setAttribute('role','alert');(campo.form??etiqueta.parentElement)?.append(anuncio);
@@ -63,7 +67,7 @@ export function ValidacionNativa(){
   }
   document.addEventListener('pointerdown',cancelarFoco,true);document.addEventListener('focusin',focoCambiado,true);
   document.addEventListener('invalid',invalidar,true);document.addEventListener('input',limpiar,true);document.addEventListener('change',limpiar,true);
-  return ()=>{activo=false;cancelarFoco();document.removeEventListener('pointerdown',cancelarFoco,true);document.removeEventListener('focusin',focoCambiado,true);document.removeEventListener('invalid',invalidar,true);document.removeEventListener('input',limpiar,true);document.removeEventListener('change',limpiar,true);for(const campo of errores.keys())quitar(campo);};
+  return ()=>{observador.disconnect();document.querySelectorAll<HTMLInputElement>('input[data-patron-correo]').forEach(campo=>{campo.removeAttribute('pattern');delete campo.dataset.patronCorreo;});activo=false;cancelarFoco();document.removeEventListener('pointerdown',cancelarFoco,true);document.removeEventListener('focusin',focoCambiado,true);document.removeEventListener('invalid',invalidar,true);document.removeEventListener('input',limpiar,true);document.removeEventListener('change',limpiar,true);for(const campo of errores.keys())quitar(campo);};
  },[t,ruta,prefijo]);
  return null;
 }

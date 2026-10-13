@@ -1,10 +1,11 @@
 "use client";
+import * as Dialog from '@radix-ui/react-dialog';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import { useEffect, useState, useTransition } from "react";
 import { useTranslations,useLocale } from "next-intl";
-import { useRouter } from "next/navigation";
 import { esquemaContenido, type Contenido } from "@/lib/contenido-modelo";
 import { guardarContenido } from "@/app/panel/contenido/acciones";
+import {useProteccionPanel} from '@/components/proteger-cambios-panel';
 import {useCambiosAdmin} from '@/components/use-cambios-admin';
 import {GestorImagenes} from '@/components/gestor-imagenes';
 import {ErroresAdmin,enfocarRegistro,type CampoAdmin} from '@/components/errores-admin';
@@ -25,27 +26,27 @@ export function EditorContenido({
     [estado, setEstado] = useState(""),
     [ocupado, iniciar] = useTransition();
   const t = useTranslations("AdminContenido"),
-    a = useTranslations("AdminCatalogo"),
-    router = useRouter();
+    a = useTranslations("AdminCatalogo");
   const u=useTranslations('AdminUX');
   const idioma=useLocale();
   const [grupo,setGrupo]=useState('todos'),[buscarCasos,setBuscarCasos]=useState('');
   const grupos=[...new Set(Object.keys(textos).map(k=>k.split('.')[0]))];
   const textosFiltrados=Object.entries(textos).filter(([k,v])=>(grupo==='todos'||k.startsWith(grupo+'.'))&&`${k} ${(datos.textos[k]??v).es} ${(datos.textos[k]??v).en}`.toLowerCase().includes(busqueda.toLowerCase()));
-  const [nuevoId,setNuevoId]=useState('');
+  const [nuevoId,setNuevoId]=useState(''),[eliminarCaso,setEliminarCaso]=useState<string|null>(null);
   const [limite,setLimite]=useState(30);
   useEffect(()=>{if(nuevoId)enfocarRegistro(nuevoId);},[nuevoId]);
   const [campos,setCampos]=useState<CampoAdmin[]>([]);
-  function abrirCampo(campo:CampoAdmin){setTab(String(campo[0]));if(campo[0]==='textos'){setGrupo('todos');setBusqueda(String(campo[1]));enfocarRegistro(String(campo[1]));}else if(campo[0]==='casos')enfocarRegistro(datos.casos[Number(campo[1])]?.id);}
+  function abrirCampo(campo:CampoAdmin){setTab(String(campo[0]));if(campo[0]==='contacto'||campo[0]==='imagenes'||campo[0]==='pagos')enfocarRegistro('config-'+String(campo[0]));if(campo[0]==='casos')setBuscarCasos('');if(campo[0]==='textos'){setGrupo('todos');setBusqueda(String(campo[1]));enfocarRegistro(String(campo[1]));}else if(campo[0]==='casos')enfocarRegistro(datos.casos[Number(campo[1])]?.id);}
   const [cargandoImagenes,setCargandoImagenes]=useState(false);
  const {pendientes,confirmarGuardado}=useCambiosAdmin(datos);
+ const proteccion=useProteccionPanel();
   const m=useTranslations('AdminImagenes');
-  function bilingue(titulo: string, valor: Texto, cambiar: (v: Texto) => void, corto = false) {
+  function bilingue(titulo: string, valor: Texto, cambiar: (v: Texto) => void, corto = false, requerido = false) {
     return (["es", "en"] as const).map((l) => (
       <label key={l}>
-        {titulo} ({l.toUpperCase()})
-        {corto ? <input maxLength={250} value={valor[l]} onChange={(e) => cambiar({ ...valor, [l]: e.target.value })} /> : <textarea
-          maxLength={4000}
+        {titulo} ({l.toUpperCase()}){requerido&&' *'}
+        {corto ? <input required={requerido} maxLength={250} value={valor[l]} onChange={(e) => cambiar({ ...valor, [l]: e.target.value })} /> : <textarea
+          required={requerido} maxLength={4000}
           value={valor[l]}
           onChange={(e) => cambiar({ ...valor, [l]: e.target.value })}
         />}
@@ -70,7 +71,6 @@ export function EditorContenido({
           confirmarGuardado();
           setRevision(r.revision!);
           setEstado("guardado");
-          router.refresh();
         }
       } catch {
         setEstado("error");
@@ -79,9 +79,9 @@ export function EditorContenido({
   }
   return (
     <div className="admin-editor">
-      <p>{t("descripcion")}</p><p className="admin-guia">{u("guia")}</p>
+
       <div className="admin-tabs">
-        {["casos", "textos", "pagos"].map((k) => (
+        {["casos", "textos", "imagenes", "contacto", "pagos"].map((k) => (
           <button key={k} aria-pressed={tab === k} onClick={() => setTab(k)}>
             {t(k)}
           </button>
@@ -117,11 +117,11 @@ export function EditorContenido({
             <label className="admin-casos-buscar">{t('casosBuscar')}<input type="search" value={buscarCasos} onChange={e=>setBuscarCasos(e.target.value)}/></label>
             {datos.casos.map((c, i) => ({c,i})).filter(({c})=>`${c.cliente} ${c.titulo.es} ${c.titulo.en}`.toLowerCase().includes(buscarCasos.toLowerCase())).map(({c,i}) => (
               <details key={c.id} id={c.id} className="admin-item" open={c.id===nuevoId?true:undefined}>
-                <summary><strong>{c.cliente || t('nuevo')}</strong><span className="admin-estado-producto">{a(c.publicado?'publicado':'borrador')}</span></summary>
+                <summary><strong>{c.cliente || t('nuevo')}</strong><span className="admin-estado-producto">{c.publicado?t('casoPublicado'):a('borrador')}</span></summary>
                 <label>
-                  {t("cliente")}
+                  {t("cliente")}{c.publicado&&' *'}
                   <input
-                    value={c.cliente}
+                    required={c.publicado} maxLength={150} value={c.cliente}
                     onChange={(e) => caso(i, { cliente: e.target.value })}
                   />
                 </label>
@@ -131,25 +131,22 @@ export function EditorContenido({
                     checked={c.publicado}
                     onChange={(e) => caso(i, { publicado: e.target.checked })}
                   />
-                  {a("publicado")}
+                  {t("publicarCaso")}
                 </label>
                 <div className="admin-fields">
                   {(
                     ["categoria", "titulo", "descripcion", "solucion"] as const
                   ).map((k) => (
                     <div key={k}>
-                      {bilingue(t(k), c[k], (v) => caso(i, { [k]: v }), k === 'categoria' || k === 'titulo')}
+                      {bilingue(t(k==='titulo'?'tituloCaso':k==='descripcion'?'descripcionCaso':k), c[k], (v) => caso(i, { [k]: v }), k === 'categoria' || k === 'titulo', c.publicado)}
                     </div>
                   ))}
                 </div>
-                <GestorImagenes onBusy={setCargandoImagenes} fotos={c.fotos} descripciones cambiar={fotos=>caso(i,{fotos:fotos.map(f=>({src:f.src,alt:{es:f.alt?.es||c.cliente,en:f.alt?.en||c.cliente},caption:{es:f.caption?.es||c.cliente,en:f.caption?.en||c.cliente}}))})}/>
+                <GestorImagenes onBusy={setCargandoImagenes} fotos={c.fotos} descripciones descripcionesRequeridas={c.publicado} cambiar={fotos=>caso(i,{fotos:fotos.map(f=>({src:f.src,alt:c.fotos.some(anterior=>anterior.src===f.src)?{es:f.alt?.es??'',en:f.alt?.en??''}:{es:f.alt?.es||c.cliente,en:f.alt?.en||c.cliente},caption:{es:f.caption?.es??'',en:f.caption?.en??''}}))})}/>
+                <div className="gestor-operaciones"><button type="button" disabled={i===0} aria-label={t('subirCaso',{cliente:c.cliente||t('nuevo')})} onClick={()=>setDatos(d=>{const casos=[...d.casos];[casos[i-1],casos[i]]=[casos[i],casos[i-1]];return {...d,casos};})}>{t('subir')}</button><button type="button" disabled={i===datos.casos.length-1} aria-label={t('bajarCaso',{cliente:c.cliente||t('nuevo')})} onClick={()=>setDatos(d=>{const casos=[...d.casos];[casos[i+1],casos[i]]=[casos[i],casos[i+1]];return {...d,casos};})}>{t('bajar')}</button></div>
                 <button
                   className="boton boton-contorno"
-                  onClick={() => {if(window.confirm(u("confirmarEliminar")))setDatos((d) => ({
-                      ...d,
-                      casos: d.casos.filter((_, j) => j !== i),
-                    }));}
-                  }
+                  onClick={() => setEliminarCaso(c.id)}
                 >
                   {a("quitar")}
                 </button>
@@ -180,6 +177,7 @@ export function EditorContenido({
                         ...d,
                         textos: { ...d.textos, [k]: valor },
                       })),
+                      false,true
                     )}
                   </div>
                 </details>
@@ -187,12 +185,14 @@ export function EditorContenido({
             {textosFiltrados.length>limite&&<button className="boton boton-contorno" onClick={()=>setLimite(n=>n+30)}>{u("mas")}</button>}
           </>
         )}
+        {tab === 'imagenes'&&<section id="config-imagenes" className="admin-configuracion"><h2>{t('imagenes')}</h2>{Object.entries(datos.imagenes).map(([clave,src])=><details key={clave} className="admin-item"><summary>{t('imagen'+clave)}</summary><GestorImagenes fotos={[{src}]} maximo={1} minimo={1} onBusy={setCargandoImagenes} cambiar={fotos=>setDatos(d=>({...d,imagenes:{...d.imagenes,[clave]:fotos[0]?.src??src}}))}/></details>)}</section>}
+        {tab === 'contacto'&&<section id="config-contacto" className="admin-configuracion"><h2>{t('contacto')}</h2><div className="admin-fields">{Object.entries(datos.contacto).map(([clave,valor])=><label key={clave}>{t('contacto'+clave)} *<input required type={clave==='correo'?'email':['telefono','whatsapp'].includes(clave)?'tel':'url'} value={valor} onChange={e=>setDatos(d=>({...d,contacto:{...d.contacto,[clave]:e.target.value}}))}/></label>)}</div></section>}
         {tab === "pagos" && (
-          <section className="admin-configuracion"><h2>{t('pagos')}</h2><p>{t('pagosAyuda')}</p><div className="admin-fields">
+          <section id="config-pagos" className="admin-configuracion"><h2>{t('pagos')}</h2><p>{t('pagosAyuda')}</p><div className="admin-fields">
             {(["titular", "sinpe"] as const).map((k) => (
               <label key={k}>
-                {t(k)}
-                <input
+                {t(k)} *
+                <input required
                   value={datos.pagos[k]}
                   onChange={(e) =>
                     setDatos((d) => ({
@@ -207,8 +207,8 @@ export function EditorContenido({
               <div className="admin-item" key={i}>
                 {(["banco", "cuentaCorta", "iban"] as const).map((k) => (
                   <label key={k}>
-                    {t(k)}
-                    <input
+                    {t(k)}{k!=='cuentaCorta'?' *':' ('+t('opcional')+')'}
+                    <input required={k!=='cuentaCorta'}
                       value={k === "cuentaCorta" ? cuentaCorta(c) : c[k]}
                       onChange={(e) =>
                         setDatos((d) => ({
@@ -224,11 +224,12 @@ export function EditorContenido({
                     />
                   </label>
                 ))}
-              </div>
+              <button type="button" className="boton boton-contorno" disabled={datos.pagos.cuentas.length===1} onClick={()=>setDatos(d=>({...d,pagos:{...d.pagos,cuentas:d.pagos.cuentas.filter((_,j)=>j!==i)}}))}>{t('quitarCuenta')}</button></div>
             ))}
-          </div></section>
+          </div><button type="button" className="boton boton-contorno" disabled={datos.pagos.cuentas.length>=5} onClick={()=>setDatos(d=>({...d,pagos:{...d.pagos,cuentas:[...d.pagos.cuentas,{banco:'',cuentaCorta:'',iban:''}]}}))}>{t('agregarCuenta')}</button></section>
         )}
       </fieldset>
+      <Dialog.Root open={eliminarCaso!==null} onOpenChange={abierto=>{if(!abierto)setEliminarCaso(null);}}><Dialog.Portal><Dialog.Overlay className="cambios-panel-fondo"/><Dialog.Content className="cambios-panel-modal"><Dialog.Title>{t('eliminarTitulo')}</Dialog.Title><Dialog.Description>{t('eliminarTexto',{cliente:datos.casos.find(c=>c.id===eliminarCaso)?.cliente||t('nuevo')})}</Dialog.Description><div><Dialog.Close className="boton boton-contorno">{t('cancelar')}</Dialog.Close><button type="button" className="boton boton-azul" onClick={()=>{setDatos(d=>({...d,casos:d.casos.filter(c=>c.id!==eliminarCaso)}));setEliminarCaso(null);}}>{t('eliminar')}</button></div></Dialog.Content></Dialog.Portal></Dialog.Root>
       <ErroresAdmin campos={campos} abrir={abrirCampo}/>
       <div className="admin-actions">
         <button
@@ -239,6 +240,7 @@ export function EditorContenido({
           {a(ocupado ? "guardando" : "guardar")}
         </button>
         <span role="status">{estado && estado !== "guardado" ? a(estado) : pendientes ? m("pendientes") : estado ? a(estado) : a("notaGuardar")}</span>
+        {estado==='conflicto'&&<button type="button" className="boton boton-contorno" onClick={()=>{const recargar=()=>location.reload();if(proteccion)proteccion.solicitar(recargar);else recargar();}}>{t('recargar')}</button>}
       </div>
     </div>
   );

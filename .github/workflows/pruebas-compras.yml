@@ -27,6 +27,16 @@ jobs:
         run: npx playwright test --config=playwright.catalogo.config.ts
       - name: Probar acceso Google con proveedor simulado
         run: npx playwright test --config=playwright.google.config.ts
+      - name: Probar actualización manual de Eurocomp sin consultas reales
+        run: npx playwright test --config=playwright.eurocomp-manual.config.ts
+      - name: Probar estadísticas y filtros del panel
+        run: npx playwright test --config=playwright.estadisticas.config.ts
+      - name: Probar edición de contenido y casos con datos aislados
+        run: npx playwright test --config=playwright.contenido.config.ts
+      - name: Probar catálogo recomendado y validación de datos en Chrome y Safari
+        run: npx playwright test --config=playwright.checkout-ui.config.ts
+      - name: Probar confirmaciones reales y simuladas sin pagos
+        run: npx playwright test --config=playwright.confirmaciones.config.ts
       - name: Crear Supabase efímero y aplicar las migraciones
         run: |
           npx supabase start > "$RUNNER_TEMP/supabase-inicio.log" 2>&1

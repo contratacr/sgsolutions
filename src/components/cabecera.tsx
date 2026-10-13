@@ -1,4 +1,5 @@
 'use client';
+import {useConfiguracionSitio} from '@/components/configuracion-sitio';
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,10 +9,10 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Carrito } from './carrito';
 import {MenuCuenta} from './menu-cuenta';
 import * as Dialog from '@radix-ui/react-dialog';
-import {empresa} from '@/lib/empresa';
 import { cambiarIdioma } from '@/app/acciones-idioma';
 
 export function Cabecera({sesionIniciada=false,nombreCuenta="",administrador=false}:{sesionIniciada?:boolean;nombreCuenta?:string;administrador?:boolean}) {
+ const {empresa}=useConfiguracionSitio();
   const t = useTranslations('Navegacion');
   const etiquetaCuenta=sesionIniciada?(nombreCuenta||t('miCuenta')):t('cuenta');
   const marca = useTranslations('Marca');

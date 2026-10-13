@@ -1,13 +1,14 @@
+import {contactoSitio} from '@/lib/contacto-sitio-servidor';
 import {SoloSitioPublico} from './solo-sitio-publico';
 import Image from 'next/image';
 import Link from 'next/link';
 import {Facebook, Instagram} from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import { enlaceCorreo, enlaceWhatsApp, empresa } from '@/lib/empresa';
 import {IconoWhatsApp} from './icono-whatsapp';
 import {IconoGoogleMaps,IconoWaze} from './iconos-mapas';
 
 export async function Pie() {
+ const {empresa,enlaceWhatsApp,enlaceCorreo}=await contactoSitio();
   const t = await getTranslations('Pie');
   const marca = await getTranslations('Marca');
   const contacto = await getTranslations('Contacto');

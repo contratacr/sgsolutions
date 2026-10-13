@@ -15,7 +15,7 @@ for (const idioma of ['es', 'en'] as const) {
     await form.locator('[name=nombre]').fill('Prueba');
     await form.locator('[name=apellidos]').fill('Flujo');
     await form.locator('[name=correo]').fill('prueba@example.com');
-    await form.locator('[name=telefono]').fill('88888888');
+    await form.locator('[name=telefono]').locator('..').locator('input[type=tel]').fill('88888888');
     await form.locator('[name=consentimiento]').check();
     await form.locator('input[type=file]').setInputFiles({name:'qa.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\n'+'0'.repeat(200))});
     await form.locator('[type=submit]').click();

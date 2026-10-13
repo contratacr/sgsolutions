@@ -1,4 +1,6 @@
 "use client";
+import {CampoIdentificacion} from './campo-identificacion';
+import {CampoTelefono} from './campo-telefono';
 import {rutaProducto} from "@/lib/rutas-productos";
 import {datosClienteCompra} from '@/lib/datos-cliente-compra';
 import {AccesoCompra} from './acceso-compra';
@@ -172,7 +174,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
   ) => (
     <label key={name}>
       <span>{t(name)}{(required||!['apartamento','postal','actividad'].includes(name))&&<IndicadorCampo obligatorio={required}/>}</span>
-      <input
+      {name==='identificacion'?<CampoIdentificacion tipo={tipoIdentificacion} defaultValue={borrador[name]} required={required} invalid={camposInvalidos.includes(name)} describedBy="compra-identificacion-ayuda" onChange={()=>setCamposInvalidos(actual=>actual.filter(c=>c!==name))}/>:type==='tel'?<CampoTelefono name={name} defaultValue={borrador[name]} required={required} invalid={camposInvalidos.includes(name)} onChange={()=>setCamposInvalidos(actual=>actual.filter(c=>c!==name))}/>:<input
         defaultValue={borrador[name] || (type === "tel" ? "+506 " : "")}
         name={name}
         type={type}
@@ -184,9 +186,9 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
         inputMode={name==='identificacion'?'numeric':undefined}
         pattern={name==='identificacion'?(tipoIdentificacion==='juridica'?'[0-9]{10}|[0-9]-[0-9]{3}-[0-9]{6}':'[0-9]{9}|[0-9]-[0-9]{4}-[0-9]{4}'):undefined}
         aria-describedby={name==='identificacion'?'compra-identificacion-ayuda':undefined}
-      />
+      />}
       {camposInvalidos.includes(name)&&<small role="alert" className="campo-error">{t(type==='tel'?'telefonoInvalido':'campoInvalido')}</small>}
-      {name==='identificacion'&&<small id="compra-identificacion-ayuda">{t(tipoIdentificacion==='juridica'?'identificacionJuridicaAyuda':'identificacionFisicaAyuda')}</small>}
+      {name==='identificacion'&&<small id="compra-identificacion-ayuda">{t(tipoIdentificacion==='dimex'?'identificacionDimexAyuda':tipoIdentificacion==='nite'?'identificacionNiteAyuda':tipoIdentificacion==='juridica'?'identificacionJuridicaAyuda':'identificacionFisicaAyuda')}</small>}
     </label>
   );
   return (
@@ -272,7 +274,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                     {campo("apellidos", true, "text", "family-name")}
                     {campo("correo", true, "email", "email")}
                     {campo("telefono", true, "tel", "tel")}
-                      <label><span>{a('tipoIdentificacion')}<IndicadorCampo obligatorio={factura}/></span><select required={factura} name="tipoIdentificacion" value={tipoIdentificacion} onChange={e=>setTipoIdentificacion(e.target.value)}><option value="fisica">{a('fisica')}</option><option value="juridica">{a('juridica')}</option></select></label>
+                      <label><span>{a('tipoIdentificacion')}<IndicadorCampo obligatorio={factura}/></span><select required={factura} name="tipoIdentificacion" value={tipoIdentificacion} onChange={e=>setTipoIdentificacion(e.target.value)}><option value="fisica">{a('fisica')}</option><option value="juridica">{a('juridica')}</option><option value="dimex">{a('dimex')}</option><option value="nite">{a('nite')}</option></select></label>
                       {campo("identificacion", factura)}
 
                   </div>

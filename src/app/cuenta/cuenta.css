@@ -73,3 +73,5 @@
 
 .cuenta-google-boton{display:flex;justify-content:center;min-height:44px;width:100%}
 .cuenta-google-boton[hidden]{display:none}
+
+.cuenta-datos details.cuenta-datos-desplegable{border-top:0;padding:0}.cuenta-datos-desplegable>summary h2{display:inline;margin:0;font-size:1.3rem}.cuenta-datos-desplegable>p{color:#536c7e;font-size:.875rem;line-height:1.6;max-width:620px}

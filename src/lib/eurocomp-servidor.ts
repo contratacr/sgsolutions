@@ -7,10 +7,11 @@ import {esquemaCatalogo,publicarCatalogo,type CatalogoAdmin} from './catalogo-mo
 import {reconciliarEurocomp} from './eurocomp-catalogo';
 import {crearClienteServidor} from './supabase/servidor';
 import {consultarEurocomp,ErrorEurocomp,type CatalogoEurocomp} from './eurocomp-protocolo';
+import {servicioPruebas} from './servicio-pruebas';
 
 const carpeta=path.join(process.cwd(),'.privado','admin-local');
 const archivo=path.join(carpeta,'eurocomp.json');
-const espera=3600_000;
+const espera=5*60_000;
 type Guardado={catalogo:CatalogoEurocomp|null;intento:string;token:string};
 async function acceso(){
  if(await sesionLocal())return {local:true as const,cliente:null};
@@ -23,6 +24,7 @@ async function acceso(){
 async function local():Promise<Guardado|null>{try{return JSON.parse(await readFile(archivo,'utf8'));}catch(e){if((e as NodeJS.ErrnoException).code==='ENOENT')return null;throw e;}}
 async function escribir(datos:Guardado){const temporal=`${archivo}.${randomUUID()}`;await writeFile(temporal,JSON.stringify(datos),{mode:0o600});await rename(temporal,archivo);}
 export function eurocompConfigurado(){return Boolean(process.env.EUROCOMP_API_KEY||(process.env.EUROCOMP_WEB_SERVICE_ID&&process.env.EUROCOMP_PASSWORD));}
+export function actualizacionEurocompHabilitada(){return eurocompConfigurado()&&process.env.EUROCOMP_ACTUALIZACION_ACTIVA==='1';}
 export type PaginaEurocomp={fecha:string;total:number;resultados:number;pagina:number;paginas:number;articulos:CatalogoEurocomp['articulos']};
 export async function leerEurocomp(q='',paginaSolicitada=1):Promise<PaginaEurocomp|null>{
  const a=await acceso();
@@ -52,7 +54,9 @@ export async function actualizarEurocomp(){
   const {data,error}=await a.cliente.rpc('iniciar_eurocomp',{nuevo_token:token});
   if(error)throw new ErrorEurocomp(error.message.includes('ESPERA')?'espera':'almacenamiento');if(!data)throw new ErrorEurocomp('espera');
  }
- const catalogo=await consultarEurocomp({id,clave,bodega});
+ const destino=servicioPruebas('eurocomp');
+ const catalogo=await consultarEurocomp({id,clave,bodega},destino?(_url,opciones)=>fetch(destino,opciones):fetch);
+ if(!catalogo.articulos.length)throw new ErrorEurocomp('respuesta');
  if(a.local){
   const actualCopia=await local();if(actualCopia?.token!==token)throw new ErrorEurocomp('espera');
   const actual=await leerLocal<CatalogoAdmin>('catalogo');
@@ -63,7 +67,7 @@ export async function actualizarEurocomp(){
   if(error||!data)throw new ErrorEurocomp('almacenamiento');
   const privado=esquemaCatalogo.parse(reconciliarEurocomp(esquemaCatalogo.parse(data.contenido),catalogo));
   const r=await a.cliente.rpc('publicar_eurocomp',{token_esperado:token,nuevo_catalogo:catalogo,privado,visible:publicarCatalogo(privado),revision_esperada:data.revision});
-  if(r.error)throw new ErrorEurocomp('almacenamiento');
+  if(r.error)throw new ErrorEurocomp(r.error.message.includes('CONFLICTO')?'conflicto':'almacenamiento');
  }
  return {total:catalogo.articulos.length};
 }

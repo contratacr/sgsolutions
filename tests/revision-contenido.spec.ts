@@ -35,7 +35,7 @@ test('planes envían consultas al correo correcto y soporte excluye iOS',async({
   await dialogo.locator('input[name="empresa"]').fill('Empresa de prueba');
   await dialogo.locator('input[name="nombre"]').fill('Contacto de prueba');
   await dialogo.locator('input[name="correo"]').fill('prueba@example.com');
-  await dialogo.locator('input[name="telefono"]').fill('88888888');
+  await dialogo.locator('input[name="telefono"]').locator('..').locator('input[type=tel]').fill('88888888');
   await dialogo.locator('select').selectOption('6–15');
   await dialogo.locator('textarea').fill('Necesitamos mantenimiento y soporte.');
   await dialogo.getByRole('checkbox').check();

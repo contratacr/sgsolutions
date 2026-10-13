@@ -45,6 +45,18 @@ test('Meta Pixel solo inicia tras aceptar publicidad y se detiene al revocar el 
 for(const idioma of ['es','en'])test(`la política de privacidad explica Meta Pixel en ${idioma}`,async({page,context})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
  await page.goto('/privacidad');
- await expect(page.locator('main')).toContainText(idioma==='es'?'únicamente con su permiso':'only with your permission');
+ await expect(page.locator('main')).toContainText(idioma==='es'?'solo con su permiso':'only with your permission');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});
+for(const idioma of ['es','en'])test(`visitantes anónimos, sesiones y retirada del permiso ${idioma}`,async({page,context})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ const eventos:{sesion:string;visitante:string}[]=[];
+ await context.route('**/api/analitica',async r=>{eventos.push(r.request().postDataJSON());await r.fulfill({status:204});});
+ await page.goto('/privacidad');expect(await page.evaluate(()=>localStorage.getItem('sg-medicion-visitante'))).toBeNull();await page.locator('.pie-preferencias').click();await page.getByRole('button',{name:idioma==='es'?'Solo estadísticas':'Analytics only',exact:true}).click();await expect.poll(()=>eventos.length).toBeGreaterThan(0);
+ const inicial=eventos.at(-1)!;expect(inicial.visitante).toMatch(/^[0-9a-f-]{36}$/);expect(inicial).not.toHaveProperty('correo');expect(inicial).not.toHaveProperty('usuario');
+ await page.goto('/contacto');await expect.poll(()=>eventos.at(-1)?.sesion).toBe(inicial.sesion);expect(eventos.at(-1)?.visitante).toBe(inicial.visitante);
+ await page.evaluate(()=>sessionStorage.setItem('sg-medicion-actividad',String(Date.now()-31*60_000)));await page.goto('/nosotros');await expect.poll(()=>eventos.at(-1)?.sesion).not.toBe(inicial.sesion);expect(eventos.at(-1)?.visitante).toBe(inicial.visitante);
+ await page.evaluate(()=>{const v=JSON.parse(localStorage.getItem('sg-medicion-visitante')!);v.vence=Date.now()-1;localStorage.setItem('sg-medicion-visitante',JSON.stringify(v));});await page.goto('/soporte');await expect.poll(()=>eventos.at(-1)?.visitante).not.toBe(inicial.visitante);
+ await page.goto('/privacidad');await page.locator('.pie-preferencias').click();await page.getByRole('button',{name:idioma==='es'?'Rechazar opcionales':'Reject optional tracking',exact:true}).click();expect(await page.evaluate(()=>localStorage.getItem('sg-medicion-visitante'))).toBeNull();expect(await page.evaluate(()=>sessionStorage.getItem('sg-medicion-sesion'))).toBeNull();
+ const total=eventos.length;await page.goto('/contacto');await expect(page.locator('h1')).toBeVisible();expect(eventos.length).toBe(total);
 });

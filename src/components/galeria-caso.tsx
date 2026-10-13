@@ -13,7 +13,7 @@ export function GaleriaCaso({cliente,fotos,prioridad=false}:{cliente:string;foto
  const origen=useRef<HTMLButtonElement|null>(null);
  const mover=(paso:number)=>setIndice(actual=>(actual+paso+fotos.length)%fotos.length);
  return <Dialog.Root open={abierta} onOpenChange={setAbierta}>
-  <div className="historia-fotos caso-galeria" data-total={Math.min(fotos.length,3)}>{fotos.slice(0,3).map((foto,i)=><button key={`${i}-${foto.src}`} type="button" className="historia-foto" onClick={e=>{origen.current=e.currentTarget;setIndice(i);setAbierta(true);}} aria-label={t('ampliar',{foto:foto.caption,cliente})}>
+  <div className="historia-fotos caso-galeria" data-total={Math.min(fotos.length,3)}>{fotos.slice(0,3).map((foto,i)=><button key={`${i}-${foto.src}`} type="button" className="historia-foto" onClick={e=>{origen.current=e.currentTarget;setIndice(i);setAbierta(true);}} aria-label={t('ampliar',{foto:foto.caption||foto.alt,cliente})}>
    <Image src={foto.src} alt={foto.alt} fill sizes="(max-width:600px) 90vw, (max-width:900px) 45vw, 33vw" priority={prioridad&&i===0}/>
    <span className="historia-foto-pie"><span>{i===2&&fotos.length>3?imagenes('masFotos',{total:fotos.length}):foto.caption}</span><Expand size={17}/></span>
   </button>)}</div>

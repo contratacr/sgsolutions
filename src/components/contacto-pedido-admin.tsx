@@ -16,7 +16,7 @@ export async function ContactoPedidoAdmin({cliente,referencia}:{cliente?:Cliente
   {cliente?.necesidad&&<p className="panel-contacto-nota">{cliente.necesidad}</p>}
   {cliente?.direccion&&<p className="panel-contacto-nota">{cliente.direccion}</p>}
   {(cliente?.factura||campos.some(k=>cliente?.[k]))&&<dl className="panel-contacto-datos">
-   {cliente?.tipoIdentificacion&&['fisica','juridica'].includes(cliente.tipoIdentificacion)&&<div><dt>{c('tipoIdentificacion')}</dt><dd>{c(cliente.tipoIdentificacion)}</dd></div>}
+   {cliente?.tipoIdentificacion&&['fisica','juridica','dimex','nite'].includes(cliente.tipoIdentificacion)&&<div><dt>{c('tipoIdentificacion')}</dt><dd>{c(cliente.tipoIdentificacion)}</dd></div>}
    {cliente?.factura&&['tiquete','electronica'].includes(cliente.factura)&&<div><dt>{c('factura')}</dt><dd>{c(cliente.factura)}</dd></div>}
    {campos.map(k=>cliente?.[k]?<div key={k}><dt>{c(k)}</dt><dd>{cliente[k]}</dd></div>:null)}
   </dl>}
