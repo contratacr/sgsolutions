@@ -53,7 +53,7 @@ test('los paneles no cambian de tamaño al pasar el cursor en ancho móvil', asy
   }
 });
 
-test('toque móvil inmediato, sin zoom ni saltos y respetando movimiento reducido',async({page})=>{
+test('presión sin saltos y navegación directa con movimiento reducido',async({page})=>{
  await page.setViewportSize({width:390,height:844});
  await page.goto('/');
  const panel=page.locator('.inicio-camino-soporte');
@@ -76,4 +76,25 @@ test('toque móvil inmediato, sin zoom ni saltos y respetando movimiento reducid
  await expect(imagen).toHaveCSS('transform','none');
  await page.mouse.up();
  await expect(page).toHaveURL(/\/soporte$/);
+});
+
+for(const idioma of ['es','en'])test(`Empresas destacada y toque con transición antes de navegar ${idioma}`,async({page,context})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ await page.setViewportSize({width:390,height:844});await page.goto('/');
+ const paneles=page.locator('.inicio-triptico-panel');
+ const alturas=await paneles.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height));
+ expect(alturas[2]).toBeGreaterThan(alturas[0]*1.3);
+ expect(alturas[2]).toBeGreaterThan(alturas[1]*1.3);
+ const empresa=paneles.nth(2);await expect(empresa.locator('strong')).toContainText(idioma==='es'?'Empresas':'Business');
+ // Mantener la siguiente respuesta pendiente para inspeccionar el efecto previo a la navegación.
+ let liberar!:()=>void;const espera=new Promise<void>(r=>liberar=r);
+ await page.route('**/soporte*',async ruta=>{await espera;await ruta.continue();});
+ const soporte=paneles.nth(1);if(test.info().project.use.hasTouch)await soporte.tap();else await soporte.click();
+ await expect(soporte).toHaveAttribute('data-navegando','true');
+ await expect(soporte.locator('.inicio-toque-flecha')).toBeVisible();
+ await expect.poll(()=>soporte.locator('img').evaluate(e=>getComputedStyle(e).transform)).not.toBe('none');
+ expect(await paneles.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height))).toEqual(alturas);
+ liberar();await expect(page).toHaveURL(/\/soporte$/);
+ await page.goBack();await expect(page).toHaveURL(/\/$/);
+ await expect(page.locator('[data-navegando=true]')).toHaveCount(0);
 });

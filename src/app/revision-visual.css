@@ -225,3 +225,22 @@ html :is(.shop-buscador,.panel-buscador,.busqueda-equipo) input:is(:focus,:focus
 
 .compra-paso:focus{outline:none;scroll-margin-top:100px}
 @media(forced-colors:active){html :is(input,textarea,select):focus-visible{outline:2px solid Highlight!important;outline-offset:2px!important}}
+
+/* Empresas conserva más protagonismo en móvil; el toque anima solo el contenido. */
+.inicio-toque-flecha{display:none}
+@media(max-width:700px){
+ .inicio-triptico .inicio-triptico-panel:last-child,
+ .inicio-triptico .inicio-triptico-panel:last-child:hover,
+ .inicio-triptico .inicio-triptico-panel:last-child:focus-visible{flex-grow:1.45}
+ .inicio-triptico .inicio-camino-empresas .inicio-triptico-contenido::before{width:72px;height:5px}
+ .inicio-triptico .inicio-camino-empresas .inicio-triptico-contenido strong{font-size:clamp(2rem,9vw,2.65rem)}
+}
+@media(max-width:700px),(hover:none){
+ .inicio-triptico .inicio-triptico-panel[data-navegando=true]>img{animation:inicio-toque-imagen .18s ease-out forwards}
+ .inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-triptico-contenido{animation:inicio-toque-texto .18s ease-out forwards}
+ .inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-toque-flecha{display:block;position:absolute;right:0;bottom:0;animation:inicio-toque-flecha .18s ease-out forwards}
+}
+@keyframes inicio-toque-imagen{to{transform:scale(1.035);filter:saturate(1.05)}}
+@keyframes inicio-toque-texto{to{transform:translateX(6px)}}
+@keyframes inicio-toque-flecha{from{opacity:0;transform:translate(-6px,6px)}to{opacity:1;transform:translate(0,0)}}
+@media(prefers-reduced-motion:reduce){.inicio-triptico .inicio-triptico-panel[data-navegando=true]>img,.inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-triptico-contenido,.inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-toque-flecha{animation:none}}
