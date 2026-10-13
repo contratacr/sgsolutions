@@ -93,6 +93,8 @@ for(const idioma of ['es','en'])test(`Empresas destacada y toque con transición
  await expect(soporte).toHaveAttribute('data-navegando','true');
  await expect(soporte.locator('.inicio-toque-flecha')).toBeVisible();
  await expect.poll(()=>soporte.locator('img').evaluate(e=>getComputedStyle(e).transform)).not.toBe('none');
+ await expect.poll(()=>paneles.nth(0).evaluate(e=>Number(getComputedStyle(e).opacity))).toBeLessThan(.85);
+ await expect.poll(()=>soporte.locator('img').evaluate(e=>new DOMMatrixReadOnly(getComputedStyle(e).transform).a)).toBeGreaterThan(1.24);
  expect(await paneles.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height))).toEqual(alturas);
  liberar();await expect(page).toHaveURL(/\/soporte$/);
  await page.goBack();await expect(page).toHaveURL(/\/$/);

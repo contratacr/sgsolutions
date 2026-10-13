@@ -27,11 +27,11 @@ for(const idioma of ['es','en'] as const)test(`datos guardados, historial y chec
  await page.locator('.cuenta-pedidos').screenshot({path:`.privado/evidencias/cuenta-historial-${idioma}-${info.project.name}.png`,animations:'disabled'});
  await page.goto('/tienda');await page.locator('.shop-producto').first().getByRole('button',{name:idioma==='es'?'Agregar al carrito':'Add to cart',exact:true}).click();
  await expect(page.getByText(idioma==='es'?'Ver carrito':'View cart',{exact:true}).first()).toBeVisible();await page.goto('/finalizar-compra');
- await expect(page.locator('input[name=nombre]')).toHaveValue('Ana');await expect(page.locator('input[name=telefono]')).toHaveValue('+506 88881111');await expect(page.locator('input[name=correo]')).toHaveValue(`cliente-${n}@example.com`);await expect(page.getByRole('checkbox',{name:d.guardarProxima})).not.toBeChecked();
- await page.locator('input[name=telefono]').fill('+506 88882222');await page.getByRole('checkbox',{name:d.guardarProxima}).check();await page.locator('input[name=consentimiento]').check();await page.getByRole('button',{name:c.revisar,exact:true}).click();await expect(page.locator('.compra-aviso-datos')).toHaveText(d.guardado);
+ await expect(page.locator('input[name=nombre]')).toHaveValue('Ana');await expect(page.locator('input[name=telefono]')).toHaveValue('+506 88881111');await expect(page.locator('input[name=correo]')).toHaveValue(`cliente-${n}@example.com`);await expect(page.locator('[name=guardarDatos]')).toHaveCount(0);await expect(page.locator('.compra-guardar-datos')).toHaveText(d.guardarAutomatico);
+ await page.locator('input[name=telefono]').fill('+506 88882222');await page.locator('input[type=file]').setInputFiles({name:'prueba.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\n'+'0'.repeat(200))});await page.locator('input[name=consentimiento]').check();await page.getByRole('button',{name:c.revisar,exact:true}).click();await expect(page.locator('.compra-aviso-datos')).toHaveText(d.guardado);
  await page.goto('/cuenta?seccion=datos');await expect(page.locator('#datos-telefono')).toHaveValue('+506 88882222');await expect(page.locator('#datos-canton')).toHaveValue('Atenas');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
- await context.clearCookies();await page.goto('/finalizar-compra');await expect(page.locator('input[name=correo]')).toHaveValue('');await expect(page.getByRole('checkbox',{name:d.guardarProxima})).toHaveCount(0);
+ await context.clearCookies();await page.goto('/finalizar-compra');await expect(page.locator('input[name=correo]')).toHaveValue('');await expect(page.locator('.compra-guardar-datos')).toHaveCount(0);
  // Otra cuenta no hereda los datos del cliente anterior.
  await sesion(context,9,idioma);await page.goto('/cuenta?seccion=datos');await expect(page.locator('#datos-canton')).toHaveValue('');
 });

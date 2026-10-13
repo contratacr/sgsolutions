@@ -236,11 +236,21 @@ html :is(.shop-buscador,.panel-buscador,.busqueda-equipo) input:is(:focus,:focus
  .inicio-triptico .inicio-camino-empresas .inicio-triptico-contenido strong{font-size:clamp(2rem,9vw,2.65rem)}
 }
 @media(max-width:700px),(hover:none){
- .inicio-triptico .inicio-triptico-panel[data-navegando=true]>img{animation:inicio-toque-imagen .18s ease-out forwards}
- .inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-triptico-contenido{animation:inicio-toque-texto .18s ease-out forwards}
- .inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-toque-flecha{display:block;position:absolute;right:0;bottom:0;animation:inicio-toque-flecha .18s ease-out forwards}
+ .inicio-triptico .inicio-triptico-panel[data-navegando=true]>img{animation:inicio-toque-imagen .8s cubic-bezier(.45,0,.2,1) forwards}
+ .inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-triptico-contenido{animation:inicio-toque-texto .8s cubic-bezier(.45,0,.2,1) forwards}
+ .inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-toque-flecha{display:block;position:absolute;right:0;bottom:0;animation:inicio-toque-flecha .8s cubic-bezier(.45,0,.2,1) forwards}
 }
-@keyframes inicio-toque-imagen{to{transform:scale(1.035);filter:saturate(1.05)}}
-@keyframes inicio-toque-texto{to{transform:translateX(6px)}}
+@keyframes inicio-toque-imagen{from{transform:scale(1);filter:saturate(.88)}to{transform:scale(1.28);filter:saturate(1.1)}}
+@keyframes inicio-toque-texto{to{transform:translateX(15px) scale(1.04)}}
 @keyframes inicio-toque-flecha{from{opacity:0;transform:translate(-6px,6px)}to{opacity:1;transform:translate(0,0)}}
 @media(prefers-reduced-motion:reduce){.inicio-triptico .inicio-triptico-panel[data-navegando=true]>img,.inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-triptico-contenido,.inicio-triptico .inicio-triptico-panel[data-navegando=true] .inicio-toque-flecha{animation:none}}
+
+/* Una expansión breve confirma el toque sin mover el diseño ni el footer. */
+@media (max-width:700px),(hover:none){
+ .inicio-triptico-paneles[data-navegando=true] .inicio-triptico-panel:not([data-navegando=true]){animation:inicio-toque-atenuar .8s cubic-bezier(.45,0,.2,1) forwards}
+ .inicio-triptico-panel[data-navegando=true]::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,#ffffff38 48%,transparent 76%);pointer-events:none;animation:inicio-toque-luz .8s cubic-bezier(.45,0,.2,1) forwards}
+ .inicio-triptico-panel[data-navegando=true] .inicio-triptico-contenido{transform-origin:left center}
+}
+@keyframes inicio-toque-atenuar{to{filter:brightness(.55);opacity:.7}}
+@keyframes inicio-toque-luz{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+@media(prefers-reduced-motion:reduce){.inicio-triptico-paneles[data-navegando=true] .inicio-triptico-panel,.inicio-triptico-panel[data-navegando=true]::after{animation:none}}

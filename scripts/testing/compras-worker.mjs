@@ -228,7 +228,7 @@ const payload = (v, method = "sinpe") => ({
     nombre: "QA",
     apellidos: "Worker",
     correo: "qa-worker@example.invalid",
-    telefono: "+50688883333",
+    telefono: "+506 (8888) 3333",
     modalidad: "retiro",
     factura: "tiquete",
     consentimiento: "on",
@@ -480,7 +480,7 @@ try {
           nombre: "QA",
           apellidos: "Browser",
           correo: "qa-browser@example.invalid",
-          telefono: "+50688883333",
+          telefono: "+506 (8888) 3333",
         }))
           await form.locator(`[name=${k}]`).fill(v);
         await form.locator("[name=consentimiento]").check();

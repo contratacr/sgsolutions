@@ -40,7 +40,7 @@ export async function accederCliente(_anterior: EstadoAccesoCliente, formulario:
     if (!cliente || !origen) return 'noDisponible';
     const idioma = (await cookies()).get('sg-idioma')?.value === 'en' ? 'en' : 'es';
     await guardarRetorno(formulario.get('retorno'),origen);
-    const {error} = await solicitudCuenta(()=>cliente.auth.signUp({email:validado.data.correo,password:validado.data.clave,options:{emailRedirectTo:`${origen}/cuenta/confirmar`,data:{nombre_completo:validado.data.nombre,idioma,aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:'2026-10-11'}}}));
+    const {error} = await solicitudCuenta(()=>cliente.auth.signUp({email:validado.data.correo,password:validado.data.clave,options:{emailRedirectTo:`${origen}/cuenta/confirmar`,data:{nombre_completo:validado.data.nombre,idioma,aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:'2026-10-12'}}}));
     if (error && !['email_exists','user_already_exists'].includes('code' in error ? String(error.code):'')) return errorCuenta(error);
     return 'registroEnviado';
   }

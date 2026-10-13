@@ -30,11 +30,14 @@ export async function POST(request: Request) {
     const cuerpo = await request.text();
     if (cuerpo.length > 12000) throw new Error('limite');
     datos = entrada.parse(JSON.parse(cuerpo));
-  } catch { return Response.json({ error: 'datos_invalidos' }, { status: 400 }); }
+  } catch (error) {
+    console.error('pedido_manual_fallido',{etapa:'datos',codigo:'datos_invalidos',campos:error instanceof z.ZodError?[...new Set(error.issues.map(e=>String(e.path[0]??'formulario')).filter(c=>/^[a-zA-Z]{1,30}$/.test(c)))]:[]});
+    return Response.json({ error: 'datos_invalidos' }, { status: 400 });
+  }
   const aprobacion=await validarAprobacion(datos);
   if(!aprobacion)return Response.json({error:"asesoria_requerida"},{status:403});
   const config = configuracionPedidosManuales();
-  if (!config) return Response.json({ error: 'no_disponible' }, { status: 503 });
+  if (!config) {console.error('pedido_manual_fallido',{etapa:'configuracion',codigo:'no_disponible'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
   const articulos: { id: string; codigo: string; nombre: string; cantidad: number; precio: number }[] = [];
   let total = 0;
   for (const linea of datos.articulos) {
@@ -51,7 +54,7 @@ export async function POST(request: Request) {
   const id = crypto.randomUUID();
   const db = basePedidosManuales(config);
   const { error } = await db.from('pedidos_manuales').insert({ id, estado:'pendiente_pago', metodo: datos.metodo, total_productos: total, costo_envio: envio, total_cobrar: totalConEnvio, cliente: { ...datos.datos, idioma: datos.idioma }, articulos });
-  if (error) {await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
+  if (error) {console.error('pedido_manual_fallido',{etapa:'guardar',codigo:/^[A-Z0-9]{1,12}$/.test(error.code??'')?error.code:'no_disponible'});await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
   await cambiarAsesoria(aprobacion.id,'procesando',{estado:'utilizada',pedido_id:id});
   const numero = numeroPedido(id);
   const enlace = enlacePedido(config, id, config.origen);

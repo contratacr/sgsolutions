@@ -3,7 +3,7 @@
     "nombre": "SG Solutions",
     "descripcion": "Tailored technology solutions in Atenas, Costa Rica. IT support, networks, security and equipment with professional advice.",
     "logo": "SG Solutions",
-    "telefono": "2446-7846",
+    "telefono": "8606-5342",
     "ubicacionCorta": "Atenas, Costa Rica",
     "direccion": "Plaza El Bosque Shopping Center, unit 9. Mercedes, Atenas, Alajuela, Costa Rica.",
     "correo": "asesor@sgsolutionscr.com"
@@ -195,7 +195,7 @@
     "contactoTitulo": "What can we solve together?",
     "contactoTexto": "Tell us about your business, your equipment or your project. We will help you find the right equipment or solution.",
     "contactoAccion": "Message us on WhatsApp",
-    "llamar": "Call 2446-7846",
+    "llamar": "Call 8606-5342",
     "mapa": "Get directions",
     "planRecomendado": "Recommended plan",
     "planAsunto": "Business enquiry: {plan} plan",
@@ -948,7 +948,11 @@
     "tarjetaAviso": "Complete your payment on Tilopay’s secure page.",
     "pagarTarjeta": "Pay by card",
     "cuentaCorta": "Local account number",
-    "iban": "IBAN"
+    "iban": "IBAN",
+    "identificacionFisicaAyuda": "Personal ID: 9 digits, with or without hyphens.",
+    "identificacionJuridicaAyuda": "Business ID: 10 digits, with or without hyphens.",
+    "telefonoInvalido": "Enter a valid phone number with 8 to 15 digits, including the country code when applicable.",
+    "campoInvalido": "Check this field before continuing."
   },
   "ResultadoPago": {
     "titulo": "Payment result",
@@ -1110,34 +1114,33 @@
   "Legal": {
     "etiqueta": "Legal information",
     "indice": "On this page",
-    "actualizado": "Updated September 18, 2026",
+    "actualizado": "Updated October 12, 2026",
     "contacto": "Questions and requests",
     "correo": "asesor@sgsolutionscr.com",
-    "direccion": "Plaza El Bosque, Atenas, Costa Rica.",
-    "nota": "Prepared for review before publication.",
+    "direccion": "Centro Comercial Plaza El Bosque, unit 9, Mercedes, Atenas, Alajuela, Costa Rica.",
     "terminos": {
       "titulo": "Terms and Conditions",
       "descripcion": "Conditions for browsing products, requesting services and arranging orders with SG Solutions.",
       "secciones": {
         "0": {
           "titulo": "Who we are and how to contact us",
-          "texto": "SG Solutions provides technology equipment, advice and services in Costa Rica. Contact us at asesor@sgsolutionscr.com, 2446-7846 or WhatsApp +506 6439-9417. Our office is at Plaza El Bosque, Atenas."
+          "texto": "SG Solutions is the trading name of 3-101-951810 Sociedad Anónima. Contact us at asesor@sgsolutionscr.com or +506 8606-5342, also on WhatsApp. Our office is at Centro Comercial Plaza El Bosque, unit 9, Mercedes, Atenas, Alajuela, Costa Rica."
         },
         "1": {
           "titulo": "Catalog, prices and availability",
-          "texto": "Published prices are in Costa Rican colones and include VAT where indicated. Supplier availability requires confirmation. Images may show regional variants; check the manufacturer part number and product specifications. Before confirming a purchase, we will provide the product, total price, taxes, delivery and any additional costs. If a discrepancy or error is found, we will inform you before payment so you can decide. We will not substitute products without your authorization."
+          "texto": "Product prices are in Costa Rican colones and include VAT. Shipping is shown separately and included in the total before you complete your order. The catalogue is updated using supplier information; stock is checked again when processing a purchase and adding an item to the cart does not reserve it. Check the manufacturer code and specifications: images may show variants. If an error or discrepancy is found, we will inform you and request your acceptance before changing the product or amount; if you decline and have already paid, we will arrange the applicable refund."
         },
         "2": {
           "titulo": "Requests and order confirmation",
-          "texto": "Adding products to the cart or reviewing a form does not constitute payment or a reservation. The site prepares a request for you to review and send through the indicated channel. SG Solutions will confirm availability and conditions before arranging the purchase. Do not pay until you receive that confirmation. These steps do not limit any rights arising from an offer or contract under applicable law."
+          "texto": "You can buy as a guest or sign in to use your saved details. Before completing your order, you can review and correct products, quantities, contact details, delivery and payment. Adding to the cart or reviewing an order does not charge you. Completing the process provides an order reference and status. A pending or declined payment, or a receipt awaiting verification, is not a confirmed payment. SG Solutions coordinates delivery and communicates status changes; submitting a request alone does not guarantee a supplier reservation."
         },
         "3": {
           "titulo": "Payments, invoicing and delivery",
-          "texto": "Payments are currently arranged by SINPE Móvil or bank transfer after confirming the order and recipient. Card payments on the site are not yet enabled, and we do not request card numbers or security codes. Delivery or collection, costs and timing are agreed before payment. Billing details must be accurate. A transfer receipt requires verification of funds and does not, by itself, confirm delivery."
+          "texto": "You can pay by SINPE Móvil, bank transfer or card through Tilopay. SINPE and bank transfers require an attached receipt; SG Solutions verifies the funds before confirming payment. Full card details and the security code are entered in the Tilopay gateway, not in SG Solutions forms. The summary shows the total and the cost of your selected delivery method: store pickup or shipping. Delivery timing will be communicated according to availability and destination. Provide accurate billing and delivery information; contact the team with your reference if you need to correct it."
         },
         "4": {
           "titulo": "Warranties, returns and complaints",
-          "texto": "Products and services carry the warranty rights established by Costa Rican law. Specific warranty conditions will be provided before purchase and in the relevant documents. To report a defect, an incorrect delivery or request a return, email us with the order reference and a description. Applicable withdrawal, repair, replacement or refund rights will be honored. These conditions do not exclude statutory rights or require complaints to be handled solely by the manufacturer. You may submit a request through the channel used to enter into the transaction."
+          "texto": "Products and services have the legal warranty applicable in Costa Rica and the specific conditions communicated for each product. For warranties, incorrect deliveries, cancellations or returns, contact asesor@sgsolutionscr.com or +506 8606-5342 with your reference and reason. Where the right of withdrawal applies, you can exercise it within eight business days after the sale is concluded, through the original purchase channel or our contact channels. We will explain how to return the item and process reimbursement under applicable rules. A convenience return does not replace rights relating to defects or non-performance. You are not required to handle warranty claims solely with the manufacturer and do not waive your rights to repair, replacement or refund."
         },
         "5": {
           "titulo": "Support and business plans",
@@ -1145,7 +1148,7 @@
         },
         "6": {
           "titulo": "Use of the site and content",
-          "texto": "Use forms with accurate information and only when authorized to provide it. Do not use the site for impersonation, unauthorized access or interference with the service. Trademarks, photographs and content belong to their respective owners; their presence does not imply any affiliation beyond what is expressly stated. External links are also subject to their providers’ terms."
+          "texto": "Protect your credentials and use a unique password. You can sign in with email and password or Google when available. Your details and purchases are shown only in your account; administrative access requires a specific permission. Do not share passwords or access codes with our staff. Provide accurate, authorized information and do not use the site for impersonation or unauthorized access. Brands, photographs and content belong to their respective owners; their presence does not imply any additional affiliation beyond what is expressly stated. External links are also governed by their providers’ terms."
         },
         "7": {
           "titulo": "Changes and applicable law",
@@ -1155,35 +1158,35 @@
     },
     "privacidad": {
       "titulo": "Privacy Policy",
-      "descripcion": "How information is used when browsing, viewing products or requesting assistance from SG Solutions.",
+      "descripcion": "How we handle your data when browsing, creating an account, purchasing or requesting assistance.",
       "secciones": {
         "0": {
           "titulo": "Responsible business and contact",
-          "texto": "SG Solutions receives and manages sales and support inquiries through its service channels. For privacy questions or requests about your data, email asesor@sgsolutionscr.com. Our office is at Plaza El Bosque, Atenas, Costa Rica."
+          "texto": "3-101-951810 Sociedad Anónima, trading as SG Solutions, is responsible for data received through the website and its contact channels. For privacy questions, data requests or security incidents, write to asesor@sgsolutionscr.com or contact +506 8606-5342. Our office is at Centro Comercial Plaza El Bosque, unit 9, Mercedes, Atenas, Alajuela, Costa Rica."
         },
         "1": {
           "titulo": "Information you provide",
-          "texto": "Depending on the form and request, we may receive your name, email, phone, company, billing details, identification, delivery address, selected products and messages about the required service. Provide only necessary and authorized information. Do not include passwords, full card numbers, security codes or sensitive data in messages or forms."
+          "texto": "We receive the details you provide for your account, purchase or enquiry: name, email, phone, identification where required, billing information, delivery address and recipient, products, messages and payment receipts. If you are signed in, we update purchase details in your profile when you review an order to make future purchases easier; you can correct them in My account. When signing in with Google, we receive the basic identity information and email authorized by that provider; we do not request access to Gmail, Drive or your Google password. Email passwords are managed as hashes by Supabase Auth, not as readable text. Do not include passwords, access codes, full card numbers or sensitive information in messages or receipts."
         },
         "2": {
           "titulo": "How information is used",
-          "texto": "We use information to answer inquiries, prepare quotes, arrange orders and delivery, invoice, handle support, warranties and complaints, and meet legal obligations. Required fields support the request; some actions cannot be completed without them. Sending an inquiry does not authorize unrelated advertising. Any additional purpose requiring consent must be explained separately."
+          "texto": "We use your data to authenticate your account, show your purchases, fill in checkout with details you have saved, respond to enquiries, process payments, invoice, coordinate delivery, provide support, handle warranties and claims, and meet legal obligations. Required fields are necessary for the requested service; optional fields can be left blank. Registering or buying does not authorize marketing messages. Statistics and advertising uses requiring consent are controlled separately through Privacy preferences. We do not sell your personal data."
         },
         "3": {
           "titulo": "Forms and external services",
-          "texto": "Current forms let you review a request before opening WhatsApp or email with a prepared message. Opening these links shares the message data with the channel provider; you must complete sending there for SG Solutions to receive the request. WhatsApp, Microsoft Outlook, maps and social networks apply their own policies and may process data outside Costa Rica. Card payments are not active on this site. If a payment gateway is enabled, its provider and data handling will be disclosed before use."
+          "texto": "Supabase manages authentication and data storage; Cloudflare hosts the website and processes technical connection and security information; Brevo sends confirmation, recovery and order emails; Google participates when you choose that sign-in method. Tilopay processes card details and payment; SG Solutions receives the transaction reference and status without storing the full card number or security code. Product suppliers and delivery services receive only the details needed to fulfil your order where applicable. These providers may process information outside Costa Rica. WhatsApp, Outlook, maps and social networks apply their own policies when you open their links."
         },
         "4": {
           "titulo": "Cookies and browser storage",
-          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in your browser’s local storage under sg-carrito-v1 until you empty it or clear site data. Form fields are retained during interaction with the page. Private staff access may use authentication cookies. Your analytics and advertising choice is stored in your browser; only with your permission are first-party navigation events recorded and Meta Pixel loaded for advertising. You can change your choice through Privacy preferences and clear browser data, although preferences or sessions will be lost."
+          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in browser local storage under sg-carrito-v1 until you empty it or delete site data. Authentication cookies maintain your session and protect the sign-in return; when signing in from checkout, a return cookie lasting up to one hour lets you return to your order. Form fields are retained during interaction and purchase details are updated in your profile when reviewing an order while signed in. Statistics and advertising preferences are stored in your browser: only with your permission are first-party browsing events recorded and Meta Pixel loaded. You can change your choice through Privacy preferences; deleting cookies may sign you out and remove preferences."
         },
         "5": {
           "titulo": "Access, providers and retention",
-          "texto": "Request information is intended for staff handling it and, when needed to fulfill it, delivery, support, email or infrastructure providers. Hosting may process technical connection data such as IP addresses and security logs. This does not itself authorize other commercial uses. Information is retained as necessary for the request and applicable legal obligations; deletion requests take those duties into account. Communications are also subject to the retention practices of your chosen channel."
+          "texto": "Access is limited to you, authorized SG Solutions staff and providers necessary for the stated purpose. We retain your profile while you maintain your account and orders, invoices, receipts and security records for as long as needed to handle them and meet legal obligations. You may request account deletion; purchase records required for tax obligations, warranties or claims are not automatically removed. Deleting an account does not itself cancel an order or payment. Communication providers also maintain their own retention periods."
         },
         "6": {
           "titulo": "Your rights and how to exercise them",
-          "texto": "You may request information about your data, access, correction, updating, deletion or withdrawal of consent as applicable under Law 8968. Email the privacy contact with your request and a reply address. We may ask for the minimum verification needed to avoid disclosing data to others. Withdrawal does not remove statutory retention duties. You may also contact Costa Rica’s data protection authority, PRODHAB."
+          "texto": "You can view and correct saved details in My account and request access, correction, updates, deletion or withdrawal of consent under Law 8968. For other requests, write to asesor@sgsolutionscr.com with what you need and a reply channel. We will request only the verification necessary to protect your identity. You may withdraw consent through a method equivalent to the one used to provide it; this does not affect previous actions or legal retention obligations. You may also contact the Costa Rican Data Protection Agency (PRODHAB)."
         },
         "7": {
           "titulo": "Security and updates",
@@ -1653,13 +1656,13 @@
     "invalido": "Check the details you entered.",
     "sinSesion": "Sign in again to save your details.",
     "errorCarga": "We could not load your saved details.",
-    "guardarProxima": "Save these details for my next purchases",
     "errorCompra": "We could not save your details for future purchases. You can continue with this order.",
     "facturacion": "Billing details",
     "envio": "Shipping address",
     "misDatos": "My details",
     "misCompras": "My purchases",
-    "navegacion": "Account options"
+    "navegacion": "Account options",
+    "guardarAutomatico": "We will update your details for future purchases."
   },
   "CamposFormulario": {
     "opcional": "Optional",

@@ -3,7 +3,7 @@
     "nombre": "SG Solutions",
     "descripcion": "Soluciones tecnológicas a la medida en Atenas. Soporte TI, redes, seguridad y equipo con asesoría profesional.",
     "logo": "SG Solutions",
-    "telefono": "2446-7846",
+    "telefono": "8606-5342",
     "ubicacionCorta": "Atenas, Costa Rica",
     "direccion": "Centro Comercial Plaza El Bosque, local 9. Mercedes, Atenas, Alajuela.",
     "correo": "asesor@sgsolutionscr.com"
@@ -194,7 +194,7 @@
     "contactoTitulo": "¿Qué podemos resolver juntos?",
     "contactoTexto": "Cuéntenos sobre su negocio, su equipo o su proyecto. Le ayudamos a encontrar el equipo o la solución adecuada.",
     "contactoAccion": "Escríbanos por WhatsApp",
-    "llamar": "Llamar al 2446-7846",
+    "llamar": "Llamar al 8606-5342",
     "mapa": "Cómo llegar",
     "tiendaAlt": "Portátil exhibida en SG Solutions",
     "planRecomendado": "Plan recomendado",
@@ -948,7 +948,11 @@
     "tarjetaAviso": "Complete el pago en la página segura de Tilopay.",
     "pagarTarjeta": "Pagar con tarjeta",
     "cuentaCorta": "Cuenta corta",
-    "iban": "IBAN"
+    "iban": "IBAN",
+    "identificacionFisicaAyuda": "Cédula física: 9 dígitos, con o sin guiones.",
+    "identificacionJuridicaAyuda": "Cédula jurídica: 10 dígitos, con o sin guiones.",
+    "telefonoInvalido": "Ingrese un teléfono válido con entre 8 y 15 dígitos, incluido el código de país si corresponde.",
+    "campoInvalido": "Revise este campo antes de continuar."
   },
   "ResultadoPago": {
     "titulo": "Resultado del pago",
@@ -1110,34 +1114,33 @@
   "Legal": {
     "etiqueta": "Información legal",
     "indice": "En esta página",
-    "actualizado": "Actualizado el 18 de septiembre de 2026",
+    "actualizado": "Actualizado el 12 de octubre de 2026",
     "contacto": "Consultas y solicitudes",
     "correo": "asesor@sgsolutionscr.com",
-    "direccion": "Plaza El Bosque, Atenas, Costa Rica.",
-    "nota": "Versión preparada para revisión antes de su publicación.",
+    "direccion": "Centro Comercial Plaza El Bosque, local 9, Mercedes, Atenas, Alajuela, Costa Rica.",
     "terminos": {
       "titulo": "Términos y Condiciones",
       "descripcion": "Condiciones para consultar productos, solicitar servicios y coordinar pedidos con SG Solutions.",
       "secciones": {
         "0": {
           "titulo": "Quiénes somos y cómo contactarnos",
-          "texto": "SG Solutions ofrece equipos, asesoría y servicios tecnológicos en Costa Rica. Puede comunicarse con nosotros en asesor@sgsolutionscr.com, al 2446-7846 o por WhatsApp al +506 6439-9417. Nuestra atención presencial se encuentra en Plaza El Bosque, Atenas."
+          "texto": "SG Solutions es el nombre comercial de 3-101-951810 Sociedad Anónima. Puede comunicarse con nosotros en asesor@sgsolutionscr.com o al +506 8606-5342, también por WhatsApp. Nuestra atención presencial se encuentra en Centro Comercial Plaza El Bosque, local 9, Mercedes, Atenas, Alajuela, Costa Rica."
         },
         "1": {
           "titulo": "Catálogo, precios y disponibilidad",
-          "texto": "Los precios publicados se expresan en colones costarricenses e incluyen IVA cuando así se indica. La disponibilidad con proveedor requiere confirmación. Las imágenes pueden mostrar variantes regionales; revise el código de fabricante y la ficha del producto. Antes de confirmar una compra, le comunicaremos el producto, precio total, impuestos, entrega y cualquier costo adicional. Si detectamos una diferencia o error, se lo informaremos para que decida antes de pagar; no sustituiremos el producto sin su autorización."
+          "texto": "Los precios de los productos se expresan en colones costarricenses e incluyen IVA. El costo de envío se muestra por separado y se incorpora al total antes de completar el pedido. El catálogo se actualiza con información del proveedor; la existencia se verifica nuevamente al tramitar la compra y no se reserva por agregar un artículo al carrito. Revise el código de fabricante y las características: las imágenes pueden mostrar variantes. Si se detecta un error o una diferencia, le informaremos y solicitaremos su aceptación antes de cambiar el producto o el importe; si no acepta y ya pagó, gestionaremos la devolución correspondiente."
         },
         "2": {
           "titulo": "Solicitudes y confirmación de pedidos",
-          "texto": "Agregar productos al carrito o revisar un formulario no constituye un pago ni una reserva. El sitio prepara una solicitud que usted revisa y envía por el canal indicado. SG Solutions confirmará disponibilidad y condiciones antes de coordinar la compra. No realice un pago hasta recibir esa confirmación. Estos pasos no limitan los derechos que puedan corresponderle por una oferta o contratación conforme a la legislación aplicable."
+          "texto": "Puede comprar como invitado o ingresar para utilizar sus datos guardados. Antes de completar el pedido podrá revisar y corregir productos, cantidades, datos, entrega y pago. Agregar al carrito o revisar el pedido no genera un cobro. Al completar el proceso recibirá una referencia y el estado de su pedido. Un pago pendiente, rechazado o un comprobante por verificar no equivale a un pago confirmado. SG Solutions coordina la entrega y le comunica los cambios de estado; la existencia de una solicitud no garantiza por sí sola una reserva con el proveedor."
         },
         "3": {
           "titulo": "Pagos, facturación y entrega",
-          "texto": "Actualmente se coordinan pagos mediante SINPE Móvil o transferencia bancaria, previa confirmación del pedido y del destinatario. El cobro con tarjeta en el sitio todavía no está habilitado y no solicitamos números de tarjeta ni códigos de seguridad. La forma de entrega o retiro, costo y plazo se acuerdan antes del pago. Los datos de facturación deben ser correctos. Un comprobante de transferencia requiere verificación del ingreso; no equivale por sí solo a confirmar la entrega."
+          "texto": "Puede pagar mediante SINPE Móvil, transferencia bancaria o tarjeta a través de Tilopay. Para SINPE o transferencia se requiere adjuntar el comprobante; SG Solutions verificará el ingreso antes de confirmar el pago. Los datos completos de tarjeta y su código de seguridad se ingresan en la pasarela de Tilopay, no en los formularios de SG Solutions. El resumen informa el total y el costo de la modalidad elegida: retiro en tienda o envío. El plazo de entrega se le comunicará según la disponibilidad y el destino. Proporcione datos de facturación y entrega correctos; si necesita corregirlos, contacte al equipo indicando su referencia."
         },
         "4": {
           "titulo": "Garantías, devoluciones y reclamos",
-          "texto": "Los productos y servicios cuentan con los derechos de garantía que establece la legislación costarricense. Las condiciones específicas de garantía se informarán antes de la compra y en los documentos correspondientes. Para reportar un defecto, una entrega incorrecta o solicitar una devolución, escriba al correo de contacto con la referencia del pedido y una descripción del caso. Se aplicarán los derechos de retracto, reparación, sustitución o devolución que correspondan; estas condiciones no excluyen derechos legales ni obligan a tramitar el reclamo únicamente con el fabricante. Podrá presentar su solicitud por el canal utilizado para la contratación."
+          "texto": "Los productos y servicios cuentan con la garantía legal aplicable en Costa Rica y las condiciones específicas informadas para cada producto. Para garantías, entregas incorrectas, cancelaciones o devoluciones, contacte a asesor@sgsolutionscr.com o al +506 8606-5342 e indique la referencia y el motivo. Cuando corresponda el derecho de retracto, puede ejercerlo dentro de los ocho días hábiles siguientes al perfeccionamiento de la venta, por el mismo canal utilizado para contratar o por nuestros canales de contacto. Le comunicaremos cómo devolver el artículo y tramitar el reintegro conforme a la normativa aplicable. Una devolución por conveniencia no reemplaza los derechos por defectos o incumplimiento. No es obligatorio gestionar su garantía únicamente con el fabricante ni se renuncia a sus derechos de reparación, sustitución o devolución."
         },
         "5": {
           "titulo": "Soporte y planes empresariales",
@@ -1145,7 +1148,7 @@
         },
         "6": {
           "titulo": "Uso del sitio y contenidos",
-          "texto": "Utilice los formularios con información veraz y únicamente cuando tenga autorización para proporcionarla. No emplee el sitio para suplantación, acceso no autorizado o interferencia con el servicio. Las marcas, fotografías y contenidos pertenecen a sus respectivos titulares; su presencia no implica una afiliación adicional a la expresamente indicada. Los enlaces externos se rigen también por las condiciones de sus proveedores."
+          "texto": "Cuide sus credenciales y utilice una contraseña única. Puede ingresar por correo y contraseña o con Google cuando esté disponible. Sus datos y compras se muestran únicamente en su cuenta; el acceso administrativo requiere un permiso específico. No comparta contraseñas ni códigos de acceso con nuestro personal. Proporcione información veraz y autorizada y no utilice el sitio para suplantación o acceso no autorizado. Las marcas, fotografías y contenidos pertenecen a sus respectivos titulares; su presencia no implica una afiliación adicional a la expresamente indicada. Los enlaces externos se rigen también por las condiciones de sus proveedores."
         },
         "7": {
           "titulo": "Cambios y legislación aplicable",
@@ -1155,35 +1158,35 @@
     },
     "privacidad": {
       "titulo": "Política de Privacidad",
-      "descripcion": "Cómo se utiliza la información al navegar, consultar productos o solicitar atención a SG Solutions.",
+      "descripcion": "Cómo gestionamos sus datos al navegar, crear una cuenta, comprar o solicitar atención.",
       "secciones": {
         "0": {
           "titulo": "Responsable y contacto",
-          "texto": "SG Solutions recibe y gestiona las consultas comerciales y de soporte realizadas por sus canales de atención. Para consultas sobre privacidad o solicitudes relacionadas con sus datos, escriba a asesor@sgsolutionscr.com. Nuestra ubicación de atención es Plaza El Bosque, Atenas, Costa Rica."
+          "texto": "3-101-951810 Sociedad Anónima, bajo el nombre comercial SG Solutions, es responsable de los datos recibidos por la web y sus canales de atención. Para consultas de privacidad, solicitudes sobre sus datos o incidentes de seguridad, escriba a asesor@sgsolutionscr.com o contacte al +506 8606-5342. Nuestra ubicación es Centro Comercial Plaza El Bosque, local 9, Mercedes, Atenas, Alajuela, Costa Rica."
         },
         "1": {
           "titulo": "Información que usted proporciona",
-          "texto": "Según el formulario y su solicitud, podemos recibir nombre, correo, teléfono, empresa, datos de facturación, identificación, dirección de entrega, productos seleccionados y mensajes sobre el servicio requerido. Proporcione únicamente información necesaria y autorizada. No incluya contraseñas, números completos de tarjeta, códigos de seguridad ni datos sensibles en mensajes o formularios."
+          "texto": "Recibimos los datos que proporciona para su cuenta, compra o consulta: nombre, correo, teléfono, identificación cuando se requiere, información de facturación, dirección y destinatario de entrega, productos, mensajes y comprobantes de pago. Si ha iniciado sesión, actualizamos sus datos de compra en su perfil al revisar el pedido para facilitar las próximas compras; puede corregirlos en Mi cuenta. Al ingresar con Google recibimos la información básica de identidad y el correo que ese proveedor autoriza; no solicitamos acceso a Gmail, Drive ni a su contraseña de Google. Las contraseñas de correo se gestionan mediante Supabase Auth en forma de hash, no como texto legible. No incluya contraseñas, códigos de acceso, números completos de tarjeta ni datos sensibles en mensajes o comprobantes."
         },
         "2": {
           "titulo": "Para qué se utiliza",
-          "texto": "Utilizamos la información para responder consultas, preparar cotizaciones, coordinar pedidos y entregas, facturar, atender soporte, garantías y reclamos, y cumplir obligaciones legales. Los campos obligatorios permiten atender la solicitud; si no los proporciona, algunas gestiones no podrán completarse. El envío de una consulta no constituye autorización para publicidad ajena a esa gestión. Cualquier finalidad adicional que requiera consentimiento deberá informarse por separado."
+          "texto": "Utilizamos sus datos para autenticar la cuenta, mostrar sus compras, rellenar el pedido con la información que haya guardado, responder consultas, tramitar pagos, facturar, coordinar entrega, atender soporte, garantías y reclamos y cumplir obligaciones legales. Los campos obligatorios son necesarios para la gestión solicitada; los opcionales pueden omitirse. Registrarse o comprar no autoriza el envío de publicidad. Los usos de estadísticas o publicidad que requieren consentimiento se controlan por separado en Preferencias de privacidad. No vendemos sus datos personales."
         },
         "3": {
           "titulo": "Formularios y servicios externos",
-          "texto": "Los formularios actuales permiten revisar la solicitud antes de abrir WhatsApp o el correo con el mensaje preparado. Abrir esos enlaces comunica los datos del mensaje al proveedor del canal; debe completar el envío allí para que SG Solutions reciba la solicitud. WhatsApp, Microsoft Outlook, los mapas y las redes sociales aplican sus propias políticas y pueden tratar datos fuera de Costa Rica. No hay cobros con tarjeta activos en este sitio. Si se habilita una pasarela, se informará el proveedor y el tratamiento correspondiente antes de usarla."
+          "texto": "Supabase gestiona la autenticación y el almacenamiento de los datos; Cloudflare aloja la web y procesa información técnica de conexión y seguridad; Brevo envía correos de confirmación, recuperación y pedidos; Google participa cuando elige ese método de ingreso. Tilopay procesa los datos de tarjeta y el pago; SG Solutions recibe la referencia y el estado de la transacción, sin almacenar el número completo de tarjeta ni su código de seguridad. El proveedor de productos y el servicio de entrega reciben únicamente los datos necesarios para cumplir el pedido cuando corresponda. Estos proveedores pueden procesar información fuera de Costa Rica. WhatsApp, Outlook, mapas y redes sociales aplican sus propias políticas al abrir sus enlaces."
         },
         "4": {
           "titulo": "Cookies y almacenamiento del navegador",
-          "texto": "La cookie sg-idioma recuerda su idioma durante un máximo de un año. El carrito guarda identificadores y cantidades de productos en el almacenamiento local de su navegador, bajo sg-carrito-v1, hasta que lo vacíe o borre los datos del sitio. Los campos de los formularios se mantienen durante la interacción con la página. El acceso privado del equipo puede utilizar cookies de autenticación. La preferencia de estadísticas y publicidad se guarda en su navegador; únicamente con su permiso se registran eventos propios de navegación y se carga Meta Pixel para publicidad. Puede cambiar su elección desde Preferencias de privacidad y eliminar los datos del navegador, aunque perderá preferencias o sesiones."
+          "texto": "La cookie sg-idioma conserva el idioma durante un máximo de un año. El carrito guarda identificadores y cantidades en el almacenamiento local del navegador, bajo sg-carrito-v1, hasta que lo vacíe o elimine los datos del sitio. Las cookies de autenticación mantienen la sesión y protegen el retorno del ingreso; al iniciar sesión desde una compra, una cookie de retorno de hasta una hora permite volver al pedido. Los campos se mantienen durante la interacción y los datos de compra se actualizan en su perfil al revisar un pedido con sesión iniciada. La preferencia de estadísticas y publicidad queda en el navegador: solo con su permiso se registran eventos propios de navegación y se carga Meta Pixel. Puede modificar su elección desde Preferencias de privacidad; borrar las cookies puede cerrar su sesión y eliminar preferencias."
         },
         "5": {
           "titulo": "Acceso, proveedores y conservación",
-          "texto": "La información de una solicitud está destinada al personal que la atiende y, cuando sea necesario para cumplirla, a proveedores de entrega, soporte, correo o infraestructura. El alojamiento puede procesar datos técnicos de conexión, como dirección IP y registros de seguridad. No autoriza por sí mismo otros usos comerciales. La información se conserva mientras sea necesaria para la gestión y las obligaciones legales aplicables; las solicitudes de eliminación se valoran teniendo en cuenta esos deberes. Las comunicaciones quedan sujetas también a la conservación del canal que usted utilice."
+          "texto": "El acceso se limita a usted, al personal autorizado de SG Solutions y a los proveedores necesarios para la finalidad indicada. Conservamos el perfil mientras mantenga su cuenta y los pedidos, facturación, comprobantes y registros de seguridad durante el tiempo necesario para atenderlos y cumplir obligaciones legales. Puede solicitar la eliminación de su cuenta; los registros de compras que deban conservarse por obligaciones fiscales, garantías o reclamos no se eliminan automáticamente. La eliminación de una cuenta no cancela por sí sola un pedido ni un pago. Los proveedores de comunicación mantienen también sus propios períodos de conservación."
         },
         "6": {
           "titulo": "Sus derechos y cómo ejercerlos",
-          "texto": "Puede solicitar información sobre sus datos, acceso, rectificación, actualización, eliminación o revocación del consentimiento, según corresponda conforme a la Ley 8968. Escriba al correo de privacidad indicando su solicitud y un medio de respuesta. Podemos pedir la verificación mínima necesaria para evitar entregar datos a terceros. La revocación no elimina obligaciones legales de conservación. También puede acudir a la Agencia de Protección de Datos de los Habitantes (PRODHAB)."
+          "texto": "Puede consultar y corregir sus datos guardados en Mi cuenta y solicitar acceso, rectificación, actualización, eliminación o revocación del consentimiento conforme a la Ley 8968. Para otras solicitudes, escriba a asesor@sgsolutionscr.com indicando qué necesita y un medio de respuesta. Pediremos solo la verificación necesaria para proteger su identidad. Puede revocar un consentimiento por un medio equivalente al utilizado para otorgarlo; ello no afecta actuaciones previas ni obligaciones legales de conservación. También puede acudir a la Agencia de Protección de Datos de los Habitantes (PRODHAB)."
         },
         "7": {
           "titulo": "Seguridad y actualizaciones",
@@ -1653,13 +1656,13 @@
     "invalido": "Revise los datos ingresados.",
     "sinSesion": "Inicie sesión nuevamente para guardar sus datos.",
     "errorCarga": "No pudimos cargar sus datos guardados.",
-    "guardarProxima": "Guardar estos datos para mis próximas compras",
     "errorCompra": "No pudimos guardar sus datos para próximas compras. Puede continuar con este pedido.",
     "facturacion": "Datos de facturación",
     "envio": "Dirección de envío",
     "misDatos": "Mis datos",
     "misCompras": "Mis compras",
-    "navegacion": "Opciones de mi cuenta"
+    "navegacion": "Opciones de mi cuenta",
+    "guardarAutomatico": "Actualizaremos sus datos para próximas compras."
   },
   "CamposFormulario": {
     "opcional": "Opcional",

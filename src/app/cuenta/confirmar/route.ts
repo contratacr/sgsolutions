@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     const almacen=await cookies();
     const aceptacion=almacen.get('sg-aceptacion-oauth')?.value;
     if(aceptacion){
-      const guardado=await solicitudCuenta(()=>cliente.auth.updateUser({data:{aceptacion_terminos_fecha:aceptacion,aceptacion_terminos_version:'2026-10-11'}}));
+      const guardado=await solicitudCuenta(()=>cliente.auth.updateUser({data:{aceptacion_terminos_fecha:aceptacion,aceptacion_terminos_version:'2026-10-12'}}));
       if(guardado.error){
         await solicitudCuenta(()=>cliente.auth.signOut());
         destino.searchParams.set('error','conexion');

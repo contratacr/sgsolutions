@@ -13,9 +13,11 @@ para esos servicios. El simulador rechaza operaciones de compra al proveedor.
 
 Cubre precio/stock, mínimo de 15, SINPE y transferencia, escritura real del pedido,
 comprobante privado y duplicado, doble envío del mismo pedido, fallo de correo,
-pago con tarjeta aprobado/rechazado y callback repetido. Recorre el formulario y
+pago con tarjeta aprobado/rechazado y callback repetido. Incluye teléfonos con
+paréntesis y espacios, que antes provocaban un rechazo del servidor. Recorre el formulario y
 la confirmación en Chromium y WebKit, español/inglés y escritorio/móvil. Restaura
-el catálogo local original y limpia sus registros de prueba al finalizar.
+el catálogo local original y limpia sus registros de prueba al finalizar. No ejecute
+otras pruebas que usen esa misma base mientras este comando modifica el catálogo.
 
 La configuración de prueba omite `global_fetch_strictly_public` para permitir los
 servicios de loopback. Conserva el Worker compilado y `nodejs_compat`. La

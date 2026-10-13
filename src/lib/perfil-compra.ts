@@ -1,9 +1,11 @@
+import {telefonoCompra} from './datos-cliente-compra';
 import {z} from 'zod';
 export const esquemaPerfilCompra=z.object({
  nombre:z.string().trim().min(1).max(100),apellidos:z.string().trim().min(1).max(100),
- telefono:z.preprocess(v=>typeof v==='string'&&v.trim()==='+506'?'':v,z.union([z.string().trim().regex(/^\+?[0-9\s-]{8,20}$/),z.literal('')]).default('')),
+ telefono:z.preprocess(v=>typeof v==='string'&&v.trim()==='+506'?'':v,z.union([z.string().trim().refine(v=>telefonoCompra.safeParse(v).success),z.literal('')]).default('')),
  tipoIdentificacion:z.enum(['fisica','juridica']).default('fisica'),identificacion:z.string().trim().max(150).default(''),
  razonSocial:z.string().trim().max(150).default(''),correoFactura:z.union([z.email().max(150),z.literal('')]).default(''),
+ direccionFiscal:z.string().trim().max(150).default(''),
  provincia:z.string().trim().max(80).default(''),canton:z.string().trim().max(80).default(''),distrito:z.string().trim().max(80).default(''),direccion:z.string().trim().max(350).default(''),
 });
 export type PerfilCompra=z.infer<typeof esquemaPerfilCompra>;

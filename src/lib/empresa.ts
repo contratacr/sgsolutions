@@ -1,6 +1,6 @@
 export const empresa = {
-  whatsapp: '50664399417',
-  telefono: '+50624467846',
+  whatsapp: '50686065342',
+  telefono: '+50686065342',
   correo: 'asesor@sgsolutionscr.com',
   instagram: 'https://www.instagram.com/sgsolutionscr/?hl=es-la',
   facebook: 'https://www.facebook.com/sgsolutionscr?locale=es_LA',

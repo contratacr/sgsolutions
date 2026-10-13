@@ -1,4 +1,5 @@
 "use client";
+import {datosClienteCompra} from '@/lib/datos-cliente-compra';
 import {AccesoCompra} from './acceso-compra';
 import {combinarDatosCompra} from '@/lib/perfil-compra';
 import {guardarDatosCompra,type EstadoDatosCompra} from '@/app/cuenta/datos-acciones';
@@ -43,8 +44,10 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
   const lineas=aprobacion?aprobacion.articulos.map(x=>({id:x.producto.id,cantidad:x.cantidad})):carrito;
 
   const [errorStock,setErrorStock]=useState(false);
+  const [camposInvalidos,setCamposInvalidos]=useState<string[]>([]);
   const [errorAutorizacion,setErrorAutorizacion]=useState(false);
   const [borrador, setBorrador] = useState<Record<string, string>>(():Record<string,string>=>{const d=aprobacion?.contacto;if(!d)return datosGuardados;const partes=d.nombre.trim().split(/\s+/);return combinarDatosCompra(datosGuardados,{nombre:partes.slice(0,-1).join(' ')||d.nombre,apellidos:partes.length>1?partes.at(-1)!:'',correo:d.correo??'',telefono:d.telefono?(d.telefono.startsWith('+')?d.telefono:'+'+d.telefono):'',tipoIdentificacion:d.tipoIdentificacion??'fisica',identificacion:d.identificacion??'',correoFactura:d.correo??''});});
+  const [tipoIdentificacion,setTipoIdentificacion]=useState(borrador.tipoIdentificacion??'fisica');
   const dc=useTranslations('DatosCuenta');const [guardadoPerfil,setGuardadoPerfil]=useState<EstadoDatosCompra>('inicio');
   const [comprobante,setComprobante]=useState<File|null>(null),[errorComprobante,setErrorComprobante]=useState(false);
   const pm=useTranslations('PedidoManual');
@@ -103,9 +106,12 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
       formulario.entries(),
     ) as Record<string, string>;
     setBorrador(datos);
-    setRevision(datos);
+    const validacion=datosClienteCompra.safeParse(datos);
+    if(!validacion.success){setCamposInvalidos([...new Set(validacion.error.issues.map(x=>String(x.path[0])))]);setErrorFormulario(true);return;}
+    setCamposInvalidos([]);
+    setRevision({...datos,...validacion.data});
     medir('pedido_revisado');
-    if(cuentaDisponible&&formulario.get('guardarDatos')==='on'){
+    if(cuentaDisponible){
       try{setGuardadoPerfil(await guardarDatosCompra('inicio',formulario));}catch{setGuardadoPerfil('error');}
     }
   }
@@ -169,9 +175,16 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
         name={name}
         type={type}
         required={required}
-        maxLength={name === "direccion" ? 350 : 150}
+        maxLength={name==='direccion'?350:['nombre','apellidos'].includes(name)?100:['canton','distrito'].includes(name)?80:type==='tel'?26:150}
+        aria-invalid={camposInvalidos.includes(name)||undefined}
+        onChange={()=>setCamposInvalidos(actual=>actual.filter(c=>c!==name))}
         autoComplete={autoComplete}
+        inputMode={name==='identificacion'?'numeric':undefined}
+        pattern={name==='identificacion'?(tipoIdentificacion==='juridica'?'[0-9]{10}|[0-9]-[0-9]{3}-[0-9]{6}':'[0-9]{9}|[0-9]-[0-9]{4}-[0-9]{4}'):undefined}
+        aria-describedby={name==='identificacion'?'compra-identificacion-ayuda':undefined}
       />
+      {camposInvalidos.includes(name)&&<small role="alert" className="campo-error">{t(type==='tel'?'telefonoInvalido':'campoInvalido')}</small>}
+      {name==='identificacion'&&<small id="compra-identificacion-ayuda">{t(tipoIdentificacion==='juridica'?'identificacionJuridicaAyuda':'identificacionFisicaAyuda')}</small>}
     </label>
   );
   return (
@@ -246,7 +259,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
             ) : (
               <form onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
 
-                {cuentaDisponible&&<label className="compra-guardar-datos"><input type="checkbox" name="guardarDatos"/>{dc('guardarProxima')}</label>}
+                {cuentaDisponible&&<p className="compra-guardar-datos">{dc('guardarAutomatico')}</p>}
                 <section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
                   <h2>
                     <span>01</span>
@@ -257,7 +270,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                     {campo("apellidos", true, "text", "family-name")}
                     {campo("correo", true, "email", "email")}
                     {campo("telefono", true, "tel", "tel")}
-                      <label><span>{a('tipoIdentificacion')}<IndicadorCampo obligatorio/></span><select required name="tipoIdentificacion" defaultValue={borrador.tipoIdentificacion??'fisica'}><option value="fisica">{a('fisica')}</option><option value="juridica">{a('juridica')}</option></select></label>
+                      <label><span>{a('tipoIdentificacion')}<IndicadorCampo obligatorio={factura}/></span><select required={factura} name="tipoIdentificacion" value={tipoIdentificacion} onChange={e=>setTipoIdentificacion(e.target.value)}><option value="fisica">{a('fisica')}</option><option value="juridica">{a('juridica')}</option></select></label>
                       {campo("identificacion", factura)}
 
                   </div>

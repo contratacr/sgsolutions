@@ -1,5 +1,7 @@
 import {z} from 'zod';
-const telefono = z.string().trim().regex(/^\+?[0-9\s-]{8,20}$/);
+import {identificacionCompraValida} from './identificacion-compra';
+export const telefonoCompra = z.string().trim().regex(/^\+?[0-9\s().-]+$/).transform(v=>v.replace(/[\s().-]/g,'' )).pipe(z.string().regex(/^\+?[0-9]{8,15}$/));
+const telefono = telefonoCompra;
 export const datosClienteCompra = z.object({
     nombre: z.string().trim().min(1).max(100), apellidos: z.string().trim().min(1).max(100),
     correo: z.email().max(150), telefono,
@@ -13,4 +15,6 @@ export const datosClienteCompra = z.object({
     razonSocial: z.string().trim().max(150).optional(), actividad: z.string().trim().max(150).optional(),
     correoFactura: z.union([z.email().max(150), z.literal('')]).optional(), direccionFiscal: z.string().trim().max(150).optional(),
     notas: z.string().trim().max(600).optional(), consentimiento: z.literal('on'),
+  }).superRefine((datos,ctx)=>{
+    if((datos.factura==='electronica'||datos.identificacion?.trim())&&!identificacionCompraValida(datos.tipoIdentificacion,datos.identificacion??''))ctx.addIssue({code:'custom',path:['identificacion'],message:'identificacion'});
   });
