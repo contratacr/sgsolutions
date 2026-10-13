@@ -68,3 +68,11 @@ El despliegue requiere despacho manual, autorización actual de Isaac y environm
 - [Catálogo manual y venta asistida](docs/catalogo/venta-asistida.md)
 
 Soluciones ofrece productos con asesoría: el carrito solicita atención y solo el enlace preparado por un asesor habilita la compra. El catálogo se administra manualmente. Se retiraron la importación Excel, sincronización IWS y extensión de Edge. Los productos fuera de la selección inicial se conservan como borradores.
+
+### Comprobación del checkout antes de publicar
+
+Ejecutar `npm run verificar:pedidos` con `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` del destino cargadas desde un almacén privado. La revisión es de solo lectura: comprueba las columnas usadas por pedidos, cuentas y correos, y que el bucket de comprobantes sea privado. Aborta si falta una migración. No sustituye las pruebas de restricciones, permisos ni del flujo completo.
+
+Probar también la compilación Worker con Wrangler: Next local no reproduce todas las restricciones de Cloudflare. Eurocomp usa redirecciones manuales y rechaza cualquier respuesta 3xx, sin reenviar credenciales. Las operaciones disponibles son únicamente consultas de inventario.
+
+Un entorno de pruebas remoto debe usar una base de datos independiente, credenciales de pago sandbox y correos controlados. Otro dominio conectado a producción no es un entorno aislado. En producción, las pruebas técnicas de pedidos deben identificarse como SIN PAGO y cancelarse; nunca enviar compras al proveedor ni marcar como pagado un comprobante sintético.

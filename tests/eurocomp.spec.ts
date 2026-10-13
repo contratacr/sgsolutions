@@ -9,7 +9,7 @@ const transporte=(xml:string)=>async()=>new Response(xml);
 test('Eurocomp usa solo lectura, escapa secretos y conserva el precio neto y la moneda del proveedor',async()=>{
  let solicitud:RequestInit|undefined;
  const datos=await consultarEurocomp({...config,clave:'a<&"b'},async(url,opciones)=>{expect(url).toBe('https://eurocompcr.com/webservice.php');solicitud=opciones;return new Response(inicio+'<result>0</result><data>'+fila+'</data>'+fin);});
- expect(solicitud?.body).toContain('a&lt;&amp;&quot;b');expect(solicitud?.redirect).toBe('error');expect(solicitud?.cache).toBe('no-store');
+ expect(solicitud?.body).toContain('a&lt;&amp;&quot;b');expect(solicitud?.redirect).toBe('manual');expect(solicitud?.cache).toBe('no-store');
  expect(solicitud?.body).not.toMatch(/send_orden|send_preventa/);
  expect(datos.articulos).toEqual([{codigo:'DEMO-1',parte:'PART-1',nombre:'Red & cámaras',marca:'Demo',familia:'Redes',familiaPadre:'',imagen:'',precio:100.5,moneda:'USD',stock:2}]);
  expect(JSON.stringify(datos)).not.toContain('clave');
@@ -35,4 +35,10 @@ test('una consulta lenta expira sin reintentar y sin divulgar credenciales',asyn
  await expect(consultarEurocomp({...config,tiempoMaximo:5},async(_url,opciones)=>{
   llamadas++;return new Promise<Response>((_resolve,reject)=>opciones?.signal?.addEventListener('abort',()=>reject(new Error('interrumpida')),{once:true}));
  })).rejects.toMatchObject({codigo:'tiempo'});expect(llamadas).toBe(1);
+});
+
+for(const estado of [301,302,307,308])test(`Eurocomp rechaza redirección ${estado} sin enviar credenciales a otro destino`,async()=>{
+ let llamadas=0;
+ await expect(consultarEurocomp(config,async(_url,opciones)=>{llamadas++;if(opciones?.redirect!=='manual')throw new TypeError('Cloudflare no admite redirect error');return new Response(null,{status:estado,headers:{Location:'https://example.com/otro'}});})).rejects.toMatchObject({codigo:'conexion'});
+ expect(llamadas).toBe(1);
 });

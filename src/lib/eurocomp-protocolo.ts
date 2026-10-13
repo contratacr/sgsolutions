@@ -26,7 +26,8 @@ export async function consultarEurocomp(config:{id:string;clave:string;bodega:nu
  const control=new AbortController();const limite=setTimeout(()=>control.abort(),config.tiempoMaximo??90_000);
  let lector:ReadableStreamDefaultReader<Uint8Array>|undefined;
  try {
-  const respuesta=await transporte('https://eurocompcr.com/webservice.php',{method:'POST',redirect:'error',cache:'no-store',signal:control.signal,headers:{'Content-Type':'text/xml; charset=utf-8',SOAPAction:`"urn:server#${operacion}"`},body:cuerpo});
+  // Workers supports manual redirects; reject 3xx below without forwarding credentials.
+  const respuesta=await transporte('https://eurocompcr.com/webservice.php',{method:'POST',redirect:'manual',cache:'no-store',signal:control.signal,headers:{'Content-Type':'text/xml; charset=utf-8',SOAPAction:`"urn:server#${operacion}"`},body:cuerpo});
   if(!respuesta.ok||!respuesta.body)throw new ErrorEurocomp('conexion');
   const parser=new SaxesParser({xmlns:true});
   let nivel=0,nivelFila=0,fila:Record<string,string>|null=null,campo='',resultado='',fallo=false,total=0;

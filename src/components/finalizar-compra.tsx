@@ -3,7 +3,7 @@ import {combinarDatosCompra} from '@/lib/perfil-compra';
 import {guardarDatosCompra,type EstadoDatosCompra} from '@/app/cuenta/datos-acciones';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import {adjuntarComprobantePedido} from '@/lib/adjuntar-comprobante';
-import {IndicadorCampo,NotaCampos} from './indicador-campo';
+import {IndicadorCampo} from './indicador-campo';
 import {medir} from '@/lib/analitica-cliente';
 import type { Contenido } from "@/lib/contenido-modelo";
 import Link from "next/link";
@@ -56,6 +56,20 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
     [errorPago, setErrorPago] = useState(false),
     [errorPedido, setErrorPedido] = useState(false),
     [errorFormulario, setErrorFormulario] = useState(false);
+  const revisionVisible=Boolean(revision);
+  const pasoCompra=useRef<HTMLElement>(null);
+  const pasoAnterior=useRef(revisionVisible);
+  useEffect(()=>{
+    if(pasoAnterior.current===revisionVisible)return;
+    pasoAnterior.current=revisionVisible;
+    const frame=requestAnimationFrame(()=>{
+      const destino=pasoCompra.current;
+      if(!destino)return;
+      window.scrollTo({top:Math.max(0,window.scrollY+destino.getBoundingClientRect().top-100),behavior:"instant"});
+      destino.focus({preventScroll:true});
+    });
+    return ()=>cancelAnimationFrame(frame);
+  },[revisionVisible]);
   const entregaCampos = useRef<HTMLDivElement>(null),
     receptorCampos = useRef<HTMLDivElement>(null),
     facturaCampos = useRef<HTMLDivElement>(null),
@@ -93,7 +107,6 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
     if(cuentaDisponible&&formulario.get('guardarDatos')==='on'){
       try{setGuardadoPerfil(await guardarDatosCompra('inicio',formulario));}catch{setGuardadoPerfil('error');}
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
   async function accesoCompra(){
     if(aprobacion)return {id:aprobacion.id,token:aprobacion.token};
@@ -184,7 +197,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
         <div className="compra-grid">
           <div>
             {revision ? (
-              <section className="compra-bloque">
+              <section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
                 <p className="etiqueta">{t("revision")}</p>
                 <h2>{t("revisarTitulo")}</h2>
                 <dl className="pedido-datos">
@@ -230,9 +243,9 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,pagos
               </section>
             ) : (
               <form onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
-                <NotaCampos/>
+
                 {cuentaDisponible&&<label className="compra-guardar-datos"><input type="checkbox" name="guardarDatos"/>{dc('guardarProxima')}</label>}
-                <section className="compra-bloque">
+                <section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
                   <h2>
                     <span>01</span>
                     {t("contactoTitulo")}

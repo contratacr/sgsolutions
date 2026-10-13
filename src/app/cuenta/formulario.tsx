@@ -3,7 +3,7 @@ import { useActionState, useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { Eye, EyeOff, Facebook, Mail } from 'lucide-react';
 import { MINIMO_CLAVE_CUENTA } from '@/lib/cuenta-validacion';
-import {IndicadorCampo,NotaCampos} from '@/components/indicador-campo';
+import {IndicadorCampo} from '@/components/indicador-campo';
 import {RequisitosClave} from '@/components/requisitos-clave';
 import { accederCliente, actualizarClaveCliente, accederCuentaSocial, type EstadoAccesoCliente } from './acciones';
 
@@ -38,7 +38,7 @@ function AccesoFormulario({modo,cambiar,aceptado,cambiarAceptacion}:{modo:Modo;c
   return <>
     {(modo==='recuperar'||modo==='reenviar')&&<p className="cuenta-explicacion">{t(modo==='recuperar'?'recuperarDetalle':'reenviarDetalle')}</p>}
     <form id={modo==='registro'?'cuenta-correo-registro':undefined} action={accion} className="cuenta-formulario" aria-busy={pendiente}>
-      <input type="hidden" name="modo" value={modo}/>{modo==='registro'&&<NotaCampos/>}
+      <input type="hidden" name="modo" value={modo}/>
       {modo==='registro'&&<div className="cuenta-campo"><label htmlFor="nombre-cuenta">{t('nombre')}<IndicadorCampo obligatorio/></label><input id="nombre-cuenta" name="nombre" autoComplete="name" required minLength={2} maxLength={150} value={nombre} onChange={e=>setNombre(e.target.value)}/></div>}
       <div className="cuenta-campo"><label htmlFor="correo-cuenta">{t('correo')}<IndicadorCampo obligatorio/></label><input id="correo-cuenta" name="correo" type="email" required autoComplete="email" maxLength={254} placeholder={t('correoEjemplo')} value={correo} onChange={e=>setCorreo(e.target.value)}/></div>
       {(modo==='login'||modo==='registro')&&<CampoClave key={String(exito)} nueva={modo==='registro'}/>}

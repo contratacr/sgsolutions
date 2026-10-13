@@ -140,9 +140,9 @@ body:has(.portal) .portal{box-shadow:none}
 .pie-contacto,.pie-ubicacion{display:flex;flex-direction:column;align-items:flex-start}
 .pie-contacto>a:not(.pie-whatsapp){margin-top:3px}
 .pie-base{justify-content:flex-start}
-.whatsapp-flotante{position:fixed;right:22px;bottom:22px;z-index:50;display:grid;place-items:center;width:56px;height:56px;border:1px solid #ffffff70;border-radius:50%;background:#25d366;color:#fff;box-shadow:0 14px 34px #071b1245;font-size:.78rem;font-weight:650;transition:transform .22s,background .22s,box-shadow .22s}
+.whatsapp-flotante{position:fixed;right:22px;bottom:22px;z-index:50;display:grid;place-items:center;width:56px;height:56px;border:1px solid #ffffff70;border-radius:50%;background:#25d366;color:#fff;box-shadow:none;text-decoration:none;line-height:0;font-size:.78rem;font-weight:650;transition:background .22s}
 .whatsapp-flotante span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-.whatsapp-flotante:hover,.whatsapp-flotante:focus-visible{transform:translateY(-3px) scale(1.04);background:#20bd5a;box-shadow:0 18px 38px #071b1250}
+.whatsapp-flotante:hover,.whatsapp-flotante:focus-visible{background:#20bd5a;box-shadow:none}
 .whatsapp-flotante:focus-visible{outline:2px solid #143041;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.whatsapp-flotante{transition:none}.whatsapp-flotante:hover,.whatsapp-flotante:focus-visible{transform:none}}
 @media(max-width:899px){.pie-grid{grid-template-columns:1fr 1fr;gap:34px}.pie-identidad{grid-column:1/-1}}

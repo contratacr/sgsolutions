@@ -49,7 +49,7 @@ h2 { font-weight: 550; }
 .catalogo-herramientas { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 25px; }
 .catalogo-herramientas .conteo { margin: 0; font-size: .8rem; }
 .busqueda-equipo { display: flex; align-items: center; gap: 10px; padding: 0 15px; border: 1px solid var(--borde); border-radius: 8px; min-height: 46px; width: min(350px,70%); background: white; color: var(--suave); }
-.busqueda-equipo:focus-within { outline: 2px solid var(--azul-medio); outline-offset: 2px; }
+.busqueda-equipo:focus-within { border-color:#406985;outline:none;box-shadow:inset 0 0 0 1px #406985; }
 .busqueda-equipo input { border: 0; background: transparent; width: 100%; min-width: 0; font-size: .85rem; min-height: 44px; outline: none; }
 .busqueda-equipo input::-webkit-search-cancel-button { display: none; }
 .busqueda-equipo button { display: flex; align-items: center; justify-content: center; min-width: 28px; min-height: 32px; border: 0; background: transparent; padding: 0; }

@@ -38,11 +38,12 @@ test('ejemplo del Excel: costo USD 13,90, recargo del 20%, IVA y ajuste comercia
  for(const [entrada,salida] of [[500,500],[500.01,1000],[9424.20,9500],[9500,9500],[49500.01,50000],[50000,50000],[50000.01,51000]])expect(redondearPrecio(entrada)).toBe(salida);
  expect(redondearPrecio(500.00000000000006)).toBe(500);
 });
-test('tienda mantiene CRC en inglés y ordena precios',async({page},prueba)=>{
+test('tienda mantiene CRC en inglés y ordena precios',async({page,context},prueba)=>{
+ await context.addCookies([{name:'sg-idioma',value:'en',domain:'127.0.0.1',path:'/'}]);
  await page.goto('/tienda');
- await page.getByRole('button',{name:'Read this page in English'}).click();
  await expect(page.locator('html')).toHaveAttribute('lang','en');
- await page.getByRole('combobox').selectOption('menor');
+ await expect(page.locator('.shop-orden select')).toBeEnabled();
+ await page.locator('.shop-orden select').selectOption('menor');
  await expect.poll(()=>page.getByRole('article').count()).toBeGreaterThan(1);
  const precios=await page.locator('.shop-precio strong').allTextContents();
  const valores=precios.map(precio=>Number(precio.replace(/\D/g,'')));
