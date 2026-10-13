@@ -1,0 +1,45 @@
+name: Pruebas de compras sin cobros
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: compras-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  compras:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Verificar código y traducciones
+        run: npm run verificar
+      - name: Crear Supabase efímero y aplicar las migraciones
+        run: |
+          npx supabase start > "$RUNNER_TEMP/supabase-inicio.log" 2>&1
+          npx supabase status --output json > "$RUNNER_TEMP/sg-base-local.json"
+          chmod 600 "$RUNNER_TEMP/sg-base-local.json"
+      - name: Probar el Worker compilado y compras simuladas
+        run: npm run test:compras
+        env:
+          TEST_SUPABASE_CONFIG: ${{ runner.temp }}/sg-base-local.json
+          WRANGLER_SEND_METRICS: "false"
+      - name: Guardar resumen sin credenciales
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultado-compras-simuladas
+          path: .privado/evidencias/compras-worker.json
+          if-no-files-found: ignore
+      - name: Detener la base efímera
+        if: always()
+        run: npx supabase stop --no-backup

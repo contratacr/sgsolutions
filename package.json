@@ -23,7 +23,8 @@
     "predev": "node scripts/preparar-catalogo.mjs",
     "pretypecheck": "node scripts/preparar-catalogo.mjs",
     "sincronizar:eurocomp": "tsx scripts/sincronizar-eurocomp.ts",
-    "verificar:pedidos": "node scripts/verificar-esquema-pedidos.mjs"
+    "verificar:pedidos": "node scripts/verificar-esquema-pedidos.mjs",
+    "test:compras": "node --import tsx scripts/testing/compras-worker.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.0",
