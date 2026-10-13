@@ -1,0 +1,7 @@
+const clave='sg-recomendaciones';
+const plazo=30*24*60*60*1000;
+export function leerHistorial():{activo:boolean;ids:string[];vistas:string[]}{
+ try{const d=JSON.parse(localStorage.getItem(clave)??'null');if(!d||d.activo!==true)return {activo:false,ids:[],vistas:[]};const items=Array.isArray(d.items)?d.items.filter((x:{id:unknown;fecha:unknown})=>x&&typeof x.id==='string'&&/^[a-z0-9][a-z0-9-]{0,59}$/.test(x.id)&&typeof x.fecha==='number'&&x.fecha>Date.now()-plazo).slice(0,20): [];return {activo:true,ids:items.map((x:{id:string})=>x.id),vistas:items.filter((x:{vista?:boolean})=>x.vista).map((x:{id:string})=>x.id)};}catch{return {activo:false,ids:[],vistas:[]};}
+}
+export function cambiarHistorial(activo:boolean){try{if(activo)localStorage.setItem(clave,JSON.stringify({activo:true,items:[]}));else localStorage.removeItem(clave);}catch{}window.dispatchEvent(new Event('sg-historial'));}
+export function recordarExploracion(ids:string[],vista=false){const h=leerHistorial();if(!h.activo)return;try{const d=JSON.parse(localStorage.getItem(clave)??'null');const nuevas=[...new Set(ids)].slice(0,4);const items=[...nuevas.map(id=>({id,fecha:Date.now(),vista:vista||(d?.items??[]).some((x:{id:string;vista?:boolean})=>x.id===id&&x.vista)})),...(d?.items??[]).filter((x:{id:string;fecha:number})=>!nuevas.includes(x.id)&&x.fecha>Date.now()-plazo)].slice(0,20);localStorage.setItem(clave,JSON.stringify({activo:true,items}));window.dispatchEvent(new Event('sg-historial'));}catch{}}

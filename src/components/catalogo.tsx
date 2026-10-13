@@ -1,4 +1,7 @@
 'use client';
+import {RecomendacionesTienda} from './recomendaciones-tienda';
+import {recordarExploracion} from '@/lib/historial-tienda';
+import type {recomendaciones} from '@/lib/recomendaciones';
 import {rutaProducto} from '@/lib/rutas-productos';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,7 +19,7 @@ import {colones,traducir} from '@/lib/catalogo-modelo';
 import type {PaginaCatalogo} from '@/lib/catalogo-consulta';
 import {agregarProducto} from '@/lib/carrito';
 import {desplazarContenido} from '@/lib/desplazar-contenido';
-export function Catalogo({inicial}:{inicial:PaginaCatalogo}){
+export function Catalogo({inicial,recomendacionesIniciales}:{inicial:PaginaCatalogo;recomendacionesIniciales:ReturnType<typeof recomendaciones>}){
  const a=useTranslations('Asesoria');
  const e=useTranslations('Error');
  const t=useTranslations('Tienda'),s=useTranslations('Comercio'),idioma=useLocale(),datos=useCatalogo();
@@ -57,7 +60,7 @@ export function Catalogo({inicial}:{inicial:PaginaCatalogo}){
   if(consulta===consultaInicial.current&&intento===0)return;
   consultaInicial.current='';
   const abort=new AbortController();
-  const timer=setTimeout(()=>fetch(`/api/catalogo?${consulta}`,{signal:abort.signal}).then(r=>{if(!r.ok)throw new Error();return r.json();}).then((d:PaginaCatalogo)=>{setRespuesta({consulta,datos:d});if(new URLSearchParams(consulta).get('q'))d.productos.slice(0,10).forEach(p=>medir('busqueda_producto',p.id));recordar(d.productos);setError('');}).catch(()=>{if(!abort.signal.aborted)setError(consulta);}),busqueda?150:0);
+  const timer=setTimeout(()=>fetch(`/api/catalogo?${consulta}`,{signal:abort.signal}).then(r=>{if(!r.ok)throw new Error();return r.json();}).then((d:PaginaCatalogo)=>{setRespuesta({consulta,datos:d});if(new URLSearchParams(consulta).get('q'))recordarExploracion(d.productos.slice(0,4).map(p=>p.id));if(new URLSearchParams(consulta).get('q'))d.productos.slice(0,10).forEach(p=>medir('busqueda_producto',p.id));recordar(d.productos);setError('');}).catch(()=>{if(!abort.signal.aborted)setError(consulta);}),busqueda?150:0);
   return ()=>{clearTimeout(timer);abort.abort();};
  },[consulta,recordar,intento,busqueda]);
  const cargando=respuesta?.consulta!==consulta;
@@ -82,6 +85,7 @@ export function Catalogo({inicial}:{inicial:PaginaCatalogo}){
  function cambiarPagina(nueva:number){actualizarResultados(()=>setPaginacion({clave,pagina:nueva}));}
  return <>
   <section className="asesoria-hero"><div className="asesoria-hero-texto"><p className="etiqueta">{a('etiqueta')}</p><h1>{traducir(datos.textos.titulo,idioma)}</h1><p>{traducir(datos.textos.descripcion,idioma)}</p></div><div className="asesoria-hero-acciones"><AsesoriaWhatsApp etiqueta="asesorar"/></div></section>
+  <RecomendacionesTienda inicial={recomendacionesIniciales} oculto={!!(busqueda||categoria!=='todos'||marca||subcategoria||marcasElegidas.length||min||max||solicitada>1)}/>
   <MarcasDestacadas marcas={marcas} seleccionada={marca} seleccionar={nombre=>actualizarResultados(()=>{setMarca(marca===nombre?'':nombre);setCategoria('todos');setSubcategoria('');setBusqueda('');})}/>
   <div className="shop-buscador"><Search size={23}/><label className="sr-only" htmlFor="buscar-equipo">{t('buscar')}</label><input id="buscar-equipo" type="search" disabled={!preferenciasListas} value={busqueda} onChange={e=>setBusqueda(e.target.value)} placeholder={t('buscar')} maxLength={150}/>{busqueda&&<button aria-label={t('limpiarBusqueda')} onClick={()=>setBusqueda('')}><X size={20}/></button>}</div>
   <button className="boton boton-contorno shop-abrir-filtros" onClick={()=>panelFiltros.current?.showModal()}><SlidersHorizontal size={18}/>{s('filtros')}</button><dialog ref={panelFiltros} className="shop-panel-filtros" aria-label={s('filtros')} onClick={e=>{if(e.target===e.currentTarget)panelFiltros.current?.close();}}><button aria-label={s('cerrarFiltros')} onClick={()=>panelFiltros.current?.close()}><X/></button><h2>{s('filtros')}</h2>{categoriasIntegradas()}{filtrosAdicionales()}<button onClick={limpiarFiltros}>{s('limpiarFiltros')}</button><button className="boton boton-azul" onClick={()=>panelFiltros.current?.close()}>{s('verResultados')} ({total})</button></dialog><div className="shop-filtros-activos">{[...(categoria!=='todos'?[{texto:nombreCategoria(categoria),quitar:()=>{setCategoria('todos');setSubcategoria('');}}]:[]),...(subcategoria?[{texto:traducir(datos.subcategorias.find(x=>x.nombre.es===subcategoria)?.nombre??{es:subcategoria,en:subcategoria},idioma),quitar:()=>setSubcategoria('')}]:[]),...[...new Set([...marcasElegidas,...(marca?[marca]:[])])].map(m=>({texto:m,quitar:()=>{if(marca===m)setMarca('');setMarcasElegidas(prev=>prev.filter(x=>x!==m));}})),...(min?[{texto:s('precioMin')+': '+min,quitar:()=>setMin('')}]:[]),...(max?[{texto:s('precioMax')+': '+max,quitar:()=>setMax('')}]:[])].map(x=><button key={x.texto} onClick={x.quitar}>{x.texto}<X size={14}/></button>)}{(categoria!=='todos'||subcategoria||marca||marcasElegidas.length>0||min||max||busqueda)&&<button onClick={limpiarFiltros}>{s('limpiarFiltros')}</button>}</div><div className="shop-distribucion" id="catalogo"><aside className="shop-sidebar"><h2><SlidersHorizontal size={16}/>{s('categorias')}</h2>{categoriasIntegradas()}{filtrosAdicionales()}</aside>

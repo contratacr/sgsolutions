@@ -4,6 +4,8 @@ import { getLocale } from "next-intl/server";
 import {headers} from 'next/headers';
 import { leerCatalogoPublico } from "@/lib/catalogo-servidor";
 import { traducir } from "@/lib/catalogo-modelo";
+import {RecomendacionesTienda} from '@/components/recomendaciones-tienda';
+import {recomendaciones} from '@/lib/recomendaciones';
 import { FichaProducto } from "@/components/ficha-producto";
 type Props = { params: Promise<{ id: string }> };
 export async function generateMetadata({ params }: Props) {
@@ -42,6 +44,7 @@ export default async function Producto({ params }: Props) {
         producto={p}
         categoria={c.categorias.find((x) => x.id === p.categoria)!.nombre}
       />
+      <RecomendacionesTienda actual={p.id} inicial={recomendaciones(c.productos,[],p.id)}/>
     </main>
   );
 }

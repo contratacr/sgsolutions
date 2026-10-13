@@ -1,4 +1,5 @@
 'use client';
+import {useCambiosAdmin} from './use-cambios-admin';
 import {useId,useState,type FormEvent} from 'react';
 import {useFormStatus} from 'react-dom';
 import {useLocale,useTranslations} from 'next-intl';
@@ -14,6 +15,7 @@ export function PrepararAsesoria({id,articulos,productos}:{id:string;articulos:{
  const t=useTranslations('AsesoriaAdmin'),l=useLocale(),identificador=useId();
  const [filas,setFilas]=useState(articulos.map(x=>({id:x.producto.id,cantidad:x.cantidad,precio:x.producto.precio??0})));
  const [busqueda,setBusqueda]=useState(''),[error,setError]=useState(''),[confirmado,setConfirmado]=useState(false);
+ useCambiosAdmin(filas);
  const disponibles=productos.filter(p=>!filas.some(f=>f.id===p.id)&&`${traducir(p.nombre,l)} ${p.marca} ${p.codigoFabricante}`.toLocaleLowerCase().includes(busqueda.trim().toLocaleLowerCase()));
  const total=filas.reduce((s,x)=>s+x.precio*x.cantidad,0);
  function validar(e:FormEvent<HTMLFormElement>){

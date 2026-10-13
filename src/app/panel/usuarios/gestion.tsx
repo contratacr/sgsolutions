@@ -1,4 +1,6 @@
 'use client';
+import {useCambiosAdmin} from '@/components/use-cambios-admin';
+import {useProteccionPanel} from '@/components/proteger-cambios-panel';
 import * as Dialog from '@radix-ui/react-dialog';
 import {useActionState,useId,useState} from 'react';
 import {Settings2,X,Mail,Shield,Trash2,History} from 'lucide-react';
@@ -10,7 +12,7 @@ const exitos=new Set(['datosActualizados','recuperacionEnviada','confirmacionEnv
 function Mensaje({estado}:{estado:EstadoGestion}){const t=useTranslations('UsuariosPanel');return estado==='inicio'?null:<p className={exitos.has(estado)?'gestion-exito':'gestion-error'} role={exitos.has(estado)?'status':'alert'}>{t(estado)}</p>;}
 function Campos({u,operacion}:{u:UsuarioPanel;operacion:string}){return <><input type="hidden" name="usuario" value={u.id}/><input type="hidden" name="operacion" value={operacion}/><input type="hidden" name="version" value={u.version_gestion??0}/></>;}
 function Datos({u,propia}:{u:UsuarioPanel;propia:boolean}){
- const t=useTranslations('UsuariosPanel'),id=useId();const [nombre,setNombre]=useState(u.nombre),[correo,setCorreo]=useState(u.correo??'');const [estado,accion,pendiente]=useActionState(accionSegura,'inicio' as EstadoGestion);
+ const t=useTranslations('UsuariosPanel'),id=useId();const [nombre,setNombre]=useState(u.nombre),[correo,setCorreo]=useState(u.correo??'');const {confirmarGuardado}=useCambiosAdmin({nombre,correo});const [estado,accion,pendiente]=useActionState(async(estado:EstadoGestion,datos:FormData)=>{const resultado=await accionSegura(estado,datos);if(exitos.has(resultado))confirmarGuardado();return resultado;},'inicio' as EstadoGestion);
  const cambiaCorreo=correo.trim().toLowerCase()!==(u.correo??'').toLowerCase();
  return <form action={accion} onReset={e=>e.preventDefault()} className="gestion-formulario" aria-busy={pendiente}>
   <Campos u={u} operacion="datos"/><input type="hidden" name="correo_actual" value={u.correo??''}/>
@@ -22,7 +24,7 @@ function Datos({u,propia}:{u:UsuarioPanel;propia:boolean}){
  </form>;
 }
 function Acceso({u,propia}:{u:UsuarioPanel;propia:boolean}){
- const t=useTranslations('UsuariosPanel'),id=useId();const actual=u.equipo_activo&&u.rol_equipo==='administrador'?'administrador':'sin_acceso';const [seleccion,setSeleccion]=useState({actual,valor:actual}),[estado,accion,pendiente]=useActionState(accionSegura,'inicio' as EstadoGestion);
+ const t=useTranslations('UsuariosPanel'),id=useId();const actual=u.equipo_activo&&u.rol_equipo==='administrador'?'administrador':'sin_acceso';const [seleccion,setSeleccion]=useState({actual,valor:actual});const {confirmarGuardado}=useCambiosAdmin(seleccion.valor);const [estado,accion,pendiente]=useActionState(async(estado:EstadoGestion,datos:FormData)=>{const resultado=await accionSegura(estado,datos);if(exitos.has(resultado))confirmarGuardado();return resultado;},'inicio' as EstadoGestion);
  if(seleccion.actual!==actual)setSeleccion({actual,valor:actual});
  const rol=seleccion.valor,bloqueado=u.estado_cuenta!=='activo'&&Boolean(u.estado_cuenta);
  return <form action={accion} onReset={e=>e.preventDefault()} className="gestion-formulario" aria-busy={pendiente}>
@@ -55,8 +57,8 @@ function Historial({id}:{id:string}){
  return <div className="gestion-historial"><button type="button" className="boton boton-contorno" onClick={cargar} disabled={pendiente}><History size={18} aria-hidden="true"/>{t('verHistorial')}</button>{pendiente?<div role="status" aria-label={t('cargando')}><div className="esqueleto"/><div className="esqueleto"/></div>:error?<p role="alert" className="gestion-error">{t('error')}</p>:eventos&&<>{!eventos.length?<p>{t('sinHistorial')}</p>:<ol>{eventos.map((e,i)=><li key={i}><strong>{acciones[e.accion]??t('eventoPerfil')}</strong><span>{e.actor||t('sinNombre')} · {new Intl.DateTimeFormat(idioma==='en'?'en-US':'es-CR',{dateStyle:'medium',timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(e.creado_en))}</span></li>)}</ol>}</>}</div>;
 }
 export function GestionUsuario({u,propia}:{u:UsuarioPanel;propia:boolean}){
- const t=useTranslations('UsuariosPanel');const [abierto,setAbierto]=useState(false);
- return <Dialog.Root open={abierto} onOpenChange={setAbierto}><Dialog.Trigger className="boton boton-contorno usuario-administrar"><Settings2 size={17} aria-hidden="true"/>{t('administrar')}</Dialog.Trigger><Dialog.Portal><Dialog.Overlay className="gestion-fondo"/><Dialog.Content className="gestion-modal">
+ const t=useTranslations('UsuariosPanel');const [abierto,setAbierto]=useState(false);const proteccion=useProteccionPanel();
+ return <Dialog.Root open={abierto} onOpenChange={valor=>{if(!valor&&proteccion)proteccion.solicitar(()=>setAbierto(false));else setAbierto(valor);}}><Dialog.Trigger className="boton boton-contorno usuario-administrar"><Settings2 size={17} aria-hidden="true"/>{t('administrar')}</Dialog.Trigger><Dialog.Portal><Dialog.Overlay className="gestion-fondo"/><Dialog.Content className="gestion-modal">
   <header className="gestion-cabecera"><div><Dialog.Title>{t('administrarUsuario')}</Dialog.Title><Dialog.Description>{u.nombre||u.correo||t('sinNombre')}</Dialog.Description></div><Dialog.Close className="boton-icono" aria-label={t('cerrar')}><X aria-hidden="true"/></Dialog.Close></header>
   <div className="gestion-contenido"><section><h3>{t('datos')}</h3><Datos u={u} propia={propia}/></section><section><h3><Shield size={18} aria-hidden="true"/>{t('accesoPanel')}</h3><Acceso u={u} propia={propia}/></section>
   <section><h3>{t('seguridad')}</h3><p className="gestion-ayuda">{t('recuperacionDetalle',{correo:u.correo??t('sinCorreo')})}</p><CorreoSeguridad u={u} operacion="recuperacion"/>{!u.confirmado&&<CorreoSeguridad u={u} operacion="confirmacion"/>}<details><summary>{t(u.estado_cuenta==='bloqueado'?'desbloquearUsuario':'bloquearUsuario')}</summary><Baja u={u} propia={propia}/></details></section>

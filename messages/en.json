@@ -1178,7 +1178,7 @@
         },
         "4": {
           "titulo": "Cookies and browser storage",
-          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in browser local storage under sg-carrito-v1 until you empty it or delete site data. Authentication cookies maintain your session and protect the sign-in return; when signing in from checkout, a return cookie lasting up to one hour lets you return to your order. Form fields are retained during interaction and purchase details are updated in your profile when reviewing an order while signed in. Statistics and advertising preferences are stored in your browser: only with your permission are first-party browsing events recorded and Meta Pixel loaded. You can change your choice through Privacy preferences; deleting cookies may sign you out and remove preferences."
+          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in browser local storage under sg-carrito-v1 until you empty it or delete site data. Authentication cookies maintain your session and protect the sign-in return; when signing in from checkout, a return cookie lasting up to one hour lets you return to your order. Form fields are retained during interaction and purchase details are updated in your profile when reviewing an order while signed in. Statistics and advertising preferences are stored in your browser: only with your permission are first-party browsing events recorded and Meta Pixel loaded. You can change your choice through Privacy preferences; deleting cookies may sign you out and remove preferences. If enabled, we store up to 20 explored product references for 30 days in this browser. This also works when signed out; it does not sync with your account or other devices. You can disable it and clear your history at any time. Manage this option under Personalize recommendations in the store; we do not store your search text."
         },
         "5": {
           "titulo": "Access, providers and retention",
@@ -1728,5 +1728,23 @@
     "registro": "Sign up",
     "invitado": "You can also continue as a guest.",
     "carrito": "Already have an account? Sign in"
+  },
+  "Recomendaciones": {
+    "destacados": "Featured products",
+    "descubrir": "Discover products",
+    "similares": "Similar products",
+    "paraUsted": "Based on your browsing",
+    "recientes": "Recently viewed",
+    "preferencias": "Personalize recommendations",
+    "detalle": "If enabled, we store up to 20 explored product references for 30 days in this browser. This also works when signed out; it does not sync with your account or other devices. You can disable it and clear your history at any time.",
+    "activar": "Save my history in this browser",
+    "borrar": "Clear history and disable",
+    "privacidad": "Privacy policy"
+  },
+  "CambiosPanel": {
+    "titulo": "You have unsaved changes",
+    "descripcion": "If you leave now, your changes will be lost.",
+    "seguir": "Keep editing",
+    "salir": "Leave without saving"
   }
 }
