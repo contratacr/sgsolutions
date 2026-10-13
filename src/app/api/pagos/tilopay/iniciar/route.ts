@@ -1,4 +1,4 @@
-import {datosClienteCompra} from '@/lib/datos-cliente-compra';
+import {datosClienteCompra,telefonoCompra} from '@/lib/datos-cliente-compra';
 import {costoEntrega} from '@/lib/envio';
 import {verificarCompraEurocomp} from '@/lib/eurocomp-compra';
 import {origenPermitido} from '@/lib/origen-permitido';
@@ -11,7 +11,7 @@ const solicitud = z.object({
   nombre: z.string().trim().min(1).max(100),
   apellidos: z.string().trim().min(1).max(100),
   correo: z.email().max(150),
-  telefono: z.string().trim().regex(/^\+?[0-9\s-]{8,20}$/),
+  telefono: telefonoCompra,
   articulos: z.array(z.object({ id: z.string().regex(/^[a-z0-9-]{1,60}$/), cantidad: z.number().int().min(1).max(99) })).min(1).max(30),
   consentimiento: z.literal(true),
   idioma: z.enum(['es','en']).default('es'),
