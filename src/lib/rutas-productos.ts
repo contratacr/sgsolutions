@@ -16,6 +16,8 @@ function baseRuta(p:ProductoConRuta) {
 }
 /** Reserve existing URLs before assigning new ones. Persisted slugs survive name/model and stock changes. */
 export function asignarRutasProductos<T extends ProductoConRuta>(productos:T[]):T[] {
+ // Published catalogues already carry stable slugs; avoid allocating/sorting again.
+ if(productos.every(p=>p.slug))return productos;
  const usados=new Set(productos.flatMap(p=>[p.id,...(p.slug?[p.slug]:[])]));
  const nuevos=new Map<string,string>();
  for(const p of [...productos].sort((a,b)=>a.id.localeCompare(b.id))){
