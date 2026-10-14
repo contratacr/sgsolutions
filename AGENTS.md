@@ -4,6 +4,7 @@
 - La navegación entre páginas de SG Solutions abre en la misma pestaña. WhatsApp, Outlook y mapas externos abren en otra pestaña con `rel="noopener noreferrer"` e indicación accesible traducida, según la última preferencia del usuario.
 - Antes de entregar cambios, verificar las rutas afectadas en escritorio/móvil y ambos idiomas. Mantener `npm run verificar`, build y pruebas pertinentes.
 - No desplegar a producción ni activar cobros reales sin autorización explícita del usuario.
+- Preferencia explícita del usuario: cuando diga «pushea», hacer push y desplegar ese bloque a producción, con las verificaciones correspondientes. Esta autorización no incluye activar cobros reales.
 - Mantener los cambios locales durante las iteraciones de diseño. No hacer push en cada cambio; agrupar entregas grandes y esperar indicación del usuario para publicar el siguiente bloque.
 - El footer debe conservar el logo gráfico oficial (el mismo del navbar o una variante de color), nunca sustituirlo solo por texto.
 
