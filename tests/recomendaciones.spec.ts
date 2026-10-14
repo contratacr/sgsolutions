@@ -25,11 +25,11 @@ for(const idioma of ['es','en'])test('recomendaciones temporales sin historial p
  await expect(page.locator('.recomendaciones-preferencias')).toHaveCount(0);
  await page.evaluate(()=>localStorage.setItem('sg-recomendaciones',JSON.stringify({activo:true,items:[{id:'antiguo',fecha:Date.now()}]})));
  await page.reload();
- expect(await page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
+ await expect.poll(()=>page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
  await page.locator('.shop-producto h3 a').first().click();
  await expect(page.locator('.ficha-compra h1')).toBeVisible();
  expect(await page.evaluate(()=>sessionStorage.getItem('sg-intereses-sesion'))).toBeNull();
- expect(await page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
+ await expect.poll(()=>page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
  await page.goto('/tienda');
  await expect(page.locator('.shop-orden select')).toHaveValue('recomendados');
  await page.locator('.shop-orden select').selectOption('menor');
