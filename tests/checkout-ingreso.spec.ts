@@ -10,7 +10,7 @@ test('retornos de compra bloquean destinos externos y parámetros ajenos',()=>{
  expect(retornoCompra(destino)).toBe(destino);expect(new URL(enlaceIngresoCompra(destino),'https://sg.invalid').searchParams.get('retorno')).toBe(destino);
 });
 for(const idioma of ['es','en'])test(`acceso visible en carrito y pedido sin obligar registro ${idioma}`,async({page,context})=>{
- await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);await page.goto('/tienda');await expect(page.locator('.shop-orden select')).toBeEnabled();await page.locator('.shop-producto button').first().click();
+ await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();
  await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();
  const enlace=page.locator('.carrito-ingreso');await expect(enlace).toHaveAttribute('href',enlaceIngresoCompra());await enlace.click();await expect(page).toHaveURL(/\/cuenta\?retorno=/);
  await expect(page.locator('.cuenta-formulario [name=retorno]')).toHaveValue('/pagar');
@@ -22,7 +22,7 @@ test.describe('sesión real contra Auth local',()=>{
  for(const idioma of ['es','en'])test(`correo vuelve al pedido, conserva carrito y rellena datos ${idioma}`,async({page,context,baseURL})=>{
   expect(new URL(baseURL!).hostname).toBe('127.0.0.1');
   const cuenta=JSON.parse(fs.readFileSync('.privado/qa-local/cuentas.json','utf8')).find((c:{admin:boolean})=>c.admin);
-  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);await page.goto('/tienda');await expect(page.locator('.shop-orden select')).toBeEnabled();await page.locator('.shop-producto button').first().click();const carrito=await page.evaluate(()=>localStorage.getItem('sg-carrito-v1'));
+  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();const carrito=await page.evaluate(()=>localStorage.getItem('sg-carrito-v1'));
   await page.goto('/finalizar-compra');await page.locator('.compra-acceso-titulo>a').click();
   await page.locator('.cuenta-formulario [name=correo]').fill(cuenta.email);await page.locator('.cuenta-formulario [name=clave]').fill('Incorrecta-123!');await page.locator('.cuenta-enviar').click();await expect(page.locator('.cuenta-formulario [role=alert]')).toBeVisible();
   await page.locator('.cuenta-formulario [name=clave]').fill(cuenta.password);await page.locator('.cuenta-enviar').click();await expect(page).toHaveURL(/\/pagar$/);

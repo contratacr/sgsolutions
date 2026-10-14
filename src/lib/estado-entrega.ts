@@ -2,7 +2,7 @@ export const estadosEntrega = ['pendiente_preparar', 'preparando', 'listo_retiro
 export type EstadoEntrega = typeof estadosEntrega[number];
 export function siguientesEstadosEntrega(actual: EstadoEntrega, modalidad: string | undefined): EstadoEntrega[] {
   if (actual === 'pendiente_preparar') return ['preparando'];
-  if (actual === 'preparando') return [modalidad === 'envio' ? 'enviado' : 'listo_retiro'];
+  if (actual === 'preparando') return [modalidad === 'envio' || modalidad === 'express' ? 'enviado' : 'listo_retiro'];
   if (actual === 'enviado' || actual === 'listo_retiro') return ['entregado'];
   return [];
 }

@@ -14,7 +14,7 @@ export const logoMarca=(nombre:string)=>porNombre.get(normalizarMarca(nombre));
 
 export function MarcasDestacadas({marcas:marcasEntrada,seleccionada,seleccionar}:{marcas:string[];seleccionada:string;seleccionar:(marca:string)=>void}) {
   const t=useTranslations('Tienda');
-  const marcas=marcasEntrada.filter(nombre=>Boolean(logoMarca(nombre)));
+  const marcas=[...new Set(marcasEntrada)].filter(nombre=>Boolean(logoMarca(nombre)));
   const pista=useRef<HTMLDivElement>(null);
   const ventana=useRef<HTMLDivElement>(null);
   const [repeticiones,setRepeticiones]=useState(1);

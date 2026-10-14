@@ -3,7 +3,7 @@ for(const idioma of ['es','en']){
  test(`foco sin doble borde y WhatsApp sin sombra ${idioma}`,async({page,context})=>{
   await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
   await page.goto('/tienda');
-  await expect(page.locator('.shop-orden select')).toBeEnabled();
+  await expect(page.locator('.shop-orden-trigger')).toBeEnabled();
   const buscador=page.locator('.shop-buscador');
   await buscador.locator('input').focus();
   const estilos=await buscador.evaluate(el=>({outline:getComputedStyle(el).outlineStyle,shadow:getComputedStyle(el).boxShadow}));

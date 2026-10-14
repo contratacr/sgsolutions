@@ -54,6 +54,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
   const dc=useTranslations('DatosCuenta');const [guardadoPerfil,setGuardadoPerfil]=useState<EstadoDatosCompra>('inicio');
   const [comprobante,setComprobante]=useState<File|null>(null),[errorComprobante,setErrorComprobante]=useState(false);
   const pm=useTranslations('PedidoManual');
+  const [express,setExpress]=useState(false);
   const [entrega, setEntrega] = useState(false),
     [factura, setFactura] = useState(false),
     [otro, setOtro] = useState(false),
@@ -98,7 +99,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
     productos.some((x) => x.p.disponibilidad === "agotado");
   const pendiente = productos.some((x) => x.p.precio === null),
     subtotal = productos.reduce((s, x) => s + (x.p.precio ?? 0) * x.cantidad, 0),
-    envio = costoEntrega(entrega ? 'envio' : 'retiro'),
+    envio = costoEntrega(express?'express':entrega?'envio':'retiro'),
     total = subtotal + envio;
   async function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -288,21 +289,22 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                   </h2>
                   <fieldset className="compra-opciones">
                     <legend>{t("modalidad")}<IndicadorCampo obligatorio/></legend>
-                    {["retiro", "envio"].map((m, i) => (
+                    {["retiro", "envio", "express"].map((m, i) => (
                       <label key={m}>
                         <input
                           type="radio"
                           required
                           name="modalidad"
                           value={m}
-                          checked={entrega === (i === 1)}
-                          onChange={() => {if(i === 1) desplazamientoPendiente.current="entrega";setEntrega(i === 1);}}
+                          checked={express ? m==='express' : entrega === (i === 1)&&m!=='express'}
+                          onChange={() => {if(i > 0) desplazamientoPendiente.current="entrega";setEntrega(i > 0);setExpress(m==='express');}}
                         />
                         <strong>{t(m)}</strong>
                         <small>{t(`${m}Detalle`)}</small>
                       </label>
                     ))}
                   </fieldset>
+                  {express&&<div className="compra-express-cotizacion"><p>{t('expressAviso')}</p></div>}
                   {entrega && (
                     <div className="compra-campos" ref={entregaCampos}>
                       <label>
@@ -478,7 +480,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
               </div>
               <div>
                 <dt>{t("costoEnvio")}</dt>
-                <dd>{colones(envio)}</dd>
+                <dd>{express?t('expressPendiente'):colones(envio)}</dd>
               </div>
               <div className="compra-total"><dt>{t('total')}</dt><dd>{pendiente ? t('pendiente') : colones(total)}</dd></div>
             </dl>

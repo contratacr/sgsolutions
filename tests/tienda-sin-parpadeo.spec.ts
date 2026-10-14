@@ -11,7 +11,7 @@ for(const idioma of ['es','en']){
    };
   });
   await page.goto('/tienda');
-  await expect(page.locator('.shop-orden select')).toBeEnabled();
+  await expect(page.locator('.shop-orden-trigger')).toBeEnabled();
   const productos=page.locator('.shop-producto');
   await expect(productos.first()).toBeVisible();
   await productos.last().scrollIntoViewIfNeeded();
@@ -20,7 +20,7 @@ for(const idioma of ['es','en']){
   const espera=new Promise<void>(r=>{liberar=r;});
   await page.route('**/api/catalogo?**',async ruta=>{await espera;await ruta.continue();});
   const antes=await productos.first().locator('h3').innerText();
-  await page.locator('.shop-orden select').selectOption('mayor');
+  await page.locator('.shop-orden-trigger').click();await page.locator('[data-orden="mayor"]').click();
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','true');
   await expect(productos.first().locator('h3')).toHaveText(antes);
   await expect(page.locator('.esqueleto-producto')).toHaveCount(0);

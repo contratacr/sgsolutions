@@ -15,7 +15,7 @@ for (const idioma of ["es", "en"])
     await expect(page).toHaveURL(/\/tienda\/[^/]+$/);
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/(?:(?:sgsolutionscr\.com|sgsolutions\.sgsolutions\.workers\.dev)\/imagenes\/|eurocompcr\.com\/upload\/)/);
-    await expect(page.locator(".ficha-codigo")).not.toBeEmpty();
+    await expect(page.locator(".ficha-identidad dd").first()).not.toBeEmpty();
     await page.locator(".ficha-agregar").click();
     await page.goto('/finalizar-compra');
     await expect(page.locator("html")).toHaveAttribute("lang", idioma);

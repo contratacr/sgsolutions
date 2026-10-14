@@ -61,18 +61,18 @@ export function FichaProducto({
           )}
         </section>
         <section className="ficha-compra">
-          <p className="etiqueta">
-            {p.marca} / {traducir(categoria, l)}
-          </p>
           <h1>{traducir(p.nombre, l)}</h1>
-          <p className="ficha-codigo">
-            {t("codigo")}: {p.codigoFabricante || t("pendiente")}
-          </p>
+          <dl className="ficha-identidad">
+            <div><dt>{t("codigo")}:</dt><dd>{p.codigoFabricante || t("pendiente")}</dd></div>
+            <div><dt>{t("categoria")}:</dt><dd>{traducir(categoria,l)}</dd></div>
+            <div><dt>{t("marca")}:</dt><dd>{p.marca || t("pendiente")}</dd></div>
+          </dl>
           {descripcionUtil(p,l)&&<p>{descripcionUtil(p,l)}</p>}
-          <div className="ficha-precio">
+          <div className="ficha-precio-acciones"><div className="ficha-precio">
             <PrecioProducto producto={p} pendiente={s("precioPendiente")}/>
             {p.precio !== null && <small>{a("precioConIva")}</small>}
-          </div>
+            {typeof p.stockDisponible==='number'&&Number.isSafeInteger(p.stockDisponible)&&p.stockDisponible>=0&&<small className="ficha-disponibles" aria-label={t('existenciasProveedor',{cantidad:p.stockDisponible})}>{t('disponibles',{cantidad:p.stockDisponible})}</small>}
+          </div><AsesoriaWhatsApp etiqueta="asesorar" className="shop-asesoria-inline" lineas={[{producto:p,cantidad}]}/></div>
           {p.disponibilidad==='agotado'&&<p className="ficha-stock">{s('agotado')}</p>}
           <div className="producto-compra-fila"><ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/>
           <button
@@ -88,25 +88,13 @@ export function FichaProducto({
           </button></div>
 
 
-      <section className="ficha-detalles">
+      {(p.especificaciones.length>0||p.fichaTecnica)&&<section className="ficha-detalles">
         <div className="ficha-detalles-cabecera">
           <h2>{t("especificaciones")}</h2>
-          <AsesoriaWhatsApp etiqueta="asesorar" className="shop-asesoria-inline"/>
+
         </div>
         <div>
           <dl>
-            <div>
-              <dt>{t("marca")}</dt>
-              <dd>{p.marca}</dd>
-            </div>
-            <div>
-              <dt>{t("codigo")}</dt>
-              <dd>{p.codigoFabricante || t("pendiente")}</dd>
-            </div>
-            <div>
-              <dt>{t("categoria")}</dt>
-              <dd>{traducir(categoria, l)}</dd>
-            </div>
             {(p.especificaciones ?? []).map((e, i) => (
               <div key={i}>
                 <dt>{traducir(e.nombre, l)}</dt>
@@ -121,7 +109,7 @@ export function FichaProducto({
             </a>
           )}
         </div>
-      </section>
+      </section>}
         </section>
       </div>
 

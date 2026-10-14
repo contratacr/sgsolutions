@@ -10,3 +10,6 @@ for(const idioma of ['es','en'])test(`confirmación ordenada, estados y móvil $
  if(i===2)await page.screenshot({path:'.privado/evidencias/confirmacion-'+idioma+'-'+test.info().project.name+'.png',fullPage:true});
  }
 });
+for(const idioma of ['es','en'])test(`Express indica cobro separado en confirmaciones ${idioma}`,async({page,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);const id='00000000-0000-4000-8000-000000000005',acceso=createHmac('sha256','fixture-pedido-confirmacion-secret-123456').update('pedido:'+id).digest('hex');await page.goto('/finalizar-compra/pedido?'+new URLSearchParams({pedido:id,acceso}));await expect(page.locator('.pedido-confirmacion-importes')).toContainText(idioma==='es'?'se paga por separado':'paid separately');await expect(page.locator('.pedido-confirmacion-total dd')).toContainText('500');await page.goto('/pago/resultado?pedido='+id);await expect(page.locator('main')).toContainText(idioma==='es'?'se paga por separado':'paid separately');
+});

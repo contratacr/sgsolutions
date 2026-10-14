@@ -6,7 +6,7 @@ for(const idioma of ['es','en'] as const)test('estadísticas, períodos, privaci
  await context.addCookies([{name:'sg-analitica',value:'1',domain:'127.0.0.1',path:'/'}]);
  await page.addInitScript(()=>localStorage.setItem('sg-medicion',JSON.stringify({analitica:true,publicidad:true})));
  const enviados:string[]=[];page.on('request',r=>{if(r.url().includes('/api/analitica'))enviados.push(r.url());});
- await page.goto('/tienda');await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');await expect(page.locator('.shop-orden select')).toBeEnabled();expect(enviados).toHaveLength(0);expect(await page.evaluate(()=>Boolean(window.fbq))).toBe(false);
+ await page.goto('/tienda');await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();expect(enviados).toHaveLength(0);expect(await page.evaluate(()=>Boolean(window.fbq))).toBe(false);
  const antes=(await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).eventos;
  const directo=await context.request.post('/api/analitica',{headers:{Origin:'http://127.0.0.1:3122'},data:{id:crypto.randomUUID(),sesion:crypto.randomUUID(),tipo:'pagina',ruta:'/tienda',detalle:'',dispositivo:'movil',idioma,campana:''}});expect(directo.status()).toBe(204);expect((await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).eventos).toBe(antes);
  await page.goto('/panel/estadisticas');

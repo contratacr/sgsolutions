@@ -36,8 +36,8 @@ export async function actualizarPedidoManual(form: FormData) {
   if (!pedido || !estadosPermitidos[pedido.estado as EstadoPedidoManual]?.includes(nuevo)) redirect('/panel/pedidos?resultado=invalido');
   const cambios: Record<string, unknown> = { estado: nuevo, actualizado_en: new Date().toISOString() };
   if (nuevo === 'pendiente_pago') {
-    if (!['retiro', 'envio'].includes(pedido.cliente?.modalidad)) redirect('/panel/pedidos?resultado=invalido');
-    const envio = costoEntrega(pedido.cliente.modalidad as 'retiro' | 'envio');
+    if (!['retiro', 'envio', 'express'].includes(pedido.cliente?.modalidad)) redirect('/panel/pedidos?resultado=invalido');
+    const envio = costoEntrega(pedido.cliente.modalidad as 'retiro' | 'envio' | 'express');
     cambios.costo_envio = envio;
     const totalDefinitivo = Number(pedido.total_productos) + envio;
     cambios.total_cobrar = totalDefinitivo;

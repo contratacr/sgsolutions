@@ -4,24 +4,23 @@
     "verFavoritos": "Ver favoritos",
     "ingresarGuardar": "Ingrese para guardarlos en su cuenta",
     "cerrarAviso": "Cerrar confirmación de favoritos",
-
     "anteriores": "Ver productos anteriores",
     "siguientes": "Ver más productos relacionados",
-      "guardarFavorito": "Guardar {nombre} en favoritos",
-      "quitarFavorito": "Quitar {nombre} de favoritos",
-      "vistaPrevia": "Vista previa de {nombre}",
-      "agregar": "Agregar al carrito",
-      "agregado": "Agregado",
-      "cerrar": "Cerrar vista previa",
-      "cantidad": "Cantidad",
-      "detalles": "Ver detalles",
-      "favoritos": "Favoritos",
-      "sinFavoritos": "Aún no tiene productos favoritos.",
-      "sinSincronizar": "No pudimos sincronizar sus favoritos. Inténtelo de nuevo más tarde.",
-      "cargando": "Cargando favoritos…",
-      "verTienda": "Volver a la tienda",
-      "invitado": "Sus favoritos se guardan en este navegador. Ingrese para conservarlos en su cuenta.",
-      "ingresar": "Ingresar"
+    "guardarFavorito": "Guardar {nombre} en favoritos",
+    "quitarFavorito": "Quitar {nombre} de favoritos",
+    "vistaPrevia": "Vista previa de {nombre}",
+    "agregar": "Agregar al carrito",
+    "agregado": "Agregado",
+    "cerrar": "Cerrar vista previa",
+    "cantidad": "Cantidad",
+    "detalles": "Ver detalles",
+    "favoritos": "Favoritos",
+    "sinFavoritos": "Aún no tiene productos favoritos.",
+    "sinSincronizar": "No pudimos sincronizar sus favoritos. Inténtelo de nuevo más tarde.",
+    "cargando": "Cargando favoritos…",
+    "verTienda": "Volver a la tienda",
+    "invitado": "Sus favoritos se guardan en este navegador. Ingrese para conservarlos en su cuenta.",
+    "ingresar": "Ingresar"
   },
   "Marca": {
     "nombre": "SG Solutions",
@@ -356,7 +355,8 @@
     "mensajeSaludo": "Hola, SG Solutions. Deseo solicitar este pedido:",
     "enviarWhatsapp": "Enviar solicitud por WhatsApp",
     "editar": "Editar datos",
-    "notaEnvio": "WhatsApp se abrirá en una pestaña nueva. La solicitud se enviará únicamente cuando usted confirme el mensaje."
+    "notaEnvio": "WhatsApp se abrirá en una pestaña nueva. La solicitud se enviará únicamente cuando usted confirme el mensaje.",
+    "expressSeparado": "El total a pagar incluye únicamente los productos. El servicio de Express se cotiza según su ubicación y se paga por separado."
   },
   "Contacto": {
     "mensaje": "Hola, SG Solutions. Quisiera asesoría para mi hogar o negocio.",
@@ -572,6 +572,7 @@
     "facebookCuenta": "SG Solutions CR"
   },
   "Comercio": {
+    "controlesCatalogo": "Controles del catálogo",
     "conteoCompacto": "{cantidad, plural, one {# producto} other {# productos}}",
     "asesoria": "¿Le ayudamos a elegir?",
     "asesoriaTexto": "Asesoría técnica personalizada.",
@@ -607,7 +608,10 @@
     "verMasFiltros": "Ver más",
     "verMenosFiltros": "Ver menos",
     "buscarCategoria": "Buscar categoría",
-    "recomendados": "Recomendados"
+    "recomendados": "Recomendados",
+    "verMasOpciones": "Ver más opciones",
+    "abrirCategoria": "Abrir subcategorías",
+    "cerrarCategoria": "Cerrar categoría"
   },
   "AdminCatalogo": {
     "titulo": "Productos",
@@ -864,7 +868,9 @@
     "marca": "Marca",
     "categoria": "Categoría",
     "documento": "Consultar ficha técnica",
-    "cantidad": "Cantidad"
+    "cantidad": "Cantidad",
+    "existenciasProveedor": "Disponibles en proveedor: {cantidad}",
+    "disponibles": "{cantidad} disponibles"
   },
   "MensajePedido": {
     "titulo": "Solicitud de pedido · SG Solutions",
@@ -990,7 +996,11 @@
     "identificacionDimexAyuda": "DIMEX: 11 o 12 dígitos, sin cero al inicio.",
     "identificacionNiteAyuda": "NITE: 10 dígitos.",
     "dimex": "DIMEX",
-    "nite": "NITE"
+    "nite": "NITE",
+    "express": "Servicio de Express",
+    "expressDetalle": "A cotizar y pagar por separado según su ubicación",
+    "expressAviso": "El total a pagar incluye únicamente los productos. El servicio de Express se cotiza según su ubicación y se paga por separado.",
+    "expressPendiente": "A cotizar y pagar aparte"
   },
   "ResultadoPago": {
     "titulo": "Resultado del pago",
@@ -1002,7 +1012,8 @@
     "pendiente": "Estamos verificando el resultado.",
     "pendienteDetalle": "No marque el pedido como pagado todavía. Si necesita ayuda, comuníquese con nuestro equipo.",
     "volver": "Volver a la tienda",
-    "prueba": "Transacción de prueba · Sin cobro real"
+    "prueba": "Transacción de prueba · Sin cobro real",
+    "expressSeparado": "El total pagado incluye únicamente los productos. Express se cotiza según su ubicación y se paga por separado."
   },
   "PedidoManual": {
     "titulo": "Seguimiento del pedido",
@@ -1039,7 +1050,8 @@
     "cuentaCorta": "Cuenta corta",
     "iban": "IBAN",
     "productos": "Productos",
-    "resumen": "Resumen del pedido"
+    "resumen": "Resumen del pedido",
+    "expressSeparado": "El total a pagar incluye únicamente los productos. El servicio de Express se cotiza según su ubicación y se paga por separado."
   },
   "PedidosAdmin": {
     "etiqueta": "Operación",
@@ -1096,7 +1108,9 @@
     "facturacionGti": "Facturación en GTI",
     "facturacionGtiTexto": "Después de verificar el pago, emita la factura en GTI con los datos del cliente. Envíela desde GTI al correo de facturación indicado; no necesita adjuntarla de nuevo aquí.",
     "abrirGti": "Abrir GTI",
-    "reenviarCorreo": "Reenviar correo del pedido"
+    "reenviarCorreo": "Reenviar correo del pedido",
+    "modalidad_express": "Servicio de Express",
+    "expressSeparado": "El total a pagar incluye únicamente los productos. El servicio de Express se cotiza según su ubicación y se paga por separado."
   },
   "AdminContenido": {
     "titulo": "Administrar contenido",
@@ -1629,7 +1643,6 @@
     "pagoConfirmado": "Confirmado",
     "archivo": "Archivo",
     "vistaActual": "Vista principal",
-
     "buscar": "Buscar por cliente, referencia o producto",
     "filtrar": "Filtrar solicitudes",
     "resultados": "{cantidad} registros",

@@ -31,8 +31,8 @@ for(const idioma of ['es','en'])test('recomendaciones temporales sin historial p
  expect(await page.evaluate(()=>sessionStorage.getItem('sg-intereses-sesion'))).toBeNull();
  await expect.poll(()=>page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
  await page.goto('/tienda');
- await expect(page.locator('.shop-orden select')).toHaveValue('recomendados');
- await page.locator('.shop-orden select').selectOption('menor');
+ await expect(page.locator('.shop-orden-trigger')).toHaveAttribute('value','recomendados');
+ await page.locator('.shop-orden-trigger').click();await page.locator('[data-orden="menor"]').click();
  await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });

@@ -107,17 +107,17 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
 
     {!manualDb || manualError ? <p role="status">{t('configurarManual')}</p> : !manuales.length ? <p>{t('manualVacio')}</p> :
       <ListaPanel inicial={resultado==='archivado'?'archivados':'por_atender'} filtros={[{id:'por_atender',texto:archivoT('porAtender'),estados:['sin_pago','pendiente_preparar']},{id:'en_curso',texto:entregaT('enCurso'),estados:['preparando','listo_retiro','enviado']},{id:'finalizados',texto:archivoT('finalizados'),estados:['entregado','cancelado']},{id:'todos',texto:lista('todos'),incluyeArchivados:true},{id:'archivados',texto:archivoT('archivados'),archivados:true}]} items={await Promise.all(manuales.map(async p => {
-        const envio = p.costo_envio ?? (p.estado === 'revision' ? costoEntrega(p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro') : null);
+        const envio = p.costo_envio ?? (p.estado === 'revision' ? costoEntrega(p.cliente?.modalidad === 'express'?'express':p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro') : null);
         const total = p.total_cobrar ?? p.total_productos + (envio ?? 0);
         const enlace = new URL(enlacePedido(configManual!, p.id, configManual!.origen));
         const comprobante = p.comprobante_path ? await manualDb.storage.from('comprobantes-pedidos').createSignedUrl(p.comprobante_path, 300) : null;
         return {id:p.id,pago:p.estado,estado:estadoGestion(p.estado,p.estado_entrega),archivado:Boolean(p.archivado_en),busqueda:[numeroPedido(p.id),p.cliente.nombre,p.cliente.apellidos,p.cliente.correo,p.cliente.telefono,...p.articulos.map(x=>x.nombre)].join(' '),contenido:<article className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{p.cliente.nombre} {p.cliente.apellidos}</strong><small>{numeroPedido(p.id)} · {colones(total)}</small>{p.archivado_en&&<span className="pedido-archivo-etiqueta">{archivoT('estadoArchivado')}</span>}</div><EstadosPedidoAdmin pago={p.estado} entrega={p.estado_entrega}/></summary><div className="panel-pedido-cuerpo">
           <div className="pedidos-admin-encabezado"><div><strong>{p.cliente?.nombre} {p.cliente?.apellidos}</strong><small>{p.cliente?.correo} · {p.cliente?.telefono}</small></div></div>
-          <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(p.creado_en))} · {t(`metodo_${p.metodo}`)} · {t(`modalidad_${p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro'}`)}</p>
+          <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(p.creado_en))} · {t(`metodo_${p.metodo}`)} · {t(`modalidad_${p.cliente?.modalidad === 'express'?'express':p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro'}`)}</p>
           <ContactoPedidoAdmin cliente={p.cliente} referencia={numeroPedido(p.id)}/>
           <ul>{p.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>
           <div className="pedidos-admin-pie"><code>{numeroPedido(p.id)}</code><strong>{colones(total)}</strong></div>
-          {envio !== null && <p>{t('costoEnvio')}: {colones(envio)}</p>}
+          {p.cliente?.modalidad==='express'?<p>{t('expressSeparado')}</p>:envio !== null && <p>{t('costoEnvio')}: {colones(envio)}</p>}
           {p.estado === 'revision' && <p>{t('subtotalPendiente')}</p>}
           {comprobante?.data?.signedUrl && <p><a href={comprobante.data.signedUrl} target="_blank" rel="noopener noreferrer">{t('verComprobante')} <span className="sr-only">{t('nuevaPestana')}</span></a></p>}
           {(!p.correo_cliente_en || p.estado === 'pendiente_pago' && !p.correo_pago_en) && <div className="panel-aviso"><p>{t('correoPendiente')}</p><label>{t('enlaceCliente')}<input readOnly value={enlace.href} aria-label={t('enlaceCliente')} /></label></div>}
@@ -142,7 +142,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))} · {t(pedido.entorno)}</p>
           {(pedido.archivado_en||puedeArchivar('tarjeta',pedido))&&<ArchivoPanel id={pedido.id} tipo="tarjeta" referencia={numeroPedido(pedido.id)} archivado={Boolean(pedido.archivado_en)}/>}
           <GestionEntregaPedido id={pedido.id} tipo="tarjeta" pago={pedido.estado} entrega={pedido.estado_entrega} modalidad={pedido.cliente?.modalidad}/>
-          <ContactoPedidoAdmin cliente={pedido.cliente} referencia={numeroPedido(pedido.id)}/>
+          {pedido.cliente?.modalidad==='express'&&<p>{t('expressSeparado')}</p>}<ContactoPedidoAdmin cliente={pedido.cliente} referencia={numeroPedido(pedido.id)}/>
           <ul>{pedido.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>
           <div className="pedidos-admin-pie"><code>{pedido.id}</code><strong>{colones(pedido.total)}</strong></div>
         </div></details></article>}))}/> }

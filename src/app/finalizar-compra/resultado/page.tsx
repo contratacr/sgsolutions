@@ -10,11 +10,11 @@ export async function generateMetadata() {
 export default async function ResultadoPago({ searchParams }: { searchParams: Promise<{ pedido?: string }> }) {
   const t = await getTranslations('ResultadoPago');
   const { pedido } = await searchParams;
-  let estado = 'pendiente';let prueba=false;
+  let estado = 'pendiente';let prueba=false;let express=false;
   const config = configuracionTilopay(false);
   if (config && pedido && /^[0-9a-f-]{36}$/.test(pedido)) {
-    const { data } = await basePedidos(config).from('pedidos_tilopay').select('estado,entorno').eq('id', pedido).maybeSingle();
-    prueba=data?.entorno==='pruebas';
+    const { data } = await basePedidos(config).from('pedidos_tilopay').select('estado,entorno,cliente').eq('id', pedido).maybeSingle();
+    prueba=data?.entorno==='pruebas';express=data?.cliente?.modalidad==='express';
     if (data?.estado === 'pagado') estado = 'pagado';
     else if (data?.estado === 'rechazado') estado = 'rechazado';
   }
@@ -23,7 +23,7 @@ export default async function ResultadoPago({ searchParams }: { searchParams: Pr
       <p className="etiqueta">{t('etiqueta')}</p>
       {prueba&&<p className="panel-aviso">{t('prueba')}</p>}
       <h1>{t(estado)}</h1>
-      <p>{t(`${estado}Detalle`)}</p>
+      <p>{t(`${estado}Detalle`)}</p>{express&&<p>{t('expressSeparado')}</p>}
       <Link className="boton boton-azul" href="/tienda">{t('volver')}</Link>
     </section>
   </main>;

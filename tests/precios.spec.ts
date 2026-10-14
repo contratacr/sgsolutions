@@ -43,8 +43,8 @@ test('tienda mantiene CRC en inglés y ordena precios',async({page,context},prue
  await context.addCookies([{name:'sg-idioma',value:'en',domain:'127.0.0.1',path:'/'}]);
  await page.goto('/tienda');
  await expect(page.locator('html')).toHaveAttribute('lang','en');
- await expect(page.locator('.shop-orden select')).toBeEnabled();
- await page.locator('.shop-orden select').selectOption('menor');
+ await expect(page.locator('.shop-orden-trigger')).toBeEnabled();
+ await page.locator('.shop-orden-trigger').click();await page.locator('[data-orden="menor"]').click();
  await expect.poll(()=>page.getByRole('article').count()).toBeGreaterThan(1);
  const precios=await page.locator('.shop-precio strong').allTextContents();
  const valores=precios.map(precio=>Number(precio.replace(/\D/g,'')));

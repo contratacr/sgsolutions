@@ -4,24 +4,23 @@
     "verFavoritos": "View favorites",
     "ingresarGuardar": "Sign in to save them to your account",
     "cerrarAviso": "Dismiss favorites confirmation",
-
     "anteriores": "View previous products",
     "siguientes": "View more related products",
-      "guardarFavorito": "Save {nombre} to favorites",
-      "quitarFavorito": "Remove {nombre} from favorites",
-      "vistaPrevia": "Quick view of {nombre}",
-      "agregar": "Add to cart",
-      "agregado": "Added",
-      "cerrar": "Close quick view",
-      "cantidad": "Quantity",
-      "detalles": "View details",
-      "favoritos": "Favorites",
-      "sinFavoritos": "You do not have any favorites yet.",
-      "sinSincronizar": "We could not sync your favorites. Please try again later.",
-      "cargando": "Loading favorites…",
-      "verTienda": "Back to store",
-      "invitado": "Your favorites are saved in this browser. Sign in to keep them in your account.",
-      "ingresar": "Sign in"
+    "guardarFavorito": "Save {nombre} to favorites",
+    "quitarFavorito": "Remove {nombre} from favorites",
+    "vistaPrevia": "Quick view of {nombre}",
+    "agregar": "Add to cart",
+    "agregado": "Added",
+    "cerrar": "Close quick view",
+    "cantidad": "Quantity",
+    "detalles": "View details",
+    "favoritos": "Favorites",
+    "sinFavoritos": "You do not have any favorites yet.",
+    "sinSincronizar": "We could not sync your favorites. Please try again later.",
+    "cargando": "Loading favorites…",
+    "verTienda": "Back to store",
+    "invitado": "Your favorites are saved in this browser. Sign in to keep them in your account.",
+    "ingresar": "Sign in"
   },
   "Marca": {
     "nombre": "SG Solutions",
@@ -356,7 +355,8 @@
     "mensajeSaludo": "Hello, SG Solutions. I would like to request this order:",
     "enviarWhatsapp": "Send request on WhatsApp",
     "editar": "Edit details",
-    "notaEnvio": "WhatsApp will open in a new tab. The request will only be sent after you confirm the message."
+    "notaEnvio": "WhatsApp will open in a new tab. The request will only be sent after you confirm the message.",
+    "expressSeparado": "The amount due covers products only. Express delivery is quoted based on your location and paid separately."
   },
   "Contacto": {
     "mensaje": "Hello, SG Solutions. I would like advice for my home or business.",
@@ -572,6 +572,7 @@
     "facebookCuenta": "SG Solutions CR"
   },
   "Comercio": {
+    "controlesCatalogo": "Catalog controls",
     "conteoCompacto": "{cantidad, plural, one {# product} other {# products}}",
     "asesoria": "Need help choosing?",
     "asesoriaTexto": "Personalised technical advice.",
@@ -607,7 +608,10 @@
     "verMasFiltros": "Show more",
     "verMenosFiltros": "Show less",
     "buscarCategoria": "Search categories",
-    "recomendados": "Recommended"
+    "recomendados": "Recommended",
+    "verMasOpciones": "Show more options",
+    "abrirCategoria": "Expand subcategories",
+    "cerrarCategoria": "Close category"
   },
   "AdminCatalogo": {
     "titulo": "Products",
@@ -864,7 +868,9 @@
     "marca": "Brand",
     "categoria": "Category",
     "documento": "View technical datasheet",
-    "cantidad": "Quantity"
+    "cantidad": "Quantity",
+    "existenciasProveedor": "Available from supplier: {cantidad}",
+    "disponibles": "{cantidad} available"
   },
   "MensajePedido": {
     "titulo": "Order request · SG Solutions",
@@ -990,7 +996,11 @@
     "identificacionDimexAyuda": "DIMEX: 11 or 12 digits, without a leading zero.",
     "identificacionNiteAyuda": "NITE: 10 digits.",
     "dimex": "DIMEX",
-    "nite": "NITE"
+    "nite": "NITE",
+    "express": "Express delivery service",
+    "expressDetalle": "Quoted and paid separately based on your location",
+    "expressAviso": "The amount due covers products only. Express delivery is quoted based on your location and paid separately.",
+    "expressPendiente": "Quoted and paid separately"
   },
   "ResultadoPago": {
     "titulo": "Payment result",
@@ -1002,7 +1012,8 @@
     "pendiente": "We are checking the result.",
     "pendienteDetalle": "Do not mark the order as paid yet. Please contact our team if you need help.",
     "volver": "Back to store",
-    "prueba": "Test transaction · No real charge"
+    "prueba": "Test transaction · No real charge",
+    "expressSeparado": "The paid total covers products only. Express delivery is quoted based on your location and paid separately."
   },
   "PedidoManual": {
     "titulo": "Order status",
@@ -1039,7 +1050,8 @@
     "cuentaCorta": "Local account number",
     "iban": "IBAN",
     "productos": "Products",
-    "resumen": "Order summary"
+    "resumen": "Order summary",
+    "expressSeparado": "The amount due covers products only. Express delivery is quoted based on your location and paid separately."
   },
   "PedidosAdmin": {
     "etiqueta": "Operations",
@@ -1096,7 +1108,9 @@
     "facturacionGti": "GTI invoicing",
     "facturacionGtiTexto": "After verifying payment, issue the invoice in GTI using the customer details. Send it from GTI to the billing email provided; you do not need to attach it again here.",
     "abrirGti": "Open GTI",
-    "reenviarCorreo": "Resend order email"
+    "reenviarCorreo": "Resend order email",
+    "modalidad_express": "Express delivery service",
+    "expressSeparado": "The amount due covers products only. Express delivery is quoted based on your location and paid separately."
   },
   "AdminContenido": {
     "titulo": "Manage content",
@@ -1629,7 +1643,6 @@
     "pagoConfirmado": "Confirmed",
     "archivo": "Archive",
     "vistaActual": "Main view",
-
     "buscar": "Search by customer, reference or product",
     "filtrar": "Filter requests",
     "resultados": "{cantidad} records",

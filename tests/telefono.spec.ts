@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 for(const idioma of ['es','en'])test(`teléfono separado y número internacional ${idioma}`,async({page,context,baseURL})=>{
- await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');await expect(page.locator('.shop-orden select')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
  const campo=page.locator('.campo-telefono').first(),numero=campo.locator('input[type=tel]'),pais=campo.locator('select'),valor=campo.locator('input[type=hidden]');
  const tipo=await page.locator('select[name=tipoIdentificacion]').boundingBox(),identificacion=await page.locator('input[name=identificacion]').boundingBox();
  if((page.viewportSize()?.width??0)>760){expect(Math.abs(tipo!.y-identificacion!.y)).toBeLessThan(2);expect(Math.abs(tipo!.height-identificacion!.height)).toBeLessThan(2);}

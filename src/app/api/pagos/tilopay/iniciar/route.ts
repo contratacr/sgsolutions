@@ -19,7 +19,7 @@ const solicitud = z.object({
 }).superRefine((v,ctx)=>{
   const d=v.datos;
   if(d && (d.nombre!==v.nombre || d.apellidos!==v.apellidos || d.correo!==v.correo || d.telefono!==v.telefono))ctx.addIssue({code:'custom',message:'cliente'});
-  if(d?.modalidad==='envio' && (!d.provincia || !d.canton || !d.distrito || !d.direccion))ctx.addIssue({code:'custom',message:'entrega'});
+  if(d&&d.modalidad!=='retiro' && (!d.provincia || !d.canton || !d.distrito || !d.direccion))ctx.addIssue({code:'custom',message:'entrega'});
   if(d?.factura==='electronica' && (!d.identificacion || !d.razonSocial || !d.correoFactura || !d.direccionFiscal))ctx.addIssue({code:'custom',message:'factura'});
 });
 
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
   const db = basePedidos(config);
   const { error: guardarError } = await db.from('pedidos_tilopay').insert({
     id, estado: 'iniciado', entorno: config.modo, total, moneda: 'CRC',
-    cliente: { ...(entrada.datos ?? {nombre:entrada.nombre,apellidos:entrada.apellidos,correo:entrada.correo,telefono:entrada.telefono,modalidad:'retiro'}), idioma:entrada.idioma, total_productos:subtotal, costo_envio:envio },
+    cliente: { ...(entrada.datos ?? {nombre:entrada.nombre,apellidos:entrada.apellidos,correo:entrada.correo,telefono:entrada.telefono,modalidad:'retiro'}), idioma:entrada.idioma, total_productos:subtotal, costo_envio:envio, envio_cobro_separado:entrada.datos?.modalidad==='express' },
     articulos,
   });
   if (guardarError) {await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
