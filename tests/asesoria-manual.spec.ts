@@ -24,7 +24,7 @@ for(const idioma of ['es','en'])test(`asesoría opcional y compra directa ${idio
  await context.route('**/api/asesoria',r=>r.fulfill({status:201,json:{referencia:'SG-PRUEBA'}}));
  await context.route('https://wa.me/**',r=>r.fulfill({status:200,body:'WhatsApp simulado'}));
  await page.goto('/tienda');await expect(page.locator('.asesoria-hero h1')).toHaveText(idioma==='es'?'Tienda':'Store');
- await page.locator('.asesoria-hero-acciones>.boton').first().click();await completarDatosAsesoria(page);
+ await page.locator('.shop-asesoria-inline').first().click();await completarDatosAsesoria(page);
  const ventana=page.waitForEvent('popup');await page.locator('.contacto-asesoria form>button').click();const popup=await ventana;await popup.waitForURL('https://wa.me/**');await popup.close();
  await expect(page).toHaveURL(/\/tienda$/);
  await page.locator('.shop-producto .producto-agregar').first().click();await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();

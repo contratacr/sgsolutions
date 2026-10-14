@@ -12,7 +12,7 @@ for(const idioma of ['es','en'])test(`datos previos, validación y confirmación
  let datos:Record<string,unknown>|null=null,fallar=false;
  await page.route('**/api/asesoria',async r=>{datos=r.request().postDataJSON();await r.fulfill({status:fallar?503:201,json:fallar?{error:'no_disponible'}:{referencia:'SG-0001'}});});
  await page.addInitScript(()=>{window.open=()=>null;});
- await page.goto('/tienda');await page.locator('.asesoria-hero-acciones>.boton').first().click();
+ await page.goto('/tienda');await page.locator('.shop-asesoria-inline').first().click();
  const formulario=page.locator('.contacto-asesoria form');
  await expect(page.getByRole('dialog').getByRole('button',{name:idioma==='es'?'Cerrar':'Close',exact:true})).toBeVisible();
  await expect(formulario.locator('[name=telefono]')).toHaveValue('+506 ');
@@ -30,14 +30,14 @@ for(const idioma of ['es','en'])test(`datos previos, validación y confirmación
  await expect(page.locator('.carrito-panel')).toBeVisible();await expect(page.locator('.carrito-lineas li')).toHaveCount(1);
  await page.locator('.modal-carrito-panel > .modal-cierre-exterior').click();await expect(page.locator('.carrito-panel')).toHaveCount(0);
  await page.screenshot({path:`/tmp/sg-contacto-mejorado-${idioma}-${test.info().project.name}.png`});
- await page.goto('/');await expect(page.locator('.inicio-camino-empresas')).toContainText(idioma==='es'?'Soluciones empresariales':'Business solutions');await expect(page.locator('.inicio-camino-empresas')).toContainText(idioma==='es'?'Ver planes':'View plans');
+ await page.goto('/');await expect(page.locator('.inicio-camino-empresas')).toContainText(idioma==='es'?'Empresas':'Business');await expect(page.locator('.inicio-camino-empresas')).toHaveAttribute('href','/empresas');
 });
 
 test('WhatsApp conserva la app y abre una página útil durante la preparación',async({page,context})=>{
  let liberar!:()=>void;const espera=new Promise<void>(r=>liberar=r);
  await context.route('**/api/asesoria',async r=>{await espera;await r.fulfill({status:201,json:{referencia:'SG-0002'}});});
  await context.route('https://wa.me/**',r=>r.fulfill({status:200,body:'WhatsApp simulado: no se envía ningún mensaje'}));
- await page.goto('/tienda');await page.locator('.asesoria-hero-acciones>.boton').first().click();await completarDatosAsesoria(page);const popupPromesa=page.waitForEvent('popup');
+ await page.goto('/tienda');await page.locator('.shop-asesoria-inline').first().click();await completarDatosAsesoria(page);const popupPromesa=page.waitForEvent('popup');
  await page.locator('.contacto-asesoria form>button').click();const popup=await popupPromesa;
  await popup.waitForURL('**/tienda');await expect(popup.locator('main')).toBeVisible();await expect(page).toHaveURL(/\/tienda$/);
  liberar();await popup.waitForURL('https://wa.me/**');await popup.close();
