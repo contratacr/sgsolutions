@@ -13,7 +13,7 @@ for(const idioma of ['es','en'])test(`consentimiento y exclusión de administrac
  await page.getByRole('button',{name:idioma==='es'?'Solo estadísticas':'Analytics only',exact:true}).click();
  await expect.poll(()=>eventos.filter(e=>e.tipo==='pagina').length).toBe(1);
  await page.goto('/empresas');await page.locator('.plan button').first().click();await expect.poll(()=>eventos.some(e=>e.tipo==='plan')).toBe(true);
- await page.getByRole('dialog').locator('.solicitud-cerrar').click();
+ await page.getByRole('dialog').locator('.modal-cierre-exterior').click();
  expect(await page.evaluate(()=>!!window.fbq)).toBe(false);
  await page.goto('/privacidad');await expect(page.locator('.pie-preferencias').locator('xpath=ancestor::section[1]')).not.toHaveAttribute('data-revelar-pendiente','');await page.locator('.pie-preferencias').click();await page.getByRole('button',{name:idioma==='es'?'Rechazar opcionales':'Reject optional tracking',exact:true}).click();
  const antes=eventos.length;await page.goto('/nosotros');await expect(page.locator('h1')).toBeVisible();expect(eventos.length).toBe(antes);
