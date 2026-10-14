@@ -52,7 +52,7 @@ export async function actualizarEurocomp(){
   finally{await bloqueo.close();const {unlink}=await import('node:fs/promises');await unlink(path.join(carpeta,'eurocomp.lock'));}
  }else{
   const {data,error}=await a.cliente.rpc('iniciar_eurocomp',{nuevo_token:token});
-  if(error)throw new ErrorEurocomp(error.message.includes('ESPERA')?'espera':'almacenamiento');if(!data)throw new ErrorEurocomp('espera');
+  if(error){console.error('EUROCOMP_INICIO_FALLO',error.code);throw new ErrorEurocomp(error.message.includes('ESPERA')?'espera':'almacenamiento');}if(!data)throw new ErrorEurocomp('espera');
  }
  const destino=servicioPruebas('eurocomp');
  const catalogo=await consultarEurocomp({id,clave,bodega},destino?(_url,opciones)=>fetch(destino,opciones):fetch);
@@ -64,10 +64,10 @@ export async function actualizarEurocomp(){
   await escribir({catalogo,intento,token});
  }else{
   const {data,error}=await a.cliente.from('catalogo_privado').select('contenido,revision').eq('id',1).single();
-  if(error||!data)throw new ErrorEurocomp('almacenamiento');
+  if(error||!data){console.error('EUROCOMP_CATALOGO_FALLO',error?.code??'sin_datos');throw new ErrorEurocomp('almacenamiento');}
   const privado=esquemaCatalogo.parse(reconciliarEurocomp(esquemaCatalogo.parse(data.contenido),catalogo));
   const r=await a.cliente.rpc('publicar_eurocomp',{token_esperado:token,nuevo_catalogo:catalogo,privado,visible:publicarCatalogo(privado),revision_esperada:data.revision});
-  if(r.error)throw new ErrorEurocomp(r.error.message.includes('CONFLICTO')?'conflicto':'almacenamiento');
+  if(r.error){console.error('EUROCOMP_PUBLICACION_FALLO',r.error.code);throw new ErrorEurocomp(r.error.message.includes('CONFLICTO')?'conflicto':'almacenamiento');}
  }
  return {total:catalogo.articulos.length};
 }

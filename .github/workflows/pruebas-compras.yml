@@ -54,6 +54,13 @@ jobs:
           name: resultado-compras-simuladas
           path: .privado/evidencias/compras-worker.json
           if-no-files-found: ignore
+      - name: Guardar evidencias cuando falle una prueba
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostico-pruebas
+          path: test-results/
+          if-no-files-found: ignore
       - name: Detener la base efímera
         if: always()
         run: npx supabase stop --no-backup

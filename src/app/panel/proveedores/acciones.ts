@@ -6,6 +6,6 @@ import {ErrorEurocomp} from '@/lib/eurocomp-protocolo';
 export async function actualizarProveedor(){
  let resultado='actualizado';
  try{await actualizarEurocomp();revalidatePath('/','layout');}
- catch(e){resultado=e instanceof ErrorEurocomp?e.codigo:'almacenamiento';}
+ catch(e){console.error('EUROCOMP_ACTUALIZACION_FALLO',e instanceof ErrorEurocomp?e.codigo:e instanceof Error?e.name:'desconocido',e instanceof Error?e.stack?.split('\n')[1]?.slice(0,150):undefined);resultado=e instanceof ErrorEurocomp?e.codigo:'almacenamiento';}
  redirect(`/panel/proveedores?resultado=${encodeURIComponent(resultado)}`);
 }
