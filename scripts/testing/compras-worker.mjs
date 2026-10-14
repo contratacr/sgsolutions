@@ -52,7 +52,7 @@ const catalog = esquemaCatalogo.parse({
   productos: [
     {
       ...initial.productos[0],
-      id: "qa-compra-worker",
+      id: "eurocomp-qa-compra-worker",
       codigoFabricante: "QA-ONLY",
       codigoEurocomp: "QA-ONLY",
       eurocomp: {
@@ -213,7 +213,7 @@ const post = (route, body) =>
 const verify = async () => {
   const r = await post("/api/compra/verificar", {
     idioma: "es",
-    articulos: [{ id: "qa-compra-worker", cantidad: 1, precio: price }],
+    articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1, precio: price }],
   });
   const body = await r.json();
   if (body.id) checks.push(body.id);
@@ -224,7 +224,7 @@ const payload = (v, method = "sinpe") => ({
   acceso: v.token,
   idioma: "es",
   metodo: method,
-  articulos: [{ id: "qa-compra-worker", cantidad: 1 }],
+  articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1 }],
   datos: {
     nombre: "QA",
     apellidos: "Worker",
@@ -334,7 +334,9 @@ try {
   assert.equal((await verify()).r.status, 409);
   cost = 10;
   for (const method of ["sinpe", "transferencia"]) {
-    const v = (await verify()).body;
+    const verificacion = await verify();
+    assert.equal(verificacion.r.status, 200, "Eligible Eurocomp fixture must receive a purchase verification token.");
+    const v = verificacion.body;
     const attempts = await Promise.all([order(v, method), order(v, method)]);
     assert.deepEqual(attempts.map((x) => x.r.status).sort(), [201, 403]);
     const d = attempts.find((x) => x.r.status === 201).d;
@@ -388,7 +390,7 @@ try {
     asesoria: vc.id,
     acceso: vc.token,
     idioma: "es",
-    articulos: [{ id: "qa-compra-worker", cantidad: 1 }],
+    articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1 }],
     ...data,
     consentimiento: true,
     datos: data,
@@ -432,7 +434,7 @@ try {
     asesoria: declinedVerification.id,
     acceso: declinedVerification.token,
     idioma: "es",
-    articulos: [{ id: "qa-compra-worker", cantidad: 1 }],
+    articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1 }],
     ...data,
     consentimiento: true,
     datos: data,
@@ -548,7 +550,7 @@ try {
   const own = await db.from("solicitudes_asesoria").select("id,articulos");
   const ids = (own.data ?? [])
     .filter((x) =>
-      x.articulos.some((a) => a.producto?.id === "qa-compra-worker"),
+      x.articulos.some((a) => a.producto?.id === "eurocomp-qa-compra-worker"),
     )
     .map((x) => x.id);
   if (ids.length) await db.from("solicitudes_asesoria").delete().in("id", ids);

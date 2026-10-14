@@ -1,3 +1,4 @@
+import {esProductoEurocomp} from './catalogo-fuente';
 import {subcategoriaEurocomp} from './eurocomp-subcategorias';
 import {createHash} from 'node:crypto';
 import type {CatalogoAdmin} from './catalogo-modelo';
@@ -5,7 +6,7 @@ import type {CatalogoEurocomp} from './eurocomp-protocolo';
 import {categoriaEurocomp,categoriasEurocomp,precioVentaEurocomp,stockVendibleEurocomp} from './eurocomp-politica';
 /** Supplier stock refresh preserves existing editorial fields and publication choices. */
 export function reconciliarEurocomp(base:CatalogoAdmin,copia:CatalogoEurocomp):CatalogoAdmin{
- const anteriores=new Map(base.productos.filter(p=>p.eurocomp||p.codigoEurocomp).map(p=>[p.eurocomp?.codigo??p.codigoEurocomp!,p]));
+ const anteriores=new Map(base.productos.filter(esProductoEurocomp).map(p=>[p.eurocomp?.codigo??p.codigoEurocomp!,p]));
  const recibidos=new Set(copia.articulos.map(a=>a.codigo));
  const productos:CatalogoAdmin['productos']=[];
  for(const a of copia.articulos){
