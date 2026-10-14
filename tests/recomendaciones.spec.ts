@@ -5,9 +5,9 @@ import {publicarCatalogo,esquemaCatalogo} from '../src/lib/catalogo-modelo';
 import inicial from '../src/lib/catalogo-inicial.json';
 test('recomendaciones excluyen stock bajo, precios pendientes y el producto actual',()=>{
  const c=esquemaCatalogo.parse(inicial),base=c.productos[0];
- c.productos=[15,14,30].map((stock,i)=>({...base,id:'qa-'+i,publicado:true,destacado:true,precioManual:1000,revisionPrecio:false,disponibilidadReferencia:'proveedor',eurocomp:{codigo:'qa-'+i,stock,costo:1,moneda:'USD',actualizado:new Date().toISOString()}}));
- const p=publicarCatalogo(c).productos,r=recomendaciones(p,['qa-0'],'qa-0');
- expect(r.destacados.map(x=>x.id)).toEqual(['qa-0','qa-2']);expect(r.sugeridos.map(x=>x.id)).toEqual(['qa-2']);
+ c.productos=[15,14,30].map((stock,i)=>({...base,id:'eurocomp-qa-'+i,publicado:true,destacado:true,precioManual:1000,revisionPrecio:false,disponibilidadReferencia:'proveedor',eurocomp:{codigo:'qa-'+i,stock,costo:1,moneda:'USD',actualizado:new Date().toISOString()}}));
+ const p=publicarCatalogo(c).productos,r=recomendaciones(p,['eurocomp-qa-0'],'eurocomp-qa-0');
+ expect(r.destacados.map(x=>x.id)).toEqual(['eurocomp-qa-0','eurocomp-qa-2']);expect(r.sugeridos.map(x=>x.id)).toEqual(['eurocomp-qa-2']);
  expect(recomendaciones(p.map(x=>({...x,precio:null}))).destacados).toEqual([]);
 });
 test('recomendados adapta afinidad y respeta precio y búsqueda',()=>{
