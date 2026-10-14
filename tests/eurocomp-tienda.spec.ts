@@ -24,9 +24,9 @@ for(const idioma of ['es','en'])test(`tienda, cantidad y carrito en ${idioma}`,a
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.locator('.carrito-confirmacion').getByRole('button',{name:idioma==='es'?'Ver carrito':'View cart',exact:true}).click();
  const contador=page.locator('.carrito-panel .contador-cantidad input');await expect(contador).toHaveValue('1');await contador.fill('3');await expect(contador).toHaveValue('3');
- await page.locator('.carrito-cabecera button').click();
+ await page.locator('.modal-carrito-panel > .modal-cierre-exterior').click();
  await page.locator('.shop-producto h3 a').first().click();const ficha=page.locator('.ficha-cantidad input');await expect(ficha).toHaveValue('1');await ficha.fill('2');await page.locator('.ficha-agregar').click();
- await page.locator('.carrito-confirmacion').getByRole('button',{name:idioma==='es'?'Ver carrito':'View cart',exact:true}).click();await expect(contador).toHaveValue('5');await page.locator('.carrito-cabecera button').click();
+ await page.locator('.carrito-confirmacion').getByRole('button',{name:idioma==='es'?'Ver carrito':'View cart',exact:true}).click();await expect(contador).toHaveValue('5');await page.locator('.modal-carrito-panel > .modal-cierre-exterior').click();
  await page.goto('/finalizar-compra');await expect(page.locator('form input[name=nombre]')).toBeVisible();
  await expect(page.locator('.compra-asesoria-obligatoria')).toHaveCount(0);
  await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',idioma);

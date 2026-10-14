@@ -28,7 +28,7 @@ for(const idioma of ['es','en'])test(`datos previos, validación y confirmación
  await expect(page.locator('.carrito-confirmacion [role=status]')).toContainText(idioma==='es'?'Agregado al carrito':'Added to cart');
  await page.locator('.carrito-confirmacion').getByRole('button',{name:idioma==='es'?'Ver carrito':'View cart',exact:true}).click();
  await expect(page.locator('.carrito-panel')).toBeVisible();await expect(page.locator('.carrito-lineas li')).toHaveCount(1);
- await page.locator('.carrito-cabecera button').click();await expect(page.locator('.carrito-panel')).toHaveCount(0);
+ await page.locator('.modal-carrito-panel > .modal-cierre-exterior').click();await expect(page.locator('.carrito-panel')).toHaveCount(0);
  await page.screenshot({path:`/tmp/sg-contacto-mejorado-${idioma}-${test.info().project.name}.png`});
  await page.goto('/');await expect(page.locator('.inicio-camino-empresas')).toContainText(idioma==='es'?'Soluciones empresariales':'Business solutions');await expect(page.locator('.inicio-camino-empresas')).toContainText(idioma==='es'?'Ver planes':'View plans');
 });
