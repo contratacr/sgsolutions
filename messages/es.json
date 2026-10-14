@@ -3,7 +3,7 @@
     "nombre": "SG Solutions",
     "descripcion": "Soluciones tecnológicas a la medida en Atenas. Soporte TI, redes, seguridad y equipo con asesoría profesional.",
     "logo": "SG Solutions",
-    "telefono": "8606-5342",
+    "telefono": "2446-7846",
     "ubicacionCorta": "Atenas, Costa Rica",
     "direccion": "Centro Comercial Plaza El Bosque, local 9. Mercedes, Atenas, Alajuela.",
     "correo": "asesor@sgsolutionscr.com"
@@ -194,7 +194,7 @@
     "contactoTitulo": "¿Qué podemos resolver juntos?",
     "contactoTexto": "Cuéntenos sobre su negocio, su equipo o su proyecto. Le ayudamos a encontrar el equipo o la solución adecuada.",
     "contactoAccion": "Escríbanos por WhatsApp",
-    "llamar": "Llamar al 8606-5342",
+    "llamar": "Llamar al 2446-7846",
     "mapa": "Cómo llegar",
     "tiendaAlt": "Portátil exhibida en SG Solutions",
     "planRecomendado": "Plan recomendado",
@@ -567,6 +567,9 @@
     "subcategoria": "Tipo de producto",
     "todosTipos": "Todos los tipos",
     "filtros": "Filtros",
+    "precioAntes": "Precio anterior",
+    "precioOferta": "Precio de oferta",
+    "precioFiltro": "Precio",
     "precioMin": "Precio mínimo (₡)",
     "precioMax": "Precio máximo (₡)",
     "marcasFiltro": "Marcas",
@@ -594,6 +597,9 @@
     "marca": "Marca",
     "codigoFabricante": "Código de fabricante",
     "imagen": "Imagen: URL HTTPS o ruta local",
+    "precioDescuento": "Precio de oferta (₡) · Opcional",
+    "descuentoNota": "Menor que el precio normal. Deje vacío para quitar la oferta.",
+    "descuentoInvalido": "La oferta debe ser menor que el precio normal.",
     "precioManual": "Precio de referencia (₡, IVA incluido)",
     "publicado": "Publicado en la tienda",
     "borrador": "Borrador",
@@ -1177,7 +1183,7 @@
       "secciones": {
         "0": {
           "titulo": "Quiénes somos y cómo contactarnos",
-          "texto": "SG Solutions es el nombre comercial de 3-101-951810 Sociedad Anónima. Puede comunicarse con nosotros en asesor@sgsolutionscr.com o al +506 8606-5342, también por WhatsApp. Nuestra atención presencial se encuentra en Centro Comercial Plaza El Bosque, local 9, Mercedes, Atenas, Alajuela, Costa Rica."
+          "texto": "SG Solutions es el nombre comercial de 3-101-951810 Sociedad Anónima. Puede comunicarse con nosotros en asesor@sgsolutionscr.com o al +506 2446-7846. También puede escribirnos mediante los botones de WhatsApp. Nuestra atención presencial se encuentra en Centro Comercial Plaza El Bosque, local 9, Mercedes, Atenas, Alajuela, Costa Rica."
         },
         "1": {
           "titulo": "Catálogo, precios y disponibilidad",
@@ -1193,7 +1199,7 @@
         },
         "4": {
           "titulo": "Garantías, devoluciones y reclamos",
-          "texto": "Los productos y servicios cuentan con la garantía legal aplicable en Costa Rica y las condiciones específicas informadas para cada producto. Para garantías, entregas incorrectas, cancelaciones o devoluciones, contacte a asesor@sgsolutionscr.com o al +506 8606-5342 e indique la referencia y el motivo. Cuando corresponda el derecho de retracto, puede ejercerlo dentro de los ocho días hábiles siguientes al perfeccionamiento de la venta, por el mismo canal utilizado para contratar o por nuestros canales de contacto. Le comunicaremos cómo devolver el artículo y tramitar el reintegro conforme a la normativa aplicable. Una devolución por conveniencia no reemplaza los derechos por defectos o incumplimiento. No es obligatorio gestionar su garantía únicamente con el fabricante ni se renuncia a sus derechos de reparación, sustitución o devolución."
+          "texto": "Los productos y servicios cuentan con la garantía legal aplicable en Costa Rica y las condiciones específicas informadas para cada producto. Para garantías, entregas incorrectas, cancelaciones o devoluciones, contacte a asesor@sgsolutionscr.com o al +506 2446-7846 e indique la referencia y el motivo. Cuando corresponda el derecho de retracto, puede ejercerlo dentro de los ocho días hábiles siguientes al perfeccionamiento de la venta, por el mismo canal utilizado para contratar o por nuestros canales de contacto. Le comunicaremos cómo devolver el artículo y tramitar el reintegro conforme a la normativa aplicable. Una devolución por conveniencia no reemplaza los derechos por defectos o incumplimiento. No es obligatorio gestionar su garantía únicamente con el fabricante ni se renuncia a sus derechos de reparación, sustitución o devolución."
         },
         "5": {
           "titulo": "Soporte y planes empresariales",
@@ -1215,7 +1221,7 @@
       "secciones": {
         "0": {
           "titulo": "Responsable y contacto",
-          "texto": "3-101-951810 Sociedad Anónima, bajo el nombre comercial SG Solutions, es responsable de los datos recibidos por la web y sus canales de atención. Para consultas de privacidad, solicitudes sobre sus datos o incidentes de seguridad, escriba a asesor@sgsolutionscr.com o contacte al +506 8606-5342. Nuestra ubicación es Centro Comercial Plaza El Bosque, local 9, Mercedes, Atenas, Alajuela, Costa Rica."
+          "texto": "3-101-951810 Sociedad Anónima, bajo el nombre comercial SG Solutions, es responsable de los datos recibidos por la web y sus canales de atención. Para consultas de privacidad, solicitudes sobre sus datos o incidentes de seguridad, escriba a asesor@sgsolutionscr.com o contacte al +506 2446-7846. Nuestra ubicación es Centro Comercial Plaza El Bosque, local 9, Mercedes, Atenas, Alajuela, Costa Rica."
         },
         "1": {
           "titulo": "Información que usted proporciona",
@@ -1231,7 +1237,7 @@
         },
         "4": {
           "titulo": "Cookies y almacenamiento del navegador",
-          "texto": "La cookie sg-idioma conserva el idioma durante un máximo de un año. El carrito guarda identificadores y cantidades en el almacenamiento local del navegador, bajo sg-carrito-v1, hasta que lo vacíe o elimine los datos del sitio. Las cookies de autenticación mantienen la sesión y protegen el retorno del ingreso; al iniciar sesión desde una compra, una cookie de retorno de hasta una hora permite volver al pedido. Los campos se mantienen durante la interacción y los datos de compra se actualizan en su perfil al revisar un pedido con sesión iniciada. La preferencia de estadísticas y publicidad queda en el navegador: solo con su permiso se registran eventos propios de navegación y se carga Meta Pixel. Puede modificar su elección desde Preferencias de privacidad; borrar las cookies puede cerrar su sesión y eliminar preferencias. Las recomendaciones usan hasta 20 referencias de productos en memoria durante la navegación actual. Se eliminan al recargar o cerrar la página; no se guardan en su cuenta ni se sincronizan entre dispositivos. No conservamos el texto de sus búsquedas."
+          "texto": "La cookie sg-idioma conserva el idioma durante un máximo de un año. El carrito guarda identificadores y cantidades en el almacenamiento local del navegador, bajo sg-carrito-v1, hasta que lo vacíe o elimine los datos del sitio. Las cookies de autenticación mantienen la sesión y protegen el retorno del ingreso; al iniciar sesión desde una compra, una cookie de retorno de hasta una hora permite volver al pedido. Los campos se mantienen durante la interacción y los datos de compra se actualizan en su perfil al revisar un pedido con sesión iniciada. La preferencia de estadísticas y publicidad queda en el navegador: solo con su permiso se registran eventos propios de navegación y se carga Meta Pixel. Puede modificar su elección desde Preferencias de privacidad; borrar las cookies puede cerrar su sesión y eliminar preferencias. Conservamos contadores diarios agregados por producto, sin identificadores de visitantes, para estadísticas de interés y popularidad. Las unidades compradas se calculan desde pedidos con pago confirmado. Las recomendaciones usan hasta 20 referencias de productos en memoria durante la navegación actual. Se eliminan al recargar o cerrar la página; no se guardan en su cuenta ni se sincronizan entre dispositivos. No conservamos el texto de sus búsquedas."
         },
         "5": {
           "titulo": "Acceso, proveedores y conservación",
@@ -1369,7 +1375,7 @@
     "imagenesAyuda": "La primera imagen será la portada del producto.",
     "especificaciones": "Especificaciones técnicas",
     "precios": "Precio de referencia",
-    "preciosAyuda": "Defina el precio orientativo y la disponibilidad. El precio acordado se establece en la asesoría.",
+    "preciosAyuda": "Defina el precio normal y, si corresponde, una oferta con IVA incluido.",
     "publicacion": "Visibilidad en Soluciones",
     "publicacionAyuda": "Publique el producto o consérvelo privado para ofrecerlo durante la asesoría.",
     "seccionesProducto": "Secciones del producto",
@@ -1389,6 +1395,10 @@
     "borradores": "Borradores"
   },
   "Analitica": {
+    "masVistos": "Productos más vistos",
+    "masComprados": "Productos más comprados",
+    "aperturasProductos": "Aperturas con permiso para estadísticas",
+    "unidadesPagadas": "Unidades con pago confirmado",
     "tituloPanel": "Estadísticas",
     "titulo": "Sus preferencias de privacidad",
     "consentimiento": "Con su permiso, medimos visitas e interacciones para mejorar el sitio. La publicidad permite enviar eventos a Meta para evaluar campañas. No guardamos el contenido de formularios. Puede cambiar su elección en cualquier momento.",
@@ -1879,5 +1889,23 @@
     "pagoPendiente": "Pagos sin confirmar",
     "conflicto": "El pedido cambió o no permite esta transición. Actualice la página y revise su estado.",
     "guardado": "Estado del pedido actualizado."
+  },
+  "ArchivoPanel": {
+    "opciones": "Otras acciones",
+    "archivar": "Archivar",
+    "restaurar": "Restaurar",
+    "archivarTitulo": "Archivar {referencia}",
+    "restaurarTitulo": "Restaurar {referencia}",
+    "conserva": "Se conservarán los pagos, comprobantes y el historial del cliente.",
+    "cancelar": "Cancelar",
+    "confirmar": "Confirmar",
+    "guardando": "Guardando…",
+    "archivados": "Archivados",
+    "archivado": "Registro archivado.",
+    "restaurado": "Registro restaurado.",
+    "conflicto": "El registro cambió o aún requiere atención. Actualice la página y revise su estado.",
+    "finalizados": "Finalizados",
+    "porAtender": "Por atender",
+    "estadoArchivado": "Archivado"
   }
 }

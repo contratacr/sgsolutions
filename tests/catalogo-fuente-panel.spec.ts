@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {readFile,writeFile,unlink} from 'node:fs/promises';
-import inicial from '../src/lib/catalogo-inicial.json';
+import inicial from '../src/lib/catalogo-base.json';
 import {esquemaCatalogo} from '../src/lib/catalogo-modelo';
 const archivo='.privado/contenido-pruebas/catalogo.json';
 test.afterEach(async()=>{await unlink(archivo).catch(()=>{});});

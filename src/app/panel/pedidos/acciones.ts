@@ -1,4 +1,6 @@
 'use server';
+import {archivarAsesoriaPanel} from '@/lib/asesorias';
+import {puedeArchivar,type TipoRegistroPanel} from '@/lib/archivo-pedidos';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
@@ -108,4 +110,26 @@ export async function actualizarEntregaPedido(form:FormData) {
  if(error||!data)redirect(fallo);
  revalidatePath('/panel/pedidos');
  redirect(`/panel/pedidos?seccion=${destino}&resultado=entrega_guardada`);
+}
+
+export async function cambiarArchivoPanel(form:FormData){
+ if(!await autorizado())redirect('/admin');
+ const id=String(form.get('id')??''),tipo=String(form.get('tipo')??'') as TipoRegistroPanel,operacion=String(form.get('operacion')??'');
+ const destino=tipo==='asesoria'?'asesorias':tipo==='tarjeta'?'tarjeta':'manuales';
+ const fallo=`/panel/pedidos?seccion=${destino}&resultado=archivo_conflicto`;
+ if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)||!['asesoria','manual','tarjeta'].includes(tipo)||!['archivar','restaurar'].includes(operacion)||form.get('confirmar')!=='on')redirect(fallo);
+ const archivar=operacion==='archivar';
+ if(tipo==='asesoria'){
+  if(!await archivarAsesoriaPanel(id,archivar))redirect(fallo);
+ }else{
+  const config=configuracionPedidosManuales();const db=tipo==='tarjeta'?basePedidosAdministracion():config?basePedidosManuales(config):null;if(!db)redirect(fallo);
+  const tabla=tipo==='tarjeta'?'pedidos_tilopay':'pedidos_manuales';
+  const {data:p,error}=await db.from(tabla).select('estado,estado_entrega,creado_en,archivado_en').eq('id',id).maybeSingle();
+  if(error||!p||Boolean(p.archivado_en)===archivar||archivar&&!puedeArchivar(tipo,p))redirect(fallo);
+  let q=db.from(tabla).update({archivado_en:archivar?new Date().toISOString():null}).eq('id',id).eq('estado',p.estado).eq('estado_entrega',p.estado_entrega);
+  q=archivar?q.is('archivado_en',null):q.eq('archivado_en',p.archivado_en);
+  const actualizado=await q.select('id').maybeSingle();if(actualizado.error||!actualizado.data)redirect(fallo);
+ }
+ revalidatePath('/panel/pedidos');
+ redirect(`/panel/pedidos?seccion=${destino}&resultado=${archivar?'archivado':'restaurado'}`);
 }

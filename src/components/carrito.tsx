@@ -1,4 +1,5 @@
 'use client';
+import {PrecioProducto} from './precio-producto';
 import Image from 'next/image';
 import {useEffect,useId,useState} from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
@@ -45,7 +46,7 @@ export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
       {lineas.length === 0 && faltantes ? null : lineas.length === 0 ? <div className="carrito-vacio"><ShoppingCart size={44} aria-hidden="true"/><p>{faltantes?tienda('productoNoDisponible'):t('vacio')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/tienda">{t('explorar')}</Link></Dialog.Close></div> : <>
         <ul className="carrito-lineas">{lineas.map(linea => {
           const producto = productos.find(p => p.id === linea.id)!;
-          return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><span>{producto.precio===null?tienda('precioPendiente'):colones(producto.precio)}</span><ContadorCantidad cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;
+          return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><PrecioProducto producto={producto} pendiente={tienda('precioPendiente')}/><ContadorCantidad cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;
         })}</ul>
         <div className="carrito-resumen"><div><strong>{t('total')}</strong><strong>{lineas.some(l=>productos.find(p=>p.id===l.id)!.precio===null)?t('pendiente'):colones(lineas.reduce((a,l)=>a+productos.find(p=>p.id===l.id)!.precio!*l.cantidad,0))}</strong></div><p>{t('nota')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/pagar">{t('finalizar')}</Link></Dialog.Close>{!sesionIniciada&&<Dialog.Close asChild><Link className="carrito-ingreso" href={enlaceIngresoCompra()}>{acceso('carrito')}</Link></Dialog.Close>}</div>
       </>}

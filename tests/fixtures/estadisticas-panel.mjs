@@ -10,6 +10,7 @@ http.createServer(async(req,res)=>{
  if(u.pathname==='/rest/v1/perfiles')return send({id:sub,rol:'administrador',activo:true});
  if(u.pathname==='/rest/v1/rpc/es_administrador_activo')return send(Boolean(sub));
  if(u.pathname==='/rest/v1/catalogo_publico')return send(null);
+ if(u.pathname==='/rest/v1/rpc/popularidad_productos_panel')return send(error?null:{vistas:[{id:'producto-demo',cantidad:d.dias===7?2:8}],compras:[{id:'producto-demo',nombre:'Producto comprado',cantidad:d.dias===7?1:5,pedidos:2}]});
  if(u.pathname==='/rest/v1/rpc/resumen_estadisticas_panel'){
   if(error){res.statusCode=503;return send({code:'FIXTURE_UNAVAILABLE',message:'No disponible'});}
   const corto=d.dias===7,n=corto?2:18,fecha=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Costa_Rica',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());

@@ -29,3 +29,16 @@ export async function resumenAnalitica(dias:7|30=30):Promise<ResumenAnalitica|nu
  const db=await crearClienteServidor();if(!db)return null;const {data,error}=await db.rpc('resumen_estadisticas_panel',{dias});
  if(error){console.error('ESTADISTICAS_NO_DISPONIBLES',error.code);return null;}return data as ResumenAnalitica;
 }
+
+export type PopularidadProductos={vistas:{id:string;cantidad:number}[];compras:{id:string;nombre?:string;cantidad:number;pedidos:number}[]};
+export async function popularidadProductos(dias:7|30=30):Promise<PopularidadProductos|null>{
+ if(await adminLocalDisponible()){
+  const desde=Date.parse(fechasAnalitica(dias)[0]+'T00:00:00-06:00');
+  const conteos=new Map<string,number>();
+  for(const e of (await leer()).filter(e=>e.tipo==='producto'&&e.fecha>=desde))conteos.set(e.detalle,(conteos.get(e.detalle)??0)+1);
+  return {vistas:[...conteos].map(([id,cantidad])=>({id,cantidad})),compras:[]};
+ }
+ const db=await crearClienteServidor();if(!db)return null;
+ const {data,error}=await db.rpc('popularidad_productos_panel',{dias});
+ return error?null:data as PopularidadProductos;
+}

@@ -3,7 +3,7 @@
     "nombre": "SG Solutions",
     "descripcion": "Tailored technology solutions in Atenas, Costa Rica. IT support, networks, security and equipment with professional advice.",
     "logo": "SG Solutions",
-    "telefono": "8606-5342",
+    "telefono": "2446-7846",
     "ubicacionCorta": "Atenas, Costa Rica",
     "direccion": "Plaza El Bosque Shopping Center, unit 9. Mercedes, Atenas, Alajuela, Costa Rica.",
     "correo": "asesor@sgsolutionscr.com"
@@ -195,7 +195,7 @@
     "contactoTitulo": "What can we solve together?",
     "contactoTexto": "Tell us about your business, your equipment or your project. We will help you find the right equipment or solution.",
     "contactoAccion": "Message us on WhatsApp",
-    "llamar": "Call 8606-5342",
+    "llamar": "Call 2446-7846",
     "mapa": "Get directions",
     "planRecomendado": "Recommended plan",
     "planAsunto": "Business enquiry: {plan} plan",
@@ -567,6 +567,9 @@
     "subcategoria": "Product type",
     "todosTipos": "All types",
     "filtros": "Filters",
+    "precioAntes": "Previous price",
+    "precioOferta": "Sale price",
+    "precioFiltro": "Price",
     "precioMin": "Minimum price (₡)",
     "precioMax": "Maximum price (₡)",
     "marcasFiltro": "Brands",
@@ -594,6 +597,9 @@
     "marca": "Brand",
     "codigoFabricante": "Manufacturer code",
     "imagen": "Image: HTTPS URL or local path",
+    "precioDescuento": "Sale price (₡) · Optional",
+    "descuentoNota": "Lower than the regular price. Leave blank to remove the offer.",
+    "descuentoInvalido": "The sale price must be lower than the regular price.",
     "precioManual": "Reference price (₡, VAT included)",
     "publicado": "Published in the store",
     "borrador": "Draft",
@@ -1177,7 +1183,7 @@
       "secciones": {
         "0": {
           "titulo": "Who we are and how to contact us",
-          "texto": "SG Solutions is the trading name of 3-101-951810 Sociedad Anónima. Contact us at asesor@sgsolutionscr.com or +506 8606-5342, also on WhatsApp. Our office is at Centro Comercial Plaza El Bosque, unit 9, Mercedes, Atenas, Alajuela, Costa Rica."
+          "texto": "SG Solutions is the trading name of 3-101-951810 Sociedad Anónima. Contact us at asesor@sgsolutionscr.com or +506 2446-7846. You can also use our WhatsApp buttons. Our office is at Centro Comercial Plaza El Bosque, unit 9, Mercedes, Atenas, Alajuela, Costa Rica."
         },
         "1": {
           "titulo": "Catalog, prices and availability",
@@ -1193,7 +1199,7 @@
         },
         "4": {
           "titulo": "Warranties, returns and complaints",
-          "texto": "Products and services have the legal warranty applicable in Costa Rica and the specific conditions communicated for each product. For warranties, incorrect deliveries, cancellations or returns, contact asesor@sgsolutionscr.com or +506 8606-5342 with your reference and reason. Where the right of withdrawal applies, you can exercise it within eight business days after the sale is concluded, through the original purchase channel or our contact channels. We will explain how to return the item and process reimbursement under applicable rules. A convenience return does not replace rights relating to defects or non-performance. You are not required to handle warranty claims solely with the manufacturer and do not waive your rights to repair, replacement or refund."
+          "texto": "Products and services have the legal warranty applicable in Costa Rica and the specific conditions communicated for each product. For warranties, incorrect deliveries, cancellations or returns, contact asesor@sgsolutionscr.com or +506 2446-7846 with your reference and reason. Where the right of withdrawal applies, you can exercise it within eight business days after the sale is concluded, through the original purchase channel or our contact channels. We will explain how to return the item and process reimbursement under applicable rules. A convenience return does not replace rights relating to defects or non-performance. You are not required to handle warranty claims solely with the manufacturer and do not waive your rights to repair, replacement or refund."
         },
         "5": {
           "titulo": "Support and business plans",
@@ -1215,7 +1221,7 @@
       "secciones": {
         "0": {
           "titulo": "Responsible business and contact",
-          "texto": "3-101-951810 Sociedad Anónima, trading as SG Solutions, is responsible for data received through the website and its contact channels. For privacy questions, data requests or security incidents, write to asesor@sgsolutionscr.com or contact +506 8606-5342. Our office is at Centro Comercial Plaza El Bosque, unit 9, Mercedes, Atenas, Alajuela, Costa Rica."
+          "texto": "3-101-951810 Sociedad Anónima, trading as SG Solutions, is responsible for data received through the website and its contact channels. For privacy questions, data requests or security incidents, write to asesor@sgsolutionscr.com or contact +506 2446-7846. Our office is at Centro Comercial Plaza El Bosque, unit 9, Mercedes, Atenas, Alajuela, Costa Rica."
         },
         "1": {
           "titulo": "Information you provide",
@@ -1231,7 +1237,7 @@
         },
         "4": {
           "titulo": "Cookies and browser storage",
-          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in browser local storage under sg-carrito-v1 until you empty it or delete site data. Authentication cookies maintain your session and protect the sign-in return; when signing in from checkout, a return cookie lasting up to one hour lets you return to your order. Form fields are retained during interaction and purchase details are updated in your profile when reviewing an order while signed in. Statistics and advertising preferences are stored in your browser: only with your permission are first-party browsing events recorded and Meta Pixel loaded. You can change your choice through Privacy preferences; deleting cookies may sign you out and remove preferences. Recommendations use up to 20 product references in memory during the current browsing session. They are cleared when you reload or close the page; they are not saved to your account or synced across devices. We do not retain your search text."
+          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in browser local storage under sg-carrito-v1 until you empty it or delete site data. Authentication cookies maintain your session and protect the sign-in return; when signing in from checkout, a return cookie lasting up to one hour lets you return to your order. Form fields are retained during interaction and purchase details are updated in your profile when reviewing an order while signed in. Statistics and advertising preferences are stored in your browser: only with your permission are first-party browsing events recorded and Meta Pixel loaded. You can change your choice through Privacy preferences; deleting cookies may sign you out and remove preferences. We retain aggregated daily product counters without visitor identifiers for interest and popularity statistics. Purchased units are calculated from orders with confirmed payment. Recommendations use up to 20 product references in memory during the current browsing session. They are cleared when you reload or close the page; they are not saved to your account or synced across devices. We do not retain your search text."
         },
         "5": {
           "titulo": "Access, providers and retention",
@@ -1389,6 +1395,10 @@
     "borradores": "Drafts"
   },
   "Analitica": {
+    "masVistos": "Most viewed products",
+    "masComprados": "Most purchased products",
+    "aperturasProductos": "Views with analytics permission",
+    "unidadesPagadas": "Units with confirmed payment",
     "tituloPanel": "Analytics",
     "titulo": "Your privacy preferences",
     "consentimiento": "With your permission, we measure visits and interactions to improve the site. Advertising allows events to be sent to Meta to evaluate campaigns. We do not store form contents. You can change your choice at any time.",
@@ -1879,5 +1889,23 @@
     "pagoPendiente": "Unconfirmed payments",
     "conflicto": "The order changed or this transition is unavailable. Refresh the page and check its status.",
     "guardado": "Order status updated."
+  },
+  "ArchivoPanel": {
+    "opciones": "Other actions",
+    "archivar": "Archive",
+    "restaurar": "Restore",
+    "archivarTitulo": "Archive {referencia}",
+    "restaurarTitulo": "Restore {referencia}",
+    "conserva": "Payments, receipts and the customer’s history will be preserved.",
+    "cancelar": "Cancel",
+    "confirmar": "Confirm",
+    "guardando": "Saving…",
+    "archivados": "Archived",
+    "archivado": "Record archived.",
+    "restaurado": "Record restored.",
+    "conflicto": "The record changed or still needs attention. Refresh the page and check its status.",
+    "finalizados": "Completed",
+    "porAtender": "Needs attention",
+    "estadoArchivado": "Archived"
   }
 }

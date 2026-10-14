@@ -9,8 +9,8 @@ for(const idioma of ['es','en']){
    await expect(page.locator('.legal-grid:visible article section')).toHaveCount(ruta==='/privacidad'?10:9);
    await expect(page.locator('.pie-legales a')).toHaveCount(2);
    await expect(page.locator('.legal-revision')).toHaveCount(0);
-   await expect(page.locator('.legal-grid article')).not.toContainText(/2446-7846|6439-9417|todavía no está habilitado|No hay cobros con tarjeta/);
-   await expect(page.locator('.legal-grid article')).toContainText('8606-5342');
+   await expect(page.locator('.legal-grid article')).not.toContainText(/6439-9417|todavía no está habilitado|No hay cobros con tarjeta/);
+   await expect(page.locator('.legal-grid article')).toContainText('2446-7846');
    await expect(page.locator('.legal-grid article')).toContainText(ruta==='/privacidad'?'Supabase':'Tilopay');
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
    await expect(page.locator('html')).toHaveAttribute('lang',idioma);
@@ -24,8 +24,8 @@ for(const idioma of ['es','en']){
    await expect(page.locator('main:visible h1')).toBeVisible();
    await page.locator('footer.pie').scrollIntoViewIfNeeded();
    await expect(page.locator('footer.pie')).toBeVisible();
-   await expect(page.locator('footer.pie a[href="tel:+50686065342"]')).toBeVisible();
-   expect(await page.locator('a[href^="tel:"],a[href^="https://wa.me/"]').evaluateAll(es=>es.every(e=>e.getAttribute('href')?.includes('86065342')))).toBeTruthy();
+   await expect(page.locator('footer.pie a[href="tel:+50624467846"]')).toBeVisible();
+   expect(await page.locator('a[href^="tel:"],a[href^="https://wa.me/"]').evaluateAll(es=>es.every(e=>e.getAttribute('href')?.startsWith('tel:')?e.getAttribute('href')?.includes('24467846'):e.getAttribute('href')?.includes('86065342')))).toBeTruthy();
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   }
  });

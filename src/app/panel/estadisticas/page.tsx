@@ -5,14 +5,14 @@ import {traducir} from '@/lib/catalogo-modelo';
 import {getLocale,getTranslations} from 'next-intl/server';
 import {sesionLocal} from '@/lib/admin-local';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
-import {resumenAnalitica,fechasAnalitica} from '@/lib/analitica-servidor';
+import {resumenAnalitica,fechasAnalitica,popularidadProductos} from '@/lib/analitica-servidor';
 import './estadisticas.css';
 export async function generateMetadata(){const t=await getTranslations('Analitica');return {title:t('tituloPanel'),robots:{index:false,follow:false}};}
 export default async function Estadisticas({searchParams}:{searchParams:Promise<{dias?:string}>}){
  const local=await sesionLocal();if(!local){const db=await crearClienteServidor();if(!db)redirect('/admin');const {data:{user}}=await db.auth.getUser();if(!user)redirect('/admin');const {data}=await db.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();if(!data?.activo||data.rol!=='administrador')redirect('/panel');}
  const dias=(await searchParams).dias==='7'?7:30;
  const t=await getTranslations('Analitica'),idioma=await getLocale();
- const [resumen,catalogo,planes]=await Promise.all([resumenAnalitica(dias),leerCatalogoPublico(),getTranslations('Inicio')]);
+ const [resumen,catalogo,planes,popularidad]=await Promise.all([resumenAnalitica(dias),leerCatalogoPublico(),getTranslations('Inicio'),popularidadProductos(dias)]);
  const numero=(n:number|undefined)=>n===undefined?'—':new Intl.NumberFormat(idioma==='en'?'en-US':'es-CR').format(n);
  const dinero=(n:number|undefined)=>n===undefined?'—':new Intl.NumberFormat(idioma==='en'?'en-US':'es-CR',{style:'currency',currency:'CRC',maximumFractionDigits:0}).format(n);
  const total=(tipo:string)=>resumen?.filas.filter(f=>f.tipo===tipo).reduce((s,f)=>s+f.cantidad,0);
@@ -32,6 +32,10 @@ export default async function Estadisticas({searchParams}:{searchParams:Promise<
   const filas=[...grupos].sort((a,b)=>b[1]-a[1]).slice(0,5);
   return <section className="estadisticas-lista" key={tipo}><div className="metrica-encabezado"><h2>{t(tipo)}</h2><span>{numero(total(tipo))}</span></div>{filas.length?<ol>{filas.map(([n,c])=><li key={n}><span>{n}</span><strong>{numero(c)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>;
  };
+ const ranking=(tipo:'vistas'|'compras')=>{
+  const filas=[...(popularidad?.[tipo]??[])].sort((a,b)=>b.cantidad-a.cantidad).slice(0,10);
+  return <section className="estadisticas-lista"><h2>{t(tipo==='vistas'?'masVistos':'masComprados')}</h2><p>{t(tipo==='vistas'?'aperturasProductos':'unidadesPagadas')}</p>{filas.length?<ol>{filas.map(f=>{const p=catalogo.productos.find(p=>p.id===f.id||p.slug===f.id);return <li key={f.id}><span>{p?traducir(p.nombre,idioma):('nombre' in f&&typeof f.nombre==='string'?f.nombre:f.id)}</span><strong>{numero(f.cantidad)}</strong></li>;})}</ol>:<p>{t('sinDatos')}</p>}</section>;
+ };
  const diario=resumen?.diario??[],max=Math.max(1,...diario.map(d=>d.visitas));
  const fechas=fechasAnalitica(dias);
  return <main id="contenido" className="contenedor seccion estadisticas-panel">
@@ -47,6 +51,6 @@ export default async function Estadisticas({searchParams}:{searchParams:Promise<
   <section aria-labelledby="compras-titulo"><h2 id="compras-titulo" className="estadisticas-grupo">{t('compras')}</h2><div className="estadisticas-tarjetas">
    {tarjeta(t('pedidos'),numero(resumen?.compras?.total))}{tarjeta(t('pedidosPagados'),numero(resumen?.compras?.pagados))}{tarjeta(t('ingresos'),dinero(resumen?.compras?.ingresos))}{tarjeta(t('ticketPromedio'),dinero(resumen?.compras?.promedio))}
   </div>{resumen?.compras&&<p className="estadisticas-pendientes"><Link href="/panel/pedidos">{t('pendientesPago',{total:numero(resumen.compras.pendientes)})}</Link></p>}</section>
-  {resumen&&<div className="estadisticas-detalles">{['pagina','producto','carrito','busqueda_producto','campana','plan'].filter(tipo=>(total(tipo)??0)>0).map(lista)}{Boolean(clics)&&<section className="estadisticas-lista"><h2>{t('contactos')}</h2><ol>{contactos.map(tipo=><li key={tipo}><span>{t(tipo)}</span><strong>{numero(total(tipo))}</strong></li>)}</ol></section>}{(['dispositivos','idiomas'] as const).filter(tipo=>Boolean(resumen[tipo]?.length)).map(tipo=><section className="estadisticas-lista" key={tipo}><h2>{t(tipo)}</h2>{resumen[tipo]?.length?<ol>{resumen[tipo]!.map(f=><li key={f.detalle}><span>{t(f.detalle==='es'?'espanol':f.detalle==='en'?'ingles':f.detalle==='movil'?'movil':'escritorio')}</span><strong>{numero(f.cantidad)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>)}</div>}
+  {resumen&&<div className="estadisticas-detalles">{popularidad?<>{ranking('vistas')}{ranking('compras')}</>:lista('producto')}{['pagina','carrito','busqueda_producto','campana','plan'].filter(tipo=>(total(tipo)??0)>0).map(lista)}{Boolean(clics)&&<section className="estadisticas-lista"><h2>{t('contactos')}</h2><ol>{contactos.map(tipo=><li key={tipo}><span>{t(tipo)}</span><strong>{numero(total(tipo))}</strong></li>)}</ol></section>}{(['dispositivos','idiomas'] as const).filter(tipo=>Boolean(resumen[tipo]?.length)).map(tipo=><section className="estadisticas-lista" key={tipo}><h2>{t(tipo)}</h2>{resumen[tipo]?.length?<ol>{resumen[tipo]!.map(f=><li key={f.detalle}><span>{t(f.detalle==='es'?'espanol':f.detalle==='en'?'ingles':f.detalle==='movil'?'movil':'escritorio')}</span><strong>{numero(f.cantidad)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>)}</div>}
  </main>;
 }

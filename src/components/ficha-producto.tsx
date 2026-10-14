@@ -1,4 +1,5 @@
 "use client";
+import {PrecioProducto} from './precio-producto';
 import Link from "next/link";
 import {ContadorCantidad} from './contador-cantidad';
 import {AsesoriaWhatsApp} from "./asesoria-whatsapp";
@@ -12,7 +13,6 @@ import {
 import { FotoProducto } from "./foto-producto";
 import {
   traducir,
-  colones,
   type CatalogoPublico,
   type Texto,
 } from "@/lib/catalogo-modelo";
@@ -70,9 +70,7 @@ export function FichaProducto({
           </p>
           <p>{traducir(p.descripcion, l)}</p>
           <div className="ficha-precio">
-            <strong>
-              {p.precio === null ? s("precioPendiente") : colones(p.precio)}
-            </strong>
+            <PrecioProducto producto={p} pendiente={s("precioPendiente")}/>
             {p.precio !== null && <small>{a("precioConIva")}</small>}
           </div>
           {p.disponibilidad==='agotado'&&<p className="ficha-stock">{s('agotado')}</p>}

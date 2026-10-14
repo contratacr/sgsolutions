@@ -210,10 +210,10 @@ const post = (route, body) =>
     },
     body: JSON.stringify(body),
   });
-const verify = async () => {
+const verify = async (expectedPrice=price) => {
   const r = await post("/api/compra/verificar", {
     idioma: "es",
-    articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1, precio: price }],
+    articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1, precio: expectedPrice }],
   });
   const body = await r.json();
   if (body.id) checks.push(body.id);
@@ -333,6 +333,23 @@ try {
   cost = 20;
   assert.equal((await verify()).r.status, 409);
   cost = 10;
+  // Promotions are trusted catalogue prices, never browser-selected amounts.
+  const offerPrice=Math.floor(price/2);
+  const offerCatalog=esquemaCatalogo.parse({...catalog,productos:catalog.productos.map(p=>({...p,precioDescuento:offerPrice}))});
+  for(const [tabla,contenido] of [["catalogo_privado",offerCatalog],["catalogo_publico",publicarCatalogo(offerCatalog)]])assert.ifError((await db.from(tabla).upsert({id:1,contenido})).error);
+  assert.equal((await verify(price)).r.status,409,"Stale regular price must be rejected while an offer is active.");
+  assert.equal((await verify(1)).r.status,409,"Browser price manipulation must be rejected.");
+  const offerVerification=await verify(offerPrice);assert.equal(offerVerification.r.status,200);
+  const offerManual=await order(offerVerification.body,"sinpe");assert.equal(offerManual.r.status,201);
+  const offerId=datosEnlacePedido(new URL(offerManual.d.url,base)).pedido;
+  const offerSaved=await db.from("pedidos_manuales").select("total_cobrar,articulos").eq("id",offerId).single();assert.ifError(offerSaved.error);assert.equal(Number(offerSaved.data.total_cobrar),offerPrice);assert.equal(offerSaved.data.articulos[0].precio,offerPrice);
+  const offerCardVerification=await verify(offerPrice),offerData=payload(offerCardVerification.body).datos;
+  const offerCard=await post("/api/pagos/tilopay/iniciar",{asesoria:offerCardVerification.body.id,acceso:offerCardVerification.body.token,idioma:"es",articulos:[{id:"eurocomp-qa-compra-worker",cantidad:1}],...offerData,consentimiento:true,datos:offerData});assert.equal(offerCard.status,200);
+  const offerCardSaved=await db.from("pedidos_tilopay").select("id,total,articulos").eq("cliente->>correo","qa-worker@example.invalid");assert.ifError(offerCardSaved.error);cards.push(...offerCardSaved.data.map(x=>x.id));assert.equal(Number(offerCardSaved.data[0].total),offerPrice);assert.equal(offerCardSaved.data[0].articulos[0].precio,offerPrice);
+  // Clean this separate case before existing approval/idempotency scenarios.
+  await db.from("pedidos_tilopay").delete().in("id",cards);cards.length=0;
+  for(const [tabla,contenido] of [["catalogo_privado",catalog],["catalogo_publico",publicarCatalogo(catalog)]])assert.ifError((await db.from(tabla).upsert({id:1,contenido})).error);
+  console.log("PASS sale price: catalogue verification, manual/card totals and forged/stale-price rejection.");
   for (const method of ["sinpe", "transferencia"]) {
     const verificacion = await verify();
     assert.equal(verificacion.r.status, 200, "Eligible Eurocomp fixture must receive a purchase verification token.");

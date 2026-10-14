@@ -11,16 +11,17 @@ for(const idioma of ['es','en'])test(`gestión de retiro y envío, etiquetas y f
  const t=(idioma==='es'?es:en).EntregaAdmin;
  for(const [seccion,nombre,medio] of [['manuales','Retiro','listo_retiro'],['tarjeta','Envío','enviado']] as const){
  await page.goto('/panel/pedidos?seccion='+seccion);
+ await page.locator('.panel-pedidos-seccion:visible').getByRole('button',{name:new RegExp('^'+(idioma==='es'?'Todos':'All'))}).click();
  const section=page.locator('.panel-pedidos-seccion:visible');const card=section.locator('.pedidos-admin-tarjeta').filter({hasText:nombre}).first();
  await expect(card.locator('.pedido-estados')).toContainText(t.pago);await expect(card.locator('.pedido-estados')).toContainText(t.pedido);await expect(card.locator('.pedido-estados')).toContainText(t.pendiente_preparar);
- if(!await card.locator('details').getAttribute('open').then(x=>x!==null))await card.locator('summary').click();await expect(card.locator('.pedido-estados')).toHaveCount(1);
+ if(!await card.locator('.panel-pedido-detalle').getAttribute('open').then(x=>x!==null))await card.locator('.panel-pedido-detalle>summary').click();await expect(card.locator('.pedido-estados')).toHaveCount(1);
  await card.getByRole('button',{name:t.accion_preparando,exact:true}).click();await expect(page.getByRole('status').filter({hasText:t.guardado})).toBeVisible();
- if(!await card.locator('details').getAttribute('open').then(x=>x!==null))await card.locator('summary').click();await expect(card.locator('.pedido-estados')).toContainText(t.preparando);
- await card.getByRole('button',{name:t[`accion_${medio}`],exact:true}).click();if(!await card.locator('details').getAttribute('open').then(x=>x!==null))await card.locator('summary').click();await expect(card.locator('.pedido-estados')).toContainText(t[medio]);
- await card.getByRole('button',{name:t.accion_entregado,exact:true}).click();if(!await card.locator('details').getAttribute('open').then(x=>x!==null))await card.locator('summary').click();await expect(card.locator('.pedido-estados')).toContainText(t.entregado);await expect(card.locator('.pedido-gestion-entrega button')).toHaveCount(0);
+ if(!await card.locator('.panel-pedido-detalle').getAttribute('open').then(x=>x!==null))await card.locator('.panel-pedido-detalle>summary').click();await expect(card.locator('.pedido-estados')).toContainText(t.preparando);
+ await card.getByRole('button',{name:t[`accion_${medio}`],exact:true}).click();if(!await card.locator('.panel-pedido-detalle').getAttribute('open').then(x=>x!==null))await card.locator('.panel-pedido-detalle>summary').click();await expect(card.locator('.pedido-estados')).toContainText(t[medio]);
+ await card.getByRole('button',{name:t.accion_entregado,exact:true}).click();if(!await card.locator('.panel-pedido-detalle').getAttribute('open').then(x=>x!==null))await card.locator('.panel-pedido-detalle>summary').click();await expect(card.locator('.pedido-estados')).toContainText(t.entregado);await expect(card.locator('.pedido-gestion-entrega button')).toHaveCount(0);
  await section.getByRole('button',{name:new RegExp('^'+t.porPreparar)}).click();await expect(card).toHaveCount(0);
- await section.getByRole('button',{name:new RegExp('^'+t.finalizados)}).click();await expect(card).toBeVisible();
+ await section.getByRole('button',{name:new RegExp('^'+(idioma==='es'?'Finalizados':'Completed'))}).click();await expect(card).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }
- await page.goto('/panel/pedidos?seccion=tarjeta');const rechazado=page.locator('main.seccion:visible .pedidos-admin-tarjeta').filter({hasText:'Rechazado QA'});await rechazado.locator('summary').click();await expect(rechazado.locator('.pedido-estados')).toContainText(t.sin_pago);await expect(rechazado.locator('.pedido-gestion-entrega')).toHaveCount(0);
+ await page.goto('/panel/pedidos?seccion=tarjeta');const rechazado=page.locator('main.seccion:visible .pedidos-admin-tarjeta').filter({hasText:'Rechazado QA'});await rechazado.locator('.panel-pedido-detalle>summary').click();await expect(rechazado.locator('.pedido-estados')).toContainText(t.sin_pago);await expect(rechazado.locator('.pedido-gestion-entrega')).toHaveCount(0);
 });

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { colones, esquemaCatalogo, traducir, type CatalogoAdmin, type Texto } from '@/lib/catalogo-modelo';
+import { colones, preciosProducto,descuentosInvalidos,esquemaCatalogo, traducir, type CatalogoAdmin, type Texto } from '@/lib/catalogo-modelo';
 import { useCambiosAdmin } from '@/components/use-cambios-admin';
 import { GestorImagenes } from '@/components/gestor-imagenes';
 import { guardarCatalogo } from '@/app/panel/catalogo/acciones';
@@ -33,7 +33,7 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
 }) {
   const t = useTranslations('AdminCatalogo');
   const u = useTranslations('AdminUX');
-  const precio = p.precioManual;
+  const precio = preciosProducto(p,datos.ajustes).precio;
   const seccion = (nombre: string) => `${p.id}-${nombre}`;
   return <section className="admin-producto-editor" id={p.id} aria-label={u('editarProducto', { nombre: traducir(p.nombre, idioma) || t('nuevoProducto') })}>
     <div className="admin-editor-cabecera">
@@ -56,6 +56,7 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
       <div className="admin-precio-resumen"><span>{t('precioFinal')}</span><strong>{precio === null ? t('sinPrecio') : colones(precio)}</strong></div>
       <div className="admin-fields">
         <label>{t('precioManual')}<input type="number" step="1" min="1" value={p.precioManual ?? ''} onChange={e => cambiar(i, { precioManual: e.target.value === '' ? null : Number(e.target.value),precioReferencia:null,costoUsd:null,costoCrc:null })} /><small>{t('manualNota')}</small></label>
+        <label>{t('precioDescuento')}<input type="number" step="1" min="1" max={p.precioManual!==null?p.precioManual-1:undefined} value={p.precioDescuento??''} onChange={e=>cambiar(i,{precioDescuento:e.target.value===''?null:Number(e.target.value)})}/><small>{t('descuentoNota')}</small>{p.precioDescuento!=null&&preciosProducto(p,datos.ajustes).precioOriginal===null&&<small role="alert">{t('descuentoInvalido')}</small>}</label>
         <label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>
         <label>{t('codigoFabricante')}<input value={p.codigoFabricante} maxLength={100} onChange={e => cambiar(i, { codigoFabricante: e.target.value })} /></label>
       </div>
@@ -150,6 +151,8 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
   function guardar() {
     const validado = esquemaCatalogo.safeParse(datos);
     if (!validado.success) { setCampos(validado.error.issues.map(x => x.path.map(k => typeof k === 'number' ? k : String(k)))); setEstado('validacion'); return; }
+    const ofertasInvalidas=descuentosInvalidos(validado.data);
+    if(ofertasInvalidas.length){setCampos(ofertasInvalidas.map(i=>['productos',i,'precioDescuento']));setEstado('validacion');return;}
     setCampos([]);
     iniciar(async () => {
       try {
@@ -185,7 +188,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
           <label>{u('estado')}<select value={filtroEstado} onChange={e => { setFiltroEstado(e.target.value); setPaginaAdmin(1); setEditorId(null); }}>{['todos', 'publicados', 'borradores'].map(k => <option key={k} value={k}>{u(k)}</option>)}</select></label>
         </div>
         {seleccion.length ? <>{paginacion()}<div className="admin-productos-lista">{visibles.map(({ p }) => {
-          const precio = p.precioManual;
+          const precio = preciosProducto(p,datos.ajustes).precio;
           return <div className="admin-producto-contenedor" key={p.id}><div className="admin-producto-fila">
             <div className="admin-producto-foto"><Image src={p.imagen} alt="" width={64} height={64} unoptimized /></div>
             <div className="admin-producto-datos"><strong>{traducir(p.nombre, idioma) || t('nuevoProducto')}</strong><span>{p.marca || u('sinMarca')} · {p.codigoFabricante || u('sinCodigo')}</span></div>

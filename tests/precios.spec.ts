@@ -20,7 +20,8 @@ test('fórmula CRC, prioridad manual y costos privados',()=>{
  const c=esquemaCatalogo.parse(base);c.productos[0].costoUsd=100;c.productos[1].publicado=false;
  const publico=publicarCatalogo(c);
  expect(publico.productos.some(p=>p.id===c.productos[1].id)).toBe(false);
- expect(JSON.stringify(publico)).not.toMatch(/costoUsd|precioManual|utilidad|cambio/);
+ for(const producto of publico.productos)for(const campo of ['costoUsd','costoCrc','precioManual','precioDescuento','utilidad','cambio'])expect(producto).not.toHaveProperty(campo);
+ expect(publico).not.toHaveProperty('ajustes');
  c.productos[0].revisionPrecio=true;c.productos[0].precioManual=null;
  expect(publicarCatalogo(c).productos.find(p=>p.id===c.productos[0].id)?.precio).toBeNull();
  expect(esquemaCatalogo.safeParse({...c,ajustes:{...ajustes,cambio:-1}}).success).toBe(false);
