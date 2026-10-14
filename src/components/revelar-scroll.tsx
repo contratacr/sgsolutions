@@ -36,12 +36,15 @@ export function RevelarScroll(){
    });
   },{threshold:.05,rootMargin:'0px 0px -7% 0px'});
   const registrar=()=>document.querySelector('main')?.querySelectorAll(selector).forEach(el=>{
+   // Recheck streamed controls even after their container was registered.
+   const controles='button, a[href], input, select, textarea, [role="button"]';
+   if(el.matches(controles)||el.querySelector(controles)){
+    el.removeAttribute('data-revelar-pendiente');observador.unobserve(el);pendientes.delete(el);
+    animaciones.get(el)?.cancel();animaciones.delete(el);vistos.add(el);return;
+   }
    if(vistos.has(el))return;
    vistos.add(el);
    if(el.closest('form, dialog, [role="dialog"], .shop-producto') || el.parentElement?.closest(bloques))return;
-   // Revealing a moving container can shift controls between pointer down and up.
-   const controles='button, a[href], input, select, textarea, [role="button"]';
-   if(el.matches(controles)||el.querySelector(controles))return;
    // Above-the-fold content is already part of the initial composition. It
    // should never flash or slide just because JavaScript finished loading.
    if(el.getBoundingClientRect().top<innerHeight*.78 || preferencia.matches)return;
