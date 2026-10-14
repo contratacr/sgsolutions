@@ -26,7 +26,7 @@ export function SubirComprobante({ pedido, acceso }: { pedido: string; acceso: s
   }
   return <div className="pedido-comprobante">
     <label htmlFor="pedido-comprobante"><span>{t('adjuntar')}<IndicadorCampo obligatorio/></span></label>
-    <div className="compra-archivo-control"><input id="pedido-comprobante" type="file" required aria-label={t('adjuntar')} accept="image/jpeg,image/png,application/pdf" onChange={e => setArchivo(e.target.files?.[0] ?? null)}/><span className="compra-archivo-boton" aria-hidden="true">{compra('seleccionarArchivo')}</span><span className="compra-archivo-nombre" aria-live="polite">{archivo?archivo.name:compra('ningunArchivo')}</span></div>
+    <div className="compra-archivo-control"><input id="pedido-comprobante" type="file" required aria-label={t('adjuntar')} accept="image/jpeg,image/png,application/pdf" onChange={e => setArchivo(e.target.files?.[0] ?? null)}/><label htmlFor="pedido-comprobante" className="compra-archivo-boton">{compra('seleccionarArchivo')}</label><span className="compra-archivo-nombre" aria-live="polite">{archivo?archivo.name:compra('ningunArchivo')}</span></div>
     <p>{t('formato')}</p>
     <button type="button" className="boton boton-azul" disabled={!archivo || ocupado} onClick={enviar}>{t(ocupado ? 'enviando' : 'enviar')}</button>
     {estado && <p role={estado === 'recibido' ? 'status' : 'alert'}>{t(estado)}</p>}

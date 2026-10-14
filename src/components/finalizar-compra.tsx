@@ -103,6 +103,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
     total = subtotal + envio;
   async function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if(procesando)return;
     if(pago!=='tarjeta'&&(!comprobante||errorComprobante)){setErrorFormulario(true);return;}
     setErrorFormulario(false);setGuardadoPerfil('inicio');
     const formulario=new FormData(e.currentTarget);
@@ -113,19 +114,20 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
     const validacion=datosClienteCompra.safeParse(datos);
     if(!validacion.success){setCamposInvalidos([...new Set(validacion.error.issues.map(x=>String(x.path[0])))]);setErrorFormulario(true);return;}
     setCamposInvalidos([]);
-    setRevision({...datos,...validacion.data});
+    if(pago!=='tarjeta')setRevision({...datos,...validacion.data});
     medir('pedido_revisado');
     if(cuentaDisponible){
       try{setGuardadoPerfil(await guardarDatosCompra('inicio',formulario));}catch{setGuardadoPerfil('error');}
     }
+    if(pago==='tarjeta'&&tarjetaDisponible)await pagarConTarjeta({...datos,...validacion.data});
   }
   async function accesoCompra(){
     if(aprobacion)return {id:aprobacion.id,token:aprobacion.token};
     const r=await fetch('/api/compra/verificar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idioma:l,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad,precio:x.p.precio}))})});
     const d=await r.json();if(!r.ok||typeof d.id!=='string'||typeof d.token!=='string'){if(d.error==='catalogo_actualizado')setErrorStock(true);throw new Error('COMPRA_NO_DISPONIBLE');}return d as {id:string;token:string};
   }
-  async function pagarConTarjeta() {
-    if (!revision || procesando || pendiente || bloqueado) return;
+  async function pagarConTarjeta(datosCompra:Record<string,string>|null=revision) {
+    if (!datosCompra || procesando || pendiente || bloqueado) return;
     setProcesando(true);
     setErrorPago(false);
     try {
@@ -133,8 +135,8 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
       const respuesta = await fetch('/api/pagos/tilopay/iniciar', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:revision, nombre: revision.nombre, apellidos: revision.apellidos, correo: revision.correo,
-          telefono: revision.telefono, consentimiento: revision.consentimiento === 'on',
+          asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:datosCompra, nombre: datosCompra.nombre, apellidos: datosCompra.apellidos, correo: datosCompra.correo,
+          telefono: datosCompra.telefono, consentimiento: datosCompra.consentimiento === 'on',
           articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })),
         }),
       });
@@ -177,7 +179,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
   ) => (
     <label key={name}>
       <span>{t(name)}{(required||!['apartamento','postal','actividad'].includes(name))&&<IndicadorCampo obligatorio={required}/>}</span>
-      {name==='identificacion'?<CampoIdentificacion tipo={tipoIdentificacion} defaultValue={borrador[name]} required={required} invalid={camposInvalidos.includes(name)} describedBy="compra-identificacion-ayuda" onChange={()=>setCamposInvalidos(actual=>actual.filter(c=>c!==name))}/>:type==='tel'?<CampoTelefono name={name} defaultValue={borrador[name]} required={required} invalid={camposInvalidos.includes(name)} onChange={()=>setCamposInvalidos(actual=>actual.filter(c=>c!==name))}/>:<input
+      {name==='identificacion'?<CampoIdentificacion tipo={tipoIdentificacion} defaultValue={borrador[name]} required={required} invalid={camposInvalidos.includes(name)} describedBy={tipoIdentificacion==='fisica'?undefined:'compra-identificacion-ayuda'} onChange={()=>setCamposInvalidos(actual=>actual.filter(c=>c!==name))}/>:type==='tel'?<CampoTelefono name={name} defaultValue={borrador[name]} required={required} invalid={camposInvalidos.includes(name)} onChange={()=>setCamposInvalidos(actual=>actual.filter(c=>c!==name))}/>:<input
         defaultValue={borrador[name] || (type === "tel" ? "+506 " : "")}
         name={name}
         type={type}
@@ -188,10 +190,10 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
         autoComplete={autoComplete}
         inputMode={name==='identificacion'?'numeric':undefined}
         pattern={name==='identificacion'?(tipoIdentificacion==='juridica'?'[0-9]{10}|[0-9]-[0-9]{3}-[0-9]{6}':'[0-9]{9}|[0-9]-[0-9]{4}-[0-9]{4}'):undefined}
-        aria-describedby={name==='identificacion'?'compra-identificacion-ayuda':undefined}
+        aria-describedby={name==='identificacion'&&tipoIdentificacion!=='fisica'?'compra-identificacion-ayuda':undefined}
       />}
       {camposInvalidos.includes(name)&&<small role="alert" className="campo-error">{t(type==='tel'?'telefonoInvalido':'campoInvalido')}</small>}
-      {name==='identificacion'&&<small id="compra-identificacion-ayuda">{t(tipoIdentificacion==='dimex'?'identificacionDimexAyuda':tipoIdentificacion==='nite'?'identificacionNiteAyuda':tipoIdentificacion==='juridica'?'identificacionJuridicaAyuda':'identificacionFisicaAyuda')}</small>}
+      {name==='identificacion'&&tipoIdentificacion!=='fisica'&&<small id="compra-identificacion-ayuda">{t(tipoIdentificacion==='dimex'?'identificacionDimexAyuda':tipoIdentificacion==='nite'?'identificacionNiteAyuda':tipoIdentificacion==='juridica'?'identificacionJuridicaAyuda':'identificacionFisicaAyuda')}</small>}
     </label>
   );
   return (
@@ -244,7 +246,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                 {comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}
                 {pago === 'tarjeta' && tarjetaDisponible && <p>{t(tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso')}</p>}
                 {pago === 'tarjeta' && tarjetaDisponible && !pendiente && !bloqueado ? (
-                  <button className="boton boton-naranja" type="button" onClick={pagarConTarjeta} disabled={procesando}>
+                  <button className="boton boton-naranja" type="button" onClick={()=>pagarConTarjeta()} disabled={procesando}>
                     {t(procesando ? 'procesandoPago' : tarjetaEnPruebas ? 'pagarPrueba' : 'pagarTarjeta')}
                     <CreditCard size={18} aria-hidden="true" />
                   </button>
@@ -424,7 +426,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                     <label htmlFor="compra-comprobante"><span>{t('comprobanteEtiqueta')}<IndicadorCampo obligatorio/></span></label>
                     <div className="compra-archivo-control">
                       <input id="compra-comprobante" type="file" required={!comprobante} aria-required="true" aria-label={t('comprobanteEtiqueta')} accept="image/jpeg,image/png,application/pdf" aria-invalid={errorComprobante||undefined} onChange={e=>{const f=e.target.files?.[0]??null;const invalido=Boolean(f&&(f.size<100||f.size>5*1024*1024||!['image/jpeg','image/png','application/pdf'].includes(f.type)));setErrorComprobante(invalido);setComprobante(invalido?null:f);if(invalido)e.target.value='';}}/>
-                      <span className="compra-archivo-boton" aria-hidden="true">{t('seleccionarArchivo')}</span>
+                      <label htmlFor="compra-comprobante" className="compra-archivo-boton">{t('seleccionarArchivo')}</label>
                       <span className="compra-archivo-nombre" aria-live="polite">{comprobante?comprobante.name:t('ningunArchivo')}</span>
                     </div>
                     {errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}
@@ -443,13 +445,14 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                     <input type="checkbox" name="consentimiento" required />
                     <span>{t("consentimiento")}<IndicadorCampo obligatorio/></span>
                   </label>
+                  {errorPago&&<p role="alert">{t('errorPago')}</p>}
                   {errorFormulario && <p role="alert" className="aviso-formulario">{t('validacion')}</p>}
                   <button
                     className="boton boton-naranja"
                     type="submit"
-                    disabled={bloqueado}
+                    disabled={bloqueado||procesando||(pago==='tarjeta'&&(!tarjetaDisponible||pendiente))}
                   >
-                    {t("revisar")}
+                    {t(procesando?'procesandoPago':pago==='tarjeta'?'completarPedido':'revisar')}
                     <ClipboardCheck size={19} aria-hidden="true" />
                   </button>
                 </section>

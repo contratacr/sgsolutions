@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {Check,Clock,X,Truck,ArrowRight} from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { basePedidos, configuracionTilopay } from '@/lib/tilopay';
 
@@ -19,12 +20,13 @@ export default async function ResultadoPago({ searchParams }: { searchParams: Pr
     else if (data?.estado === 'rechazado') estado = 'rechazado';
   }
   return <main id="contenido" className="contenedor compra-pagina">
-    <section className="compra-bloque" style={{ maxWidth: 720, margin: '5rem auto', textAlign: 'center' }}>
+    <section className={`compra-bloque pago-resultado pago-resultado-${estado}`}>
       <p className="etiqueta">{t('etiqueta')}</p>
       {prueba&&<p className="panel-aviso">{t('prueba')}</p>}
+      <div className="pago-resultado-icono" aria-hidden="true">{estado==='pagado'?<Check size={28}/>:estado==='rechazado'?<X size={28}/>:<Clock size={28}/>}</div>
       <h1>{t(estado)}</h1>
-      <p>{t(`${estado}Detalle`)}</p>{express&&<p>{t('expressSeparado')}</p>}
-      <Link className="boton boton-azul" href="/tienda">{t('volver')}</Link>
+      <p className="pago-resultado-descripcion">{t(`${estado}Detalle`)}</p>{express&&<div className="pago-resultado-envio"><Truck size={20} aria-hidden="true"/><p>{t('expressSeparado')}</p></div>}
+      <Link className="boton boton-azul" href="/tienda">{t('volver')}<ArrowRight size={17} aria-hidden="true"/></Link>
     </section>
   </main>;
 }
