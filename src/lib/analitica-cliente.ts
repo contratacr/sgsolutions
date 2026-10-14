@@ -24,6 +24,7 @@ function identificadores(){
  return {sesion:sesion!,visitante:visitante!};
 }
 export function medir(tipo:EventoAnalitica['tipo'],detalle=''){
+ if(document.body.dataset.excluirMedicion==='1')return;
  const p=preferenciasMedicion();if(!rutaPublica(location.pathname))return;
  if(p?.analitica){
   const ids=identificadores();
@@ -34,6 +35,7 @@ export function medir(tipo:EventoAnalitica['tipo'],detalle=''){
  if(p?.publicidad&&window.fbq){const estandar:Partial<Record<EventoAnalitica['tipo'],string>>={pagina:'PageView',producto:'ViewContent',carrito:'AddToCart',whatsapp:'Contact',correo:'Contact',telefono:'Contact'};const nombre=estandar[tipo];if(nombre)window.fbq('track',nombre,tipo==='producto'||tipo==='carrito'?{content_ids:[detalle],content_type:'product'}:{});else window.fbq('trackCustom',tipo,{detalle});}
 }
 export function iniciarPixel(id:string){
+ if(document.body.dataset.excluirMedicion==='1')return;
  if(!/^\d{5,25}$/.test(id)||!preferenciasMedicion()?.publicidad)return;
  if(window.fbq){window.fbq('consent','grant');return;}
  const pixel:Pixel=Object.assign((...args:unknown[])=>{if(pixel.callMethod)pixel.callMethod(...args);else pixel.queue.push(args);},{queue:[] as unknown[][],loaded:true,version:'2.0'});

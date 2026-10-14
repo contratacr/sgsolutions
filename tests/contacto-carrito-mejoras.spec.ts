@@ -24,7 +24,7 @@ for(const idioma of ['es','en'])test(`datos previos, validación y confirmación
  fallar=false;await formulario.locator('button').click();await expect(page.locator('.contacto-asesoria')).toHaveCount(0);
  expect(datos).toMatchObject({contacto:{telefono:'50688888888',necesidad:''}});
 
- await page.locator('.shop-producto .guardar-seleccion').first().click();
+ await page.locator('.shop-producto .producto-agregar').first().click();
  await expect(page.locator('.carrito-confirmacion [role=status]')).toContainText(idioma==='es'?'Agregado al carrito':'Added to cart');
  await page.locator('.carrito-confirmacion').getByRole('button',{name:idioma==='es'?'Ver carrito':'View cart',exact:true}).click();
  await expect(page.locator('.carrito-panel')).toBeVisible();await expect(page.locator('.carrito-lineas li')).toHaveCount(1);

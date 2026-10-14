@@ -8,3 +8,11 @@ export function PrecioProducto({producto,pendiente}:{producto:{precio:number|nul
  <strong>{oferta&&<span className="sr-only">{t('precioOferta')}: </span>}{producto.precio===null?pendiente:colones(producto.precio)}</strong>
  </span>;
 }
+
+export function EtiquetaDescuento({producto}:{producto:{precio:number|null;precioOriginal?:number|null}}){
+ const t=useTranslations('Comercio');
+ if(producto.precio===null||producto.precioOriginal==null||producto.precioOriginal<=producto.precio||producto.precio<0)return null;
+ const porcentaje=Math.floor((1-producto.precio/producto.precioOriginal)*100);
+ const texto=porcentaje>0?`−${porcentaje}%`:'−<1%';
+ return <span className="producto-descuento"><span aria-hidden="true">{texto}</span><span className="sr-only">{t('descuentoPorcentaje',{porcentaje:porcentaje>0?String(porcentaje):'<1'})}</span></span>;
+}

@@ -1,4 +1,5 @@
 "use client";
+import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import { useEffect, useState, useTransition } from "react";
@@ -229,7 +230,7 @@ export function EditorContenido({
           </div><button type="button" className="boton boton-contorno" disabled={datos.pagos.cuentas.length>=5} onClick={()=>setDatos(d=>({...d,pagos:{...d.pagos,cuentas:[...d.pagos.cuentas,{banco:'',cuentaCorta:'',iban:''}]}}))}>{t('agregarCuenta')}</button></section>
         )}
       </fieldset>
-      <Dialog.Root open={eliminarCaso!==null} onOpenChange={abierto=>{if(!abierto)setEliminarCaso(null);}}><Dialog.Portal><Dialog.Overlay className="cambios-panel-fondo"/><Dialog.Content className="cambios-panel-modal"><Dialog.Title>{t('eliminarTitulo')}</Dialog.Title><Dialog.Description>{t('eliminarTexto',{cliente:datos.casos.find(c=>c.id===eliminarCaso)?.cliente||t('nuevo')})}</Dialog.Description><div><Dialog.Close className="boton boton-contorno">{t('cancelar')}</Dialog.Close><button type="button" className="boton boton-azul" onClick={()=>{setDatos(d=>({...d,casos:d.casos.filter(c=>c.id!==eliminarCaso)}));setEliminarCaso(null);}}>{t('eliminar')}</button></div></Dialog.Content></Dialog.Portal></Dialog.Root>
+      <Dialog.Root open={eliminarCaso!==null} onOpenChange={abierto=>{if(!abierto)setEliminarCaso(null);}}><Dialog.Portal><Dialog.Overlay className="cambios-panel-fondo"/><MarcoModal className="cambios-panel-modal"><Dialog.Title>{t('eliminarTitulo')}</Dialog.Title><Dialog.Description>{t('eliminarTexto',{cliente:datos.casos.find(c=>c.id===eliminarCaso)?.cliente||t('nuevo')})}</Dialog.Description><div><Dialog.Close className="boton boton-contorno">{t('cancelar')}</Dialog.Close><button type="button" className="boton boton-azul" onClick={()=>{setDatos(d=>({...d,casos:d.casos.filter(c=>c.id!==eliminarCaso)}));setEliminarCaso(null);}}>{t('eliminar')}</button></div></MarcoModal></Dialog.Portal></Dialog.Root>
       <ErroresAdmin campos={campos} abrir={abrirCampo}/>
       <div className="admin-actions">
         <button

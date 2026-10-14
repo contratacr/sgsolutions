@@ -27,7 +27,7 @@ for(const idioma of ['es','en'])test(`asesoría opcional y compra directa ${idio
  await page.locator('.asesoria-hero-acciones>.boton').first().click();await completarDatosAsesoria(page);
  const ventana=page.waitForEvent('popup');await page.locator('.contacto-asesoria form>button').click();const popup=await ventana;await popup.waitForURL('https://wa.me/**');await popup.close();
  await expect(page).toHaveURL(/\/tienda$/);
- await page.locator('.shop-producto .guardar-seleccion').first().click();await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();
+ await page.locator('.shop-producto .producto-agregar').first().click();await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();
  await expect(page.locator('.carrito-lineas li')).toHaveCount(1);await page.locator('.carrito-resumen a[href="/finalizar-compra"]').click();
  await expect(page.locator('main form input[name=nombre]')).toBeVisible();
  await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',idioma);expect(errores).toEqual([]);

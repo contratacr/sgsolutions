@@ -1,8 +1,10 @@
 import http from 'node:http';
-let error=false;
+let error=false,eventos=0;
 http.createServer(async(req,res)=>{
  const u=new URL(req.url,'http://127.0.0.1:3123');let s='';for await(const c of req)s+=c;const d=s?JSON.parse(s):{};
  const send=x=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(x));};
+ if(u.pathname==='/__test/eventos')return send({eventos});
+ if(u.pathname==='/rest/v1/rpc/registrar_evento'){eventos++;return send(null);}
  if(u.pathname==='/__test/error'){error=Boolean(d.error);return send({});}
  if(u.pathname==='/auth/v1/settings')return send({});
  let sub='';try{sub=JSON.parse(Buffer.from((req.headers.authorization??'').split('.')[1]??'','base64url').toString()).sub??'';}catch{}

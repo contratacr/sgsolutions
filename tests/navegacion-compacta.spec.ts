@@ -17,7 +17,7 @@ for(const idioma of ['es','en'])test(`navegación compacta y marcas animadas ${i
  await page.keyboard.press('Enter');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
  await expect.poll(()=>page.locator('.shop-grid').evaluate(e=>Math.round(e.getBoundingClientRect().top))).toBeGreaterThan(20);
  await expect.poll(()=>page.locator('.shop-grid').evaluate(e=>Math.round(e.getBoundingClientRect().top))).toBeLessThan(250);
- await page.locator('.shop-producto .guardar-seleccion').first().click();
+ await page.locator('.shop-producto .producto-agregar').first().click();
  expect(await page.locator('.carrito-trigger').evaluate(e=>e.getBoundingClientRect().width)).toBe(44);
  await expect(page.locator('.carrito-cantidad')).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);

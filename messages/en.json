@@ -1,4 +1,28 @@
 {
+  "AccionesProducto": {
+    "guardado": "Saved to favorites",
+    "verFavoritos": "View favorites",
+    "ingresarGuardar": "Sign in to save them to your account",
+    "cerrarAviso": "Dismiss favorites confirmation",
+
+    "anteriores": "View previous products",
+    "siguientes": "View more related products",
+      "guardarFavorito": "Save {nombre} to favorites",
+      "quitarFavorito": "Remove {nombre} from favorites",
+      "vistaPrevia": "Quick view of {nombre}",
+      "agregar": "Add to cart",
+      "agregado": "Added",
+      "cerrar": "Close quick view",
+      "cantidad": "Quantity",
+      "detalles": "View details",
+      "favoritos": "Favorites",
+      "sinFavoritos": "You do not have any favorites yet.",
+      "sinSincronizar": "We could not sync your favorites. Please try again later.",
+      "cargando": "Loading favorites…",
+      "verTienda": "Back to store",
+      "invitado": "Your favorites are saved in this browser. Sign in to keep them in your account.",
+      "ingresar": "Sign in"
+  },
   "Marca": {
     "nombre": "SG Solutions",
     "descripcion": "Tailored technology solutions in Atenas, Costa Rica. IT support, networks, security and equipment with professional advice.",
@@ -216,9 +240,9 @@
     "catalogoTexto": "From everyday equipment to the next solution for your business.",
     "buscar": "Search products, brands or models",
     "limpiarBusqueda": "Clear search",
-    "sinResultados": "We couldn’t find that option.",
-    "intentarBusqueda": "Try another category or tell us what you need on WhatsApp. We can help even if it is not listed here.",
-    "restablecer": "View all equipment",
+    "sinResultados": "No products found.",
+    "intentarBusqueda": "Try another search or change your filters.",
+    "restablecer": "Clear filters",
     "etiqueta": "TECHNOLOGY BUILT AROUND YOU",
     "titulo": "Equipment is just the start.",
     "descripcion": "Choose what you need. Our team helps you with configuration and support.",
@@ -548,6 +572,7 @@
     "facebookCuenta": "SG Solutions CR"
   },
   "Comercio": {
+    "conteoCompacto": "{cantidad, plural, one {# product} other {# products}}",
     "asesoria": "Need help choosing?",
     "asesoriaTexto": "Personalised technical advice.",
     "categorias": "Categories",
@@ -569,6 +594,7 @@
     "filtros": "Filters",
     "precioAntes": "Previous price",
     "precioOferta": "Sale price",
+    "descuentoPorcentaje": "{porcentaje}% off",
     "precioFiltro": "Price",
     "precioMin": "Minimum price (₡)",
     "precioMax": "Maximum price (₡)",
@@ -597,7 +623,7 @@
     "marca": "Brand",
     "codigoFabricante": "Manufacturer code",
     "imagen": "Image: HTTPS URL or local path",
-    "precioDescuento": "Sale price (₡) · Optional",
+    "precioDescuento": "Sale price (₡) Optional",
     "descuentoNota": "Lower than the regular price. Leave blank to remove the offer.",
     "descuentoInvalido": "The sale price must be lower than the regular price.",
     "precioManual": "Reference price (₡, VAT included)",
@@ -1237,7 +1263,7 @@
         },
         "4": {
           "titulo": "Cookies and browser storage",
-          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in browser local storage under sg-carrito-v1 until you empty it or delete site data. Authentication cookies maintain your session and protect the sign-in return; when signing in from checkout, a return cookie lasting up to one hour lets you return to your order. Form fields are retained during interaction and purchase details are updated in your profile when reviewing an order while signed in. Statistics and advertising preferences are stored in your browser: only with your permission are first-party browsing events recorded and Meta Pixel loaded. You can change your choice through Privacy preferences; deleting cookies may sign you out and remove preferences. We retain aggregated daily product counters without visitor identifiers for interest and popularity statistics. Purchased units are calculated from orders with confirmed payment. Recommendations use up to 20 product references in memory during the current browsing session. They are cleared when you reload or close the page; they are not saved to your account or synced across devices. We do not retain your search text."
+          "texto": "The sg-idioma cookie remembers your language for up to one year. The cart stores product identifiers and quantities in browser local storage under sg-carrito-v1 until you empty it or delete site data. Authentication cookies maintain your session and protect the sign-in return; when signing in from checkout, a return cookie lasting up to one hour lets you return to your order. Form fields are retained during interaction and purchase details are updated in your profile when reviewing an order while signed in. Statistics and advertising preferences are stored in your browser: only with your permission are first-party browsing events recorded and Meta Pixel loaded. You can change your choice through Privacy preferences; deleting cookies may sign you out and remove preferences. We retain aggregated daily product counters without visitor identifiers for interest and popularity statistics. Purchased units are calculated from orders with confirmed payment. Recommendations use up to 20 product references in memory during the current browsing session. They are cleared when you reload or close the page; they are not saved to your account or synced across devices. We do not retain your search text. When signed in, your favorites can also inform recommendation ordering. Without available interests, SG Solutions selections and aggregated store popularity are prioritized. Favorites you select are saved in this browser; when you sign in, they are added to your account so you can access them on other devices. You can remove them from Favorites. Saving favorites does not authorize advertising."
         },
         "5": {
           "titulo": "Access, providers and retention",
@@ -1488,7 +1514,7 @@
     "consultar": "Get advice",
     "consultarSeleccion": "Get advice",
     "precioReferencia": "Reference price (per unit, VAT included)",
-    "precioConIva": "VAT included",
+    "precioConIva": "VAT incl.",
     "disponibilidad": "Personal advice",
     "fichaAyuda": "Is this right for you? We help you choose.",
     "volverPedido": "Continue with my order",
@@ -1598,6 +1624,12 @@
     "eliminando": "Removing…"
   },
   "PanelLista": {
+    "estadoPago": "Payment status",
+    "pagoPendiente": "Unconfirmed",
+    "pagoConfirmado": "Confirmed",
+    "archivo": "Archive",
+    "vistaActual": "Main view",
+
     "buscar": "Search by customer, reference or product",
     "filtrar": "Filter requests",
     "resultados": "{cantidad} records",
@@ -1613,6 +1645,7 @@
     "todos": "All"
   },
   "Proveedores": {
+    "sinIva": "excl. VAT",
     "titulo": "Suppliers",
     "descripcion": "Browse Eurocomp’s catalog to prepare customer advice.",
     "actualizar": "Update Eurocomp",

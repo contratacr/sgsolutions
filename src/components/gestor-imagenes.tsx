@@ -1,6 +1,7 @@
 'use client';
 import {useRef,useState} from 'react';
 import Image from 'next/image';
+import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
 import {useLocale,useTranslations} from 'next-intl';
 import {imagenSitioValida} from '@/lib/imagenes-sitio';
@@ -43,6 +44,6 @@ export function GestorImagenes({fotos,cambiar,descripciones=false,descripcionesR
    <details className="gestor-url"><summary>{t('usarUrl')}</summary><label>{t('url')}<input type="url" value={url} onChange={e=>setUrl(e.target.value)}/></label><button type="button" disabled={fotos.length>=maximo&&maximo!==1} onClick={()=>{if(!imagenSitioValida(url.trim())){setError('urlInvalida');return;}actualizar(maximo===1?[{...fotos[0],src:url.trim()}]:[...fotos,{src:url.trim(),alt:{es:'',en:''},caption:{es:'',en:''}}]);setUrl('');}}>{t(maximo===1&&fotos.length?'reemplazarUrl':'agregarUrl')}</button></details>
   </fieldset>
   <p role="status">{ocupado?t('cargando'):t('guardarNota')}</p>{error&&<p role="alert">{t(error,{maximo})}</p>}
-  <Dialog.Root open={visor!==null} onOpenChange={abierto=>{if(!abierto)setVisor(null);}}><Dialog.Portal><Dialog.Overlay className="historia-overlay"/><Dialog.Content className="gestor-visor"><Dialog.Title>{t('ver')}</Dialog.Title><Dialog.Description>{t('vistaCompleta')}</Dialog.Description>{visor&&<Image src={visor} alt={t('vistaCompleta')} width={1600} height={1200} unoptimized/>}<Dialog.Close className="boton boton-contorno">{t('cerrar')}</Dialog.Close></Dialog.Content></Dialog.Portal></Dialog.Root>
+  <Dialog.Root open={visor!==null} onOpenChange={abierto=>{if(!abierto)setVisor(null);}}><Dialog.Portal><Dialog.Overlay className="historia-overlay"/><MarcoModal className="gestor-visor" etiquetaCerrar={t('cerrar')}><Dialog.Title>{t('ver')}</Dialog.Title><Dialog.Description>{t('vistaCompleta')}</Dialog.Description>{visor&&<Image src={visor} alt={t('vistaCompleta')} width={1600} height={1200} unoptimized/>}</MarcoModal></Dialog.Portal></Dialog.Root>
  </section>;
 }

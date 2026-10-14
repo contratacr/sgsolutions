@@ -10,8 +10,8 @@ test('tarjetas alineadas y cuadrícula móvil en ambos idiomas',async({page},inf
   }
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
   await expect(page.locator('.shop-producto')).toHaveCount(24);
-  await expect(page.locator('.shop-cabecera-compacta h1')).toHaveText(idioma==='es'?'Tienda':'Store');
-  expect(await page.locator('.shop-cabecera-compacta').evaluate(e=>e.getBoundingClientRect().height)).toBeLessThan(70);
+  await expect(page.locator('.tienda-compacta h1.sr-only')).toHaveText(idioma==='es'?'Tienda':'Store');
+  expect(await page.locator('.shop-buscador').evaluate(e=>e.getBoundingClientRect().height)).toBeLessThan(70);
   expect(await page.locator('.marcas-cinta').evaluate(e=>e.getBoundingClientRect().height)).toBeLessThan(85);
   await expect(page.locator('.marcas-controles')).toHaveCount(0);
   await expect(page.locator('.marcas-grupo')).toHaveCount(2);

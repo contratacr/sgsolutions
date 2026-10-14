@@ -1,5 +1,5 @@
 'use client';
-import {PrecioProducto} from './precio-producto';
+import {PrecioProducto,EtiquetaDescuento} from './precio-producto';
 
 import {leerHistorial,recordarExploracion} from '@/lib/historial-tienda';
 
@@ -12,15 +12,30 @@ import {AsesoriaWhatsApp} from './asesoria-whatsapp';
 import {FotoProducto} from './foto-producto';
 import {useEffect,useRef,useState} from 'react';
 import {MarcasDestacadas} from './marcas-destacadas';
-import {ShoppingCart,Search,X,SlidersHorizontal,RotateCcw} from 'lucide-react';
+import {Heart,Search,X,SlidersHorizontal,RotateCcw} from 'lucide-react';
 import {useLocale,useTranslations} from 'next-intl';
 import {useCatalogo} from './datos-catalogo';
 import {traducir} from '@/lib/catalogo-modelo';
 import type {PaginaCatalogo} from '@/lib/catalogo-consulta';
-import {agregarProducto} from '@/lib/carrito';
+import {useFavoritos} from '@/lib/favoritos';
+import {useSesionCuenta} from './sesion-cuenta';
+import {AccionesProducto} from './acciones-producto';
 import {FiltroPrecio} from './filtro-precio';
 import {desplazarContenido} from '@/lib/desplazar-contenido';
 export function Catalogo({inicial}:{inicial:PaginaCatalogo}){
+ const sidebar=useRef<HTMLElement>(null);
+ useEffect(()=>{
+  const restablecer=()=>{const panel=sidebar.current;
+   if(panel&&window.matchMedia('(min-width:651px)').matches){
+    const limite=parseFloat(getComputedStyle(panel).top)||0;
+    if(panel.getBoundingClientRect().top>limite+1)panel.scrollTop=0;
+   }
+  };
+  window.addEventListener('scroll',restablecer,{passive:true});
+  return()=>window.removeEventListener('scroll',restablecer);
+ },[]);
+ const favoritos=useFavoritos(),sesionIniciada=useSesionCuenta();
+ const f=useTranslations('AccionesProducto');
  const a=useTranslations('Asesoria'),n=useTranslations('Navegacion');
  const [historial,setHistorial]=useState({activo:false,ids:[] as string[],vistas:[] as string[]});
  useEffect(()=>{const leer=()=>setHistorial(leerHistorial());leer();window.addEventListener('sg-historial',leer);window.addEventListener('storage',leer);return()=>{window.removeEventListener('sg-historial',leer);window.removeEventListener('storage',leer);};},[]);
@@ -48,13 +63,13 @@ export function Catalogo({inicial}:{inicial:PaginaCatalogo}){
  const resultados=useRef<HTMLParagraphElement>(null);
  const cuadricula=useRef<HTMLDivElement>(null);
  const desplazarResultados=useRef(false);
- const clave=JSON.stringify([categoria,busqueda,orden,marca,subcategoria,marcasElegidas,min,max,idioma,historial.ids.join(',')]);
+ const clave=JSON.stringify([categoria,busqueda,orden,marca,subcategoria,marcasElegidas,min,max,idioma,[...new Set([...historial.ids,...(sesionIniciada?favoritos.ids:[])])].slice(0,20).join(',')]);
  const marcas=datos.marcas;
 
  const nombreCategoria=(id:string)=>{const c=datos.categorias.find(x=>x.id===id);return c?traducir(c.nombre,idioma):'';};
  const solicitada=paginacion.clave===clave?paginacion.pagina:1;
  const parametros=new URLSearchParams({categoria,marca,subcategoria,min,max,q:busqueda,orden,idioma,pagina:String(solicitada)});for(const m of marcasElegidas)parametros.append('marcas',m);
- if(orden==='recomendados'&&!busqueda&&historial.ids.length)parametros.set('explorados',historial.ids.join(','));
+ if(orden==='recomendados'&&!busqueda&&(historial.ids.length||(sesionIniciada&&favoritos.ids.length)))parametros.set('explorados',[...new Set([...historial.ids,...(sesionIniciada?favoritos.ids:[])])].slice(0,20).join(','));
  const consulta=parametros.toString();
  const [respuesta,setRespuesta]=useState<{consulta:string;datos:PaginaCatalogo}>({consulta:new URLSearchParams({categoria:'todos',marca:'',subcategoria:'',min:'',max:'',q:'',orden:'recomendados',idioma,pagina:'1'}).toString(),datos:inicial}),[error,setError]=useState('');
  const recordar=datos.recordar;
@@ -89,14 +104,14 @@ export function Catalogo({inicial}:{inicial:PaginaCatalogo}){
  function filtrosAdicionales(){return <div className="shop-filtros-extra"><details open className="shop-filtro-grupo"><summary>{s('marcasFiltro')}</summary><input className="shop-buscar-marca" type="search" aria-label={s('buscarMarca')} placeholder={s('buscarMarca')} value={buscarMarca} onChange={e=>setBuscarMarca(e.target.value)}/><div className="shop-marcas-opciones">{marcas.filter(m=>m.toLocaleLowerCase().includes(buscarMarca.toLocaleLowerCase())).filter(m=>categoria==='todos'||(datos.conteosMarcas[m]?.categorias[categoria]??0)>0).slice().sort().map(m=><label key={m}><input type="checkbox" checked={marcasElegidas.includes(m)||marca===m} onChange={e=>{const actuales=[...new Set([...marcasElegidas,...(marca?[marca]:[])])];setMarca('');setMarcasElegidas(e.target.checked?[...new Set([...actuales,m])]:actuales.filter(x=>x!==m));}}/><span><span className="shop-nombre-marca">{m}</span> <small>({categoria==='todos'?datos.conteosMarcas[m]?.total:datos.conteosMarcas[m]?.categorias[categoria]??0})</small></span></label>)}</div></details><FiltroPrecio limite={datos.precioMaximo} minimo={min} maximo={max} cambiar={(desde,hasta)=>{setMin(desde);setMax(hasta);}}/></div>;}
  function cambiarPagina(nueva:number){actualizarResultados(()=>setPaginacion({clave,pagina:nueva}));}
  return <>
-  <header className="shop-cabecera-compacta"><h1>{n('tienda')}</h1><AsesoriaWhatsApp etiqueta="asesorar"/></header>
+  <h1 className="sr-only">{n('tienda')}</h1>
 
-  <MarcasDestacadas marcas={marcas} seleccionada={marca} seleccionar={nombre=>actualizarResultados(()=>{setMarca(marca===nombre?'':nombre);setCategoria('todos');setSubcategoria('');setBusqueda('');})}/>
+  {favoritos.error&&<small className="shop-favoritos-error" role="status">{f('sinSincronizar')}</small>}<MarcasDestacadas marcas={marcas} seleccionada={marca} seleccionar={nombre=>actualizarResultados(()=>{setMarca(marca===nombre?'':nombre);setCategoria('todos');setSubcategoria('');setBusqueda('');})}/>
   <div className="shop-buscador"><Search size={23}/><label className="sr-only" htmlFor="buscar-equipo">{t('buscar')}</label><input id="buscar-equipo" type="search" disabled={!preferenciasListas} value={busqueda} onChange={e=>setBusqueda(e.target.value)} placeholder={t('buscar')} maxLength={150}/>{busqueda&&<button aria-label={t('limpiarBusqueda')} onClick={()=>setBusqueda('')}><X size={20}/></button>}</div>
-  <button className="boton boton-contorno shop-abrir-filtros" onClick={()=>panelFiltros.current?.showModal()}><SlidersHorizontal size={18}/>{s('filtros')}</button><dialog ref={panelFiltros} className="shop-panel-filtros" aria-label={s('filtros')} onClick={e=>{if(e.target===e.currentTarget)panelFiltros.current?.close();}}><button aria-label={s('cerrarFiltros')} onClick={()=>panelFiltros.current?.close()}><X/></button><h2>{s('filtros')}</h2>{categoriasIntegradas()}{filtrosAdicionales()}<div className="shop-panel-filtros-acciones"><button className="boton boton-azul" onClick={()=>panelFiltros.current?.close()}>{s('verResultados')} ({total})</button>{botonLimpiar()}</div></dialog><div className="shop-filtros-activos">{[...(categoria!=='todos'?[{texto:nombreCategoria(categoria),quitar:()=>{setCategoria('todos');setSubcategoria('');}}]:[]),...(subcategoria?[{texto:traducir(datos.subcategorias.find(x=>x.nombre.es===subcategoria)?.nombre??{es:subcategoria,en:subcategoria},idioma),quitar:()=>setSubcategoria('')}]:[]),...[...new Set([...marcasElegidas,...(marca?[marca]:[])])].map(m=>({texto:m,quitar:()=>{if(marca===m)setMarca('');setMarcasElegidas(prev=>prev.filter(x=>x!==m));}})),...(min?[{texto:s('precioMin')+': '+min,quitar:()=>setMin('')}]:[]),...(max?[{texto:s('precioMax')+': '+max,quitar:()=>setMax('')}]:[])].map(x=><button key={x.texto} onClick={x.quitar}>{x.texto}<X size={14}/></button>)}</div><div className="shop-distribucion" id="catalogo"><aside className="shop-sidebar"><h2><SlidersHorizontal size={16}/>{s('categorias')}</h2>{categoriasIntegradas()}{filtrosAdicionales()}{botonLimpiar()}</aside>
-  <section className="shop-resultados" aria-busy={cargando&&error!==consulta}><div className="shop-resultados-cabecera"><div><p ref={resultados} tabIndex={-1} className="conteo" aria-live="polite">{total===1?t('resultados',{cantidad:total}):s('productosEncontrados',{cantidad:new Intl.NumberFormat(idioma==='es'?'de-DE':'en-US').format(total)})}</p></div><label className="shop-orden">{s('ordenar')}<select disabled={!preferenciasListas} value={orden} onChange={e=>setOrden(e.target.value)}><option value="recomendados">{s('recomendados')}</option><option value="menor">{s('menor')}</option><option value="mayor">{s('mayor')}</option></select></label></div>
+  <button className="boton boton-contorno shop-abrir-filtros" onClick={()=>panelFiltros.current?.showModal()}><SlidersHorizontal size={18}/>{s('filtros')}</button><dialog ref={panelFiltros} className="shop-panel-filtros" aria-label={s('filtros')} onClick={e=>{if(e.target===e.currentTarget)panelFiltros.current?.close();}}><button aria-label={s('cerrarFiltros')} onClick={()=>panelFiltros.current?.close()}><X/></button><div className="modal-nativo-cuerpo"><h2>{s('filtros')}</h2>{categoriasIntegradas()}{filtrosAdicionales()}<div className="shop-panel-filtros-acciones"><button className="boton boton-azul" onClick={()=>panelFiltros.current?.close()}>{s('verResultados')} ({total})</button>{botonLimpiar()}</div></div></dialog><div className="shop-filtros-activos">{[...(categoria!=='todos'?[{texto:nombreCategoria(categoria),quitar:()=>{setCategoria('todos');setSubcategoria('');}}]:[]),...(subcategoria?[{texto:traducir(datos.subcategorias.find(x=>x.nombre.es===subcategoria)?.nombre??{es:subcategoria,en:subcategoria},idioma),quitar:()=>setSubcategoria('')}]:[]),...[...new Set([...marcasElegidas,...(marca?[marca]:[])])].map(m=>({texto:m,quitar:()=>{if(marca===m)setMarca('');setMarcasElegidas(prev=>prev.filter(x=>x!==m));}}))].map(x=><button key={x.texto} onClick={x.quitar}>{x.texto}<X size={14}/></button>)}</div><div className="shop-distribucion" id="catalogo"><aside ref={sidebar} className="shop-sidebar"><h2><SlidersHorizontal size={16}/>{s('categorias')}</h2>{categoriasIntegradas()}{filtrosAdicionales()}{botonLimpiar()}</aside>
+  <section className="shop-resultados" aria-busy={cargando&&error!==consulta}><div className="shop-resultados-cabecera"><div className="shop-conteo-ayuda"><p ref={resultados} tabIndex={-1} className="conteo" aria-live="polite"><span className="shop-conteo-completo">{total===1?t('resultados',{cantidad:total}):s('productosEncontrados',{cantidad:new Intl.NumberFormat(idioma==='es'?'de-DE':'en-US').format(total)})}</span><span className="shop-conteo-corto" aria-hidden="true">{s('conteoCompacto',{cantidad:total})}</span></p></div><label className="shop-orden">{s('ordenar')}:<select disabled={!preferenciasListas} value={orden} onChange={e=>setOrden(e.target.value)}><option value="recomendados">{s('recomendados')}</option><option value="menor">{s('menor')}</option><option value="mayor">{s('mayor')}</option></select></label>{favoritos.ids.length>0&&<Link className="shop-favoritos-enlace" href="/favoritos" aria-label={`${f('favoritos')} (${favoritos.ids.length})`}><Heart className="shop-favoritos-icono" size={17} aria-hidden="true"/><span className="shop-favoritos-contador" aria-hidden="true">{favoritos.ids.length}</span></Link>}<AsesoriaWhatsApp etiqueta="asesorar" className="shop-asesoria-inline"/></div>
   {error===consulta?<div className="estado-inline" role="alert"><p>{t('errorCarga')}</p><button className="boton boton-azul" onClick={()=>{setError('');setIntento(i=>i+1);}}>{e('reintentar')}</button></div>:cargando&&!productosPagina.length?<EsqueletoCatalogo texto={t('cargando')}/>:!total?<div className="catalogo-vacio"><Search size={30}/><h3>{t('sinResultados')}</h3><p>{t('intentarBusqueda')}</p><button className="boton boton-contorno" onClick={limpiarFiltros}>{t('restablecer')}</button></div>:<div className="shop-grid" ref={cuadricula}>{productosPagina.map(p=>{return <article className="shop-producto" key={p.id}><div className="shop-foto">{/* Las URLs de proveedor se muestran directamente: no se importan credenciales ni se descargan imágenes de terceros. */}
-  <Link href={rutaProducto(p)}><FotoProducto src={p.imagen} alt={traducir(p.nombre,idioma)}/></Link><button className="boton boton-azul guardar-seleccion" disabled={cargando||p.disponibilidad==='agotado'} onClick={()=>{datos.recordar([p]);agregarProducto(p.id,1);}}><ShoppingCart size={20} aria-hidden="true"/><span className="shop-agregar-texto">{p.disponibilidad==='agotado'?t('agotado'):t('agregar')}</span></button></div><div className="shop-producto-info"><span className="shop-marca">{p.marca||nombreCategoria(p.categoria)}</span><h3><Link href={rutaProducto(p)}>{traducir(p.nombre,idioma).split(' - ').slice(0,3).join(' · ')}</Link></h3><small className="shop-codigo">{p.codigoFabricante&&<>{s('codigoFabricante')} {p.codigoFabricante}</>}</small>{p.disponibilidad==='agotado'&&<small>{t('agotado')}</small>}<div className="shop-precio"><PrecioProducto producto={p} pendiente={t('precioPendiente')}/><small>{p.precio===null?s('consultar'):a('precioConIva')}</small></div></div></article>;})}</div>}
+  <EtiquetaDescuento producto={p}/><Link href={rutaProducto(p)}><FotoProducto src={p.imagen} alt={traducir(p.nombre,idioma)}/></Link><AccionesProducto producto={p} favorito={favoritos.ids.includes(p.id)} cambiarFavorito={()=>favoritos.cambiar(p.id)} listo={favoritos.listo} bloqueado={cargando}/></div><div className="shop-producto-info"><span className="shop-marca">{p.marca||nombreCategoria(p.categoria)}</span><h3><Link href={rutaProducto(p)}>{traducir(p.nombre,idioma).split(' - ').slice(0,3).join(' · ')}</Link></h3><small className="shop-codigo">{p.codigoFabricante&&<>{s('codigoFabricante')} {p.codigoFabricante}</>}</small>{p.disponibilidad==='agotado'&&<small>{t('agotado')}</small>}<div className="shop-precio"><PrecioProducto producto={p} pendiente={t('precioPendiente')}/><small>{p.precio===null?s('consultar'):a('precioConIva')}</small></div></div></article>;})}</div>}
   {!cargando&&paginas>1&&<nav className="shop-paginacion" aria-label={t('paginacion')}><button type="button" disabled={pagina===1} onClick={()=>cambiarPagina(pagina-1)}>{t('anterior')}</button><span role="status">{t('pagina',{pagina,total:paginas})}</span><button type="button" disabled={pagina===paginas} onClick={()=>cambiarPagina(pagina+1)}>{t('siguiente')}</button></nav>}
   </section></div>
  </>;

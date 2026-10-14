@@ -35,6 +35,8 @@ jobs:
         run: npx playwright test --config=playwright.contenido.config.ts
       - name: Probar catálogo recomendado y validación de datos en Chrome y Safari
         run: npx playwright test --config=playwright.checkout-ui.config.ts
+      - name: Probar modales, favoritos y desplazamiento del catálogo
+        run: npx playwright test --config=playwright.modales.config.ts
       - name: Probar confirmaciones reales y simuladas sin pagos
         run: npx playwright test --config=playwright.confirmaciones.config.ts
       - name: Probar estados independientes de pago y entrega en Chrome y Safari

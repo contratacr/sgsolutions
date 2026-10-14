@@ -2,6 +2,7 @@
 import {PrecioProducto} from './precio-producto';
 import Image from 'next/image';
 import {useEffect,useId,useState} from 'react';
+import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
 import {AnimatePresence,motion,useReducedMotion} from 'motion/react';
 import { ShoppingCart, X, Trash2 } from 'lucide-react';
@@ -38,8 +39,8 @@ export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
   const cantidad=lineas.reduce((total,l)=>total+l.cantidad,0);
   return <><Dialog.Root open={abierto} onOpenChange={valor=>{setAbierto(valor);if(valor)setAviso(null);}}>
     <Dialog.Trigger className="boton-icono carrito-trigger" aria-label={n('carrito')} aria-describedby={descripcionCantidad}><ShoppingCart size={24} strokeWidth={2.2} aria-hidden="true"/><span id={descripcionCantidad} className="sr-only" aria-live="polite">{t('articulos',{cantidad})}</span>{cantidad>0&&<span className="carrito-cantidad" aria-hidden="true">{cantidad>99?'99+':cantidad}</span>}</Dialog.Trigger>
-    <Dialog.Portal><Dialog.Overlay className="dialogo-fondo"/><Dialog.Content className="carrito-panel">
-      <div className="carrito-cabecera"><Dialog.Title>{t('titulo')}</Dialog.Title><Dialog.Close className="boton-icono" aria-label={n('cerrar')}><X/></Dialog.Close></div>
+    <Dialog.Portal><Dialog.Overlay className="dialogo-fondo"/><MarcoModal className="carrito-panel">
+      <div className="carrito-cabecera"><Dialog.Title>{t('titulo')}</Dialog.Title></div>
       <Dialog.Description className="texto-suave">{t('descripcion')}</Dialog.Description>
       {todas.filter(l=>noDisponibles.includes(l.id)).map(l=><p key={l.id}>{tienda('productoNoDisponible')} <button onClick={()=>cambiarCantidad(l.id,0)}>{tienda('quitarProducto')}</button></p>)}
       {errorCarrito?<p role="alert">{tienda('errorCarga')} <button onClick={reintentar}>{tienda('reintentar')}</button></p>:faltantes?<EsqueletoCarrito texto={tienda('cargando')}/>:null}
@@ -50,6 +51,6 @@ export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
         })}</ul>
         <div className="carrito-resumen"><div><strong>{t('total')}</strong><strong>{lineas.some(l=>productos.find(p=>p.id===l.id)!.precio===null)?t('pendiente'):colones(lineas.reduce((a,l)=>a+productos.find(p=>p.id===l.id)!.precio!*l.cantidad,0))}</strong></div><p>{t('nota')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/pagar">{t('finalizar')}</Link></Dialog.Close>{!sesionIniciada&&<Dialog.Close asChild><Link className="carrito-ingreso" href={enlaceIngresoCompra()}>{acceso('carrito')}</Link></Dialog.Close>}</div>
       </>}
-    </Dialog.Content></Dialog.Portal>
+    </MarcoModal></Dialog.Portal>
   </Dialog.Root><AnimatePresence>{aviso&&<motion.aside className="carrito-confirmacion" aria-label={t('avisoTitulo')} initial={{opacity:0,y:reducirMovimiento?0:-12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:reducirMovimiento?0:-8}} transition={{duration:reducirMovimiento?0:.28,ease:[.22,1,.36,1]}} onPointerEnter={()=>setPausado(true)} onPointerLeave={e=>{if(!e.currentTarget.contains(document.activeElement))setPausado(false);}} onFocusCapture={()=>setPausado(true)} onBlurCapture={e=>{if(!e.currentTarget.contains(e.relatedTarget))setPausado(false);}}><div role="status" aria-atomic="true"><div><strong>{t(aviso.agregadas>0?'productoAgregado':'noAgregado')}</strong>{aviso.agregadas>0&&<small>{t('resumenAgregado',{cantidad:aviso.agregadas,total:cantidad})}</small>}{aviso.agregadas>0&&<p className="carrito-confirmacion-producto">{productoAviso&&<Image src={productoAviso.imagen} alt="" width={56} height={56}/>}<span>{traducir(productoAviso?.nombre??{es:'',en:''},idioma)}</span></p>}</div></div><button type="button" className="boton boton-azul" onClick={()=>{setAviso(null);setAbierto(true);}}><ShoppingCart size={17} aria-hidden="true"/>{t('verCarrito')}</button><button type="button" className="boton-icono carrito-confirmacion-cerrar" aria-label={n('cerrar')} onClick={()=>setAviso(null)}><X size={18}/></button></motion.aside>}</AnimatePresence></>;
 }

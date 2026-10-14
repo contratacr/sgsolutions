@@ -55,3 +55,12 @@ export function agregarProducto(id: ProductoId, unidades=1, avisar=true) {
 export function useCarrito() {
   return useSyncExternalStore(suscribir, obtener, () => vacio);
 }
+
+// Retira únicamente las unidades del pedido, conservando otras compras en curso.
+export function retirarArticulosPedido(articulos: readonly Linea[]) {
+  const cantidades = new Map(articulos.map(x => [x.id, x.cantidad]));
+  guardar(obtener().flatMap(linea => {
+    const cantidad = Math.max(0, linea.cantidad - (cantidades.get(linea.id) ?? 0));
+    return cantidad ? [{...linea, cantidad}] : [];
+  }));
+}

@@ -1,4 +1,4 @@
-.marcas-cinta{margin:32px 0 36px;padding:28px 0 22px;border-block:1px solid #dce5ed;background:linear-gradient(115deg,#edf2f6,#f9fbfc 55%,#edf3f7);border-radius:18px;overflow:hidden}
+.marcas-cinta{margin:32px 0 36px;padding:28px 0 22px;border-block:0;background:linear-gradient(115deg,#edf2f6,#f9fbfc 55%,#edf3f7);border-radius:18px;overflow:hidden}
 .marcas-encabezado{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 28px 22px}
 .marcas-encabezado .etiqueta{font-size:.62rem;letter-spacing:.16em;margin:0 0 9px}
 .marcas-encabezado h2{font-size:1.45rem;letter-spacing:-.035em;font-weight:500;margin:0}
@@ -65,7 +65,7 @@
 .marcas-cinta .marcas-pista{animation-duration:var(--marcas-duracion,76s)}
 
 /* Shared quiet logo strip; each duplicated group keeps exactly the same width. */
-.tienda-compacta .marcas-cinta{background:#fafbfc;border:0;border-block:1px solid #e5ebf0;border-radius:0;padding:14px 0;margin:22px 0}
+.tienda-compacta .marcas-cinta{background:#fafbfc;border:0;border-block:0;border-radius:0;padding:14px 0;margin:22px 0}
 .tienda-compacta .marca-ficha{border:0;border-radius:6px;background:transparent!important;box-shadow:none!important;min-height:68px;height:68px;padding:10px 16px;display:flex;align-items:center;justify-content:center;flex:0 0 150px}
 .tienda-compacta .marca-logo{height:44px;width:118px}
 .tienda-compacta .marca-logo img{width:118px;height:44px;object-fit:contain}

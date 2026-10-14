@@ -24,7 +24,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { useCatalogo } from "./datos-catalogo";
-import { useCarrito } from "@/lib/carrito";
+import { useCarrito, retirarArticulosPedido } from "@/lib/carrito";
 import { colones, traducir } from "@/lib/catalogo-modelo";
 import {costoEntrega} from '@/lib/envio';
 import { FotoProducto } from "./foto-producto";
@@ -141,6 +141,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
       if(datos.error==='catalogo_actualizado')setErrorStock(true);
       if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
       if (!respuesta.ok || typeof datos.url !== 'string') throw new Error('PAGO_NO_DISPONIBLE');
+      if (!aprobacion) retirarArticulosPedido(productos.map(x => ({id:x.p.id,cantidad:x.cantidad})));
       window.location.assign(datos.url);
     } catch {
       setErrorPago(true);
@@ -163,6 +164,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
       if (!respuesta.ok || typeof ruta !== 'string' || !(/^\/pedido\/[A-Za-z0-9_-]{64}$/.test(ruta) || ruta.startsWith('/finalizar-compra/pedido?'))) throw new Error('PEDIDO_NO_DISPONIBLE');
       const destino=new URL(ruta,window.location.origin);
       await adjuntarComprobantePedido(destino,comprobante);
+      if (!aprobacion) retirarArticulosPedido(productos.map(x => ({id:x.p.id,cantidad:x.cantidad})));
       window.location.assign(destino.href);
     } catch { setErrorPedido(true); setProcesando(false); }
   }
@@ -239,7 +241,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                     ))}
                 </dl>
                 {comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}
-                <p>{pago === 'tarjeta' && tarjetaDisponible ? t(tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso') : t("confirmacion")}</p>
+                {pago === 'tarjeta' && tarjetaDisponible && <p>{t(tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso')}</p>}
                 {pago === 'tarjeta' && tarjetaDisponible && !pendiente && !bloqueado ? (
                   <button className="boton boton-naranja" type="button" onClick={pagarConTarjeta} disabled={procesando}>
                     {t(procesando ? 'procesandoPago' : tarjetaEnPruebas ? 'pagarPrueba' : 'pagarTarjeta')}
@@ -482,7 +484,6 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
             </dl>
             <p>{t("iva")}</p>
             {bloqueado && <p role="alert">{t("carga")}</p>}
-            <p className="compra-aviso">{t("confirmacion")}</p>
           </aside>
         </div>
       )}

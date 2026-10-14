@@ -1,4 +1,28 @@
 {
+  "AccionesProducto": {
+    "guardado": "Guardado en favoritos",
+    "verFavoritos": "Ver favoritos",
+    "ingresarGuardar": "Ingrese para guardarlos en su cuenta",
+    "cerrarAviso": "Cerrar confirmación de favoritos",
+
+    "anteriores": "Ver productos anteriores",
+    "siguientes": "Ver más productos relacionados",
+      "guardarFavorito": "Guardar {nombre} en favoritos",
+      "quitarFavorito": "Quitar {nombre} de favoritos",
+      "vistaPrevia": "Vista previa de {nombre}",
+      "agregar": "Agregar al carrito",
+      "agregado": "Agregado",
+      "cerrar": "Cerrar vista previa",
+      "cantidad": "Cantidad",
+      "detalles": "Ver detalles",
+      "favoritos": "Favoritos",
+      "sinFavoritos": "Aún no tiene productos favoritos.",
+      "sinSincronizar": "No pudimos sincronizar sus favoritos. Inténtelo de nuevo más tarde.",
+      "cargando": "Cargando favoritos…",
+      "verTienda": "Volver a la tienda",
+      "invitado": "Sus favoritos se guardan en este navegador. Ingrese para conservarlos en su cuenta.",
+      "ingresar": "Ingresar"
+  },
   "Marca": {
     "nombre": "SG Solutions",
     "descripcion": "Soluciones tecnológicas a la medida en Atenas. Soporte TI, redes, seguridad y equipo con asesoría profesional.",
@@ -216,9 +240,9 @@
     "catalogoTexto": "Del equipo de todos los días a la próxima solución para su negocio.",
     "buscar": "Busque productos, marcas o modelos",
     "limpiarBusqueda": "Limpiar búsqueda",
-    "sinResultados": "No encontramos esa opción.",
-    "intentarBusqueda": "Pruebe otra categoría o cuéntenos por WhatsApp qué necesita. Podemos asesorarle aunque no lo vea aquí.",
-    "restablecer": "Ver todo el equipo",
+    "sinResultados": "No encontramos productos.",
+    "intentarBusqueda": "Pruebe otra búsqueda o cambie los filtros.",
+    "restablecer": "Limpiar filtros",
     "etiqueta": "TECNOLOGÍA A SU MEDIDA",
     "titulo": "El equipo es el inicio.",
     "descripcion": "Elija lo que necesita. Nuestro equipo le ayuda con la configuración y el respaldo.",
@@ -548,6 +572,7 @@
     "facebookCuenta": "SG Solutions CR"
   },
   "Comercio": {
+    "conteoCompacto": "{cantidad, plural, one {# producto} other {# productos}}",
     "asesoria": "¿Le ayudamos a elegir?",
     "asesoriaTexto": "Asesoría técnica personalizada.",
     "categorias": "Categorías",
@@ -569,6 +594,7 @@
     "filtros": "Filtros",
     "precioAntes": "Precio anterior",
     "precioOferta": "Precio de oferta",
+    "descuentoPorcentaje": "{porcentaje}% de descuento",
     "precioFiltro": "Precio",
     "precioMin": "Precio mínimo (₡)",
     "precioMax": "Precio máximo (₡)",
@@ -597,7 +623,7 @@
     "marca": "Marca",
     "codigoFabricante": "Código de fabricante",
     "imagen": "Imagen: URL HTTPS o ruta local",
-    "precioDescuento": "Precio de oferta (₡) · Opcional",
+    "precioDescuento": "Precio de oferta (₡) Opcional",
     "descuentoNota": "Menor que el precio normal. Deje vacío para quitar la oferta.",
     "descuentoInvalido": "La oferta debe ser menor que el precio normal.",
     "precioManual": "Precio de referencia (₡, IVA incluido)",
@@ -1237,7 +1263,7 @@
         },
         "4": {
           "titulo": "Cookies y almacenamiento del navegador",
-          "texto": "La cookie sg-idioma conserva el idioma durante un máximo de un año. El carrito guarda identificadores y cantidades en el almacenamiento local del navegador, bajo sg-carrito-v1, hasta que lo vacíe o elimine los datos del sitio. Las cookies de autenticación mantienen la sesión y protegen el retorno del ingreso; al iniciar sesión desde una compra, una cookie de retorno de hasta una hora permite volver al pedido. Los campos se mantienen durante la interacción y los datos de compra se actualizan en su perfil al revisar un pedido con sesión iniciada. La preferencia de estadísticas y publicidad queda en el navegador: solo con su permiso se registran eventos propios de navegación y se carga Meta Pixel. Puede modificar su elección desde Preferencias de privacidad; borrar las cookies puede cerrar su sesión y eliminar preferencias. Conservamos contadores diarios agregados por producto, sin identificadores de visitantes, para estadísticas de interés y popularidad. Las unidades compradas se calculan desde pedidos con pago confirmado. Las recomendaciones usan hasta 20 referencias de productos en memoria durante la navegación actual. Se eliminan al recargar o cerrar la página; no se guardan en su cuenta ni se sincronizan entre dispositivos. No conservamos el texto de sus búsquedas."
+          "texto": "La cookie sg-idioma conserva el idioma durante un máximo de un año. El carrito guarda identificadores y cantidades en el almacenamiento local del navegador, bajo sg-carrito-v1, hasta que lo vacíe o elimine los datos del sitio. Las cookies de autenticación mantienen la sesión y protegen el retorno del ingreso; al iniciar sesión desde una compra, una cookie de retorno de hasta una hora permite volver al pedido. Los campos se mantienen durante la interacción y los datos de compra se actualizan en su perfil al revisar un pedido con sesión iniciada. La preferencia de estadísticas y publicidad queda en el navegador: solo con su permiso se registran eventos propios de navegación y se carga Meta Pixel. Puede modificar su elección desde Preferencias de privacidad; borrar las cookies puede cerrar su sesión y eliminar preferencias. Conservamos contadores diarios agregados por producto, sin identificadores de visitantes, para estadísticas de interés y popularidad. Las unidades compradas se calculan desde pedidos con pago confirmado. Las recomendaciones usan hasta 20 referencias de productos en memoria durante la navegación actual. Se eliminan al recargar o cerrar la página; no se guardan en su cuenta ni se sincronizan entre dispositivos. No conservamos el texto de sus búsquedas. Al ingresar, también podemos usar sus favoritos para ordenar recomendaciones. Sin intereses disponibles, se prioriza la selección de SG Solutions y la popularidad agregada de la tienda. Los favoritos que usted selecciona se guardan en este navegador; al ingresar se incorporan a su cuenta para consultarlos desde otros dispositivos. Puede quitarlos desde Favoritos. No se utilizan como autorización para publicidad."
         },
         "5": {
           "titulo": "Acceso, proveedores y conservación",
@@ -1488,7 +1514,7 @@
     "consultar": "Recibir asesoría",
     "consultarSeleccion": "Recibir asesoría",
     "precioReferencia": "Precio de referencia (por unidad, IVA incluido)",
-    "precioConIva": "IVA incluido",
+    "precioConIva": "IVAI",
     "disponibilidad": "Asesoría personalizada",
     "fichaAyuda": "¿Es lo que necesita? Le ayudamos a elegir.",
     "volverPedido": "Continuar con mi pedido",
@@ -1598,6 +1624,12 @@
     "eliminando": "Eliminando…"
   },
   "PanelLista": {
+    "estadoPago": "Estado del pago",
+    "pagoPendiente": "Sin confirmar",
+    "pagoConfirmado": "Confirmado",
+    "archivo": "Archivo",
+    "vistaActual": "Vista principal",
+
     "buscar": "Buscar por cliente, referencia o producto",
     "filtrar": "Filtrar solicitudes",
     "resultados": "{cantidad} registros",
@@ -1613,6 +1645,7 @@
     "todos": "Todos"
   },
   "Proveedores": {
+    "sinIva": "sin IVA",
     "titulo": "Proveedores",
     "descripcion": "Consulte el catálogo de Eurocomp para preparar sus asesorías.",
     "actualizar": "Actualizar Eurocomp",

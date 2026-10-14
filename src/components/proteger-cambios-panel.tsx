@@ -2,6 +2,7 @@
 import {createContext,useCallback,useContext,useEffect,useRef,useState} from 'react';
 import {useRouter,usePathname} from 'next/navigation';
 import {useTranslations} from 'next-intl';
+import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
 import './proteger-cambios-panel.css';
 const Contexto=createContext<{registrar:(id:symbol,pendiente:boolean)=>void;solicitar:(accion:()=>void)=>void}|null>(null);
@@ -27,5 +28,5 @@ export function ProtegerCambiosPanel({children}:{children:React.ReactNode}){
   return()=>{window.removeEventListener('sg-panel-ruta',marcarRuta);history.pushState=push;history.replaceState=replace;document.removeEventListener('click',click,true);document.removeEventListener('submit',submit,true);window.removeEventListener('beforeunload',salir);window.removeEventListener('sg-panel-popstate',recibirPop);};
  },[router,solicitar]);
  useEffect(()=>{window.dispatchEvent(new Event('sg-panel-ruta'));},[ruta]);
- return <Contexto.Provider value={{registrar,solicitar}}>{children}<Dialog.Root open={abierto} onOpenChange={setAbierto}><Dialog.Portal><Dialog.Overlay className="cambios-panel-fondo"/><Dialog.Content className="cambios-panel-modal" onCloseAutoFocus={()=>{accion.current=null;}}><Dialog.Title>{t('titulo')}</Dialog.Title><Dialog.Description>{t('descripcion')}</Dialog.Description><div><Dialog.Close className="boton boton-azul">{t('seguir')}</Dialog.Close><button className="boton boton-contorno" onClick={()=>{const continuar=accion.current;accion.current=null;pendientes.current.clear();permitir.current=true;setAbierto(false);continuar?.();setTimeout(()=>{permitir.current=false;},0);}}>{t('salir')}</button></div></Dialog.Content></Dialog.Portal></Dialog.Root></Contexto.Provider>;
+ return <Contexto.Provider value={{registrar,solicitar}}>{children}<Dialog.Root open={abierto} onOpenChange={setAbierto}><Dialog.Portal><Dialog.Overlay className="cambios-panel-fondo"/><MarcoModal className="cambios-panel-modal" onCloseAutoFocus={()=>{accion.current=null;}}><Dialog.Title>{t('titulo')}</Dialog.Title><Dialog.Description>{t('descripcion')}</Dialog.Description><div><Dialog.Close className="boton boton-azul">{t('seguir')}</Dialog.Close><button className="boton boton-contorno" onClick={()=>{const continuar=accion.current;accion.current=null;pendientes.current.clear();permitir.current=true;setAbierto(false);continuar?.();setTimeout(()=>{permitir.current=false;},0);}}>{t('salir')}</button></div></MarcoModal></Dialog.Portal></Dialog.Root></Contexto.Provider>;
 }

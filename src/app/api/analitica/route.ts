@@ -1,3 +1,5 @@
+import {crearClienteCuenta} from '@/lib/supabase/cuenta';
+import {sesionLocal} from '@/lib/admin-local';
 import {eventoAnalitica} from '@/lib/analitica-modelo';
 import {registrarEvento} from '@/lib/analitica-servidor';
 export async function POST(request:Request){
@@ -10,5 +12,12 @@ export async function POST(request:Request){
  const texto=await request.text();if(texto.length>2048)return new Response(null,{status:413});
  let datos;try{datos=eventoAnalitica.safeParse(JSON.parse(texto));}catch{return new Response(null,{status:400});}
  if(!datos.success)return new Response(null,{status:400});
- try{await registrarEvento(datos.data);return new Response(null,{status:204});}catch{return new Response(null,{status:503});}
+ try{
+  if(await sesionLocal())return new Response(null,{status:204});
+  if(/sb-[^;]+-auth-token/.test(request.headers.get('cookie')||'')){
+   const cliente=await crearClienteCuenta();if(!cliente)return new Response(null,{status:503});
+   const usuario=await cliente.auth.getUser();if(usuario.error)return new Response(null,{status:503});
+   if(usuario.data.user){const permiso=await cliente.rpc('es_administrador_activo');if(permiso.error)return new Response(null,{status:503});if(permiso.data===true)return new Response(null,{status:204});}
+  }
+  await registrarEvento(datos.data);return new Response(null,{status:204});}catch{return new Response(null,{status:503});}
 }

@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
+const {PGlite}=await import(process.env.SG_PGLITE_MODULE??'@electric-sql/pglite');const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select current_setting('test.usuario',true)::uuid$$;create function public.cuenta_habilitada() returns boolean language sql stable as $$select current_setting('test.activo',true)='1'$$;grant usage on schema auth to authenticated;grant execute on function auth.uid() to authenticated;insert into auth.users values ('00000000-0000-0000-0000-000000000001'),('00000000-0000-0000-0000-000000000002');`);
+await db.exec(await readFile('supabase/migrations/20261014000200_favoritos.sql','utf8'));
+await db.exec(`select set_config('test.usuario','00000000-0000-0000-0000-000000000001',false);select set_config('test.activo','1',false);set role authenticated;insert into favoritos(usuario_id,producto_id) values(auth.uid(),'eurocomp-uno');`);
+assert.equal((await db.query('select * from favoritos')).rows.length,1);
+await assert.rejects(()=>db.exec(`insert into favoritos(usuario_id,producto_id) values('00000000-0000-0000-0000-000000000002','eurocomp-dos')`),/row-level security/);
+await db.exec(`select set_config('test.usuario','00000000-0000-0000-0000-000000000002',false);delete from favoritos where producto_id='eurocomp-uno';`);assert.equal((await db.query('select * from favoritos')).rows.length,0);
+await db.exec(`select set_config('test.usuario','00000000-0000-0000-0000-000000000001',false);`);assert.equal((await db.query('select * from favoritos')).rows.length,1);
+await db.exec(`select set_config('test.activo','0',false);`);assert.equal((await db.query('select * from favoritos')).rows.length,0);
+await db.exec('set role anon');await assert.rejects(()=>db.query('select * from favoritos'),/permission denied/);
+await db.exec("reset role;delete from auth.users where id='00000000-0000-0000-0000-000000000001'");assert.equal((await db.query('select * from favoritos')).rows.length,0);await db.close();console.log('PASS favoritos propios, bloqueo de otras cuentas, usuarios desactivados, acceso anónimo y eliminación en cascada.');

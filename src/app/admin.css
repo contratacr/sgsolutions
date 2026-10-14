@@ -116,3 +116,8 @@ body select:not([multiple]):not([size]){appearance:none!important;padding-right:
 .archivo-panel-dialogo{width:min(460px,calc(100% - 32px));max-height:85dvh;overflow:auto;border:1px solid #d9e4ec;border-radius:18px;padding:26px;color:#19364d;background:#fff;box-shadow:0 24px 80px #112c4533}
 .archivo-panel-dialogo::backdrop{background:#0a1e3266}.archivo-panel-dialogo h2{font-size:1.2rem;line-height:1.4;margin:0 0 12px;overflow-wrap:anywhere}.archivo-panel-dialogo p{font-size:.9rem;line-height:1.6;color:#536f83;margin:0 0 24px}.archivo-panel-acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}.archivo-panel-dialogo form{margin:0}.panel-opciones-secundarias>button{margin-top:14px}
 .pedido-archivo-etiqueta{display:inline-block;font-size:.7rem;font-weight:600;line-height:1.4;color:#61778a;background:#f0f4f7;border:1px solid #dce5ec;padding:3px 7px;border-radius:6px;margin-top:8px}
+/* Columnas estables para comparar los estados entre pedidos. */
+.panel-pedido-detalle>summary>.pedido-estados{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:480px;gap:12px 20px;align-items:start}
+@media(max-width:900px){.panel-pedido-detalle>summary>.pedido-estados{width:100%;gap:12px 16px}}
+.panel-lista-secundarios{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:12px 0 0}.panel-lista-secundarios label{display:flex;align-items:center;gap:8px;color:#617789;font-size:.78rem}.panel-lista-secundarios select{min-height:40px;padding:8px 30px 8px 10px;border:1px solid #dce5ec;border-radius:8px;background:#fff;color:var(--azul);font:inherit}
+.proveedor-sin-iva{font-size:.75rem;font-weight:400;color:#617789;white-space:nowrap}

@@ -3,10 +3,11 @@ import {CampoTelefono} from './campo-telefono';
 import {useConfiguracionSitio} from '@/components/configuracion-sitio';
 
 import {medir} from '@/lib/analitica-cliente';
+import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
 import {useState, type FormEvent} from 'react';
 import {useTranslations} from 'next-intl';
-import {ClipboardCheck, ClipboardList, Check, X, Mail, Building2} from 'lucide-react';
+import {ClipboardCheck, ClipboardList, Check,  Mail, Building2} from 'lucide-react';
 
 export function SolicitudPlan({indice}:{indice:number}) {
  const {enlaceCorreo,empresa}=useConfiguracionSitio();
@@ -22,8 +23,8 @@ export function SolicitudPlan({indice}:{indice:number}) {
     setRevision({cuerpo,nombre:String(datos.get('empresa'))});
   }
   return <Dialog.Root onOpenChange={()=>setRevision(null)}><Dialog.Trigger onClick={()=>medir('plan',String(indice+1))} className={`boton ${indice===1?'boton-naranja':'boton-contorno'}`}>{planes('planAccion')}<ClipboardList size={18} aria-hidden="true"/></Dialog.Trigger>
-    <Dialog.Portal><Dialog.Overlay className="solicitud-overlay"/><Dialog.Content className="solicitud-dialog">
-      <Dialog.Close className="solicitud-cerrar" aria-label={t('cerrar')}><X size={20}/></Dialog.Close>
+    <Dialog.Portal><Dialog.Overlay className="solicitud-overlay"/><MarcoModal className="solicitud-dialog">
+
       <aside className="solicitud-resumen"><span className="solicitud-marca">{marca('nombre')}</span><div className="solicitud-plan-icono"><Building2 size={30} strokeWidth={1.4}/></div><p className="solicitud-eyebrow">{t('planElegido')}</p><h2>{nombrePlan}</h2><p className="solicitud-frase">{planes(`plan${indice}Frase`)}</p><ul>{planes(`plan${indice}Detalle`).split(' · ').map(detalle=><li key={detalle}><Check size={15}/>{detalle}</li>)}</ul><div className="solicitud-contacto"><Mail size={17}/><span>{empresa.correo}</span></div></aside>
       <div className="solicitud-contenido"><p className="solicitud-paso">{t(revision?'paso2':'paso1')}</p><Dialog.Title>{t(revision?'revisionTitulo':'titulo')}</Dialog.Title><Dialog.Description>{t(revision?'revisionDescripcion':'descripcion')}</Dialog.Description>
         <form onSubmit={preparar} hidden={!!revision}>
@@ -35,6 +36,6 @@ export function SolicitudPlan({indice}:{indice:number}) {
         </form>
         {revision&&<div className="solicitud-revision"><div className="solicitud-revision-cabecera"><span>{t('destinatario')}</span><strong>{empresa.correo}</strong></div><pre>{revision.cuerpo}</pre><a className="boton boton-naranja solicitud-continuar" href={enlaceCorreo(planes('planAsunto',{plan:nombrePlan}),revision.cuerpo)} target="_blank" rel="noopener noreferrer" title={n('nuevaPestana')}>{t('abrirCorreo')}<Mail size={18} aria-hidden="true"/></a><button className="solicitud-editar" onClick={()=>setRevision(null)}>{t('editar')}</button><p className="solicitud-nota">{t('notaRevision')}</p></div>}
       </div>
-    </Dialog.Content></Dialog.Portal>
+    </MarcoModal></Dialog.Portal>
   </Dialog.Root>;
 }

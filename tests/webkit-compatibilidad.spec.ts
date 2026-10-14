@@ -14,7 +14,7 @@ for(const idioma of ['es','en'])test(`Safari conserva precios, contacto y carrit
  await expect(page.locator('.shop-precio strong').first()).toHaveText(/₡\d{1,3}(\s\d{3})*/);
  await page.locator('.asesoria-hero-acciones>.boton').first().click();
  await page.getByRole('dialog').getByRole('button',{name:idioma==='es'?'Cerrar':'Close',exact:true}).click();
- await page.locator('.shop-producto .guardar-seleccion').first().click();
+ await page.locator('.shop-producto .producto-agregar').first().click();
  await expect(page.locator('.carrito-confirmacion')).toBeVisible();
  await page.locator('.carrito-confirmacion .boton-azul').click();
  await expect(page.locator('.carrito-lineas li')).toHaveCount(1);

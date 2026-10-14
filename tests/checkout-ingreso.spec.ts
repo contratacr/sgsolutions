@@ -23,7 +23,7 @@ test.describe('sesión real contra Auth local',()=>{
   expect(new URL(baseURL!).hostname).toBe('127.0.0.1');
   const cuenta=JSON.parse(fs.readFileSync('.privado/qa-local/cuentas.json','utf8')).find((c:{admin:boolean})=>c.admin);
   await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);await page.goto('/tienda');await expect(page.locator('.shop-orden select')).toBeEnabled();await page.locator('.shop-producto button').first().click();const carrito=await page.evaluate(()=>localStorage.getItem('sg-carrito-v1'));
-  await page.goto('/finalizar-compra');await page.locator('.compra-acceso-acciones>a').click();
+  await page.goto('/finalizar-compra');await page.locator('.compra-acceso-titulo>a').click();
   await page.locator('.cuenta-formulario [name=correo]').fill(cuenta.email);await page.locator('.cuenta-formulario [name=clave]').fill('Incorrecta-123!');await page.locator('.cuenta-enviar').click();await expect(page.locator('.cuenta-formulario [role=alert]')).toBeVisible();
   await page.locator('.cuenta-formulario [name=clave]').fill(cuenta.password);await page.locator('.cuenta-enviar').click();await expect(page).toHaveURL(/\/pagar$/);
   expect(await page.evaluate(()=>localStorage.getItem('sg-carrito-v1'))).toBe(carrito);await expect(page.locator('.compra-acceso')).toHaveCount(0);

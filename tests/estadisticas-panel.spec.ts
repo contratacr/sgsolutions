@@ -3,6 +3,14 @@ for(const idioma of ['es','en'] as const)test('estadísticas, períodos, privaci
  const t=(idioma==='es'?es:en).Analitica,sub='00000000-0000-4000-8000-000000000001';const jwt=[{alg:'HS256',typ:'JWT'},{sub,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600}].map(x=>Buffer.from(JSON.stringify(x)).toString('base64url')).join('.')+'.fixture';
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'},{name:'sb-127-auth-token',value:'base64-'+Buffer.from(JSON.stringify({access_token:jwt,refresh_token:'fixture',expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user:{id:sub}})).toString('base64url'),domain:'127.0.0.1',path:'/'}]);
  await request.post('http://127.0.0.1:3123/__test/error',{data:{error:false}});await page.goto('/panel/estadisticas');
+ await context.addCookies([{name:'sg-analitica',value:'1',domain:'127.0.0.1',path:'/'}]);
+ await page.addInitScript(()=>localStorage.setItem('sg-medicion',JSON.stringify({analitica:true,publicidad:true})));
+ const enviados:string[]=[];page.on('request',r=>{if(r.url().includes('/api/analitica'))enviados.push(r.url());});
+ await page.goto('/tienda');await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');await expect(page.locator('.shop-orden select')).toBeEnabled();expect(enviados).toHaveLength(0);expect(await page.evaluate(()=>Boolean(window.fbq))).toBe(false);
+ const antes=(await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).eventos;
+ const directo=await context.request.post('/api/analitica',{headers:{Origin:'http://127.0.0.1:3122'},data:{id:crypto.randomUUID(),sesion:crypto.randomUUID(),tipo:'pagina',ruta:'/tienda',detalle:'',dispositivo:'movil',idioma,campana:''}});expect(directo.status()).toBe(204);expect((await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).eventos).toBe(antes);
+ await page.goto('/panel/estadisticas');
+
  const tarjeta=(nombre:string)=>page.locator('main.estadisticas-panel:visible .estadisticas-tarjetas article').filter({has:page.locator('span').filter({hasText:new RegExp('^'+nombre+'$')})});
  await expect(tarjeta(t.visitas).locator('strong')).toHaveText('18');await expect(tarjeta(t.registrados).locator('strong')).toHaveText('9');await expect(tarjeta(t.nuevosRegistros).locator('strong')).toHaveText('3');await expect(tarjeta(t.clicsContacto).locator('strong')).toHaveText('6');await expect(tarjeta(t.pedidosPagados).locator('strong')).toHaveText('2');
  for(const texto of [t.ayudaPanel,t.detalleMedicion,t.pixelListo,t.configurar])await expect(page.locator('main.estadisticas-panel:visible')).not.toContainText(texto);

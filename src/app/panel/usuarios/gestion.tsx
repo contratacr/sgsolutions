@@ -1,9 +1,10 @@
 'use client';
 import {useCambiosAdmin} from '@/components/use-cambios-admin';
 import {useProteccionPanel} from '@/components/proteger-cambios-panel';
+import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
 import {useActionState,useId,useState} from 'react';
-import {Settings2,X,Mail,Shield,Trash2,History} from 'lucide-react';
+import {Settings2,Mail,Shield,Trash2,History} from 'lucide-react';
 import {useLocale,useTranslations} from 'next-intl';
 import type {UsuarioPanel} from '@/lib/usuarios-panel';
 import {administrarUsuario,historialUsuario,type EstadoGestion} from './acciones';
@@ -58,11 +59,11 @@ function Historial({id}:{id:string}){
 }
 export function GestionUsuario({u,propia}:{u:UsuarioPanel;propia:boolean}){
  const t=useTranslations('UsuariosPanel');const [abierto,setAbierto]=useState(false);const proteccion=useProteccionPanel();
- return <Dialog.Root open={abierto} onOpenChange={valor=>{if(!valor&&proteccion)proteccion.solicitar(()=>setAbierto(false));else setAbierto(valor);}}><Dialog.Trigger className="boton boton-contorno usuario-administrar"><Settings2 size={17} aria-hidden="true"/>{t('administrar')}</Dialog.Trigger><Dialog.Portal><Dialog.Overlay className="gestion-fondo"/><Dialog.Content className="gestion-modal">
-  <header className="gestion-cabecera"><div><Dialog.Title>{t('administrarUsuario')}</Dialog.Title><Dialog.Description>{u.nombre||u.correo||t('sinNombre')}</Dialog.Description></div><Dialog.Close className="boton-icono" aria-label={t('cerrar')}><X aria-hidden="true"/></Dialog.Close></header>
+ return <Dialog.Root open={abierto} onOpenChange={valor=>{if(!valor&&proteccion)proteccion.solicitar(()=>setAbierto(false));else setAbierto(valor);}}><Dialog.Trigger className="boton boton-contorno usuario-administrar"><Settings2 size={17} aria-hidden="true"/>{t('administrar')}</Dialog.Trigger><Dialog.Portal><Dialog.Overlay className="gestion-fondo"/><MarcoModal className="gestion-modal">
+  <header className="gestion-cabecera"><div><Dialog.Title>{t('administrarUsuario')}</Dialog.Title><Dialog.Description>{u.nombre||u.correo||t('sinNombre')}</Dialog.Description></div></header>
   <div className="gestion-contenido"><section><h3>{t('datos')}</h3><Datos u={u} propia={propia}/></section><section><h3><Shield size={18} aria-hidden="true"/>{t('accesoPanel')}</h3><Acceso u={u} propia={propia}/></section>
   <section><h3>{t('seguridad')}</h3><p className="gestion-ayuda">{t('recuperacionDetalle',{correo:u.correo??t('sinCorreo')})}</p><CorreoSeguridad u={u} operacion="recuperacion"/>{!u.confirmado&&<CorreoSeguridad u={u} operacion="confirmacion"/>}<details><summary>{t(u.estado_cuenta==='bloqueado'?'desbloquearUsuario':'bloquearUsuario')}</summary><Baja u={u} propia={propia}/></details></section>
   <section><h3>{t('historial')}</h3><Historial id={u.id}/></section>
   <details className="gestion-eliminar"><summary>{t('eliminarUsuario')}</summary><Baja u={u} propia={propia} eliminar/></details></div>
- </Dialog.Content></Dialog.Portal></Dialog.Root>;
+ </MarcoModal></Dialog.Portal></Dialog.Root>;
 }

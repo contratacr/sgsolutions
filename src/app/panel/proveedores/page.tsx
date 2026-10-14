@@ -18,14 +18,13 @@ export default async function Proveedores({searchParams}:{searchParams:Promise<{
  const precio=(valor:number|null,moneda:string)=>valor===null||!['CRC','USD'].includes(moneda)?t('sinDato'):new Intl.NumberFormat(idioma==='en'?'en-US':'es-CR',{style:'currency',currency:moneda,maximumFractionDigits:2}).format(valor);
  return <main id="contenido" className="contenedor seccion eurocomp-panel">
   <div className="panel-cabecera"><div><p className="etiqueta">{t('proveedor')}</p><h1>{t('titulo')}</h1><p>{t('descripcion')}</p></div><form action={actualizarProveedor}><ActualizarEurocomp configurado={actualizacionEurocompHabilitada()}/></form></div>
-  <p className="panel-aviso">{t('aviso')}</p>
   {!eurocompConfigurado()&&<p role="status">{t('configuracion')}</p>}
   {eurocompConfigurado()&&!actualizacionEurocompHabilitada()&&<p role="status">{t('manualDeshabilitada')}</p>}
   {resultado&&<p role={resultado==='actualizado'?'status':'alert'} className="panel-aviso">{t(resultado as 'actualizado')}</p>}
   {catalogo&&<p>{t('resumen',{total:catalogo.total,fecha:new Intl.DateTimeFormat(idioma==='en'?'en-US':'es-CR',{dateStyle:'medium',timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(catalogo.fecha))})}</p>}
   <form method="get" className="eurocomp-busqueda"><label htmlFor="buscar-proveedor">{t('buscar')}</label><div><input id="buscar-proveedor" name="q" maxLength={150} defaultValue={q}/><button className="boton boton-contorno">{t('buscarBoton')}</button></div></form>
   {!catalogo?<p>{t('vacio')}</p>:<><p>{t('resultados',{total:catalogo.resultados})}</p><div className="eurocomp-productos">
-   {catalogo.articulos.map(a=><article key={a.codigo}><div><h2>{a.nombre}</h2><p>{[a.marca,a.familia].filter(Boolean).join(' · ')}</p><p><strong>{t('codigo')}:</strong> {a.codigo}{a.parte&&<> · {t('parte')}: {a.parte}</>}</p></div><dl><div><dt>{t('precio')}</dt><dd>{precio(a.precio,a.moneda)}</dd></div><div><dt>{t('existencias')}</dt><dd>{a.stock===null?t('sinDato'):a.stock}</dd></div></dl></article>)}
+   {catalogo.articulos.map(a=><article key={a.codigo}><div><h2>{a.nombre}</h2><p>{[a.marca,a.familia].filter(Boolean).join(' · ')}</p><p><strong>{t('codigo')}:</strong> {a.codigo}{a.parte&&<> · {t('parte')}: {a.parte}</>}</p></div><dl><div><dt>{t('precio')}</dt><dd>{precio(a.precio,a.moneda)}{a.precio!==null&&['CRC','USD'].includes(a.moneda)&&<small className="proveedor-sin-iva"> {t('sinIva')}</small>}</dd></div><div><dt>{t('existencias')}</dt><dd>{a.stock===null?t('sinDato'):a.stock}</dd></div></dl></article>)}
   </div>{!catalogo.articulos.length&&<p>{t('sinResultados')}</p>}
   <nav className="eurocomp-paginacion" aria-label={t('paginacion')}>
    {pagina>1&&<Link className="boton boton-contorno" href={`/panel/proveedores?q=${encodeURIComponent(q)}&pagina=${pagina-1}`}>{t('anterior')}</Link>}

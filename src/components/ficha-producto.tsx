@@ -1,6 +1,7 @@
 "use client";
-import {PrecioProducto} from './precio-producto';
+import {PrecioProducto,EtiquetaDescuento} from './precio-producto';
 import Link from "next/link";
+import {descripcionUtil} from '@/lib/descripcion-producto';
 import {ContadorCantidad} from './contador-cantidad';
 import {AsesoriaWhatsApp} from "./asesoria-whatsapp";
 import { useState } from "react";
@@ -8,7 +9,6 @@ import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft,
   ShoppingCart,
-  Truck,
 } from "lucide-react";
 import { FotoProducto } from "./foto-producto";
 import {
@@ -42,7 +42,7 @@ export function FichaProducto({
       </Link>
       <div className="ficha-grid">
         <section className="ficha-galeria" aria-label={t("galeria")}>
-          <div className="ficha-foto">
+          <div className="ficha-foto"><EtiquetaDescuento producto={p}/>
             <FotoProducto src={fotos[foto]} alt={traducir(p.nombre, l)} />
           </div>
           {fotos.length > 1 && (
@@ -68,13 +68,13 @@ export function FichaProducto({
           <p className="ficha-codigo">
             {t("codigo")}: {p.codigoFabricante || t("pendiente")}
           </p>
-          <p>{traducir(p.descripcion, l)}</p>
+          {descripcionUtil(p,l)&&<p>{descripcionUtil(p,l)}</p>}
           <div className="ficha-precio">
             <PrecioProducto producto={p} pendiente={s("precioPendiente")}/>
             {p.precio !== null && <small>{a("precioConIva")}</small>}
           </div>
           {p.disponibilidad==='agotado'&&<p className="ficha-stock">{s('agotado')}</p>}
-          <div className="ficha-cantidad"><span>{t("cantidad")}</span><ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/></div>
+          <div className="producto-compra-fila"><ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/>
           <button
             className="boton boton-azul ficha-agregar"
             disabled={p.disponibilidad === "agotado"}
@@ -85,22 +85,13 @@ export function FichaProducto({
           >
             <ShoppingCart size={19} aria-hidden="true" />
             {s("agregar")}
-          </button>
+          </button></div>
 
-          <div className="ficha-confianza">
-            <span>
-              <Truck size={20} />
-              {t("entrega")}
-            </span>
-          </div>
-        </section>
-      </div>
-      <aside className="tienda-ayuda"><p>{a('ayudaOpcional')}</p><AsesoriaWhatsApp etiqueta="asesorar"/></aside>
+
       <section className="ficha-detalles">
-        <div>
-          <p className="etiqueta">{t("detalleEtiqueta")}</p>
+        <div className="ficha-detalles-cabecera">
           <h2>{t("especificaciones")}</h2>
-          <p>{t("detalleTexto")}</p>
+          <AsesoriaWhatsApp etiqueta="asesorar" className="shop-asesoria-inline"/>
         </div>
         <div>
           <dl>
@@ -123,9 +114,6 @@ export function FichaProducto({
               </div>
             ))}
           </dl>
-          <p className="ficha-descripcion-completa">
-            {traducir(p.descripcion, l)}
-          </p>
           {p.fichaTecnica && (
             <a href={p.fichaTecnica} target="_blank" rel="noopener noreferrer">
               {t("documento")}
@@ -134,6 +122,9 @@ export function FichaProducto({
           )}
         </div>
       </section>
+        </section>
+      </div>
+
     </>
   );
 }
