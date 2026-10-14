@@ -837,3 +837,6 @@ dialog.shop-panel-filtros>.modal-nativo-cuerpo{margin:0;clear:none}
  .tienda-compacta .shop-resultados-cabecera>.shop-asesoria-inline{margin:0;padding:0;flex:0 0 auto;gap:7px}
 }
 @media(min-width:851px) and (max-width:1100px){.tienda-compacta .shop-resultados-cabecera{gap:14px}.tienda-compacta .shop-resultados-cabecera .shop-orden>span{display:none}}
+
+.cabecera,body:has(.portal) .cabecera{box-shadow:none}
+body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
