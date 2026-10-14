@@ -29,7 +29,15 @@ export function ValidacionNativa(){
   }
   function cancelarFoco(){cancelAnimationFrame(frame);frame=0;primero=null;}
   function focoCambiado(evento:Event){if(primero&&evento.target!==primero&&esCampo(evento.target))cancelarFoco();}
-  function limpiar(evento:Event){cancelarFoco();if(esCampo(evento.target))quitar(evento.target);}
+  function limpiar(evento:Event){
+   cancelarFoco();if(!esCampo(evento.target))return;
+   const formulario=evento.target.form;quitar(evento.target);
+   requestAnimationFrame(()=>{if(!activo)return;for(const [campo,registro] of errores){
+    if(campo.form!==formulario||campo.dataset.validacionNativa!=='true')continue;
+    if(!campo.isConnected){quitar(campo);continue;}
+    campo.setCustomValidity('');if(campo.validity.valid)quitar(campo);else campo.setCustomValidity(registro.mensaje);
+   }});
+  }
   function invalidar(evento:Event){
    if(!esCampo(evento.target))return;
    // Evitar la burbuja del navegador, que puede ignorar el idioma de la página.

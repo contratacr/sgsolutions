@@ -39,6 +39,9 @@ export function RevelarScroll(){
    if(vistos.has(el))return;
    vistos.add(el);
    if(el.closest('form, dialog, [role="dialog"], .shop-producto') || el.parentElement?.closest(bloques))return;
+   // Revealing a moving container can shift controls between pointer down and up.
+   const controles='button, a[href], input, select, textarea, [role="button"]';
+   if(el.matches(controles)||el.querySelector(controles))return;
    // Above-the-fold content is already part of the initial composition. It
    // should never flash or slide just because JavaScript finished loading.
    if(el.getBoundingClientRect().top<innerHeight*.78 || preferencia.matches)return;

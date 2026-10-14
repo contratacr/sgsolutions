@@ -33,5 +33,6 @@ for(const idioma of ['es','en'])test('preferencias, ficha, búsqueda y borrado '
  await page.locator('.shop-orden select').selectOption('mayor');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
  await rec.locator('summary').click();await rec.getByRole('button',{name:idioma==='es'?'Borrar historial y desactivar':'Clear history and disable'}).click();
  expect(await page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
+ const respuesta=page.waitForResponse(r=>r.url().includes('/api/catalogo?')&&new URL(r.url()).searchParams.get('q')==='AMD');await page.locator('#buscar-equipo').fill('AMD');await respuesta;await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');expect(await page.evaluate(()=>sessionStorage.getItem('sg-intereses-sesion'))).toBeNull();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });

@@ -956,7 +956,9 @@
     "telefonoInvalido": "Enter a valid phone number with 8 to 15 digits, including the country code when applicable.",
     "campoInvalido": "Check this field before continuing.",
     "identificacionDimexAyuda": "DIMEX: 11 or 12 digits, without a leading zero.",
-    "identificacionNiteAyuda": "NITE: 10 digits."
+    "identificacionNiteAyuda": "NITE: 10 digits.",
+    "dimex": "DIMEX",
+    "nite": "NITE"
   },
   "ResultadoPago": {
     "titulo": "Payment result",
