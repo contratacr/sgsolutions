@@ -1,4 +1,5 @@
 "use client";
+import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import {CampoIdentificacion} from './campo-identificacion';
 import {CampoTelefono} from './campo-telefono';
 import {rutaProducto} from "@/lib/rutas-productos";
@@ -52,6 +53,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
   const [borrador, setBorrador] = useState<Record<string, string>>(():Record<string,string>=>{const d=aprobacion?.contacto;if(!d)return datosGuardados;const partes=d.nombre.trim().split(/\s+/);return combinarDatosCompra(datosGuardados,{nombre:partes.slice(0,-1).join(' ')||d.nombre,apellidos:partes.length>1?partes.at(-1)!:'',correo:d.correo??'',telefono:d.telefono?(d.telefono.startsWith('+')?d.telefono:'+'+d.telefono):'',tipoIdentificacion:d.tipoIdentificacion??'fisica',identificacion:d.identificacion??'',correoFactura:d.correo??''});});
   const [tipoIdentificacion,setTipoIdentificacion]=useState(borrador.tipoIdentificacion??'fisica');
   const dc=useTranslations('DatosCuenta');const [guardadoPerfil,setGuardadoPerfil]=useState<EstadoDatosCompra>('inicio');
+  const selectorArchivo=useRef<HTMLInputElement>(null);
   const [comprobante,setComprobante]=useState<File|null>(null),[errorComprobante,setErrorComprobante]=useState(false);
   const pm=useTranslations('PedidoManual');
   const [express,setExpress]=useState(false);
@@ -425,8 +427,8 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                   <div className="compra-comprobante">
                     <label htmlFor="compra-comprobante"><span>{t('comprobanteEtiqueta')}<IndicadorCampo obligatorio/></span></label>
                     <div className="compra-archivo-control">
-                      <input id="compra-comprobante" type="file" required={!comprobante} aria-required="true" aria-label={t('comprobanteEtiqueta')} accept="image/jpeg,image/png,application/pdf" aria-invalid={errorComprobante||undefined} onChange={e=>{const f=e.target.files?.[0]??null;const invalido=Boolean(f&&(f.size<100||f.size>5*1024*1024||!['image/jpeg','image/png','application/pdf'].includes(f.type)));setErrorComprobante(invalido);setComprobante(invalido?null:f);if(invalido)e.target.value='';}}/>
-                      <label htmlFor="compra-comprobante" className="compra-archivo-boton">{t('seleccionarArchivo')}</label>
+                      <input ref={selectorArchivo} id="compra-comprobante" type="file" required={!comprobante} aria-required="true" aria-label={t('comprobanteEtiqueta')} accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf" aria-invalid={errorComprobante||undefined} onChange={async e=>{const f=e.target.files?.[0]??null;setComprobante(f);setErrorComprobante(Boolean(f));if(!f)return;const normalizado=await normalizarComprobante(f);setComprobante(normalizado??f);setErrorComprobante(!normalizado);}}/>
+                      <button type="button" className="compra-archivo-boton" onClick={()=>selectorArchivo.current?.click()}>{t('seleccionarArchivo')}</button>
                       <span className="compra-archivo-nombre" aria-live="polite">{comprobante?comprobante.name:t('ningunArchivo')}</span>
                     </div>
                     {errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}

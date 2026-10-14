@@ -1,6 +1,7 @@
 'use client';
+import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import {IndicadorCampo} from './indicador-campo';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
@@ -8,6 +9,7 @@ export function SubirComprobante({ pedido, acceso }: { pedido: string; acceso: s
   const t = useTranslations('PedidoManual');
   const compra=useTranslations('Compra');
   const router = useRouter();
+  const selectorArchivo=useRef<HTMLInputElement>(null);
   const [archivo, setArchivo] = useState<File | null>(null);
   const [ocupado, setOcupado] = useState(false);
   const [estado, setEstado] = useState('');
@@ -26,7 +28,7 @@ export function SubirComprobante({ pedido, acceso }: { pedido: string; acceso: s
   }
   return <div className="pedido-comprobante">
     <label htmlFor="pedido-comprobante"><span>{t('adjuntar')}<IndicadorCampo obligatorio/></span></label>
-    <div className="compra-archivo-control"><input id="pedido-comprobante" type="file" required aria-label={t('adjuntar')} accept="image/jpeg,image/png,application/pdf" onChange={e => setArchivo(e.target.files?.[0] ?? null)}/><label htmlFor="pedido-comprobante" className="compra-archivo-boton">{compra('seleccionarArchivo')}</label><span className="compra-archivo-nombre" aria-live="polite">{archivo?archivo.name:compra('ningunArchivo')}</span></div>
+    <div className="compra-archivo-control"><input ref={selectorArchivo} id="pedido-comprobante" type="file" required aria-label={t('adjuntar')} accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf" onChange={async e=>{const f=e.target.files?.[0];setArchivo(null);setEstado('');if(!f)return;const normalizado=await normalizarComprobante(f);setArchivo(normalizado);if(!normalizado)setEstado('archivoInvalido');}}/><button type="button" className="compra-archivo-boton" onClick={()=>selectorArchivo.current?.click()}>{compra('seleccionarArchivo')}</button><span className="compra-archivo-nombre" aria-live="polite">{archivo?archivo.name:compra('ningunArchivo')}</span></div>
     <p>{t('formato')}</p>
     <button type="button" className="boton boton-azul" disabled={!archivo || ocupado} onClick={enviar}>{t(ocupado ? 'enviando' : 'enviar')}</button>
     {estado && <p role={estado === 'recibido' ? 'status' : 'alert'}>{t(estado)}</p>}

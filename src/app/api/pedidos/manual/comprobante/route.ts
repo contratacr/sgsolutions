@@ -1,3 +1,4 @@
+import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import { accesoValido, basePedidosManuales, configuracionPedidosManuales, numeroPedido } from '@/lib/pedidos-manuales';
 import { enviarCorreo } from '@/lib/email/send';
 import { empresa } from '@/lib/empresa';
@@ -16,8 +17,9 @@ export async function POST(request: Request) {
   let form: FormData;
   try { form = await request.formData(); } catch { return Response.json({ error: 'archivo_invalido' }, { status: 400 }); }
   const id = String(form.get('pedido') ?? ''), token = String(form.get('acceso') ?? '');
-  const archivo = form.get('archivo');
+  const recibido = form.get('archivo');
   if (!accesoValido(config, id, token)) return Response.json({ error: 'no_encontrado' }, { status: 404 });
+  const archivo = recibido instanceof File ? await normalizarComprobante(recibido) : null;
   if (!(archivo instanceof File) || archivo.size < 100 || archivo.size > 5 * 1024 * 1024 || !tipos[archivo.type]) return Response.json({ error: 'archivo_invalido' }, { status: 400 });
   const bytes = new Uint8Array(await archivo.arrayBuffer());
   const tipo = tipos[archivo.type];
