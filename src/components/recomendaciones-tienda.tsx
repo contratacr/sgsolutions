@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {useLocale,useTranslations} from 'next-intl';
 import {ShoppingCart} from 'lucide-react';
 import {recomendaciones} from '@/lib/recomendaciones';
-import {cambiarHistorial,leerHistorial,recordarExploracion} from '@/lib/historial-tienda';
+import {leerHistorial,recordarExploracion} from '@/lib/historial-tienda';
 import {rutaProducto} from '@/lib/rutas-productos';
 import {traducir,colones} from '@/lib/catalogo-modelo';
 import {agregarProducto} from '@/lib/carrito';
@@ -22,6 +22,5 @@ export function RecomendacionesTienda({inicial,actual,oculto=false}:{inicial?:Da
  function fila(titulo:string,productos:Datos['destacados']){if(!productos.length)return null;return <section className="recomendaciones-fila" aria-label={titulo}><h2>{titulo}</h2><div className="recomendaciones-grid">{productos.map(p=><article className="shop-producto" key={p.id}><div className="shop-foto"><Link href={rutaProducto(p)}><FotoProducto src={p.imagen} alt={traducir(p.nombre,idioma)}/></Link><button className="boton boton-azul guardar-seleccion" onClick={()=>{catalogo.recordar([p]);agregarProducto(p.id,1);}} aria-label={`${s('agregar')}: ${traducir(p.nombre,idioma)}`}><ShoppingCart size={20}/><span className="shop-agregar-texto">{s('agregar')}</span></button></div><div className="shop-producto-info"><span className="shop-marca">{p.marca}</span><h3><Link href={rutaProducto(p)}>{traducir(p.nombre,idioma)}</Link></h3><div className="shop-precio"><strong>{colones(p.precio!)}</strong><small>{a('precioConIva')}</small></div></div></article>)}</div></section>;}
  return <div className="recomendaciones" hidden={oculto}>
  {datos&&(actual?fila(t('similares'),datos.sugeridos):<>{fila(datos.destacados.length?t('destacados'):t('descubrir'),datos.destacados.length?datos.destacados:datos.descubrir)}{historial.activo&&<>{fila(t('paraUsted'),datos.sugeridos)}{fila(t('recientes'),datos.recientes)}</>}</>)}
- {!actual&&<details className="recomendaciones-preferencias"><summary>{t('preferencias')}</summary><p>{t('detalle')}</p><label><input type="checkbox" checked={historial.activo} onChange={e=>cambiarHistorial(e.target.checked)}/>{t('activar')}</label>{historial.activo&&<button type="button" onClick={()=>cambiarHistorial(false)}>{t('borrar')}</button>}<Link href="/privacidad">{t('privacidad')}</Link></details>}
  </div>;
 }

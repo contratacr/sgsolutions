@@ -18,6 +18,11 @@ test('tarjetas alineadas y cuadrícula móvil en ambos idiomas',async({page},inf
   // Measure final geometry, rather than the staggered scroll entrance frames.
   await page.evaluate(()=>document.querySelector('.shop-producto')?.scrollIntoView({block:'center'}));
   await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);
+  // El catálogo debe ocupar la columna principal aunque haya preferencias.
+  const ancho=await page.locator('.shop-resultados').evaluate(e=>e.getBoundingClientRect().width);
+  expect(ancho).toBeGreaterThan(info.project.name==='movil'?300:700);
+  expect(await page.locator('.shop-foto img').first().evaluate(e=>e.getBoundingClientRect().width)).toBeGreaterThan(80);
+  await expect(page.locator('.shop-distribucion>.recomendaciones-preferencias')).toHaveCount(0);
   const posiciones=await page.locator('.shop-producto').evaluateAll(es=>es.slice(0,innerWidth<=650?1:3).map(e=>({precio:e.querySelector('.shop-precio')!.getBoundingClientRect().y,boton:e.querySelector('button')!.getBoundingClientRect().y})));
   for(const posicion of posiciones){expect(Math.abs(posicion.precio-posiciones[0].precio)).toBeLessThan(1);expect(Math.abs(posicion.boton-posiciones[0].boton)).toBeLessThan(1);}
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

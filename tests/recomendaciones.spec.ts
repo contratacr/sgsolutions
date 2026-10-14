@@ -19,20 +19,20 @@ test('recomendados adapta afinidad y respeta precio y búsqueda',()=>{
  expect(consultarCatalogo(c,new URLSearchParams({orden:'mayor'})).productos.map(p=>p.precio)).toEqual([3000,2000,1000]);
  expect(consultarCatalogo(c,new URLSearchParams({q:'no-match-zzzz'})).total).toBe(0);
 });
-for(const idioma of ['es','en'])test('preferencias, ficha, búsqueda y borrado '+idioma,async({page,context,baseURL})=>{
- await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
- const rec=page.locator('.recomendaciones-preferencias');await expect(rec).toBeVisible();
+for(const idioma of ['es','en'])test('recomendaciones temporales sin historial persistente '+idioma,async({page,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
+ await page.goto('/tienda');
+ await expect(page.locator('.recomendaciones-preferencias')).toHaveCount(0);
+ await page.evaluate(()=>localStorage.setItem('sg-recomendaciones',JSON.stringify({activo:true,items:[{id:'antiguo',fecha:Date.now()}]})));
+ await page.reload();
+ expect(await page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
+ await page.locator('.shop-producto h3 a').first().click();
+ await expect(page.locator('.ficha-compra h1')).toBeVisible();
+ expect(await page.evaluate(()=>sessionStorage.getItem('sg-intereses-sesion'))).toBeNull();
+ expect(await page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
+ await page.goto('/tienda');
  await expect(page.locator('.shop-orden select')).toHaveValue('recomendados');
- await expect(page.getByRole('heading',{name:idioma==='es'?'Productos destacados':'Featured products',exact:true})).toHaveCount(0);
- expect(await page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
- await rec.locator('summary').click();await rec.getByRole('checkbox').check();
- await page.locator('.shop-producto h3 a').first().click();await expect(page.locator('.ficha-compra h1')).toBeVisible();
- await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('sg-recomendaciones')??'{}').items?.length)).toBeGreaterThan(0);
- await page.goto('/tienda');await expect(page.locator('.shop-orden select')).toHaveValue('recomendados');
- await page.locator('.shop-orden select').selectOption('menor');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
- await page.locator('.shop-orden select').selectOption('mayor');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
- await rec.locator('summary').click();await rec.getByRole('button',{name:idioma==='es'?'Borrar historial y desactivar':'Clear history and disable'}).click();
- expect(await page.evaluate(()=>localStorage.getItem('sg-recomendaciones'))).toBeNull();
- const respuesta=page.waitForResponse(r=>r.url().includes('/api/catalogo?')&&new URL(r.url()).searchParams.get('q')==='AMD');await page.locator('#buscar-equipo').fill('AMD');await respuesta;await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');expect(await page.evaluate(()=>sessionStorage.getItem('sg-intereses-sesion'))).toBeNull();
+ await page.locator('.shop-orden select').selectOption('menor');
+ await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });
