@@ -32,6 +32,7 @@ export function Catalogo({inicial}:{inicial:PaginaCatalogo}){
    }
   };
   window.addEventListener('scroll',restablecer,{passive:true});
+  restablecer();
   return()=>window.removeEventListener('scroll',restablecer);
  },[]);
  const favoritos=useFavoritos(),sesionIniciada=useSesionCuenta();
