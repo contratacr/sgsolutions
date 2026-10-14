@@ -1849,5 +1849,35 @@
   "Telefono": {
     "pais": "Country calling code",
     "numero": "Phone number"
+  },
+  "EntregaAdmin": {
+    "pago": "Payment",
+    "pedido": "Order",
+    "pago_revision": "Awaiting review",
+    "pago_pendiente_pago": "Awaiting payment",
+    "pago_comprobante_recibido": "Receipt awaiting verification",
+    "pago_pagado": "Confirmed",
+    "pago_cancelado": "Cancelled",
+    "pago_iniciado": "Incomplete",
+    "pago_pendiente": "Processing",
+    "pago_rechazado": "Declined",
+    "pago_error": "Payment error",
+    "sin_pago": "Awaiting payment",
+    "cancelado": "Cancelled",
+    "pendiente_preparar": "Awaiting preparation",
+    "preparando": "Preparing",
+    "listo_retiro": "Ready for pickup",
+    "enviado": "Shipped",
+    "entregado": "Delivered",
+    "accion_preparando": "Start preparation",
+    "accion_listo_retiro": "Mark ready for pickup",
+    "accion_enviado": "Mark as shipped",
+    "accion_entregado": "Confirm delivery",
+    "porPreparar": "To prepare",
+    "enCurso": "Preparing or delivering",
+    "finalizados": "Delivered or cancelled",
+    "pagoPendiente": "Unconfirmed payments",
+    "conflicto": "The order changed or this transition is unavailable. Refresh the page and check its status.",
+    "guardado": "Order status updated."
   }
 }

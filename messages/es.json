@@ -1849,5 +1849,35 @@
   "Telefono": {
     "pais": "Código de país",
     "numero": "Número de teléfono"
+  },
+  "EntregaAdmin": {
+    "pago": "Pago",
+    "pedido": "Pedido",
+    "pago_revision": "Pendiente de revisión",
+    "pago_pendiente_pago": "Pendiente de pago",
+    "pago_comprobante_recibido": "Comprobante por verificar",
+    "pago_pagado": "Confirmado",
+    "pago_cancelado": "Cancelado",
+    "pago_iniciado": "Sin completar",
+    "pago_pendiente": "En proceso",
+    "pago_rechazado": "Rechazado",
+    "pago_error": "Error de pago",
+    "sin_pago": "En espera del pago",
+    "cancelado": "Cancelado",
+    "pendiente_preparar": "Pendiente de preparar",
+    "preparando": "Preparando",
+    "listo_retiro": "Listo para retiro",
+    "enviado": "Enviado",
+    "entregado": "Entregado",
+    "accion_preparando": "Comenzar preparación",
+    "accion_listo_retiro": "Marcar listo para retiro",
+    "accion_enviado": "Marcar como enviado",
+    "accion_entregado": "Confirmar entrega",
+    "porPreparar": "Por preparar",
+    "enCurso": "En preparación o entrega",
+    "finalizados": "Entregados o cancelados",
+    "pagoPendiente": "Pagos sin confirmar",
+    "conflicto": "El pedido cambió o no permite esta transición. Actualice la página y revise su estado.",
+    "guardado": "Estado del pedido actualizado."
   }
 }

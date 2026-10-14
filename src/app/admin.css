@@ -100,3 +100,16 @@ html[data-interaccion] .panel-diseno .panel-buscador input:focus{outline:none;bo
 /* Consistent native select controls across public and admin forms. */
 body select:not([multiple]):not([size]){appearance:none!important;padding-right:44px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23466078' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-size:16px!important;background-position:right 16px center!important}
 @media(forced-colors:active){body select:not([multiple]):not([size]){appearance:auto!important;background-image:none!important}}
+
+/* Pago y entrega se muestran como dimensiones independientes, sin etiquetas duplicadas. */
+.panel-pedido-detalle>summary:has(.pedido-estados){display:grid;grid-template-columns:minmax(0,1fr) auto 20px;align-items:center;gap:20px}
+.panel-pedido-detalle>summary>.pedido-estados{display:flex;flex-wrap:wrap;gap:12px 20px;flex:initial}
+.pedido-estados>div{display:grid;gap:5px;justify-items:start;min-width:0}
+.pedido-estado-label{font-size:.7rem;font-weight:600;color:#60778a;line-height:1.3}
+.pedido-estado-chip{display:inline-flex;align-items:center;max-width:100%;padding:7px 10px;border-radius:8px;font-size:.78rem;font-weight:600;line-height:1.4;overflow-wrap:anywhere;background:#edf3f7;color:#254d68}
+.pedido-estado-chip.estado-confirmado{background:#e5f5ed;color:#226047}
+.pedido-estado-chip.estado-espera{background:#fff3da;color:#795315}
+.pedido-estado-chip.estado-problema{background:#fae9e9;color:#953b3b}
+.pedido-gestion-entrega{padding:16px;border:1px solid #dce6ed;border-radius:12px;margin-block:20px;background:#f7fafc}
+.pedido-gestion-entrega h3{font-size:.95rem;margin:0}.pedido-gestion-entrega p{margin:8px 0 14px}.pedido-gestion-entrega form{margin:0}
+@media(max-width:900px){.panel-pedido-detalle>summary:has(.pedido-estados){grid-template-columns:minmax(0,1fr) 20px;gap:14px}.panel-pedido-detalle>summary:has(.pedido-estados)>div:first-child{grid-column:1;grid-row:1}.panel-pedido-detalle>summary>.pedido-estados{grid-column:1 / -1;grid-row:2}.panel-pedido-detalle>summary:has(.pedido-estados)::after{grid-column:2;grid-row:1;margin:0}.pedido-gestion-entrega .boton{width:100%;justify-content:center}}

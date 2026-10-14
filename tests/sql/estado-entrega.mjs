@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const {PGlite}=await import(process.env.SG_PGLITE_MODULE??'@electric-sql/pglite');
+const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create role service_role;
+create table public.pedidos_manuales(id uuid primary key,estado text,cliente jsonb);
+create table public.pedidos_tilopay(id uuid primary key,estado text,cliente jsonb);
+revoke all on public.pedidos_manuales,public.pedidos_tilopay from anon,authenticated;
+grant select,insert,update on public.pedidos_manuales,public.pedidos_tilopay to service_role;`);
+const id='00000000-0000-4000-8000-000000000001';
+await db.query("insert into pedidos_manuales values($1,'pagado','{\"modalidad\":\"retiro\"}')",[id]);
+await db.exec(await readFile('supabase/migrations/20261013000400_estado_entrega.sql','utf8'));
+assert.equal((await db.query('select estado_entrega from pedidos_manuales')).rows[0].estado_entrega,'pendiente_preparar');
+for(const tabla of ['pedidos_manuales','pedidos_tilopay']){
+ await db.exec(`delete from ${tabla}`);
+ await db.query(`insert into ${tabla}(id,estado,cliente) values($1,'pendiente','{"modalidad":"envio"}')`,[id]);
+ await assert.rejects(()=>db.query(`update ${tabla} set estado_entrega='preparando' where id=$1`,[id]),/payment_required/);
+ await db.query(`update ${tabla} set estado='pagado' where id=$1`,[id]);
+ await assert.rejects(()=>db.query(`update ${tabla} set estado_entrega='entregado' where id=$1`,[id]),/invalid_delivery_transition/);
+ await db.query(`update ${tabla} set estado_entrega='preparando' where id=$1`,[id]);
+ assert.equal((await db.query(`update ${tabla} set estado_entrega='preparando' where id=$1 and estado_entrega='pendiente_preparar' returning id`,[id])).rows.length,0);
+ await assert.rejects(()=>db.query(`update ${tabla} set estado_entrega='listo_retiro' where id=$1`,[id]),/invalid_delivery_transition/);
+ await db.query(`update ${tabla} set estado_entrega='enviado' where id=$1`,[id]);
+ await db.query(`update ${tabla} set estado_entrega='entregado' where id=$1`,[id]);
+ await assert.rejects(()=>db.query(`update ${tabla} set estado_entrega='preparando' where id=$1`,[id]),/invalid_delivery_transition/);
+ const row=(await db.query(`select * from ${tabla} where id=$1`,[id])).rows[0];assert.equal(row.estado,'pagado');assert.ok(row.entrega_actualizada_en);
+ await db.query(`delete from ${tabla} where id=$1`,[id]);
+ await db.query(`insert into ${tabla}(id,estado,cliente) values($1,'pagado','{"modalidad":"retiro"}')`,[id]);
+ for(const estado of ['preparando','listo_retiro','entregado'])await db.query(`update ${tabla} set estado_entrega=$2 where id=$1`,[id,estado]);
+ await db.exec('set role authenticated');await assert.rejects(()=>db.query(`update public.${tabla} set estado_entrega='preparando'`),/permission denied/);await db.exec('reset role');
+ console.log('PASS '+tabla+': sin pago bloqueado, envío, retiro, saltos y retrocesos bloqueados, concurrencia y permisos.');
+}
+await db.close();

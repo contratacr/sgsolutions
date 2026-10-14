@@ -1,3 +1,5 @@
+import {EstadosPedidoAdmin,GestionEntregaPedido} from '@/components/estados-pedido-admin';
+import {estadoGestion,type EstadoEntrega} from '@/lib/estado-entrega';
 import {ContactoPedidoAdmin} from '@/components/contacto-pedido-admin';
 import {EliminarConsulta} from '@/components/eliminar-consulta';
 import {EnlaceCompra} from '@/components/enlace-compra';
@@ -20,6 +22,7 @@ import {costoEntrega} from '@/lib/envio';
 type Pedido = {
   id: string;
   creado_en: string;
+  estado_entrega: EstadoEntrega;
   estado: 'iniciado' | 'pendiente' | 'pagado' | 'rechazado' | 'error';
   entorno: 'pruebas' | 'produccion';
   total: number;
@@ -28,14 +31,14 @@ type Pedido = {
 };
 
 type Manual = {
-  id: string; creado_en: string; estado: EstadoPedidoManual; metodo: 'sinpe' | 'transferencia';
+  id: string; creado_en: string; estado_entrega: EstadoEntrega; estado: EstadoPedidoManual; metodo: 'sinpe' | 'transferencia';
   total_productos: number; costo_envio: number | null; total_cobrar: number | null;
   cliente: { nombre?: string; apellidos?: string; correo?: string; telefono?: string; modalidad?: string; direccion?: string };
   articulos: { nombre?: string; cantidad?: number }[];
   comprobante_path: string | null; correo_cliente_en: string | null; correo_pago_en: string | null;
 };
 
-export default async function Pedidos({ searchParams }: { searchParams: Promise<{ resultado?: string; asesoria?:string }> }) {
+export default async function Pedidos({ searchParams }: { searchParams: Promise<{ resultado?: string; asesoria?:string; seccion?:string }> }) {
   const local = await sesionLocal();
   if (!local) {
     const cliente = await crearClienteServidor();
@@ -46,6 +49,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
     if (!perfil?.activo || perfil.rol !== 'administrador') redirect('/panel');
   }
   const t = await getTranslations('PedidosAdmin');
+  const entregaT = await getTranslations('EntregaAdmin');
   const a=await getTranslations('AsesoriaAdmin');
   let solicitudes:Awaited<ReturnType<typeof listarAsesorias>>=[],errorAsesorias=false;
   try{solicitudes=await listarAsesorias();}catch{errorAsesorias=true;}
@@ -56,17 +60,17 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
   const idioma = await getLocale();
   const db = basePedidosAdministracion();
   const { data, error } = db
-    ? await db.from('pedidos_tilopay').select('id,creado_en,estado,entorno,total,cliente,articulos').order('creado_en', { ascending: false }).limit(50)
+    ? await db.from('pedidos_tilopay').select('id,creado_en,estado,estado_entrega,entorno,total,cliente,articulos').order('creado_en', { ascending: false }).limit(50)
     : { data: null, error: null };
   const pedidos = (data ?? []) as Pedido[];
   const configManual = configuracionPedidosManuales();
   const manualDb = configManual ? basePedidosManuales(configManual) : null;
   const { data: manualData, error: manualError } = manualDb
-    ? await manualDb.from('pedidos_manuales').select('id,creado_en,estado,metodo,total_productos,costo_envio,total_cobrar,cliente,articulos,comprobante_path,correo_cliente_en,correo_pago_en').order('creado_en', { ascending: false }).limit(50)
+    ? await manualDb.from('pedidos_manuales').select('id,creado_en,estado,estado_entrega,metodo,total_productos,costo_envio,total_cobrar,cliente,articulos,comprobante_path,correo_cliente_en,correo_pago_en').order('creado_en', { ascending: false }).limit(50)
     : { data: null, error: null };
   const manuales = (manualData ?? []) as Manual[];
   const contactosPedidos=new Map([...manuales,...pedidos].map(p=>[p.id,p.cliente]));
-  const {resultado,asesoria:destacada} = await searchParams;
+  const {resultado,asesoria:destacada,seccion} = await searchParams;
   const lista=await getTranslations('PanelLista');
   const ahora=new Date().getTime();
   return <main id="contenido" className="contenedor seccion">
@@ -74,7 +78,9 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
     <h1>{t('titulo')}</h1>
     <p className="admin-guia">{t('descripcion')}</p>
     {resultado && ['guardado','sin_correo','error','invalido','no_disponible','enlace_generado','asesoria_cancelada','consulta_eliminada'].includes(resultado) && <p role="status" className="panel-aviso">{t(`resultado_${resultado}`)}</p>}
-    <SeccionesPedidos inicial={resultado&&['guardado','sin_correo','no_disponible'].includes(resultado)?'manuales':'asesorias'} secciones={[
+    {resultado==='entrega_conflicto'&&<p role="alert" className="panel-aviso">{entregaT('conflicto')}</p>}
+    {resultado==='entrega_guardada'&&<p role="status" className="panel-aviso">{entregaT('guardado')}</p>}
+    <SeccionesPedidos inicial={seccion&&['manuales','tarjeta'].includes(seccion)?seccion:resultado&&['guardado','sin_correo','no_disponible'].includes(resultado)?'manuales':'asesorias'} secciones={[
       {id:'asesorias',nombre:a('titulo'),cantidad:solicitudes.filter(s=>s.estado==='solicitada').length,contenido:<section className="asesorias-admin">
         <div className="panel-seccion-cabecera"><div><h2>{a('titulo')}</h2><p>{a('descripcion')}</p></div></div>
         <details className="panel-nueva-asesoria"><summary>{a('nueva')}</summary><PrepararAsesoria id="" articulos={[]} productos={productos}/></details>
@@ -95,13 +101,13 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
     <h2>{t('manualTitulo')}</h2>
     <aside className="panel-correo-info"><h3>{t('correoOrigen')}</h3><p>{t('correoExplicacion')}</p><p>{process.env.SG_ENTORNO==='produccion'&&process.env.BREVO_API_KEY&&process.env.BREVO_REMITENTE?t('correoRemitente',{correo:process.env.BREVO_REMITENTE}):t('correoSinConfig')}</p></aside>
     {!manualDb || manualError ? <p role="status">{t('configurarManual')}</p> : !manuales.length ? <p>{t('manualVacio')}</p> :
-      <ListaPanel filtros={[{id:'todos',texto:lista('todos')},{id:'activos',texto:lista('activos'),estados:['revision','pendiente_pago','comprobante_recibido']},{id:'historial',texto:lista('historial'),estados:['pagado','cancelado']}]} items={await Promise.all(manuales.map(async p => {
+      <ListaPanel filtros={[{id:'todos',texto:lista('todos')},{id:'por_preparar',texto:entregaT('porPreparar'),estados:['pendiente_preparar']},{id:'en_curso',texto:entregaT('enCurso'),estados:['preparando','listo_retiro','enviado']},{id:'sin_pago',texto:entregaT('pagoPendiente'),estados:['sin_pago']},{id:'finalizados',texto:entregaT('finalizados'),estados:['entregado','cancelado']}]} items={await Promise.all(manuales.map(async p => {
         const envio = p.costo_envio ?? (p.estado === 'revision' ? costoEntrega(p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro') : null);
         const total = p.total_cobrar ?? p.total_productos + (envio ?? 0);
         const enlace = new URL(enlacePedido(configManual!, p.id, configManual!.origen));
         const comprobante = p.comprobante_path ? await manualDb.storage.from('comprobantes-pedidos').createSignedUrl(p.comprobante_path, 300) : null;
-        return {id:p.id,estado:p.estado,busqueda:[numeroPedido(p.id),p.cliente.nombre,p.cliente.apellidos,p.cliente.correo,p.cliente.telefono,...p.articulos.map(x=>x.nombre)].join(' '),contenido:<article className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{p.cliente.nombre} {p.cliente.apellidos}</strong><small>{numeroPedido(p.id)} · {colones(total)}</small></div><span className="pedidos-admin-estado">{t(`manual_${p.estado}`)}</span></summary><div className="panel-pedido-cuerpo">
-          <div className="pedidos-admin-encabezado"><div><strong>{p.cliente?.nombre} {p.cliente?.apellidos}</strong><small>{p.cliente?.correo} · {p.cliente?.telefono}</small></div><span className="pedidos-admin-estado">{t(`manual_${p.estado}`)}</span></div>
+        return {id:p.id,estado:estadoGestion(p.estado,p.estado_entrega),busqueda:[numeroPedido(p.id),p.cliente.nombre,p.cliente.apellidos,p.cliente.correo,p.cliente.telefono,...p.articulos.map(x=>x.nombre)].join(' '),contenido:<article className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{p.cliente.nombre} {p.cliente.apellidos}</strong><small>{numeroPedido(p.id)} · {colones(total)}</small></div><EstadosPedidoAdmin pago={p.estado} entrega={p.estado_entrega}/></summary><div className="panel-pedido-cuerpo">
+          <div className="pedidos-admin-encabezado"><div><strong>{p.cliente?.nombre} {p.cliente?.apellidos}</strong><small>{p.cliente?.correo} · {p.cliente?.telefono}</small></div></div>
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(p.creado_en))} · {t(`metodo_${p.metodo}`)} · {t(`modalidad_${p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro'}`)}</p>
           <ContactoPedidoAdmin cliente={p.cliente} referencia={numeroPedido(p.id)}/>
           <ul>{p.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>
@@ -111,6 +117,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
           {comprobante?.data?.signedUrl && <p><a href={comprobante.data.signedUrl} target="_blank" rel="noopener noreferrer">{t('verComprobante')} <span className="sr-only">{t('nuevaPestana')}</span></a></p>}
           {(!p.correo_cliente_en || p.estado === 'pendiente_pago' && !p.correo_pago_en) && <div className="panel-aviso"><p>{t('correoPendiente')}</p><label>{t('enlaceCliente')}<input readOnly value={enlace.href} aria-label={t('enlaceCliente')} /></label></div>}
           {['pendiente_pago','comprobante_recibido','pagado'].includes(p.estado)&&<form action={reenviarCorreoPedido}><input type="hidden" name="id" value={p.id}/><button className="boton boton-contorno">{t('reenviarCorreo')}</button></form>}
+          <GestionEntregaPedido id={p.id} tipo="manual" pago={p.estado} entrega={p.estado_entrega} modalidad={p.cliente?.modalidad}/>
           {p.estado==='pagado'&&<section className="panel-correo-info"><h3>{t('facturacionGti')}</h3><p>{t('facturacionGtiTexto')}</p><a className="boton boton-azul" href="https://www.facturaelectronica.cr/" target="_blank" rel="noopener noreferrer">{t('abrirGti')}<span className="sr-only">{t('nuevaPestana')}</span></a></section>}
           {p.estado === 'revision' && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pendiente_pago"/><button className="boton boton-azul">{t('confirmarYEnviar')}</button></form>}
           {(p.estado === 'pendiente_pago' || p.estado === 'comprobante_recibido') && <form action={actualizarPedidoManual} className="pedido-admin-form"><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="pagado"/><p>{t('verificarBanco')}</p><button className="boton boton-azul">{t('marcarPagado')}</button></form>}
@@ -121,12 +128,13 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
       {id:'tarjeta',nombre:t('tarjetaTitulo'),cantidad:pedidos.length,contenido:<section className="panel-pedidos-seccion">
     <h2>{t('tarjetaTitulo')}</h2>
     {!db || error ? <p role="status">{t('configurar')}</p> : !pedidos.length ? <p>{t('vacio')}</p> :
-      <ListaPanel filtros={[{id:'todos',texto:lista('todos')},{id:'pagado',texto:t('pagado'),estados:['pagado']},{id:'pendiente',texto:lista('activos'),estados:['iniciado','pendiente','error','rechazado']}]} items={pedidos.map(pedido => ({id:pedido.id,estado:pedido.estado,busqueda:[pedido.id,pedido.cliente.nombre,pedido.cliente.apellidos,pedido.cliente.correo,...pedido.articulos.map(x=>x.nombre)].join(' '),contenido:<article className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{pedido.cliente.nombre} {pedido.cliente.apellidos}</strong><small>{colones(pedido.total)} · {t(pedido.entorno)}</small></div><span className="pedidos-admin-estado">{t(pedido.estado)}</span></summary><div className="panel-pedido-cuerpo">
+      <ListaPanel filtros={[{id:'todos',texto:lista('todos')},{id:'por_preparar',texto:entregaT('porPreparar'),estados:['pendiente_preparar']},{id:'en_curso',texto:entregaT('enCurso'),estados:['preparando','listo_retiro','enviado']},{id:'sin_pago',texto:entregaT('pagoPendiente'),estados:['sin_pago']},{id:'finalizados',texto:entregaT('finalizados'),estados:['entregado','cancelado']}]} items={pedidos.map(pedido => ({id:pedido.id,estado:estadoGestion(pedido.estado,pedido.estado_entrega),busqueda:[pedido.id,pedido.cliente.nombre,pedido.cliente.apellidos,pedido.cliente.correo,...pedido.articulos.map(x=>x.nombre)].join(' '),contenido:<article className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{pedido.cliente.nombre} {pedido.cliente.apellidos}</strong><small>{colones(pedido.total)} · {t(pedido.entorno)}</small></div><EstadosPedidoAdmin pago={pedido.estado} entrega={pedido.estado_entrega}/></summary><div className="panel-pedido-cuerpo">
           <div className="pedidos-admin-encabezado">
             <div><strong>{pedido.cliente?.nombre} {pedido.cliente?.apellidos}</strong><small>{pedido.cliente?.correo}</small></div>
-            <span className="pedidos-admin-estado">{t(pedido.estado)}</span>
+
           </div>
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))} · {t(pedido.entorno)}</p>
+          <GestionEntregaPedido id={pedido.id} tipo="tarjeta" pago={pedido.estado} entrega={pedido.estado_entrega} modalidad={pedido.cliente?.modalidad}/>
           <ContactoPedidoAdmin cliente={pedido.cliente} referencia={numeroPedido(pedido.id)}/>
           <ul>{pedido.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>
           <div className="pedidos-admin-pie"><code>{pedido.id}</code><strong>{colones(pedido.total)}</strong></div>

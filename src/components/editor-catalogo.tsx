@@ -135,12 +135,6 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
     requestAnimationFrame(() => listaRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }));
   }
 
-  function agregarProducto() {
-    const id = `producto-${crypto.randomUUID().slice(0, 8)}`;
-    setDatos(d => ({ ...d, productos: [{ id, categoria: d.categorias[0].id, nombre: { es: '', en: '' }, descripcion: { es: '', en: '' }, imagen: '/imagenes/producto-sin-imagen.svg', marca: '', codigoFabricante: '', costoUsd: null, costoCrc: null, revisionPrecio: false, precioReferencia: null, disponibilidadReferencia: 'consultar', imagenes: [], especificaciones: [], precioManual: null, publicado: false, destacado: false, inventarioPropio: false }, ...d.productos] }));
-    setFiltroEstado('todos'); setCategoriaFiltro('todos'); setBuscar(''); setPaginaAdmin(1); setTab('productos'); setEditorId(id); setEstado('');
-  }
-
   function abrirCampo(campo: CampoAdmin) {
     const grupo = String(campo[0]);
     setTab(grupo);
@@ -184,7 +178,6 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
       </div> : tab === 'productos' && <>
         <div className="admin-lista-cabecera" ref={listaRef}>
           <div><h2>{t('productos')}</h2><p>{u('resultados', { cantidad: seleccion.length })} · {u('mostrando', { inicio: seleccion.length ? (paginaVisible - 1) * POR_PAGINA + 1 : 0, fin: Math.min(paginaVisible * POR_PAGINA, seleccion.length) })}</p></div>
-          <button type="button" className="boton boton-azul" onClick={agregarProducto}>{t('nuevoProducto')}</button>
         </div>
         <div className="admin-lista-filtros">
           <label>{t('categoria')}<select value={categoriaFiltro} onChange={e=>{setCategoriaFiltro(e.target.value);setPaginaAdmin(1);setEditorId(null);}}><option value="todos">{u('todos')}</option>{datos.categorias.map(c=><option key={c.id} value={c.id}>{traducir(c.nombre,idioma)} ({datos.productos.filter(p=>p.categoria===c.id&&(filtroEstado==='todos'||filtroEstado==='publicados'&&p.publicado||filtroEstado==='borradores'&&!p.publicado)).length})</option>)}</select></label>

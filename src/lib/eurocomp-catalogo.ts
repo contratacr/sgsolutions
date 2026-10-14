@@ -7,7 +7,7 @@ import {categoriaEurocomp,categoriasEurocomp,precioVentaEurocomp,stockVendibleEu
 export function reconciliarEurocomp(base:CatalogoAdmin,copia:CatalogoEurocomp):CatalogoAdmin{
  const anteriores=new Map(base.productos.filter(p=>p.eurocomp||p.codigoEurocomp).map(p=>[p.eurocomp?.codigo??p.codigoEurocomp!,p]));
  const recibidos=new Set(copia.articulos.map(a=>a.codigo));
- const productos:CatalogoAdmin['productos']=base.productos.filter(p=>!p.eurocomp&&!p.codigoEurocomp);
+ const productos:CatalogoAdmin['productos']=[];
  for(const a of copia.articulos){
   const categoria=categoriaEurocomp(a),anterior=anteriores.get(a.codigo);
   if(!categoria||a.precio===null||a.precio<=0||!['USD','CRC'].includes(a.moneda))continue;
@@ -21,5 +21,7 @@ export function reconciliarEurocomp(base:CatalogoAdmin,copia:CatalogoEurocomp):C
  const ids=new Set(categoriasEurocomp.map(c=>c.id));
  const usadas=new Set(productos.map(p=>p.categoria));
  const categorias=[...categoriasEurocomp,...base.categorias.filter(c=>!ids.has(c.id)&&usadas.has(c.id))];
- return {...base,gestion:'manual',categorias,productos};
+ const siguiente={...base,gestion:'manual' as const,categorias,productos:productos.map(p=>{const limpio={...p};delete limpio.codigoIntcomex;delete limpio.estadoIntcomex;delete limpio.proveedor;return limpio;})};
+ delete siguiente.sincronizacion;delete siguiente.inventario;
+ return siguiente;
 }

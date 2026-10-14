@@ -9,6 +9,8 @@ import { enviarCorreo } from '@/lib/email/send';
 import { leerContenido } from '@/lib/contenido-servidor';
 import { colones } from '@/lib/catalogo-modelo';
 import {costoEntrega} from '@/lib/envio';
+import {basePedidosAdministracion} from '@/lib/tilopay';
+import {estadosEntrega,siguientesEstadosEntrega,type EstadoEntrega} from '@/lib/estado-entrega';
 
 async function autorizado() {
   if (await sesionLocal()) return true;
@@ -87,4 +89,23 @@ export async function reenviarCorreoPedido(form:FormData){
  let enviado=false;
  try{await enviarCorreo({destinatario:p.cliente.correo,accion:{texto:ingles?'View my order':'Ver mi pedido',url:enlace.href},asunto:ingles?`Your SG Solutions order ${numero}`:`Su pedido ${numero} de SG Solutions`,texto:[`${ingles?'Order':'Pedido'}: ${numero}`,`${ingles?'Status':'Estado'}: ${estado[p.estado as keyof typeof estado]}`,`Total: ${colones(Number(p.total_cobrar))}`,`${ingles?'Order details and payment receipt':'Detalle del pedido y comprobante'}: ${enlace.href}`,p.estado==='pagado'?(ingles?'The invoice is issued separately through GTI.':'La factura se emite por separado mediante GTI.'):''].filter(Boolean).join('\n\n')});enviado=true;await db.from('pedidos_manuales').update({correo_cliente_en:new Date().toISOString(),...(p.estado==='pendiente_pago'?{correo_pago_en:new Date().toISOString()}:{})}).eq('id',id);}catch{/* The order remains intact and can be shared through its private link. */}
  revalidatePath('/panel/pedidos');redirect(`/panel/pedidos?resultado=${enviado?'guardado':'sin_correo'}`);
+}
+
+export async function actualizarEntregaPedido(form:FormData) {
+ if(!await autorizado())redirect('/admin');
+ const id=String(form.get('id')??''),tipo=String(form.get('tipo')??'');
+ const actual=String(form.get('actual')??'') as EstadoEntrega,siguiente=String(form.get('siguiente')??'') as EstadoEntrega;
+ const destino=tipo==='tarjeta'?'tarjeta':'manuales';
+ const fallo=`/panel/pedidos?seccion=${destino}&resultado=entrega_conflicto`;
+ if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)||!['manual','tarjeta'].includes(tipo)||!estadosEntrega.includes(actual)||!estadosEntrega.includes(siguiente))redirect(fallo);
+ const config=configuracionPedidosManuales();
+ const db=tipo==='tarjeta'?basePedidosAdministracion():config?basePedidosManuales(config):null;
+ if(!db)redirect(fallo);
+ const tabla=tipo==='tarjeta'?'pedidos_tilopay':'pedidos_manuales';
+ const {data:pedido,error:lectura}=await db.from(tabla).select('estado,estado_entrega,cliente').eq('id',id).maybeSingle();
+ if(lectura||!pedido||pedido.estado!=='pagado'||pedido.estado_entrega!==actual||!siguientesEstadosEntrega(actual,pedido.cliente?.modalidad).includes(siguiente))redirect(fallo);
+ const {data,error}=await db.from(tabla).update({estado_entrega:siguiente}).eq('id',id).eq('estado','pagado').eq('estado_entrega',actual).select('id').maybeSingle();
+ if(error||!data)redirect(fallo);
+ revalidatePath('/panel/pedidos');
+ redirect(`/panel/pedidos?seccion=${destino}&resultado=entrega_guardada`);
 }

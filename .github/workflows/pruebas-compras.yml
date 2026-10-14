@@ -37,6 +37,8 @@ jobs:
         run: npx playwright test --config=playwright.checkout-ui.config.ts
       - name: Probar confirmaciones reales y simuladas sin pagos
         run: npx playwright test --config=playwright.confirmaciones.config.ts
+      - name: Probar estados independientes de pago y entrega en Chrome y Safari
+        run: npx playwright test --config=playwright.entrega.config.ts
       - name: Crear Supabase efímero y aplicar las migraciones
         run: |
           npx supabase start > "$RUNNER_TEMP/supabase-inicio.log" 2>&1

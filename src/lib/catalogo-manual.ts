@@ -1,5 +1,6 @@
+import {esProductoEurocomp} from './catalogo-fuente';
 import {asignarRutasProductos} from './rutas-productos';
-import {calcularPrecio, publicarCatalogo, type CatalogoAdmin, type CatalogoPublico} from './catalogo-modelo';
+import {type CatalogoAdmin, type CatalogoPublico} from './catalogo-modelo';
 
 const textos={
  titulo:{es:'SG Solutions',en:'SG Solutions'},
@@ -7,33 +8,16 @@ const textos={
  aviso:{es:'Precios de referencia con IVA incluido. Su carrito no reserva productos ni genera un cobro.',en:'Reference prices include VAT. Your cart does not reserve products or create a charge.'}
 };
 
-// One-time adaptation of legacy data. Once saved as manual, the administrator
-// controls publication and category counts without an ongoing automatic limit.
-export function seleccionarIniciales(productos:CatalogoPublico['productos']){
- const conteos=new Map<string,number>();
- return [...productos].sort((a,b)=>Number(b.disponibilidad!=='agotado')-Number(a.disponibilidad!=='agotado')||Number(b.precio!==null)-Number(a.precio!==null)||Number(b.destacado)-Number(a.destacado)).filter(p=>{
-  const cantidad=conteos.get(p.categoria)??0;
-  if(cantidad>=5)return false;
-  conteos.set(p.categoria,cantidad+1);return true;
- });
-}
+// Preserve editorial changes only for products originating in Eurocomp.
 export function catalogoPublicoManual(c:CatalogoPublico):CatalogoPublico{
- c={...c,productos:asignarRutasProductos(c.productos)};
- if(c.gestion==='manual')return actualizarPromesa(c);
- return {...c,gestion:'manual',textos,productos:seleccionarIniciales(c.productos).map(p=>({...p,disponibilidad:'consultar',actualizado:null}))};
+ return actualizarPromesa({...c,gestion:'manual',productos:asignarRutasProductos(c.productos.filter(esProductoEurocomp))});
 }
 export function migrarCatalogoManual(c:CatalogoAdmin):CatalogoAdmin{
- if(c.gestion==='manual')return actualizarPromesa(c);
- const elegidos=new Set(seleccionarIniciales(publicarCatalogo(c).productos).map(p=>p.id));
- const siguiente=structuredClone(c);
- siguiente.gestion='manual';siguiente.textos=structuredClone(textos);
+ const siguiente={...c,gestion:'manual' as const,productos:c.productos.filter(esProductoEurocomp).map(p=>{
+  const limpio={...p};delete limpio.proveedor;delete limpio.codigoIntcomex;delete limpio.estadoIntcomex;return limpio;
+ })};
  delete siguiente.sincronizacion;delete siguiente.inventario;
- siguiente.productos=siguiente.productos.map(p=>{
-  const precio=p.revisionPrecio&&p.precioManual===null?null:calcularPrecio(p.costoUsd,c.ajustes,p.precioManual,p.costoCrc)??p.precioReferencia;
-  delete p.proveedor;delete p.codigoIntcomex;delete p.estadoIntcomex;
-  return {...p,publicado:elegidos.has(p.id),precioManual:precio,precioReferencia:null,costoUsd:null,costoCrc:null,revisionPrecio:false,inventarioPropio:false,disponibilidadReferencia:'consultar'};
- });
- return siguiente;
+ return actualizarPromesa(siguiente);
 }
 
 function actualizarPromesa<T extends CatalogoAdmin|CatalogoPublico>(c:T):T{
