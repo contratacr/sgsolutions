@@ -4,7 +4,8 @@ import {migrarCatalogoManual,catalogoPublicoManual} from '../src/lib/catalogo-ma
 import {reconciliarEurocomp} from '../src/lib/eurocomp-catalogo';
 import inicial from '../src/lib/catalogo-inicial.json';
 test('solo Eurocomp: elimina manuales e Intcomex de la tienda, panel y sincronizaciones',()=>{
- const base=esquemaCatalogo.parse(inicial),api=base.productos.find(p=>p.eurocomp)!;
+ const base=esquemaCatalogo.parse(inicial),api=base.productos.find(p=>p.codigoEurocomp&&p.publicado)!;
+ api.eurocomp={codigo:api.codigoEurocomp!,stock:15,costo:100,moneda:'USD',actualizado:'2026-10-13T00:00:00Z'};
  const manual={...api,id:'manual-antiguo',eurocomp:undefined,codigoEurocomp:undefined};
  const intcomex={...manual,id:'ic-antiguo',codigoIntcomex:'IC-1'};
  base.productos=[api,manual,intcomex];

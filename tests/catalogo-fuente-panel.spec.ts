@@ -1,10 +1,12 @@
 import {test,expect} from '@playwright/test';
 import {readFile,writeFile,unlink} from 'node:fs/promises';
 import inicial from '../src/lib/catalogo-inicial.json';
+import {esquemaCatalogo} from '../src/lib/catalogo-modelo';
 const archivo='.privado/contenido-pruebas/catalogo.json';
 test.afterEach(async()=>{await unlink(archivo).catch(()=>{});});
 for(const idioma of ['es','en'])test(`panel y tienda excluyen manuales e Intcomex ${idioma}`,async({page,context})=>{
- const api=structuredClone(inicial.productos.find(p=>p.eurocomp&&p.eurocomp.stock>=15&&p.publicado)!);
+ const api=structuredClone(esquemaCatalogo.parse(inicial).productos.find(p=>p.codigoEurocomp&&p.publicado)!);
+ api.eurocomp={codigo:api.codigoEurocomp!,stock:15,costo:100,moneda:'USD',actualizado:'2026-10-13T00:00:00Z'};
  const manual={...api,id:'manual-antiguo',codigoEurocomp:undefined,eurocomp:undefined,nombre:{es:'Manual prohibido',en:'Forbidden manual'}};
  const ic={...manual,id:'ic-antiguo',codigoIntcomex:'IC-1',nombre:{es:'Intcomex antiguo',en:'Legacy Intcomex'}};
  await writeFile(archivo,JSON.stringify({contenido:{...inicial,productos:[api,manual,ic]},revision:1}),{mode:0o600});
