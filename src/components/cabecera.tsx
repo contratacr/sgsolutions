@@ -23,6 +23,7 @@ export function Cabecera({sesionIniciada=false,nombreCuenta="",administrador=fal
   const [rutaMenu,setRutaMenu]=useState(ruta);
   const cambiarMenu=(valor:boolean)=>{setRutaMenu(ruta);setAbierto(valor);};
   const enlaces = [['/tienda', 'tienda'], ['/soporte', 'soporte'], ['/empresas', 'empresas'], ['/casos-de-exito', 'casos'], ['/nosotros', 'nosotros']] as const;
+  if(ruta==='/panel/pedidos')return null;
   return <header className="cabecera"><div className="barra-local"><div className="contenedor"><span><MapPin size={13}/>{marca('ubicacionCorta')}</span><a href={`tel:${empresa.telefono}`}><Phone size={13} aria-hidden="true"/>{marca('telefono')}</a></div></div><div className="contenedor navegacion">
     <Link href="/" aria-label={t('inicio')} onClick={(e)=>{setAbierto(false);if(ruta === '/' && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey){e.preventDefault();window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}}}><Image className="logo" src="/imagenes/logo-principal.png" alt={marca('logo')} width={150} height={63} priority/></Link>
     <nav aria-label={t('principal')} className="nav-escritorio">{enlaces.map(([href, texto]) => <Link href={href} key={texto} aria-current={ruta === href ? 'page' : undefined}>{t(texto)}</Link>)}</nav>

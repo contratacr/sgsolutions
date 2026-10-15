@@ -1,0 +1,27 @@
+import {test,expect} from '@playwright/test';
+import {readFile,mkdir} from 'node:fs/promises';
+import es from '../messages/es.json';import en from '../messages/en.json';
+for(const idioma of ['es','en'] as const)test(`bandeja real unificada, filtros y presentación ${idioma}`,async({page,context,request},info)=>{
+ await request.get('http://127.0.0.1:3135/reset');
+ const {token}=JSON.parse(await readFile('.privado/contenido-pruebas/sesion.json','utf8'));
+ await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ const t=(idioma==='es'?es:en).PropuestaPedidos;
+ const errores:string[]=[];page.on('pageerror',e=>errores.push(e.message));
+ await page.goto('/panel/pedidos');
+ const bandeja=page.locator('.pedidos-reales-bandeja'),rows=bandeja.locator('.pedidos-admin-tarjeta');
+ await expect(rows).toHaveCount(3);
+ const etapas=bandeja.locator('.pedidos-reales-vistas');const contadores=await etapas.textContent();
+ await bandeja.getByLabel(t.buscar,{exact:true}).fill('envio QA');await expect(rows).toHaveCount(1);await expect(rows).toContainText('Envío QA');expect(await etapas.textContent()).toBe(contadores);
+ await bandeja.getByRole('button',{name:t.limpiar,exact:true}).click();await expect(rows).toHaveCount(3);
+ await bandeja.getByLabel(t.formaPago,{exact:true}).click();await page.locator('[data-valor=sinpe]').click();await expect(rows).toHaveCount(1);await expect(rows).toContainText('Retiro QA');
+ await bandeja.getByRole('button',{name:t.limpiar,exact:true}).click();
+ await bandeja.getByLabel(t.entrega,{exact:true}).click();await page.locator('[data-valor=envio]').click();await expect(rows).toHaveCount(1);await expect(rows).toContainText('Envío QA');
+ await bandeja.getByRole('button',{name:t.limpiar,exact:true}).click();
+ await bandeja.getByLabel(t.ordenFecha,{exact:true}).click();await page.locator('[data-valor=recientes]').click();await expect(bandeja.getByLabel(t.ordenFecha,{exact:true})).toContainText(t.recientes);
+ await rows.filter({hasText:'Retiro QA'}).locator('.panel-pedido-detalle>summary').click();
+ const abierto=rows.filter({hasText:'Retiro QA'});await expect(abierto.locator('.panel-contacto-cliente')).toBeVisible();await expect(abierto.locator('.pedido-real-productos')).toBeVisible();await expect(abierto.locator('.pedido-gestion-entrega')).toBeVisible();for(const dato of ['cliente@example.test','Persona autorizada QA','123456789','Empresa QA','factura@example.test','Dirección fiscal QA','Llamar antes de entregar'])await expect(abierto).toContainText(dato);await expect(abierto.locator('a[href*="wa.me"]')).toHaveAttribute('target','_blank');
+ await expect(page.locator('.pedidos-reales-nav a[aria-current=page]')).toHaveAttribute('href','/panel/pedidos');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+ await mkdir('.privado/pedidos-reales',{recursive:true});await page.screenshot({path:`.privado/pedidos-reales/${info.project.name}-${idioma}.png`,fullPage:true});expect(errores).toEqual([]);
+});

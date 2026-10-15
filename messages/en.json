@@ -2313,5 +2313,9 @@
     "ayudaEnlace": "Hello, I need help with order {referencia}.",
     "ayudaWhatsApp": "Get help on WhatsApp",
     "logo": "SG Solutions"
+  },
+  "PedidosReales": {
+    "crear": "Create order",
+    "enlace": "Purchase link"
   }
 }

@@ -73,7 +73,7 @@ export async function actualizarPedidoManual(form: FormData) {
     } catch { /* El pedido conserva el estado; avisar desde el panel. */ }
   }
   revalidatePath('/panel/pedidos');
-  redirect(`/panel/pedidos?resultado=${nuevo === 'cancelado' || correoEnviado ? 'guardado' : 'sin_correo'}`);
+  redirect(`/panel/pedidos?resultado=${nuevo === 'cancelado' || correoEnviado ? 'guardado' : 'sin_correo'}&pedido=${id}`);
 }
 
 export async function reenviarCorreoPedido(form:FormData){
@@ -90,7 +90,7 @@ export async function reenviarCorreoPedido(form:FormData){
  const estado=ingles?{pendiente_pago:'Pending payment',comprobante_recibido:'Receipt received, awaiting bank verification',pagado:'Payment verified'}:{pendiente_pago:'Pendiente de pago',comprobante_recibido:'Comprobante recibido, pendiente de verificación bancaria',pagado:'Pago verificado'};
  let enviado=false;
  try{await enviarCorreo({destinatario:p.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},accion:{texto:ingles?'View my order':'Ver mi pedido',url:enlace.href},asunto:ingles?`Your SG Solutions order ${numero}`:`Su pedido ${numero} de SG Solutions`,texto:[`${ingles?'Order':'Pedido'}: ${numero}`,`${ingles?'Status':'Estado'}: ${estado[p.estado as keyof typeof estado]}`,`Total: ${colones(Number(p.total_cobrar))}`,`${ingles?'Order details and payment receipt':'Detalle del pedido y comprobante'}: ${enlace.href}`].filter(Boolean).join('\n\n')});enviado=true;await db.from('pedidos_manuales').update({correo_cliente_en:new Date().toISOString(),...(p.estado==='pendiente_pago'?{correo_pago_en:new Date().toISOString()}:{})}).eq('id',id);}catch{/* The order remains intact and can be shared through its private link. */}
- revalidatePath('/panel/pedidos');redirect(`/panel/pedidos?resultado=${enviado?'guardado':'sin_correo'}`);
+ revalidatePath('/panel/pedidos');redirect(`/panel/pedidos?resultado=${enviado?'guardado':'sin_correo'}&pedido=${id}`);
 }
 
 export async function actualizarEntregaPedido(form:FormData) {
@@ -109,7 +109,7 @@ export async function actualizarEntregaPedido(form:FormData) {
  const {data,error}=await db.from(tabla).update({estado_entrega:siguiente}).eq('id',id).eq('estado','pagado').eq('estado_entrega',actual).select('id').maybeSingle();
  if(error||!data)redirect(fallo);
  revalidatePath('/panel/pedidos');
- redirect(`/panel/pedidos?seccion=${destino}&resultado=entrega_guardada`);
+ redirect(`/panel/pedidos?seccion=${destino}&resultado=entrega_guardada&pedido=${id}`);
 }
 
 export async function cambiarArchivoPanel(form:FormData){
@@ -131,5 +131,5 @@ export async function cambiarArchivoPanel(form:FormData){
   const actualizado=await q.select('id').maybeSingle();if(actualizado.error||!actualizado.data)redirect(fallo);
  }
  revalidatePath('/panel/pedidos');
- redirect(`/panel/pedidos?seccion=${destino}&resultado=${archivar?'archivado':'restaurado'}`);
+ redirect(`/panel/pedidos?seccion=${destino}&resultado=${archivar?'archivado':'restaurado'}&pedido=${id}`);
 }

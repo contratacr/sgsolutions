@@ -31,7 +31,10 @@
     "entrega": [
       "Panel autenticado con datos locales",
       "Enviado pasa a Finalizados",
-      "Rechazos y archivo"
+      "Rechazos y archivo",
+      "Bandeja real unificada: búsqueda sin tildes, formas de pago, entrega, fechas y contadores independientes",
+      "Datos de contacto, destinatario, facturación y notas conservados en escritorio y Safari móvil, español e inglés",
+      "Tras cambiar una etapa, archivar o restaurar, apertura del pedido en su nueva sección"
     ],
     "confirmaciones": [
       "Resultados de pago y confirmación de pedido"
