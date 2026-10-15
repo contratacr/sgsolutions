@@ -975,3 +975,19 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 .compra-pagina .compra-check input{margin-top:3px;flex-shrink:0}
 @media(max-width:900px){.compra-pagina .compra-grid{grid-template-columns:minmax(0,1fr)}.compra-pagina .compra-resumen{position:static}}
 @media(max-width:760px){.compra-pagina .compra-bloque h2{font-size:21px}.compra-pagina .compra-resumen{padding:22px 18px}.compra-pagina .compra-campos{gap:22px}.compra-pagina .compra-pasos-acciones{padding-top:20px}}
+
+/* Carrito lateral completo: cabecera y acciones permanecen disponibles. */
+.modal-marco.modal-carrito-panel{inset:0 0 0 auto;transform:none;width:min(490px,100vw);max-width:100vw;height:100dvh}
+.modal-marco.modal-carrito-panel>.carrito-panel{display:flex;flex-direction:column;height:100%;max-height:none;overflow:hidden;border-radius:0;padding:0;background:#fff}
+.modal-carrito-panel .carrito-cabecera{flex-shrink:0;padding:24px 72px 22px 24px;min-height:82px;border-bottom:1px solid #dce4eb}
+.modal-carrito-panel .carrito-cabecera h2{margin:0;font-size:24px;line-height:1.3}
+.modal-carrito-panel>.modal-cierre-exterior{top:21px;right:20px}
+.carrito-contenido{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 24px;scrollbar-gutter:stable}
+.carrito-contenido>.texto-suave{font-size:13px;line-height:1.6;margin:18px 0 0}
+.carrito-contenido .carrito-lineas{padding:0 0 16px}
+.modal-carrito-panel .carrito-resumen{flex-shrink:0;margin:0;padding:20px 24px max(22px,env(safe-area-inset-bottom));border-top:1px solid #dce4eb;background:#fff}
+.modal-carrito-panel .carrito-resumen>div{margin-top:0;font-variant-numeric:tabular-nums}
+.modal-carrito-panel .carrito-resumen p{margin:10px 0 16px;font-size:13px;line-height:1.5}
+.modal-carrito-panel .carrito-resumen .boton{width:100%;justify-content:center}
+@media(max-width:650px){.modal-marco.modal-carrito-panel{width:100vw}.modal-carrito-panel .carrito-cabecera{padding-left:20px}.carrito-contenido{padding-inline:20px}.modal-carrito-panel .carrito-resumen{padding-inline:20px}.modal-carrito-panel .carrito-cabecera h2{font-size:22px}}
+@media(max-height:500px){.modal-carrito-panel .carrito-cabecera{min-height:64px;padding-block:14px}.modal-carrito-panel>.modal-cierre-exterior{top:12px}.modal-carrito-panel .carrito-resumen{padding-block:12px}.modal-carrito-panel .carrito-resumen p{margin-block:6px}.modal-carrito-panel .carrito-resumen .boton{min-height:40px;padding-block:8px}}
