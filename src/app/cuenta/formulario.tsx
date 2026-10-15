@@ -1,6 +1,8 @@
 'use client';
 import { useActionState, useState, useEffect, useRef } from 'react';
+import {unstable_rethrow} from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { ConfirmarCodigo } from './confirmar-codigo';
 import { Eye, EyeOff, Mail } from 'lucide-react';
 import { MINIMO_CLAVE_CUENTA } from '@/lib/cuenta-validacion';
 import {IndicadorCampo} from '@/components/indicador-campo';
@@ -11,7 +13,7 @@ import { accederCliente, actualizarClaveCliente, type EstadoAccesoCliente } from
 // También manejar fallos de transporte de Server Actions sin desmontar el formulario.
 function accionSegura(accion:(estado:EstadoAccesoCliente,datos:FormData)=>Promise<EstadoAccesoCliente>) {
   return async (estado:EstadoAccesoCliente,datos:FormData):Promise<EstadoAccesoCliente>=>{
-    try{return await accion(estado,datos);}catch{return 'conexion';}
+    try{return await accion(estado,datos);}catch(error){unstable_rethrow(error);return 'conexion';}
   };
 }
 const accederSeguro=accionSegura(accederCliente);
@@ -36,6 +38,7 @@ function AccesoFormulario({modo,cambiar,aceptado,cambiarAceptacion,retorno}:{mod
   const aviso=useRef<HTMLParagraphElement>(null);
   useEffect(()=>{if(estado!=='inicio')aviso.current?.focus();},[estado,pendiente]);
   const exito=['registroEnviado','recuperacionEnviada','confirmacionEnviada'].includes(estado);
+  if(estado==='registroEnviado'||estado==='confirmacionEnviada')return <ConfirmarCodigo correo={correo} retorno={retorno} volver={()=>cambiar('login')}/>;
   return <>
     {(modo==='recuperar'||modo==='reenviar')&&<p className="cuenta-explicacion">{t(modo==='recuperar'?'recuperarDetalle':'reenviarDetalle')}</p>}
     <form id={modo==='registro'?'cuenta-correo-registro':undefined} action={accion} className="cuenta-formulario" aria-busy={pendiente}>

@@ -21,8 +21,8 @@ for(const idioma of ['es','en'] as const)test(`Primer paso reúne facturación, 
  await page.locator('[name=provincia]').selectOption('Alajuela');await page.locator('[name=canton]').selectOption('Atenas');await page.locator('[name=distrito]').selectOption('Atenas');
  await page.locator('[name=provincia]').selectOption('Heredia');await expect(page.locator('[name=canton]')).toHaveValue('');await expect(page.locator('[name=distrito]')).toHaveValue('');
  await page.locator('[name=provincia]').selectOption('Alajuela');await page.locator('[name=canton]').selectOption('Atenas');await page.locator('[name=distrito]').selectOption('Atenas');await page.locator('[name=direccion]').fill('Centro de Atenas');
- await page.getByRole('checkbox',{name:t.crearCuentaOpcion,exact:true}).check();
- await expect(page.locator('.compra-crear-cuenta a')).toHaveAttribute('href',/modo=registro/);
+ await expect(page.getByRole('checkbox',{name:t.crearCuentaOpcion,exact:true})).toHaveCount(0);
+ await expect(page.locator('.compra-crear-cuenta')).toHaveCount(0);
  await page.getByRole('button',{name:t.pasoSiguiente,exact:true}).click();
  await expect(page.locator('[data-compra-paso="1"]')).toBeVisible();
  await expect(page.locator('[name=notas]')).toBeHidden();

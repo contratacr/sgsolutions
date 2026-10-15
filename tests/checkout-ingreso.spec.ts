@@ -34,3 +34,24 @@ test.describe('sesión real contra Auth local',()=>{
   await page.getByRole('button',{name:idioma==='es'?'Abrir carrito':'Open cart',exact:true}).click();await expect(page.locator('.carrito-ingreso')).toHaveCount(0);
  });
 });
+for(const idioma of ['es','en'])test(`borrador sobrevive a ingresar, registro y regreso ${idioma}`,async({page,context})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();
+ await page.goto('/pagar');
+ await page.locator('[name=identificacion]').fill('111111111');await page.locator('[name=nombre]').fill('Nombre conservado');await page.locator('[name=apellidos]').fill('Prueba');await page.locator('[name=correo]').fill('borrador@example.com');
+ await page.locator('.campo-telefono:has(input[name=telefono]) input[type=tel]').fill('88888888');
+ await page.locator('input[name=modalidad][value=envio]').check();
+ await page.locator('[name=provincia]').selectOption('Alajuela');await page.locator('[name=canton]').selectOption('Atenas');await page.locator('[name=distrito]').selectOption('Atenas');await page.locator('[name=direccion]').fill('Dirección conservada');
+ const carrito=await page.evaluate(()=>localStorage.getItem('sg-carrito-v1'));
+ await page.locator('.compra-acceso-titulo a').click();
+ await expect(page.locator('.cuenta-formulario [name=retorno]')).toHaveValue('/pagar');
+ await page.locator('.cuenta-cambio button').click();await expect(page.locator('.cuenta-formulario [name=modo]')).toHaveValue('registro');await expect(page.locator('.cuenta-formulario [name=retorno]')).toHaveValue('/pagar');
+ await page.goBack();await expect(page.locator('[name=nombre]')).toHaveValue('Nombre conservado');
+ await expect(page.locator('[name=telefono]')).toHaveValue('+50688888888');await expect(page.locator('[name=direccion]')).toHaveValue('Dirección conservada');await expect(page.locator('[name=distrito]')).toHaveValue('Atenas');
+ await page.getByRole('button',{name:idioma==='es'?'Siguiente':'Next',exact:true}).click();await expect(page.locator('[data-compra-paso="1"]')).toBeVisible();
+ await page.reload();await expect(page.locator('[data-compra-paso="1"]')).toBeVisible();
+ // Una confirmación de correo puede abrir otra pestaña del mismo navegador.
+ const confirmacion=await context.newPage();await confirmacion.goto('/pagar');await expect(confirmacion.locator('[data-compra-paso="1"]')).toBeVisible();await expect(confirmacion.locator('[name=nombre]')).toHaveValue('Nombre conservado');
+ expect(await confirmacion.evaluate(()=>localStorage.getItem('sg-carrito-v1'))).toBe(carrito);
+ await confirmacion.close();
+});

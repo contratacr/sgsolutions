@@ -1,6 +1,6 @@
 import { z } from 'zod';
 export const correoCuenta = z.string().trim().toLowerCase().pipe(z.email().max(254));
-export const MINIMO_CLAVE_CUENTA = 15;
+export const MINIMO_CLAVE_CUENTA = 8;
 export function requisitosClave(valor:string){
  return {longitud:valor.length>=MINIMO_CLAVE_CUENTA&&valor.length<=128,mayuscula:/[A-Z]/.test(valor),minuscula:/[a-z]/.test(valor),numero:/[0-9]/.test(valor),simbolo:/[!@#$%^&*()_+\-=\[\]{};'":|<>?,./`~\\]/.test(valor)};
 }

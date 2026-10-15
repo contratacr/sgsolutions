@@ -30,7 +30,8 @@ for(const idioma of ['es','en'] as const){
     if(plantilla.boton){
      const href=await page.getByRole('link',{name:plantilla.boton[idioma==='en'?1:0],exact:true}).getAttribute('href');
      const url=new URL(href!);
-     if(['confirmation','recovery'].includes(plantilla.id)){
+     if(plantilla.id==='confirmation'){await expect(page.getByText('123456',{exact:true})).toBeVisible();expect(html).not.toContain('.TokenHash');await page.emulateMedia({colorScheme:'dark'});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await page.screenshot({path:`.privado/evidencias/correo-codigo-oscuro-${idioma}-${test.info().project.name}.png`,fullPage:true});await page.emulateMedia({colorScheme:'light'});}
+   if(['confirmation','recovery'].includes(plantilla.id)){
       expect(url.pathname).toBe('/cuenta/confirmar');
       expect(url.searchParams.get('token_hash')).toBe('HASH_FICTICIO');
       expect(url.searchParams.get('type')).toBe(plantilla.id==='confirmation'?'signup':'recovery');
@@ -38,6 +39,7 @@ for(const idioma of ['es','en'] as const){
      }
     }
    }
+   if(plantilla.id==='confirmation'){await expect(page.getByText('123456',{exact:true})).toBeVisible();expect(html).not.toContain('.TokenHash');await page.emulateMedia({colorScheme:'dark'});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await page.screenshot({path:`.privado/evidencias/correo-codigo-oscuro-${idioma}-${test.info().project.name}.png`,fullPage:true});await page.emulateMedia({colorScheme:'light'});}
    if(['confirmation','recovery'].includes(plantilla.id))await page.screenshot({path:`.privado/evidencias/correo-${plantilla.id}-${idioma}-${test.info().project.name}.png`,fullPage:true});
   }
  });

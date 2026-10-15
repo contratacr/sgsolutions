@@ -2,7 +2,6 @@
 import {TarjetaIntegrada} from "./tarjeta-integrada";
 import {pagarSdkPruebas,type OpcionesSdk} from "@/lib/tilopay-sdk-cliente";
 import {DireccionCompra} from './direccion-compra';
-import {enlaceIngresoCompra} from '@/lib/retorno-compra';
 import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import {CampoIdentificacion} from './campo-identificacion';
 import {CampoTelefono} from './campo-telefono';
@@ -35,6 +34,7 @@ import { colones, traducir } from "@/lib/catalogo-modelo";
 import {costoEntrega} from '@/lib/envio';
 import { FotoProducto } from "./foto-producto";
 import { desplazarContenido } from "@/lib/desplazar-contenido";
+const CAMPOS_BORRADOR=['nombre','apellidos','correo','telefono','tipoIdentificacion','identificacion','razonSocial','actividad','correoFactura','direccionFiscal','provincia','canton','distrito','direccion','apartamento','postal','receptor','telefonoReceptor','notas'];
 export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedido, datosGuardados={},cuentaDisponible=false,googleDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { sdkLocal?:boolean;sdkDisponible?:boolean;simularPedido?:(datos:Record<string,string>,metodo:'tarjeta'|'sinpe'|'transferencia',archivo?:File)=>Promise<void>; datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;googleDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
   const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
@@ -63,10 +63,47 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
     [errorPedido, setErrorPedido] = useState(false),
     [errorFormulario, setErrorFormulario] = useState(false);
   const sesionSdk=useRef<{clave:string;sdk:OpcionesSdk;metodo:string}|null>(null);
-  const [crearCuenta,setCrearCuenta]=useState(false);
   const [agregarNotas,setAgregarNotas]=useState(Boolean(borrador.notas));
   const [paso,setPaso]=useState(0),[ultimoPaso,setUltimoPaso]=useState(0);
   const formularioPasos=useRef<HTMLFormElement>(null),cabeceraPasos=useRef<HTMLElement>(null);
+  const claveBorrador='sg-compra-borrador-v1:'+ (aprobacion?.id??'carrito');
+  const [borradorListo,setBorradorListo]=useState(false);
+  const compraTerminada=useRef(false);
+  const borradorModificado=useRef(false);
+  useEffect(()=>{
+    let activo=true;
+    queueMicrotask(()=>{
+      if(!activo)return;
+      try{
+        const d=JSON.parse(localStorage.getItem(claveBorrador)||'null');
+        if(d&&Number.isFinite(d.fecha)&&Date.now()-d.fecha>=0&&Date.now()-d.fecha<86400000&&d.datos&&typeof d.datos==='object'){
+          borradorModificado.current=true;
+          setBorrador(prev=>({...prev,...Object.fromEntries(Object.entries(d.datos).filter((entrada):entrada is [string,string]=>CAMPOS_BORRADOR.includes(entrada[0])&&typeof entrada[1]==='string'))}));
+          if(['fisica','juridica','dimex','nite'].includes(d.tipo))setTipoIdentificacion(d.tipo);
+          setExpress(d.express===true);setEntrega(d.entrega===true);setFactura(d.factura===true);setOtro(d.otro===true);setAgregarNotas(d.notas===true);
+          if(['sinpe','transferencia','tarjeta'].includes(d.pago))setPago(d.pago);
+          const etapa=Number.isInteger(d.paso)&&d.paso>=0&&d.paso<=2?d.paso:0;
+          setPaso(etapa);setUltimoPaso(etapa);
+        }
+      }catch{/* El formulario sigue disponible sin almacenamiento. */}
+      setBorradorListo(true);
+    });
+    return()=>{activo=false;};
+  },[claveBorrador]);
+  const guardarBorradorActual=useRef(()=>{});
+  useEffect(()=>{
+    const guardar=()=>{
+      if(!borradorListo||!borradorModificado.current||compraTerminada.current||!formularioPasos.current)return;
+      const valores=new FormData(formularioPasos.current);
+      const datos=Object.fromEntries(CAMPOS_BORRADOR.flatMap(k=>{const v=valores.get(k);return typeof v==='string'?[[k,v]]:[];}));
+      try{localStorage.setItem(claveBorrador,JSON.stringify({fecha:Date.now(),datos,tipo:tipoIdentificacion,express,entrega,factura,otro,notas:agregarNotas,pago,paso}));}catch{/* No interrumpir la compra. */}
+    };
+    guardarBorradorActual.current=guardar;guardar();
+    window.addEventListener('pagehide',guardar);
+    document.addEventListener('visibilitychange',guardar);
+    return()=>{guardar();window.removeEventListener('pagehide',guardar);document.removeEventListener('visibilitychange',guardar);};
+  },[borradorListo,claveBorrador,tipoIdentificacion,express,entrega,factura,otro,agregarNotas,pago,paso]);
+  function limpiarBorrador(){compraTerminada.current=true;try{localStorage.removeItem(claveBorrador);}catch{}}
   function cambiarPaso(valor:number){setPaso(valor);setUltimoPaso(actual=>Math.max(actual,valor));setErrorFormulario(false);requestAnimationFrame(()=>{cabeceraPasos.current?.focus({preventScroll:true});cabeceraPasos.current?.scrollIntoView({block:'start',behavior:'instant'});});}
   function validarPaso(form:HTMLFormElement,numero:number){
     const grupo=form.querySelector<HTMLElement>('[data-compra-paso="'+numero+'"]');
@@ -173,6 +210,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
       }
       if (!respuesta.ok || typeof datos.url !== 'string') throw new Error('PAGO_NO_DISPONIBLE');
       if (!aprobacion) retirarArticulosPedido(productos.map(x => ({id:x.p.id,cantidad:x.cantidad})));
+      limpiarBorrador();
       window.location.assign(datos.url);
     } catch {
       setErrorPago(true);
@@ -197,6 +235,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
       const destino=new URL(ruta,window.location.origin);
       await adjuntarComprobantePedido(destino,comprobante);
       if (!aprobacion) retirarArticulosPedido(productos.map(x => ({id:x.p.id,cantidad:x.cantidad})));
+      limpiarBorrador();
       window.location.assign(destino.href);
     } catch { setErrorPedido(true); setProcesando(false); }
   }
@@ -292,7 +331,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
                 </button>
               </section>
             ) : (
-              <form ref={formularioPasos} noValidate onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
+              <form key={borradorListo?'restaurado':'inicial'} ref={formularioPasos} onChangeCapture={()=>{borradorModificado.current=true;queueMicrotask(()=>guardarBorradorActual.current());}} noValidate onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
 
                 {cuentaDisponible&&<p className="compra-guardar-datos">{dc('guardarAutomatico')}</p>}
                 <div data-compra-paso="0" hidden={paso!==0}><section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
@@ -337,11 +376,11 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
                         />
                         <strong>{t(m)}</strong>
                         <small>{t(`${m}Detalle`)}</small>
+                        {m==='express'&&express&&<small className="compra-express-cotizacion">{t('expressAviso')}</small>}
                       </label>
                     ))}
                   </fieldset>
-                  <label className="compra-pais"><span>{t('paisRegion')}<IndicadorCampo obligatorio/></span><select name="pais" value="CR" onChange={()=>{}}><option value="CR">{t('costaRica')}</option></select></label>
-                  {express&&<div className="compra-express-cotizacion"><p>{t('expressAviso')}</p></div>}
+                  <input type="hidden" name="pais" value="CR"/>
                   {entrega && (
                     <div className="compra-campos" ref={entregaCampos}>
                       <div className="compra-ubicacion compra-ancho"><DireccionCompra inicial={borrador}/></div>
@@ -365,7 +404,6 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
                     </div>
                   )}
                 </section>
-                {!cuentaDisponible&&!simularPedido&&<div className="compra-crear-cuenta"><label className="compra-check"><input type="checkbox" checked={crearCuenta} onChange={e=>setCrearCuenta(e.target.checked)}/><span>{t('crearCuentaOpcion')}</span></label>{crearCuenta&&<p>{t('crearCuentaAyuda')} <Link href={enlaceIngresoCompra(aprobacion?'/pagar?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}):'/pagar',true)}>{t('crearCuentaEnlace')}</Link></p>}</div>}
                 </div><div data-compra-paso="1"  hidden={paso!==1}><section className="compra-bloque">
                   <h2>
                     {t("pasoAdicional")}
@@ -458,7 +496,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
                   </div>
                 </section></div>
                 {paso<2&&errorFormulario&&<p role="alert" className="aviso-formulario">{t('validacion')}</p>}
-                {paso<2&&<div className="compra-pasos-acciones">{paso>0&&<button type="button" className="boton boton-contorno" onClick={()=>cambiarPaso(paso-1)} disabled={procesando}>{t('pasoAtras')}</button>}{paso<2&&<button type="submit" className="boton boton-azul">{t('pasoSiguiente')}<ArrowRight size={18} aria-hidden="true"/></button>}</div>}
+                {paso<2&&<div className={`compra-pasos-acciones${paso===0?' compra-acciones-iniciales':''}`}>{paso===0&&<Link className="compra-regresar-tienda" href="/tienda"><ArrowLeft size={18} aria-hidden="true"/>{t('volver')}</Link>}{paso>0&&<button type="button" className="boton boton-contorno" onClick={()=>cambiarPaso(paso-1)} disabled={procesando}>{t('pasoAtras')}</button>}{paso<2&&<button type="submit" className="boton boton-azul">{t('pasoSiguiente')}<ArrowRight size={18} aria-hidden="true"/></button>}</div>}
               </form>
             )}
           </div>

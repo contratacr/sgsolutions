@@ -27,7 +27,14 @@ test('GIS crea sesión SSR con la identidad existente, restringe retorno y consu
 for(const idioma of ['es','en'])test(`botón GIS y carrito se conservan al ingresar ${idioma}`,async({page,context})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,url:origen}]);
  await page.route('https://accounts.google.com/gsi/client',route=>route.fulfill({contentType:'application/javascript',body:`window.google={accounts:{id:{initialize:function(c){this.config=c},renderButton:function(el){const c=this.config;const b=document.createElement('button');b.textContent='Google fixture';b.onclick=()=>c.callback({credential:'test-google.'+c.nonce+'.'+'x'.repeat(100)});el.appendChild(b)}}}};`}));
- await page.goto('/cuenta?retorno=%2Fpagar');
+ await page.goto('/cuenta?retorno=%2Fpagar&modo=registro');
+ await expect(page.locator('#clave-cuenta')).toHaveAttribute('minlength','8');
+ await expect(page.locator('.cuenta-social-boton svg')).toBeVisible();
+ await expect(page.locator('.cuenta-social-boton')).toHaveAccessibleName(idioma==='es'?'Continuar con Google':'Continue with Google');
+ await page.locator('.cuenta-social-boton').click();
+ await expect(page.locator('#cuenta-correo-registro input[name=acepta]')).toBeFocused();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ await page.locator('.cuenta-cambio button').click();
  await expect(page.locator('.cuenta-acceso-titulo')).toHaveText(idioma==='es'?'Iniciar sesión':'Sign in');
  await page.evaluate(()=>localStorage.setItem('sg-carrito-v1',JSON.stringify([{id:'eurocomp-2a118312d9683064',cantidad:2}])));
  await page.getByRole('button',{name:'Google fixture'}).click();

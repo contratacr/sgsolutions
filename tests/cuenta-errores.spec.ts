@@ -6,7 +6,9 @@ import {claveCuenta} from '../src/lib/cuenta-validacion';
 
 test('contraseñas largas con requisitos completos y sin recortes',()=>{
  expect(claveCuenta.safeParse('A123456789!').success).toBe(false);
- expect(claveCuenta.safeParse('a'.repeat(14)).success).toBe(false);
+ expect(claveCuenta.safeParse('Ab1!xyz').success).toBe(false);
+ expect(claveCuenta.safeParse('Ab1!xyzw').success).toBe(true);
+ expect(claveCuenta.safeParse('a'.repeat(12)).success).toBe(false);
  expect(claveCuenta.safeParse('Bosque viento horizonte 7!').success).toBe(true);
  expect(claveCuenta.safeParse('Aa1!'+ 'a'.repeat(124)).success).toBe(true);
  expect(claveCuenta.safeParse('a'.repeat(129)).success).toBe(false);
@@ -32,12 +34,12 @@ for(const idioma of ['es','en'] as const){
   await page.goto('/cuenta');
   for(const [code,key] of [['invalid_credentials','credenciales'],['over_request_rate_limit','limiteIntentos'],['unexpected_failure','error'],['request_timeout','conexion'],['email_not_confirmed','confirmarCorreo']] as const){
    await page.getByRole('textbox',{name:t.correo,exact:true}).fill(`${code}@example.com`);
-   await page.locator('#clave-cuenta').fill('Example-password-123!');
+   await page.locator('#clave-cuenta').fill('Example-123!');
    await page.locator('.cuenta-enviar').click();
    await expect(page.locator('.cuenta-formulario [role=alert]')).toHaveText(t[key]);
    await expect(page.locator('.cuenta-formulario [role=alert]')).toBeFocused();
    await expect(page.getByRole('textbox',{name:t.correo,exact:true})).toHaveValue(`${code}@example.com`);
-   await expect(page.locator('#clave-cuenta')).toHaveValue('Example-password-123!');
+   await expect(page.locator('#clave-cuenta')).toHaveValue('Example-123!');
    if(code==='email_not_confirmed'){
     await expect(page.locator('.cuenta-informacion')).toHaveCSS('outline-style','none');
     await expect(page.locator('.cuenta-informacion')).toHaveCSS('background-color','rgb(240, 245, 249)');
@@ -61,10 +63,10 @@ for(const idioma of ['es','en'] as const){
   await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
   await page.goto('/cuenta');
   await page.getByRole('button',{name:t.registrarseEnlace,exact:true}).click();
-  await expect(page.locator('#clave-cuenta')).toHaveAttribute('minlength','15');
+  await expect(page.locator('#clave-cuenta')).toHaveAttribute('minlength','8');
   await expect(page.locator('.clave-requisitos li')).toHaveCount(5);
   await expect(page.locator('.cuenta-clave-ayuda')).toHaveCount(0);
-  await page.locator('#clave-cuenta').fill('Example-password-123!');
+  await page.locator('#clave-cuenta').fill('Example-123!');
   await expect(page.locator('.clave-requisitos li[data-cumplido=true]')).toHaveCount(5);
   await page.locator('#clave-cuenta').fill('sinmayuscula123456!');
   await expect(page.locator('.clave-requisitos li[data-cumplido=true]')).toHaveCount(4);
@@ -86,14 +88,14 @@ for(const idioma of ['es','en'] as const){
   await expect(page.locator('.cuenta-pagina [role=alert]')).toHaveText(t.aceptacionRequerida);
   await page.getByRole('textbox',{name:t.nombre,exact:true}).fill('Fixture Customer');
   await page.getByRole('textbox',{name:t.correo,exact:true}).fill('cliente@example.com');
-  await page.locator('#clave-cuenta').fill('A123456789!');
-  await page.locator('#confirmar-cuenta').fill('A123456789!');
+  await page.locator('#clave-cuenta').fill('Aa1234!');
+  await page.locator('#confirmar-cuenta').fill('Aa1234!');
   await aceptacion.check();
   await page.locator('.cuenta-enviar').click();
   await expect(page.locator('#clave-cuenta')).toHaveAttribute('aria-invalid','true');
   await expect(page.locator('.cuenta-formulario [role=status]')).toHaveCount(0);
-  await page.locator('#clave-cuenta').fill('Example-password-123!');
-  await page.locator('#confirmar-cuenta').fill('Example-password-123!');
+  await page.locator('#clave-cuenta').fill('Example-123!');
+  await page.locator('#confirmar-cuenta').fill('Example-123!');
   await page.locator('input[type=checkbox][name=acepta]').check();
   for(const [code,key] of [['weak_password','claveDebil'],['over_request_rate_limit','limiteIntentos']] as const){
    await page.getByRole('textbox',{name:t.correo,exact:true}).fill(`${code}@example.com`);
@@ -102,7 +104,7 @@ for(const idioma of ['es','en'] as const){
   }
   await page.getByRole('textbox',{name:t.correo,exact:true}).fill('email_exists@example.com');
   await page.locator('.cuenta-enviar').click();
-  await expect(page.getByRole('status')).toHaveText(t.registroEnviado);
+  await expect(page.getByRole('heading',{name:t.codigoTitulo})).toBeVisible();
   for(const [query,key] of [['error=access_denied','googleCancelado'],['code=expired','googleVencido'],['token_hash=expired&type=signup','enlaceInvalido']] as const){
    await page.goto(`/cuenta/confirmar?${query}`);
    await expect(page.locator('.cuenta-bloque>.cuenta-error')).toHaveText(t[key]);
