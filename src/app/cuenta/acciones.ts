@@ -103,3 +103,18 @@ export async function accederCuentaSocial(_anterior:EstadoAccesoCliente,formular
   if(formulario.get('modo')==='registro') (await cookies()).set('sg-aceptacion-oauth',new Date().toISOString(),{httpOnly:true,secure:origen.startsWith('https:'),sameSite:'lax',path:'/cuenta',maxAge:600});
   redirect(data.url);
 }
+
+export async function verificarCodigoCuenta(correo: string, codigo: string, retorno?: string) {
+ const email=correoCuenta.safeParse(correo);
+ if(!email.success||!/^\d{6}$/.test(codigo))return {error:'codigoInvalido'};
+ const cliente=await crearClienteCuenta();
+ if(!cliente)return {error:'noDisponible'};
+ const {error}=await solicitudCuenta(()=>cliente.auth.verifyOtp({email:email.data,token:codigo,type:'email'}));
+ if(error)return {error:('code' in error&&error.code==='otp_expired')?'codigoInvalido':errorCuenta(error)==='limiteIntentos'?'limiteIntentos':'codigoInvalido'};
+ const habilitada=await solicitudCuenta(()=>cliente.rpc('cuenta_habilitada'));
+ if('data' in habilitada&&habilitada.data===false){await cliente.auth.signOut();return {error:'cuentaBloqueada'};}
+ const almacen=await cookies();
+ const destino=retornoCompra(retorno)??retornoCompra(almacen.get('sg-retorno-compra')?.value)??'/cuenta';
+ almacen.set('sg-retorno-compra','',{path:'/cuenta',maxAge:0});
+ return {destino};
+}

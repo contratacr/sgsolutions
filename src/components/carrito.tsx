@@ -36,7 +36,7 @@ export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
   useEffect(()=>{const agregado=(evento:Event)=>{setAviso((evento as CustomEvent<{id:string;agregadas:number}>).detail);setPausado(false);};window.addEventListener('sg-carrito-agregado',agregado);return()=>window.removeEventListener('sg-carrito-agregado',agregado);},[]);
   useEffect(()=>{if(!aviso||pausado)return;const temporizador=setTimeout(()=>setAviso(null),6000);return()=>clearTimeout(temporizador);},[aviso,pausado]);
   const productoAviso=aviso?productos.find(p=>p.id===aviso.id):undefined;
-  const cantidad=lineas.reduce((total,l)=>total+l.cantidad,0);
+  const cantidad=todas.reduce((total,l)=>total+l.cantidad,0);
   return <><Dialog.Root open={abierto} onOpenChange={valor=>{setAbierto(valor);if(valor)setAviso(null);}}>
     <Dialog.Trigger className="boton-icono carrito-trigger" aria-label={n('carrito')} aria-describedby={descripcionCantidad}><ShoppingCart size={24} strokeWidth={2.2} aria-hidden="true"/><span id={descripcionCantidad} className="sr-only" aria-live="polite">{t('articulos',{cantidad})}</span>{cantidad>0&&<span className="carrito-cantidad" aria-hidden="true">{cantidad>99?'99+':cantidad}</span>}</Dialog.Trigger>
     <Dialog.Portal><Dialog.Overlay className="dialogo-fondo"/><MarcoModal className="carrito-panel">
@@ -45,7 +45,7 @@ export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
       <Dialog.Description className="texto-suave">{t('descripcion')}</Dialog.Description>
       {todas.filter(l=>noDisponibles.includes(l.id)).map(l=><p key={l.id}>{tienda('productoNoDisponible')} <button onClick={()=>cambiarCantidad(l.id,0)}>{tienda('quitarProducto')}</button></p>)}
       {errorCarrito?<p role="alert">{tienda('errorCarga')} <button onClick={reintentar}>{tienda('reintentar')}</button></p>:faltantes?<EsqueletoCarrito texto={tienda('cargando')}/>:null}
-      {lineas.length === 0 && faltantes ? null : lineas.length === 0 ? <div className="carrito-vacio"><ShoppingCart size={44} aria-hidden="true"/><p>{faltantes?tienda('productoNoDisponible'):t('vacio')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/tienda">{t('explorar')}</Link></Dialog.Close></div> : <>
+      {lineas.length === 0 && todas.length>0 ? null : lineas.length === 0 ? <div className="carrito-vacio"><ShoppingCart size={44} aria-hidden="true"/><p>{faltantes?tienda('productoNoDisponible'):t('vacio')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/tienda">{t('explorar')}</Link></Dialog.Close></div> : <>
         <ul className="carrito-lineas">{lineas.map(linea => {
           const producto = productos.find(p => p.id === linea.id)!;
           return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><PrecioProducto producto={producto} pendiente={tienda('precioPendiente')}/><ContadorCantidad cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;

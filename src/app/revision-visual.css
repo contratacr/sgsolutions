@@ -991,3 +991,56 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 .modal-carrito-panel .carrito-resumen .boton{width:100%;justify-content:center}
 @media(max-width:650px){.modal-marco.modal-carrito-panel{width:100vw}.modal-carrito-panel .carrito-cabecera{padding-left:20px}.carrito-contenido{padding-inline:20px}.modal-carrito-panel .carrito-resumen{padding-inline:20px}.modal-carrito-panel .carrito-cabecera h2{font-size:22px}}
 @media(max-height:500px){.modal-carrito-panel .carrito-cabecera{min-height:64px;padding-block:14px}.modal-carrito-panel>.modal-cierre-exterior{top:12px}.modal-carrito-panel .carrito-resumen{padding-block:12px}.modal-carrito-panel .carrito-resumen p{margin-block:6px}.modal-carrito-panel .carrito-resumen .boton{min-height:40px;padding-block:8px}}
+
+/* Precio, impuesto, existencias y asesoría comparten escala y alineación. */
+.ficha-pagina .ficha-precio-acciones{--ficha-meta-size:1rem;align-items:center;gap:12px 24px}
+.ficha-pagina .ficha-compra .ficha-precio-acciones .ficha-precio{align-items:center;flex-wrap:wrap;gap:8px 12px;min-width:0;flex:0 1 auto}
+.ficha-pagina .ficha-precio-acciones .precio-producto,
+.ficha-pagina .ficha-precio-acciones .precio-producto strong,
+.ficha-pagina .ficha-precio-acciones .precio-producto del,
+.ficha-pagina .ficha-precio-acciones .ficha-precio>small,
+.ficha-pagina .ficha-precio-acciones>.shop-asesoria-inline{font-size:var(--ficha-meta-size);line-height:1.5;letter-spacing:normal}
+.ficha-pagina .ficha-precio-acciones .precio-producto{align-items:center}
+.ficha-pagina .ficha-precio-acciones .ficha-disponibles{margin-left:0}
+.ficha-pagina .ficha-precio-acciones>.shop-asesoria-inline{display:inline-flex;align-items:center;gap:8px;margin:0;padding:0;min-height:44px}
+.ficha-pagina .ficha-precio-acciones>.shop-asesoria-inline svg{width:1.25em;height:1.25em;flex-shrink:0}
+
+/* Tres pasos centrados y con títulos de altura uniforme en móvil. */
+@media(max-width:760px){
+ .compra-pagina .compra-pasos{width:100%;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+ .compra-pagina .compra-pasos button{align-items:center;text-align:center;padding:12px 6px 16px;gap:10px}
+ .compra-pagina .compra-pasos button>strong{display:flex;align-items:flex-start;justify-content:center;width:100%;max-width:13ch;min-height:2.8em;font-size:12px;line-height:1.4;text-wrap:balance}
+ .compra-pagina .compra-pasos button>span{font-size:20px;line-height:1.2}
+}
+
+/* Separación de controles y confirmación junto a la parte superior de la tienda. */
+.favoritos-confirmacion{top:calc(112px + env(safe-area-inset-top));bottom:auto;right:24px}
+@media(max-width:850px){.tienda-compacta .shop-resultados-cabecera{column-gap:20px}}
+@media(max-width:650px){.favoritos-confirmacion{top:calc(88px + env(safe-area-inset-top));right:16px;bottom:auto;width:min(340px,calc(100vw - 32px))}}
+@media(max-width:360px){.tienda-compacta .shop-resultados-cabecera>.shop-asesoria-inline{grid-column:1/-1;grid-row:3;justify-self:end}}
+.compra-pagina .compra-opciones .compra-express-cotizacion{grid-column:2;margin:4px 0 0;font-size:.85rem;line-height:1.6;max-width:65ch;color:#526476}
+
+.compra-pagina [data-compra-paso="0"]>.compra-bloque:last-of-type{border-bottom:0;padding-bottom:12px}
+.compra-pagina .compra-acciones-iniciales{border-top:0;padding-top:8px;align-items:center;gap:16px}
+.compra-regresar-tienda{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--azul);font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.compra-regresar-tienda svg{flex-shrink:0}
+@media(max-width:400px){.compra-pagina .compra-acciones-iniciales>.boton{padding-inline:14px}.compra-regresar-tienda{font-size:13px;gap:5px}}
+.compra-pagina .compra-pasos-acciones{border-top:0}
+.compra-pagina [data-compra-paso="1"]>.compra-bloque:last-of-type{border-bottom:0}
+
+/* Confirmación por código: un campo accesible con seis posiciones visuales. */
+.cuenta-codigo{text-align:center;padding:12px 0;max-width:440px;margin:auto}
+.cuenta-codigo h3{font-size:1.5rem;margin:0 0 14px;color:#183044}
+.cuenta-codigo p{line-height:1.6;overflow-wrap:anywhere}
+.cuenta-codigo form{margin:28px 0 22px}
+.cuenta-codigo-casillas{position:relative;margin-bottom:24px}
+.cuenta-codigo-casillas>div{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.cuenta-codigo-casillas span{display:flex;align-items:center;justify-content:center;height:62px;border:1px solid #bdccd8;border-radius:12px;background:#fff;font-size:26px;font-weight:700;color:#183044}
+.cuenta-codigo-casillas input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:text}
+.cuenta-codigo-casillas:focus-within .activo{border:2px solid #304e70;box-shadow:0 0 0 3px #304e7020}
+.cuenta-codigo-casillas:has(input[aria-invalid=true]) span{border-color:#a12d35}
+.cuenta-codigo .boton{width:100%}
+.cuenta-codigo>button:disabled{opacity:.7;cursor:default}
+@media(max-width:380px){.cuenta-codigo-casillas>div{gap:5px}.cuenta-codigo-casillas span{height:50px;font-size:22px}}
+.cuenta-acceso:has(.cuenta-codigo)>.cuenta-acceso-titulo,.cuenta-acceso:has(.cuenta-codigo)>.cuenta-registro-social,.cuenta-acceso:has(.cuenta-codigo)>.cuenta-cambio{display:none}
+.cuenta-codigo form>[role=alert],.cuenta-codigo form>[role=status]{margin:0 0 18px}

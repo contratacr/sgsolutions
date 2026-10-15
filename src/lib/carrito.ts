@@ -10,7 +10,7 @@ let cargado = false;
 const clave = 'sg-carrito-v1';
 const observadores = new Set<() => void>();
 
-function leer() {
+function leer(): Linea[] | null {
   try {
     const datos: unknown = JSON.parse(localStorage.getItem(clave) || '[]');
     if (!Array.isArray(datos)) return vacio;
@@ -19,19 +19,36 @@ function leer() {
       if (dato && typeof dato.id === 'string' && /^[a-z0-9][a-z0-9-]{0,59}$/.test(dato.id) && Number.isInteger(dato.cantidad) && dato.cantidad > 0 && dato.cantidad <= 99) unicos.set(dato.id, dato.cantidad);
     }
     return [...unicos].map(([id, cantidad]) => ({ id, cantidad }));
-  } catch { return vacio; }
+  } catch { return null; }
 }
 function obtener() {
-  if (!cargado) { lineas = leer(); cargado = true; }
+  if (!cargado) { const guardadas=leer(); if(guardadas!==null){lineas=guardadas;cargado=true;} }
   return lineas;
 }
 function suscribir(observador: () => void) {
   observadores.add(observador);
-  const actualizar = (evento: StorageEvent) => {
-    if (evento.key === clave || evento.key === null) { lineas = leer(); observadores.forEach(fn => fn()); }
+  const recuperar = () => {
+    const guardadas=leer();
+    if(guardadas===null)return;
+    cargado=true;
+    if(JSON.stringify(guardadas)===JSON.stringify(lineas))return;
+    lineas=guardadas;observadores.forEach(fn=>fn());
   };
+  const actualizar = (evento: StorageEvent) => {
+    if (evento.key === clave || evento.key === null) recuperar();
+  };
+  const visible=()=>{if(document.visibilityState==='visible')recuperar();};
   window.addEventListener('storage', actualizar);
-  return () => { observadores.delete(observador); window.removeEventListener('storage', actualizar); };
+  window.addEventListener('pageshow', recuperar);
+  window.addEventListener('focus', recuperar);
+  document.addEventListener('visibilitychange', visible);
+  return () => {
+    observadores.delete(observador);
+    window.removeEventListener('storage', actualizar);
+    window.removeEventListener('pageshow', recuperar);
+    window.removeEventListener('focus', recuperar);
+    document.removeEventListener('visibilitychange', visible);
+  };
 }
 function guardar(nuevas: Linea[]) {
   lineas = nuevas;
