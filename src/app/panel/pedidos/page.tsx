@@ -28,6 +28,7 @@ type Pedido = {
   archivado_en: string|null;
   estado: 'iniciado' | 'pendiente' | 'pagado' | 'rechazado' | 'error';
   entorno: 'pruebas' | 'produccion';
+  resultado_tilopay: string|null;
   total: number;
   cliente: { nombre?: string; apellidos?: string; correo?: string; telefono?:string; direccion?:string; modalidad?:string };
   articulos: { nombre?: string; cantidad?: number }[];
@@ -64,7 +65,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
   const idioma = await getLocale();
   const db = basePedidosAdministracion();
   const { data, error } = db
-    ? await db.from('pedidos_tilopay').select('id,creado_en,estado,estado_entrega,archivado_en,entorno,total,cliente,articulos').order('creado_en', { ascending: false }).limit(50)
+    ? await db.from('pedidos_tilopay').select('id,creado_en,estado,estado_entrega,archivado_en,entorno,total,cliente,articulos,resultado_tilopay').order('creado_en', { ascending: false }).limit(50)
     : { data: null, error: null };
   const pedidos = (data ?? []) as Pedido[];
   const configManual = configuracionPedidosManuales();
@@ -77,7 +78,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
   const {resultado,asesoria:destacada,seccion} = await searchParams;
   const lista=await getTranslations('PanelLista');
   const ahora=new Date().getTime();
-  return <main id="contenido" className="contenedor seccion">
+  return <main id="contenido" className="contenedor seccion panel-pedidos-ordenados">
     <p className="etiqueta">{t('etiqueta')}</p>
     <h1>{t('titulo')}</h1>
     {resultado && ['guardado','sin_correo','error','invalido','no_disponible','enlace_generado','asesoria_cancelada','consulta_eliminada'].includes(resultado) && <p role="status" className="panel-aviso">{t(`resultado_${resultado}`)}</p>}
@@ -141,6 +142,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
           </div>
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))} · {t(pedido.entorno)}</p>
           {(pedido.archivado_en||puedeArchivar('tarjeta',pedido))&&<ArchivoPanel id={pedido.id} tipo="tarjeta" referencia={numeroPedido(pedido.id)} archivado={Boolean(pedido.archivado_en)}/>}
+          {pedido.estado==='rechazado'&&<p><strong>{t('motivoTilopay')}:</strong> {pedido.resultado_tilopay?.trim()||t('motivoNoInformado')}</p>}
           <GestionEntregaPedido id={pedido.id} tipo="tarjeta" pago={pedido.estado} entrega={pedido.estado_entrega} modalidad={pedido.cliente?.modalidad}/>
           {pedido.cliente?.modalidad==='express'&&<p>{t('expressSeparado')}</p>}<ContactoPedidoAdmin cliente={pedido.cliente} referencia={numeroPedido(pedido.id)}/>
           <ul>{pedido.articulos?.map((item, index) => <li key={index}>{item.cantidad} × {item.nombre}</li>)}</ul>

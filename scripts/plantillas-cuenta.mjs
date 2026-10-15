@@ -1,3 +1,4 @@
+import {marcoCorreo,pieCorreo} from '../src/lib/email/plantilla.ts';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
@@ -23,26 +24,19 @@ export const plantillas=[
 ];
 export function contenidoPlantilla(p){
  const titulo=idioma(...p.titulo),detalle=idioma(...p.detalle);
- const ayuda=idioma('¿Necesita ayuda? Escríbanos.','Need help? Contact us.');
  const seguridad=p.aviso?'':idioma(p.codigo?'Este código es temporal. Si no solicitó esta acción, ignore este correo.':'Este enlace es temporal y solo puede utilizarse una vez. Si no solicitó esta acción, ignore este correo.',p.codigo?'This code is temporary. If you did not request this action, ignore this email.':'This link is temporary and can only be used once. If you did not request this action, ignore this email.');
- const cta=p.boton?`<table role="presentation" border="0" cellspacing="0" cellpadding="0"><tr><td bgcolor="#2f4e73" style="border-radius:8px;background-color:#2f4e73;"><a href="${p.enlace}" style="display:inline-block;padding:16px 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:700;color:#ffffff;text-decoration:none;border:1px solid #2f4e73;border-radius:8px;">${idioma(...p.boton)}</a></td></tr></table>`:p.codigo?`<p style="margin:0;padding:18px 12px;background-color:#edf2f6;border-radius:8px;font-size:32px;line-height:40px;font-weight:700;letter-spacing:8px;color:#2f4e73;text-align:center;">{{ .Token }}</p>`:'';
- const alternativo=p.boton&&!p.aviso?`<p style="margin:22px 0 0;font-size:13px;line-height:20px;color:#526c80;">${idioma('Si el botón no funciona, copie y pegue este enlace en su navegador:','If the button does not work, copy and paste this link into your browser:')}<br><a href="${p.enlace}" style="color:#2f4e73;text-decoration:underline;word-break:break-all;overflow-wrap:anywhere;">${p.enlace}</a></p>`:'';
- return `<!doctype html>
-<html lang="${idioma('es','en')}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>${titulo} | SG Solutions</title></head>
-<body style="margin:0;padding:0;background-color:#f3f6f8;font-family:Arial,Helvetica,sans-serif;color:#17354b;">
-<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">${titulo} · SG Solutions</div>
-<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f3f6f8"><tr><td align="center" style="padding:24px 12px;">
-<!--[if mso]><table role="presentation" width="600" border="0" cellspacing="0" cellpadding="0"><tr><td><![endif]-->
-<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:600px;background-color:#ffffff;border:1px solid #dbe5ec;border-radius:12px;overflow:hidden;">
-<tr><td bgcolor="#0b1b28" style="padding:28px 28px;background-color:#0b1b28;border-bottom:3px solid #f05a28;"><a href="{{ .SiteURL }}" style="text-decoration:none;"><img src="https://sgsolutions.sgsolutions.workers.dev/imagenes/logo-principal.png" width="160" alt="SG Solutions" border="0" style="display:block;width:160px;max-width:100%;height:auto;color:#ffffff;font-size:20px;font-weight:700;"></a></td></tr>
-<tr><td style="padding:32px 28px 28px;"><h1 style="margin:0 0 16px;font-size:28px;line-height:36px;font-weight:700;color:#17354b;">${titulo}</h1><p style="margin:0 0 24px;font-size:16px;line-height:26px;color:#526c80;">${detalle}</p>${cta}${seguridad?`<p style="margin:24px 0 0;font-size:14px;line-height:23px;color:#526c80;">${seguridad}</p>`:''}${alternativo}</td></tr>
-<tr><td style="padding:22px 28px;border-top:1px solid #e2e8ee;background-color:#f8fafb;"><p style="margin:0 0 8px;font-size:14px;line-height:22px;font-weight:700;color:#2f4e73;">${ayuda}</p><a href="mailto:asesor@sgsolutionscr.com" style="font-size:14px;line-height:22px;color:#2f4e73;text-decoration:underline;">asesor@sgsolutionscr.com</a><p style="margin:16px 0 0;font-size:12px;line-height:20px;color:#60788a;">SG Solutions · Atenas, Costa Rica</p></td></tr>
-</table>
-<!--[if mso]></td></tr></table><![endif]-->
-</td></tr></table></body></html>\n`;
+ const cta=p.boton?`<table role="presentation" border="0" cellspacing="0" cellpadding="0"><tr><td bgcolor="#2f4e73" style="border-radius:4px;background-color:#2f4e73;"><a href="${p.enlace}" style="display:inline-block;padding:16px 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:700;color:#ffffff;text-decoration:none;border:1px solid #2f4e73;border-radius:4px;">${idioma(...p.boton)}</a></td></tr></table>`:p.codigo?`<p style="margin:0;padding:18px 12px;background-color:#ffffff;border-bottom:2px solid #304e70;font-size:32px;line-height:40px;font-weight:700;letter-spacing:8px;color:#2f4e73;text-align:center;">{{ .Token }}</p>`:'';
+ const alternativo=p.boton&&!p.aviso?`<p class="email-muted" style="margin:22px 0 0;font-size:13px;line-height:20px;color:#526c80;">${idioma('Si el botón no funciona, copie y pegue este enlace en su navegador:','If the button does not work, copy and paste this link into your browser:')}<br><a class="email-link" href="${p.enlace}" style="color:#2f4e73;text-decoration:underline;word-break:break-all;overflow-wrap:anywhere;">${p.enlace}</a></p>`:'';
+ const contenido=`<p style="margin:0 0 24px">${detalle}</p>${cta}${seguridad?`<p class="email-muted" style="margin:24px 0 0;font-size:13px;line-height:22px;color:#617787">${seguridad}</p>`:''}${alternativo}`;
+ return marcoCorreo({titulo:'SG_TEMPLATE_TITLE',etiqueta:'SG_TEMPLATE_LABEL',contenido,cuenta:true})
+  .replaceAll('SG_TEMPLATE_TITLE',titulo)
+  .replaceAll('SG_TEMPLATE_LABEL',idioma('SU CUENTA Y SEGURIDAD','YOUR ACCOUNT AND SECURITY'))
+  .replace('<html lang="es">',`<html lang="${idioma('es','en')}">`)
+  .replace(pieCorreo('es',undefined,true),idioma(pieCorreo('es',undefined,true),pieCorreo('en',undefined,true)))+'\n';
 }
 await mkdir(carpeta,{recursive:true});
 for(const p of plantillas)await writeFile(path.join(carpeta,`${p.id}.html`),contenidoPlantilla(p));
+await writeFile(path.resolve(carpeta,'../../src/lib/email/cuenta-vistas.json'),JSON.stringify(plantillas.map(p=>({id:p.id,html:contenidoPlantilla(p)})),null,2)+'\n');
 await writeFile(path.join(carpeta,'asuntos.json'),JSON.stringify(Object.fromEntries(plantillas.map(p=>[p.id,`${p.titulo[0]} / ${p.titulo[1]} | SG Solutions`])),null,2)+'\n');
 await writeFile(path.join(carpeta,'manifest.json'),JSON.stringify(plantillas.map(({id,titulo,boton})=>({id,titulo,boton})),null,2)+'\n');
 console.log(`${plantillas.length} plantillas bilingües generadas.`);

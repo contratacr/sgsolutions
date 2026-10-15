@@ -54,7 +54,7 @@ export async function actualizarPedidoManual(form: FormData) {
     const destino = new URL(enlacePedido(config, id, config.origen));
     const cuenta = pedido.metodo === 'sinpe' ? pagos.sinpe : pagos.cuentas.map(c => `${c.banco}: ${cuentaCorta(c) ? cuentaCorta(c) + " · " : ""}IBAN ${c.iban}`).join('\n');
     try {
-      await enviarCorreo({ destinatario: pedido.cliente.correo,
+      await enviarCorreo({ destinatario: pedido.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},
         accion: {texto: ingles ? 'View my order' : 'Ver mi pedido', url: destino.href},
         asunto: ingles ? `Payment details for order ${numero}` : `Datos de pago del pedido ${numero}`,
         texto: ingles
@@ -66,7 +66,7 @@ export async function actualizarPedidoManual(form: FormData) {
     } catch { /* El panel señala que se debe compartir el enlace manualmente. */ }
   } else if (nuevo === 'pagado') {
     try {
-      await enviarCorreo({ destinatario: pedido.cliente.correo,
+      await enviarCorreo({ destinatario: pedido.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},
         asunto: ingles ? `Payment confirmed for ${numero}` : `Pago confirmado para ${numero}`,
         texto: ingles ? `We verified payment for order ${numero}. Our team will coordinate the next step with you.` : `Verificamos el pago del pedido ${numero}. Nuestro equipo coordinará el siguiente paso con usted.`,
       }); correoEnviado = true;
@@ -89,7 +89,7 @@ export async function reenviarCorreoPedido(form:FormData){
  const ingles=p.cliente?.idioma==='en',numero=numeroPedido(id);
  const estado=ingles?{pendiente_pago:'Pending payment',comprobante_recibido:'Receipt received, awaiting bank verification',pagado:'Payment verified'}:{pendiente_pago:'Pendiente de pago',comprobante_recibido:'Comprobante recibido, pendiente de verificación bancaria',pagado:'Pago verificado'};
  let enviado=false;
- try{await enviarCorreo({destinatario:p.cliente.correo,accion:{texto:ingles?'View my order':'Ver mi pedido',url:enlace.href},asunto:ingles?`Your SG Solutions order ${numero}`:`Su pedido ${numero} de SG Solutions`,texto:[`${ingles?'Order':'Pedido'}: ${numero}`,`${ingles?'Status':'Estado'}: ${estado[p.estado as keyof typeof estado]}`,`Total: ${colones(Number(p.total_cobrar))}`,`${ingles?'Order details and payment receipt':'Detalle del pedido y comprobante'}: ${enlace.href}`,p.estado==='pagado'?(ingles?'The invoice is issued separately through GTI.':'La factura se emite por separado mediante GTI.'):''].filter(Boolean).join('\n\n')});enviado=true;await db.from('pedidos_manuales').update({correo_cliente_en:new Date().toISOString(),...(p.estado==='pendiente_pago'?{correo_pago_en:new Date().toISOString()}:{})}).eq('id',id);}catch{/* The order remains intact and can be shared through its private link. */}
+ try{await enviarCorreo({destinatario:p.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},accion:{texto:ingles?'View my order':'Ver mi pedido',url:enlace.href},asunto:ingles?`Your SG Solutions order ${numero}`:`Su pedido ${numero} de SG Solutions`,texto:[`${ingles?'Order':'Pedido'}: ${numero}`,`${ingles?'Status':'Estado'}: ${estado[p.estado as keyof typeof estado]}`,`Total: ${colones(Number(p.total_cobrar))}`,`${ingles?'Order details and payment receipt':'Detalle del pedido y comprobante'}: ${enlace.href}`].filter(Boolean).join('\n\n')});enviado=true;await db.from('pedidos_manuales').update({correo_cliente_en:new Date().toISOString(),...(p.estado==='pendiente_pago'?{correo_pago_en:new Date().toISOString()}:{})}).eq('id',id);}catch{/* The order remains intact and can be shared through its private link. */}
  revalidatePath('/panel/pedidos');redirect(`/panel/pedidos?resultado=${enviado?'guardado':'sin_correo'}`);
 }
 

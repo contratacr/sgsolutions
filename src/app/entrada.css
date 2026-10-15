@@ -19,7 +19,7 @@
 .portal .entrada-eyebrow { grid-column: 1/-1; font-size: .62rem; letter-spacing: .23em; margin-bottom: 24px; color: #b1c9dd; }
 .portal .entrada-eyebrow > span { width: 5px; height: 5px; }
 .portal h1 { font-size: clamp(3.4rem,6.5vw,6rem); line-height: 1.01; letter-spacing: -.06em; font-weight: 500; }
-.portal h1 > span { background: linear-gradient(105deg,#f2f7fc 8%,#b8d6ee 45%,#779fc2 90%); color: transparent; background-clip: text; -webkit-background-clip: text; }
+.portal h1 > span { background: linear-gradient(105deg,#ffffff 8%,#b8d6ee 45%,#779fc2 90%); color: transparent; background-clip: text; -webkit-background-clip: text; }
 .portal-introduccion { align-self: end; padding-bottom: 7px; }
 .portal-introduccion > p { font-size: .9rem; color: #bdcddc; line-height: 1.75; }
 .portal-introduccion > span { display: flex; gap: 8px; align-items: flex-start; font-size: .64rem; line-height: 1.55; color: #90adc5; margin-top: 20px; }

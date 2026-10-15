@@ -61,14 +61,15 @@ export async function POST(request: Request) {
   const ingles = datos.idioma === 'en';
   const entregaEs=datos.datos.modalidad==='express'?'Servicio de Express: se cotiza y paga por separado':`${datos.datos.modalidad==='envio'?'Envío por Correos de Costa Rica':'Retiro en tienda'}: ${colones(envio)}`;
   const entregaEn=datos.datos.modalidad==='express'?'Express delivery: quoted and paid separately':`${datos.datos.modalidad==='envio'?'Correos de Costa Rica shipping':'Store pickup'}: ${colones(envio)}`;
-  const cliente = enviarCorreo({ destinatario: datos.datos.correo,
+  const cliente = enviarCorreo({ destinatario: datos.datos.correo,idioma:ingles?'en':'es',
+    diseno:{titulo:ingles?'Order received':'Pedido recibido',etiqueta:ingles?'YOUR NEXT STEP':'EL SIGUIENTE PASO',referencia:numero,total:{etiqueta:ingles?'Total to pay':'Total por pagar',valor:colones(totalConEnvio)},productos:articulos,detalles:[{etiqueta:ingles?'Payment method':'Forma de pago',valor:datos.metodo==='sinpe'?'SINPE Móvil':ingles?'Bank transfer':'Transferencia bancaria'},{etiqueta:ingles?'Delivery':'Entrega',valor:ingles?entregaEn:entregaEs}]},
     accion: {texto: ingles ? 'View my order' : 'Ver mi pedido', url: enlace},
     asunto: ingles ? `SG Solutions order ${numero} received` : `Recibimos su pedido ${numero} de SG Solutions`,
     texto: ingles
-      ? `We received your order ${numero}. Products: ${colones(total)}. ${entregaEn}. Total: ${colones(totalConEnvio)}. Review your order details. Open the link for payment instructions and to upload your receipt: ${enlace}`
-      : `Recibimos su pedido ${numero}. Productos: ${colones(total)}. ${entregaEs}. Total: ${colones(totalConEnvio)}. Revise los datos de su pedido. Abra el enlace para ver los datos de pago y adjuntar su comprobante: ${enlace}`,
+      ? `Thank you for your order. Open your order to review payment instructions and upload your receipt: ${enlace}\n\nWe will verify the funds in our bank before preparing your order.`
+      : `Gracias por su pedido. Abra el detalle para consultar los datos de pago y adjuntar su comprobante: ${enlace}\n\nVerificaremos el ingreso en el banco antes de preparar su pedido.`,
   });
-  const equipo = enviarCorreo({ destinatario: empresa.correo, asunto: `Nuevo pedido ${numero} · ${datos.metodo.toUpperCase()}`,
+  const equipo = enviarCorreo({ destinatario: empresa.correo,diseno:{referencia:numero}, asunto: `Nuevo pedido ${numero} · ${datos.metodo.toUpperCase()}`,
     texto: `Pedido ${numero}\nCliente: ${datos.datos.nombre} ${datos.datos.apellidos}\nCorreo: ${datos.datos.correo}\nTeléfono: ${datos.datos.telefono}\nProductos: ${articulos.map(x => `${x.cantidad} × ${x.nombre}`).join(', ')}\nSubtotal: ${colones(total)}\n${entregaEs}\nTotal: ${colones(totalConEnvio)}\nVerifique el ingreso bancario antes de preparar la entrega.`,
   });
   const [correoCliente, correoEquipo] = await Promise.allSettled([cliente, equipo]);

@@ -24,7 +24,8 @@
     "pretypecheck": "node scripts/preparar-catalogo.mjs",
     "sincronizar:eurocomp": "tsx scripts/sincronizar-eurocomp.ts",
     "verificar:pedidos": "node scripts/verificar-esquema-pedidos.mjs",
-    "test:compras": "node --import tsx scripts/testing/compras-worker.mjs"
+    "test:compras": "node --import tsx scripts/testing/compras-worker.mjs",
+    "test:regresion": "node scripts/testing/regresion.mjs"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.17",

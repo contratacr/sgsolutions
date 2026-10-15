@@ -1,0 +1,64 @@
+{
+  "comando": "npm run test:regresion",
+  "repetir_bloques": "npm run test:regresion -- regresion entrega",
+  "reportes": ".privado/regresion/<fecha>/",
+  "ejecucion": "Secuencial: los servidores Next de pruebas comparten .next-pruebas. No ejecutar configuraciones en paralelo.",
+  "cobertura": {
+    "regresion": [
+      "Tres pasos de compra y conservación de datos",
+      "Un teléfono y acceso simplificado",
+      "Atrás junto a Siguiente/Revisar pedido",
+      "Comprobantes SINPE/transferencia: selección, MIME, obligatoriedad y recuperación",
+      "Safari de escritorio y móvil",
+      "Enlaces cortos: nueve combinaciones de pago/entrega, vencimiento y cancelación",
+      "Visualización y descarga de comprobantes",
+      "Pedidos: filtros, fechas, contadores, archivo, guía y seguimiento al cambiar estado",
+      "WhatsApp directo y contextual",
+      "Correos: logo, diseño y traducciones",
+      "Fondos blancos, navbar móvil, favicon, modales, catálogo e idiomas"
+    ],
+    "catalogo": [
+      "Precios, descuentos, integridad y reglas de disponibilidad"
+    ],
+    "tilopay-sdk": [
+      "Campos integrados y datos de tarjeta excluidos del servidor",
+      "Bloqueo de SDK en entorno real o no identificado",
+      "Inicio con respuesta de pruebas simulada"
+    ],
+    "empresas-correo": [
+      "Envío de formularios mediante servicio local simulado"
+    ],
+    "entrega": [
+      "Panel autenticado con datos locales",
+      "Enviado pasa a Finalizados",
+      "Rechazos y archivo"
+    ],
+    "confirmaciones": [
+      "Resultados de pago y confirmación de pedido"
+    ],
+    "contenido": [
+      "Edición y publicación local del panel"
+    ],
+    "google": [
+      "Identidad con proveedor simulado"
+    ],
+    "estadisticas": [
+      "Métricas y analítica del panel"
+    ],
+    "eurocomp-manual": [
+      "Sincronización del proveedor mediante fixture local"
+    ],
+    "comprobantes": [
+      "Selección nativa de PDF en SINPE y transferencia, MIME ausente o genérico",
+      "Rechazo de contenido inválido y tamaño excesivo",
+      "Obligatoriedad, conservación al revisar y recuperación de errores de red",
+      "Chrome, Safari móvil y Safari escritorio"
+    ]
+  },
+  "limites": [
+    "No realiza cobros, envíos de correo reales ni despliegues.",
+    "No certifica 3D Secure, cargos reales ni entrega del proveedor de correo: requiere entorno de pruebas autorizado del proveedor.",
+    "Crear cuenta desde compra actualmente abre registro; no existe creación automática posterior a la compra.",
+    "La suite no ejecuta los smoke tests de producción ni las pruebas que requieren Supabase/Auth y buzón locales independientes."
+  ]
+}

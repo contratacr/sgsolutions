@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     });
     if (respuesta.type === '200' && transaccion && Number(transaccion.amount) === Number(pedido.total) && transaccion.currency === pedido.moneda && pedido.entorno === config.modo && transaccion.environment === config.entornoRespuesta) {
       estado = transaccion.code === '1' ? 'pagado' : 'rechazado';
-      await db.from('pedidos_tilopay').update({ estado, transaccion_tilopay: String(transaccion.id_tilopay ?? ''), resultado_tilopay: String(transaccion.response ?? '').slice(0, 200), actualizado_en: new Date().toISOString() }).eq('id', id).eq('estado', 'pendiente');
+      await db.from('pedidos_tilopay').update({ estado, transaccion_tilopay: String(transaccion.id_tilopay ?? ''), resultado_tilopay: typeof transaccion.response === 'string' ? transaccion.response.trim().slice(0, 200) : '', actualizado_en: new Date().toISOString() }).eq('id', id).eq('estado', 'pendiente');
     }
   } catch { /* Nunca declarar pagado si la consulta al proveedor falla. */ }
   if(estado==='pagado')await notificarPagoTarjeta(db,id);

@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     return Response.json({ error: 'estado_invalido' }, { status: 409 });
   }
   try {
-    await enviarCorreo({ destinatario: empresa.correo, asunto: `Comprobante recibido · ${numeroPedido(id)}`, texto: `El cliente adjuntó un comprobante al pedido ${numeroPedido(id)}. Revíselo en el panel y verifique el ingreso en el banco antes de marcarlo como pagado.` });
+    await enviarCorreo({ destinatario: empresa.correo,diseno:{referencia:numeroPedido(id)}, asunto: `Comprobante recibido · ${numeroPedido(id)}`, texto: `El cliente adjuntó un comprobante al pedido ${numeroPedido(id)}. Revíselo en el panel y verifique el ingreso en el banco antes de marcarlo como pagado.` });
   } catch { /* El comprobante y su estado permanecen disponibles en el panel. */ }
   return Response.json({ ok: true }, { headers: { 'Cache-Control': 'no-store' } });
 }

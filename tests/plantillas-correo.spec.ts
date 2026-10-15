@@ -12,7 +12,7 @@ function renderizar(html:string,en:boolean,redirect:string){
 }
 for(const idioma of ['es','en'] as const){
  test(`plantillas de Auth y seguridad en ${idioma}`,async({page})=>{
-  await page.route('https://sgsolutions.sgsolutions.workers.dev/imagenes/logo-principal.png',route=>route.fulfill({path:'public/imagenes/logo-principal.png',contentType:'image/png'}));
+  await page.route('https://sgsolutionscr.com/imagenes/logo-principal.png',route=>route.fulfill({path:'public/imagenes/logo-principal.png',contentType:'image/png'}));
   for(const plantilla of plantillas){
    const html=readFileSync(`supabase/templates/${plantilla.id}.html`,'utf8');
    const redirect=plantilla.id==='recovery'?'http://127.0.0.1:3107/cuenta/confirmar?flujo=recuperar':'http://127.0.0.1:3107/cuenta/confirmar';
@@ -26,7 +26,7 @@ for(const idioma of ['es','en'] as const){
     await expect(page.getByRole('img',{name:'SG Solutions'})).toBeVisible();
     await expect.poll(()=>page.locator('img').evaluate(img=>(img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
-    await expect(page.getByRole('link',{name:'asesor@sgsolutionscr.com'})).toHaveAttribute('href','mailto:asesor@sgsolutionscr.com');
+    await expect(page.getByRole('link',{name:'2446-7846',exact:true})).toHaveAttribute('href','tel:+50624467846');await expect(page.locator('a[href^="https://wa.me/50686065342"]')).toHaveAttribute('rel','noopener noreferrer');
     if(plantilla.boton){
      const href=await page.getByRole('link',{name:plantilla.boton[idioma==='en'?1:0],exact:true}).getAttribute('href');
      const url=new URL(href!);

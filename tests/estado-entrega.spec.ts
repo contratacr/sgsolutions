@@ -24,5 +24,5 @@ for(const idioma of ['es','en'])test(`gestión de retiro y envío, etiquetas y f
  await section.getByRole('button',{name:new RegExp('^'+(idioma==='es'?'Finalizados':'Completed'))}).click();await expect(card).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  }
- await page.goto('/panel/pedidos?seccion=tarjeta');const rechazado=page.locator('main.seccion:visible .pedidos-admin-tarjeta').filter({hasText:'Rechazado QA'});await rechazado.locator('.panel-pedido-detalle>summary').click();await expect(rechazado.locator('.pedido-estados')).toContainText(t.sin_pago);await expect(rechazado.locator('.pedido-gestion-entrega')).toHaveCount(0);
+ await page.goto('/panel/pedidos?seccion=tarjeta');const rechazado=page.locator('main.seccion:visible .pedidos-admin-tarjeta').filter({hasText:'Rechazado QA'});await rechazado.locator('.panel-pedido-detalle>summary').click();await expect(rechazado.locator('.pedido-estados')).toContainText(t.sin_pago);await expect(rechazado.locator('.pedido-gestion-entrega')).toHaveCount(0);await expect(rechazado).toContainText('Fondos insuficientes');await expect(rechazado).toContainText((idioma==='es'?es:en).PedidosAdmin.motivoTilopay);
 });

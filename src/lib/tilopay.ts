@@ -63,3 +63,10 @@ export async function iniciarTilopay(config: NonNullable<ReturnType<typeof confi
 export async function consultarTilopay(config: NonNullable<ReturnType<typeof configuracionTilopay>>, token: string, id: string) {
   return respuestaJson(`${api}/consult`, { key: config.llave, orderNumber: id, merchantId: '' }, token);
 }
+
+export async function tokenSdkTilopay(config: NonNullable<ReturnType<typeof configuracionTilopay>>) {
+ if(config.modo!=='pruebas'||process.env.SG_ENTORNO==='produccion')throw new Error('SDK_SOLO_PRUEBAS');
+ const respuesta=await respuestaJson(`${api}/loginSdk`,{apiuser:config.usuario,password:config.contrasena,key:config.llave});
+ if(typeof respuesta.access_token!=='string'||!respuesta.access_token)throw new Error('SDK_TOKEN_INVALIDO');
+ return respuesta.access_token;
+}

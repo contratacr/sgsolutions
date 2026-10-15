@@ -13,7 +13,7 @@ h2 { font-weight: 550; }
 .plan-destacado { background: #203e5c; border-color: #203e5c; }
 .plan-numero { letter-spacing: .12em; }
 .plan h3 { font-weight: 500; }
-.contacto { background: #edf2f6; }
+.contacto { background: #ffffff; }
 .contacto h2 { font-weight: 500; }
 .area-foto, .ubicacion-foto { border-radius: 16px; }
 .pie { background: #10283d; }
@@ -23,7 +23,7 @@ h2 { font-weight: 550; }
 .pie a:hover { color: #fff; }
 
 /* Tienda: fotografía editorial, categorías visuales y herramientas discretas. */
-.tienda-editorial { background: #fafbfc; }
+.tienda-editorial { background: #ffffff; }
 .tienda-portada { display: grid; grid-template-columns: 1fr 1.08fr; gap: 75px; align-items: center; padding-block: 62px; }
 .tienda-portada h1 { font-size: clamp(2.8rem,4.8vw,4.5rem); line-height: 1.04; letter-spacing: -.055em; max-width: 470px; }
 .tienda-portada-texto > p:not(.etiqueta) { color: var(--suave); margin-block: 25px 32px; max-width: 400px; font-size: 1rem; }
@@ -41,7 +41,7 @@ h2 { font-weight: 550; }
 .catalogo-encabezado > p { color: var(--suave); font-size: .9rem; max-width: 310px; }
 .categorias-visuales { display: flex; gap: 30px; margin-block: 32px; border-bottom: 1px solid var(--borde); padding-bottom: 28px; }
 .categorias-visuales button { border: 0; background: none; display: flex; flex-direction: column; align-items: center; min-width: 102px; padding: 8px; gap: 13px; font-size: .8rem; color: var(--suave); border-radius: 9px; }
-.categoria-miniatura { width: 77px; height: 77px; display: flex; align-items: center; justify-content: center; border-radius: 50%; position: relative; background: #e7edf3; color: var(--azul); outline: 1px solid transparent; outline-offset: 5px; transition: outline-color .2s, transform .2s; }
+.categoria-miniatura { width: 77px; height: 77px; display: flex; align-items: center; justify-content: center; border-radius: 50%; position: relative; background: #ffffff; color: var(--azul); outline: 1px solid transparent; outline-offset: 5px; transition: outline-color .2s, transform .2s; }
 .categoria-miniatura img { object-fit: cover; border-radius: 50%; }
 .categorias-visuales button[aria-pressed="true"] { color: var(--azul); font-weight: 600; }
 .categorias-visuales button[aria-pressed="true"] .categoria-miniatura { outline-color: var(--azul); }
@@ -68,14 +68,14 @@ h2 { font-weight: 550; }
 .producto-compra { width: 100%; }
 .producto-precio { font-size: .8rem; font-weight: 400; display: block; margin-bottom: 15px; color: var(--suave); }
 .producto .boton { font-size: .78rem; min-height: 44px; border-radius: 7px; }
-.aviso-tienda-final { margin: 30px 0 0; border-left-width: 2px; background: #eef2f5; font-size: .8rem; }
-.catalogo-vacio { padding: 60px 20px; text-align: center; border-radius: 15px; background: #edf2f6; }
+.aviso-tienda-final { margin: 30px 0 0; border-left-width: 2px; background: #ffffff; font-size: .8rem; }
+.catalogo-vacio { padding: 60px 20px; text-align: center; border-radius: 15px; background: #ffffff; }
 .catalogo-vacio > svg { margin: 0 auto 20px; }
 .catalogo-vacio p { color: var(--suave); margin-block: 15px 25px; }
 
 /* Soporte: acceso directo a ayuda, lectura serena y procesos breves. */
 .soporte-bienvenida { text-align: center; padding-block: 65px 15px; }
-.soporte-emblema { display: grid; place-items: center; width: 78px; height: 78px; margin: 0 auto 23px; background: #e8f0f7; color: #345d82; border-radius: 25px; }
+.soporte-emblema { display: grid; place-items: center; width: 78px; height: 78px; margin: 0 auto 23px; background: #ffffff; color: #345d82; border-radius: 25px; }
 .soporte-bienvenida .etiqueta { justify-content: center; font-size: .65rem; }
 .soporte-bienvenida .etiqueta::before { display: none; }
 .soporte-bienvenida h1 { font-size: clamp(2.5rem,4.5vw,4.2rem); letter-spacing: -.05em; }
@@ -85,11 +85,11 @@ h2 { font-weight: 550; }
 .soporte-editorial .ayuda-seccion .etiqueta { display: none; }
 .soporte-editorial .ayuda-seccion h2 { font-size: 1.7rem; }
 .soporte-editorial .ayuda-seccion .encabezado-seccion > p { max-width: none; margin-top: 12px; font-size: .875rem; }
-.soporte-editorial .ayuda-opcion { align-items: center; text-align: center; background: #f5f7fa; border-color: transparent; border-radius: 15px; padding: 32px 25px; }
+.soporte-editorial .ayuda-opcion { align-items: center; text-align: center; background: #ffffff; border-color: transparent; border-radius: 15px; padding: 32px 25px; }
 .soporte-editorial .ayuda-opcion > svg { width: 38px; height: 38px; margin-bottom: 22px; }
 .soporte-editorial .ayuda-opcion h3 { font-size: 1.12rem; font-weight: 500; }
 .soporte-editorial .ayuda-opcion p { max-width: 265px; font-size: .85rem; }
-.soporte-editorial .ayuda-opcion:hover { background: #edf2f7; }
+.soporte-editorial .ayuda-opcion:hover { background: #ffffff; }
 .soporte-cercano { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; padding-block: 18px 35px; }
 .soporte-cercano figure { position: relative; min-height: 465px; border-radius: 17px; overflow: hidden; height: 100%; }
 .soporte-cercano figure > img { object-fit: cover; }

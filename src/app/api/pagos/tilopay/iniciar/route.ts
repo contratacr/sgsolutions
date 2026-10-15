@@ -4,9 +4,10 @@ import {verificarCompraEurocomp} from '@/lib/eurocomp-compra';
 import {origenPermitido} from '@/lib/origen-permitido';
 import {validarAprobacion,reservarAprobacion,cambiarAsesoria} from '@/lib/asesorias';
 import { z } from 'zod';
-import { basePedidos, configuracionTilopay, iniciarTilopay, tokenTilopay } from '@/lib/tilopay';
+import { basePedidos, configuracionTilopay, iniciarTilopay, tokenTilopay, tokenSdkTilopay } from '@/lib/tilopay';
 
 const solicitud = z.object({
+  sdk:z.boolean().optional(),
   asesoria:z.uuid(),acceso:z.string().regex(/^(?:[0-9a-f]{32}|[0-9a-f]{64})$/),
   nombre: z.string().trim().min(1).max(100),
   apellidos: z.string().trim().min(1).max(100),
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
   const aprobacion=await validarAprobacion(entrada);
   if(!aprobacion)return Response.json({error:"asesoria_requerida"},{status:403});
   const config = configuracionTilopay();
+  if (entrada.sdk && (config?.modo!=='pruebas'||process.env.SG_ENTORNO==='produccion'))return Response.json({error:'sdk_solo_pruebas'},{status:503});
   if (!config) return Response.json({ error: 'no_disponible' }, { status: 503 });
   const retorno = process.env.TILOPAY_RETORNO_URL;
   if (!retorno || !/^https:\/\//.test(retorno) && !/^http:\/\/127\.0\.0\.1:3107\//.test(retorno)) {
@@ -73,6 +75,20 @@ export async function POST(request: Request) {
   });
   if (guardarError) {await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
   try {
+    if(entrada.sdk){
+      const token=await tokenSdkTilopay(config);
+      const opciones={
+        token,currency:'CRC',language:entrada.idioma,amount:total,orderNumber:id,
+        billToFirstName:entrada.nombre,billToLastName:entrada.apellidos,billToEmail:entrada.correo,
+        billToAddress:entrada.datos?.direccionFiscal||entrada.datos?.direccion||'Retiro en tienda',
+        billToCountry:'CR',billToTelephone:entrada.telefono,capture:1,subscription:0,
+        redirect:retorno,returnData:btoa(id),hashVersion:'V2',
+      };
+      const actualizado=await db.from('pedidos_tilopay').update({estado:'pendiente',actualizado_en:new Date().toISOString()}).eq('id',id).eq('estado','iniciado');
+      if(actualizado.error)throw new Error('SDK_PEDIDO_NO_GUARDADO');
+      await cambiarAsesoria(aprobacion.id,'procesando',{estado:'utilizada',pedido_id:id});
+      return Response.json({sdk:opciones,metodo:process.env.TILOPAY_SDK_METODO_TARJETA??''},{headers:{'Cache-Control':'no-store'}});
+    }
     const token = await tokenTilopay(config);
     const url = await iniciarTilopay(config, token, {
       redirect: retorno, amount: total.toFixed(2), currency: 'CRC', orderNumber: id,

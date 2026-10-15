@@ -15,7 +15,8 @@ for(const idioma of ['es','en'])test(`acceso visible en carrito y pedido sin obl
  const enlace=page.locator('.carrito-ingreso');await expect(enlace).toHaveAttribute('href',enlaceIngresoCompra());await enlace.click();await expect(page).toHaveURL(/\/cuenta\?retorno=/);
  await expect(page.locator('.cuenta-formulario [name=retorno]')).toHaveValue('/pagar');
  await page.goto('/finalizar-compra');await expect(page.locator('.compra-acceso')).toBeVisible();await expect(page.locator('main form [name=nombre]')).toBeVisible();
- await page.locator('.compra-acceso-invitado a').click();await expect(page.locator('#cuenta-correo-registro')).toBeVisible();await expect(page.locator('#cuenta-correo-registro [name=retorno]')).toHaveValue('/pagar');
+ await expect(page.locator('.compra-acceso a')).toHaveCount(1);
+ await page.locator('.compra-acceso-titulo a').click();await expect(page.locator('.cuenta-formulario [name=retorno]')).toHaveValue('/pagar');
 });
 test.describe('sesión real contra Auth local',()=>{
  test.skip(process.env.SG_TEST_CUENTA_LOCAL!=='1','Requiere cuenta de prueba local; nunca usa producción.');

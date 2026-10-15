@@ -1,4 +1,8 @@
 "use client";
+import {TarjetaIntegrada} from "./tarjeta-integrada";
+import {pagarSdkPruebas,type OpcionesSdk} from "@/lib/tilopay-sdk-cliente";
+import {DireccionCompra} from './direccion-compra';
+import {enlaceIngresoCompra} from '@/lib/retorno-compra';
 import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import {CampoIdentificacion} from './campo-identificacion';
 import {CampoTelefono} from './campo-telefono';
@@ -18,6 +22,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft,
+  ArrowRight,
   ClipboardCheck,
   ShieldCheck,
   CreditCard,
@@ -30,16 +35,7 @@ import { colones, traducir } from "@/lib/catalogo-modelo";
 import {costoEntrega} from '@/lib/envio';
 import { FotoProducto } from "./foto-producto";
 import { desplazarContenido } from "@/lib/desplazar-contenido";
-const provincias = [
-  "San José",
-  "Alajuela",
-  "Cartago",
-  "Heredia",
-  "Guanacaste",
-  "Puntarenas",
-  "Limón",
-];
-export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googleDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;googleDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
+export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedido, datosGuardados={},cuentaDisponible=false,googleDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { sdkLocal?:boolean;sdkDisponible?:boolean;simularPedido?:(datos:Record<string,string>,metodo:'tarjeta'|'sinpe'|'transferencia',archivo?:File)=>Promise<void>; datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;googleDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
   const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
     l = useLocale(),
@@ -66,6 +62,25 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
     [errorPago, setErrorPago] = useState(false),
     [errorPedido, setErrorPedido] = useState(false),
     [errorFormulario, setErrorFormulario] = useState(false);
+  const sesionSdk=useRef<{clave:string;sdk:OpcionesSdk;metodo:string}|null>(null);
+  const [crearCuenta,setCrearCuenta]=useState(false);
+  const [agregarNotas,setAgregarNotas]=useState(Boolean(borrador.notas));
+  const [paso,setPaso]=useState(0),[ultimoPaso,setUltimoPaso]=useState(0);
+  const formularioPasos=useRef<HTMLFormElement>(null),cabeceraPasos=useRef<HTMLElement>(null);
+  function cambiarPaso(valor:number){setPaso(valor);setUltimoPaso(actual=>Math.max(actual,valor));setErrorFormulario(false);requestAnimationFrame(()=>{cabeceraPasos.current?.focus({preventScroll:true});cabeceraPasos.current?.scrollIntoView({block:'start',behavior:'instant'});});}
+  function validarPaso(form:HTMLFormElement,numero:number){
+    const grupo=form.querySelector<HTMLElement>('[data-compra-paso="'+numero+'"]');
+    const campos=Array.from(grupo?.querySelectorAll<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>('input,select,textarea')??[]);
+    const invalidos=campos.filter(c=>!c.checkValidity()).map(c=>c.name);
+    const datos=Object.fromEntries(new FormData(form).entries());
+    const validacion=datosClienteCompra.safeParse({...datos,...(numero<2?{consentimiento:'on'}:{})});
+    if(!validacion.success)for(const issue of validacion.error.issues){const nombre=String(issue.path[0]);if(campos.some(c=>c.name===nombre))invalidos.push(nombre);}
+    if(!invalidos.length)return true;
+    setPaso(numero);setCamposInvalidos([...new Set(invalidos)]);setErrorFormulario(true);
+    requestAnimationFrame(()=>{const campo=campos.find(c=>invalidos.includes(c.name));campo?.focus();campo?.reportValidity();});
+    return false;
+  }
+  function avanzar(){const form=formularioPasos.current;if(form&&validarPaso(form,paso))cambiarPaso(paso+1);}
   const revisionVisible=Boolean(revision);
   const pasoCompra=useRef<HTMLElement>(null);
   const pasoAnterior=useRef(revisionVisible);
@@ -106,11 +121,13 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
   async function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if(procesando)return;
+    if(paso<2){avanzar();return;}
+    for(let i=0;i<3;i++)if(!validarPaso(e.currentTarget,i))return;
     if(pago!=='tarjeta'&&(!comprobante||errorComprobante)){setErrorFormulario(true);return;}
     setErrorFormulario(false);setGuardadoPerfil('inicio');
     const formulario=new FormData(e.currentTarget);
     const datos = Object.fromEntries(
-      formulario.entries(),
+      Array.from(formulario.entries()).filter(([clave])=>!clave.startsWith('tlpy_')),
     ) as Record<string, string>;
     setBorrador(datos);
     const validacion=datosClienteCompra.safeParse(datos);
@@ -118,10 +135,10 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
     setCamposInvalidos([]);
     if(pago!=='tarjeta')setRevision({...datos,...validacion.data});
     medir('pedido_revisado');
-    if(cuentaDisponible){
+    if(cuentaDisponible&&!simularPedido){
       try{setGuardadoPerfil(await guardarDatosCompra('inicio',formulario));}catch{setGuardadoPerfil('error');}
     }
-    if(pago==='tarjeta'&&tarjetaDisponible)await pagarConTarjeta({...datos,...validacion.data});
+    if(pago==='tarjeta'&&(sdkLocal?sdkDisponible:tarjetaDisponible))await pagarConTarjeta({...datos,...validacion.data});
   }
   async function accesoCompra(){
     if(aprobacion)return {id:aprobacion.id,token:aprobacion.token};
@@ -133,11 +150,15 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
     setProcesando(true);
     setErrorPago(false);
     try {
+      if(simularPedido){await simularPedido(datosCompra,'tarjeta');return;}
+      if(sdkLocal&&!sdkDisponible)throw new Error('SDK_NO_DISPONIBLE');
+      const claveSdk=JSON.stringify({datosCompra,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))});
+      if(sdkLocal&&sesionSdk.current?.clave===claveSdk){await pagarSdkPruebas(sesionSdk.current.sdk,sesionSdk.current.metodo);return;}
       const acceso=await accesoCompra();
       const respuesta = await fetch('/api/pagos/tilopay/iniciar', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:datosCompra, nombre: datosCompra.nombre, apellidos: datosCompra.apellidos, correo: datosCompra.correo,
+          sdk:sdkLocal,asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:datosCompra, nombre: datosCompra.nombre, apellidos: datosCompra.apellidos, correo: datosCompra.correo,
           telefono: datosCompra.telefono, consentimiento: datosCompra.consentimiento === 'on',
           articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })),
         }),
@@ -145,6 +166,11 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
       const datos = await respuesta.json();
       if(datos.error==='catalogo_actualizado')setErrorStock(true);
       if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
+      if(sdkLocal){
+        if(!respuesta.ok||!datos.sdk||typeof datos.metodo!=='string')throw new Error('SDK_NO_DISPONIBLE');
+        sesionSdk.current={clave:claveSdk,sdk:datos.sdk,metodo:datos.metodo};
+        await pagarSdkPruebas(datos.sdk,datos.metodo);return;
+      }
       if (!respuesta.ok || typeof datos.url !== 'string') throw new Error('PAGO_NO_DISPONIBLE');
       if (!aprobacion) retirarArticulosPedido(productos.map(x => ({id:x.p.id,cantidad:x.cantidad})));
       window.location.assign(datos.url);
@@ -157,6 +183,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
     if (!revision || procesando || bloqueado || pendiente || !comprobante || errorComprobante || !['sinpe', 'transferencia'].includes(pago)) return;
     setProcesando(true); setErrorPedido(false);
     try {
+      if(simularPedido){await simularPedido(revision,pago as 'sinpe'|'transferencia',comprobante);return;}
       const acceso=await accesoCompra();
       const respuesta = await fetch('/api/pedidos/manual', {
         method: 'POST', headers: { 'content-type': 'application/json' },
@@ -200,17 +227,13 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
   );
   return (
     <>
-      <Link className="ficha-volver" href="/tienda">
+      <Link className="ficha-volver compra-volver" href="/tienda">
         <ArrowLeft size={17} />
         {t("volver")}
       </Link>
       {guardadoPerfil!=='inicio'&&<p className="compra-aviso-datos" role={guardadoPerfil==='guardado'?'status':'alert'}>{dc(guardadoPerfil==='guardado'?'guardado':'errorCompra')}</p>}
       {errorStock&&<p role="alert">{t('stockCambio')}</p>}
-      <header className="compra-cabecera">
-        <p className="etiqueta">{t("etiqueta")}</p>
-        <h1>{t("titulo")}</h1>
-        <p>{t("intro")}</p>
-      </header>
+      <h1 className="sr-only">{t("titulo")}</h1>
       {enlaceInvalido||errorAutorizacion ? <section className="compra-bloque"><h2>{a('enlaceInvalido')}</h2><p role="status">{a('enlaceInvalidoTexto')}</p><AsesoriaWhatsApp etiqueta="asesorar"/></section> : !lineas.length ? (
         <div className="compra-bloque">
           <h2>{t("vacio")}</h2>
@@ -221,7 +244,8 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
       ) : (
         <div className="compra-grid">
           <div>
-            {!cuentaDisponible&&!revision&&<AccesoCompra google={googleDisponible} retorno={aprobacion?'/pagar?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}) :'/pagar'}/>}
+      {!enlaceInvalido&&!errorAutorizacion&&lineas.length>0&&!revision&&<nav ref={cabeceraPasos} tabIndex={-1} className="compra-pasos" aria-label={t('pasosCompra')}>{['pasoInformacion','pasoAdicional','pasoPago'].map((clave,i)=><button key={clave} type="button" aria-current={paso===i?'step':undefined} disabled={i>ultimoPaso||procesando} onClick={()=>{if(i<=paso)cambiarPaso(i);else if(formularioPasos.current&&validarPaso(formularioPasos.current,paso))cambiarPaso(i);}}><span>{String(i+1).padStart(2,'0')}.</span><strong>{t(clave)}</strong></button>)}</nav>}
+            {!simularPedido&&!cuentaDisponible&&!revision&&<AccesoCompra google={googleDisponible} retorno={aprobacion?'/pagar?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}) :'/pagar'}/>}
             {revision ? (
               <section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
                 <p className="etiqueta">{t("revision")}</p>
@@ -237,10 +261,10 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                             "modalidad",
                             "pago",
                             "contacto",
-                            "factura", "tipoIdentificacion",
+                            "factura", "tipoIdentificacion", "tipoCliente",
                           ].includes(k)
-                            ? t(v)
-                            : v}
+                            ? (v==='CR'?t('costaRica'):t(v))
+                            : v==='CR'?t('costaRica'):v}
                         </dd>
                       </div>
                     ))}
@@ -268,27 +292,35 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                 </button>
               </section>
             ) : (
-              <form onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
+              <form ref={formularioPasos} noValidate onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
 
                 {cuentaDisponible&&<p className="compra-guardar-datos">{dc('guardarAutomatico')}</p>}
-                <section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
+                <div data-compra-paso="0" hidden={paso!==0}><section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
                   <h2>
-                    <span>01</span>
-                    {t("contactoTitulo")}
+                    {t("datosContactoTitulo")}
                   </h2>
-                  <div className="compra-campos">
+                  <div className="compra-campos compra-datos-principales">
+                    <div className="compra-ancho">{campo("correo", true, "email", "email")}</div>
                     {campo("nombre", true, "text", "given-name")}
                     {campo("apellidos", true, "text", "family-name")}
-                    {campo("correo", true, "email", "email")}
                     {campo("telefono", true, "tel", "tel")}
-                      <label><span>{a('tipoIdentificacion')}<IndicadorCampo obligatorio={factura}/></span><select required={factura} name="tipoIdentificacion" value={tipoIdentificacion} onChange={e=>setTipoIdentificacion(e.target.value)}><option value="fisica">{a('fisica')}</option><option value="juridica">{a('juridica')}</option><option value="dimex">{a('dimex')}</option><option value="nite">{a('nite')}</option></select></label>
-                      {campo("identificacion", factura)}
+                  </div>
+                </section>
+                <section className="compra-bloque">
+                  <h2>{t("datosFacturacionTitulo")}</h2>
+                  <div className="compra-campos">
+                    <fieldset className="compra-tipo-cliente compra-ancho"><legend>{t('tipoCliente')}<IndicadorCampo obligatorio/></legend><div>{['fisica','juridica'].map(tipo=><label key={tipo} data-activo={(tipoIdentificacion==='juridica')===(tipo==='juridica')}><input type="radio" name="tipoCliente" value={tipo} checked={(tipoIdentificacion==='juridica')===(tipo==='juridica')} onChange={()=>setTipoIdentificacion(tipo)}/><span>{t(tipo==='fisica'?'clienteFisico':'clienteJuridico')}</span></label>)}</div></fieldset>
+                    {tipoIdentificacion==='juridica'&&<div className="compra-ancho">{campo('razonSocial')}</div>}
+                    <label><span>{a('tipoIdentificacion')}<IndicadorCampo obligatorio/></span><select name="tipoIdentificacion" value={tipoIdentificacion} onChange={e=>setTipoIdentificacion(e.target.value)}>{['fisica','juridica','dimex','nite'].map(tipo=><option key={tipo} value={tipo}>{a(tipo)}</option>)}</select></label>
+                    {campo('identificacion',true)}
+                    <label className="compra-check compra-ancho"><input type="checkbox" checked={factura} onChange={e=>setFactura(e.target.checked)}/><span>{t('facturaElectronicaOpcional')}</span></label>
+                    <input type="hidden" name="factura" value={factura?'electronica':'tiquete'}/>
+                    {factura&&<div className="compra-campos compra-ancho compra-datos-expandibles" ref={facturaCampos}>{tipoIdentificacion!=='juridica'&&campo('razonSocial')}{campo('actividad',false)}{campo('correoFactura',true,'email')}{campo('direccionFiscal')}</div>}
 
                   </div>
                 </section>
                 <section className="compra-bloque">
                   <h2>
-                    <span>02</span>
                     {t("entregaTitulo")}
                   </h2>
                   <fieldset className="compra-opciones">
@@ -308,28 +340,15 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                       </label>
                     ))}
                   </fieldset>
+                  <label className="compra-pais"><span>{t('paisRegion')}<IndicadorCampo obligatorio/></span><select name="pais" value="CR" onChange={()=>{}}><option value="CR">{t('costaRica')}</option></select></label>
                   {express&&<div className="compra-express-cotizacion"><p>{t('expressAviso')}</p></div>}
                   {entrega && (
                     <div className="compra-campos" ref={entregaCampos}>
-                      <label>
-                        <span>{t("provincia")}<IndicadorCampo obligatorio/></span>
-                        <select
-                          name="provincia"
-                          defaultValue={borrador.provincia ?? ""}
-                          required
-                        >
-                          <option value="">{t("seleccione")}</option>
-                          {provincias.map((p) => (
-                            <option key={p}>{p}</option>
-                          ))}
-                        </select>
-                      </label>
-                      {campo("canton")}
-                      {campo("distrito")}
-                      {campo("direccion", true, "text", "street-address")}
+                      <div className="compra-ubicacion compra-ancho"><DireccionCompra inicial={borrador}/></div>
+                      <div className="compra-ancho">{campo("direccion", true, "text", "street-address")}</div>
                       {campo("apartamento", false)}
                       {campo("postal", false, "text", "postal-code")}
-                      <label className="compra-check">
+                      <label className="compra-check compra-ancho">
                         <input
                           type="checkbox"
                           checked={otro}
@@ -338,7 +357,7 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                         {t("otro")}
                       </label>
                       {otro && (
-                        <div className="compra-campos compra-campos-anidados" ref={receptorCampos}>
+                        <div className="compra-campos compra-campos-anidados compra-datos-expandibles" ref={receptorCampos}>
                           {campo("receptor")}
                           {campo("telefonoReceptor", true, "tel")}
                         </div>
@@ -346,44 +365,29 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                     </div>
                   )}
                 </section>
-                <section className="compra-bloque">
+                {!cuentaDisponible&&!simularPedido&&<div className="compra-crear-cuenta"><label className="compra-check"><input type="checkbox" checked={crearCuenta} onChange={e=>setCrearCuenta(e.target.checked)}/><span>{t('crearCuentaOpcion')}</span></label>{crearCuenta&&<p>{t('crearCuentaAyuda')} <Link href={enlaceIngresoCompra(aprobacion?'/pagar?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}):'/pagar',true)}>{t('crearCuentaEnlace')}</Link></p>}</div>}
+                </div><div data-compra-paso="1"  hidden={paso!==1}><section className="compra-bloque">
                   <h2>
-                    <span>03</span>
-                    {t("facturacionTitulo")}
+                    {t("pasoAdicional")}
                   </h2>
-                  <label>
-                    <span>{t("factura")}<IndicadorCampo obligatorio/></span>
-                    <select required
-                      name="factura"
-                      value={factura ? "electronica" : "tiquete"}
-                      onChange={(e) => {const activa=e.target.value === "electronica";if(activa) desplazamientoPendiente.current="factura";setFactura(activa);}}
-                    >
-                      <option value="tiquete">{t("tiquete")}</option>
-                      <option value="electronica">{t("electronica")}</option>
-                    </select>
+                  <label className="compra-check compra-notas-opcion">
+                    <input type="checkbox" checked={agregarNotas} onChange={e=>setAgregarNotas(e.target.checked)} aria-controls="compra-notas-campo" aria-expanded={agregarNotas}/>
+                    <span>{t("agregarNotas")}</span>
                   </label>
-                  <p className="texto-suave compra-ayuda-factura">{t(factura ? "electronicaAyuda" : "tiqueteAyuda")}</p>
-                  {factura && (
-                    <div className="compra-campos" ref={facturaCampos}>
-
-                      {campo("razonSocial")}
-                      {campo("actividad", false)}
-                      {campo("correoFactura", true, "email")}
-                      {campo("direccionFiscal")}
-                    </div>
-                  )}
-                </section>
-                <section className="compra-bloque">
+                  <div id="compra-notas-campo" hidden={!agregarNotas} className="compra-notas-campo">
+                    <label htmlFor="compra-notas">{t("notas")}</label>
+                    <textarea id="compra-notas" defaultValue={borrador.notas ?? ""} name="notas" disabled={!agregarNotas} rows={7} maxLength={600} placeholder={t("notasEjemplo")} />
+                  </div>
+</section></div><div data-compra-paso="2" hidden={paso!==2}><section className="compra-bloque">
                   <h2>
-                    <span>04</span>
                     {t("pagoTitulo")}
                   </h2>
                   <fieldset className="compra-metodos">
                     <legend>{t("pago")}<IndicadorCampo obligatorio/></legend>
                     {[
+                      { id: "tarjeta", Icon: CreditCard },
                       { id: "sinpe", Icon: Smartphone },
                       { id: "transferencia", Icon: Landmark },
-                      { id: "tarjeta", Icon: CreditCard },
 
                     ].map(({ id, Icon }) => (
                       <label key={id} data-activo={pago === id}>
@@ -398,12 +402,13 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                         <Icon size={23} />
                         <span>
                           <strong>{t(id)}</strong>
-                          <small>{id === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
+                          <small>{id==='tarjeta'&&sdkLocal?t('tarjetaIntegradaDetalle'):id === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
                         </span>
                       </label>
                     ))}
                   </fieldset>
-                  {pago === "tarjeta" && <p className="compra-aviso"><ShieldCheck size={19}/>{t(tarjetaDisponible ? tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso' : 'tarjetaPendiente')}</p>}
+                  {pago === "tarjeta" && sdkLocal && <TarjetaIntegrada disponible={sdkDisponible}/> }
+                  {pago === "tarjeta" && !sdkLocal && <p className="compra-aviso"><ShieldCheck size={19}/>{t(tarjetaDisponible ? tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso' : 'tarjetaPendiente')}</p>}
                   {pago !== "tarjeta" && (
                     <details key={pago} className="compra-cuentas" open ref={pagoDatos}>
                       <summary>{t("verCuentas")}</summary>
@@ -434,33 +439,30 @@ export function FinalizarCompra({ datosGuardados={},cuentaDisponible=false,googl
                     {errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}
                   </div>
                   )}
-                  <label>
-                    {t("notas")}
-                    <textarea
-                      defaultValue={borrador.notas ?? ""}
-                      name="notas"
-                      rows={3}
-                      maxLength={600}
-                    />
-                  </label>
                   <label className="compra-check">
                     <input type="checkbox" name="consentimiento" required />
                     <span>{t("consentimiento")}<IndicadorCampo obligatorio/></span>
                   </label>
                   {errorPago&&<p role="alert">{t('errorPago')}</p>}
                   {errorFormulario && <p role="alert" className="aviso-formulario">{t('validacion')}</p>}
+                  <div className="compra-pasos-acciones compra-acciones-finales">
+                    <button type="button" className="boton boton-contorno" onClick={()=>cambiarPaso(1)} disabled={procesando}>{t('pasoAtras')}</button>
                   <button
                     className="boton boton-naranja"
                     type="submit"
-                    disabled={bloqueado||procesando||(pago==='tarjeta'&&(!tarjetaDisponible||pendiente))}
+                    disabled={bloqueado||procesando||(pago==='tarjeta'&&(!(sdkLocal?sdkDisponible:tarjetaDisponible)||pendiente))}
                   >
-                    {t(procesando?'procesandoPago':pago==='tarjeta'?'completarPedido':'revisar')}
+                    {procesando?t('procesandoPago'):t(pago==='tarjeta'?'pagarTotal':'revisarTotal',{total:colones(total)})}
                     <ClipboardCheck size={19} aria-hidden="true" />
                   </button>
-                </section>
+                  </div>
+                </section></div>
+                {paso<2&&errorFormulario&&<p role="alert" className="aviso-formulario">{t('validacion')}</p>}
+                {paso<2&&<div className="compra-pasos-acciones">{paso>0&&<button type="button" className="boton boton-contorno" onClick={()=>cambiarPaso(paso-1)} disabled={procesando}>{t('pasoAtras')}</button>}{paso<2&&<button type="submit" className="boton boton-azul">{t('pasoSiguiente')}<ArrowRight size={18} aria-hidden="true"/></button>}</div>}
               </form>
             )}
           </div>
+          {sdkLocal&&<div id="responseTilopay" className="compra-respuesta-sdk" aria-live="polite"/>}
           <aside className="compra-resumen">
             <p className="etiqueta">{t("resumen")}</p>
             <h2>{t("seleccion")}</h2>

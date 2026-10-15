@@ -19,7 +19,7 @@ export default async function Compra({searchParams}:{searchParams:Promise<{aseso
   const { pagos } = await leerContenido();
   return (
     <main id="contenido" className="contenedor compra-pagina">
-      <FinalizarCompra googleDisponible={proveedores.google} datosGuardados={perfilCompra?.datos} cuentaDisponible={Boolean(perfilCompra)} enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
+      <FinalizarCompra sdkLocal={process.env.NODE_ENV==="development"&&process.env.SG_ENTORNO!=="produccion"} sdkDisponible={Boolean(configuracionTilopay()?.modo==="pruebas"&&process.env.TILOPAY_RETORNO_URL)} googleDisponible={proveedores.google} datosGuardados={perfilCompra?.datos} cuentaDisponible={Boolean(perfilCompra)} enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
     </main>
   );
 }

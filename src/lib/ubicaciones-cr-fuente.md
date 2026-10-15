@@ -1,0 +1,1 @@
+Fuente de nombres y códigos: https://github.com/Santaval/lista-cantones-distritos-costa-rica (cantones.json y distritos.json), consultada el 14 de octubre de 2026. 84 cantones. Datos geográficos locales, sin enviar direcciones a servicios externos.

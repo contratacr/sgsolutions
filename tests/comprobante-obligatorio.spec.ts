@@ -1,3 +1,4 @@
+import {llegarAPago} from './ayudas/compra';
 import {test,expect} from '@playwright/test';
 
 for(const idioma of ['es','en']){
@@ -6,6 +7,7 @@ for(const idioma of ['es','en']){
   await page.goto('/tienda');
   await page.locator('.shop-producto button').first().click();
   await page.goto('/finalizar-compra');
+  await llegarAPago(page,idioma);
   const form=page.locator('main form'),archivo=form.locator('input[type=file]');
   for(const metodo of ['sinpe','transferencia']){
    await form.locator(`[name=pago][value=${metodo}]`).check();
@@ -15,7 +17,6 @@ for(const idioma of ['es','en']){
    await expect(form.locator('.compra-comprobante')).not.toContainText(/opcional|optional|Si ya realizó|If you have already/);
   }
   await form.locator('.compra-comprobante').screenshot({path:`${process.cwd()}/.privado/qa-local/comprobante-${browserName}-${info.project.name}-${idioma}.png`});
-  for(const [nombre,valor] of Object.entries({nombre:'Ana',apellidos:'Prueba',correo:'prueba@example.com',telefono:'+506 88888888'}))await form.locator(nombre==='telefono'?'.campo-telefono input[type=tel]':`[name=${nombre}]`).fill(valor);
   await form.locator('[name=consentimiento]').check();
   await form.locator('button[type=submit]').click();
   await expect(form).toBeVisible();
