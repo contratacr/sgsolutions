@@ -187,7 +187,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
     setProcesando(true);
     setErrorPago(false);
     try {
-      if(simularPedido){await simularPedido(datosCompra,'tarjeta');return;}
+      if(simularPedido){await simularPedido(datosCompra,'tarjeta');limpiarBorrador();return;}
       if(sdkLocal&&!sdkDisponible)throw new Error('SDK_NO_DISPONIBLE');
       const claveSdk=JSON.stringify({datosCompra,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))});
       if(sdkLocal&&sesionSdk.current?.clave===claveSdk){await pagarSdkPruebas(sesionSdk.current.sdk,sesionSdk.current.metodo);return;}
@@ -221,7 +221,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
     if (!revision || procesando || bloqueado || pendiente || !comprobante || errorComprobante || !['sinpe', 'transferencia'].includes(pago)) return;
     setProcesando(true); setErrorPedido(false);
     try {
-      if(simularPedido){await simularPedido(revision,pago as 'sinpe'|'transferencia',comprobante);return;}
+      if(simularPedido){await simularPedido(revision,pago as 'sinpe'|'transferencia',comprobante);limpiarBorrador();return;}
       const acceso=await accesoCompra();
       const respuesta = await fetch('/api/pedidos/manual', {
         method: 'POST', headers: { 'content-type': 'application/json' },
