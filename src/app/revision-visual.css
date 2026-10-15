@@ -1044,3 +1044,10 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 @media(max-width:380px){.cuenta-codigo-casillas>div{gap:5px}.cuenta-codigo-casillas span{height:50px;font-size:22px}}
 .cuenta-acceso:has(.cuenta-codigo)>.cuenta-acceso-titulo,.cuenta-acceso:has(.cuenta-codigo)>.cuenta-registro-social,.cuenta-acceso:has(.cuenta-codigo)>.cuenta-cambio{display:none}
 .cuenta-codigo form>[role=alert],.cuenta-codigo form>[role=status]{margin:0 0 18px}
+
+/* En escritorio, cada paso se lee en una sola línea de izquierda a derecha. */
+@media(min-width:761px){
+ .compra-pagina .compra-pasos button{flex-direction:row;align-items:baseline;gap:8px;padding:16px 12px 16px 0}
+ .compra-pagina .compra-pasos button>span{flex-shrink:0;font-size:18px;line-height:1.4}
+ .compra-pagina .compra-pasos button>strong{font-size:clamp(14px,1.1vw,17px);line-height:1.4}
+}

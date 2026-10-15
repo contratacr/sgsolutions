@@ -12,7 +12,7 @@ function renderizar(html:string,en:boolean,redirect:string){
 }
 for(const idioma of ['es','en'] as const){
  test(`plantillas de Auth y seguridad en ${idioma}`,async({page})=>{
-  await page.route('https://sgsolutionscr.com/imagenes/logo-principal.png',route=>route.fulfill({path:'public/imagenes/logo-principal.png',contentType:'image/png'}));
+  await page.route('https://sgsolutionscr.com/imagenes/logo-correo-v1.png',route=>route.fulfill({path:'public/imagenes/logo-correo-v1.png',contentType:'image/png'}));
   for(const plantilla of plantillas){
    const html=readFileSync(`supabase/templates/${plantilla.id}.html`,'utf8');
    const redirect=plantilla.id==='recovery'?'http://127.0.0.1:3107/cuenta/confirmar?flujo=recuperar':'http://127.0.0.1:3107/cuenta/confirmar';
@@ -21,6 +21,7 @@ for(const idioma of ['es','en'] as const){
     expect(resultado).not.toContain('{{');
     expect(resultado).not.toMatch(/contratacr|<script/i);
     await page.setContent(resultado);
+    await expect.poll(()=>page.locator('img').first().evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth===264)).toBe(true);
     await expect(page.locator('html')).toHaveAttribute('lang',idioma);
     await expect(page.getByRole('heading',{level:1})).toHaveText(plantilla.titulo[idioma==='en'?1:0]);
     await expect(page.getByRole('img',{name:'SG Solutions'})).toBeVisible();
