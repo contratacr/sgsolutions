@@ -23,6 +23,10 @@ for(const idioma of ['es','en'] as const){
     await page.setContent(resultado);
     await expect.poll(()=>page.locator('img').first().evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth===264)).toBe(true);
     await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+    await expect(page.locator('.email-surface')).toHaveCSS('border-top-width','0px');
+    await expect(page.locator('.email-surface')).toHaveCSS('border-radius','0px');
+    await expect(page.locator('.email-surface')).toHaveCSS('box-shadow','none');
+    await expect(page.locator('body')).toHaveCSS('background-color','rgb(12, 29, 43)');
     await expect(page.getByRole('heading',{level:1})).toHaveText(plantilla.titulo[idioma==='en'?1:0]);
     await expect(page.getByRole('img',{name:'SG Solutions'})).toBeVisible();
     await expect.poll(()=>page.locator('img').evaluate(img=>(img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);

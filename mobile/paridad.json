@@ -1,0 +1,496 @@
+{
+  "version": 1,
+  "source": "src/app",
+  "sections": [
+    {
+      "id": "inicio",
+      "name": "Inicio",
+      "routes": [
+        "/"
+      ],
+      "scope": "Portada, accesos y contenido de inicio.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "tienda",
+      "name": "Tienda",
+      "routes": [
+        "/tienda"
+      ],
+      "scope": "Catálogo real, marcas, búsqueda, categorías, filtros, orden y paginación estable.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "producto",
+      "name": "Detalle de producto",
+      "routes": [
+        "/tienda/[id]"
+      ],
+      "scope": "Fotos, especificaciones, precio, disponibilidad, asesoría y agregar al carrito.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "favoritos",
+      "name": "Favoritos",
+      "routes": [
+        "/favoritos"
+      ],
+      "scope": "Guardar, quitar, contador, avisos y persistencia.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "carrito",
+      "name": "Carrito",
+      "routes": [],
+      "scope": "Panel lateral completo, cantidades, eliminar, total, persistencia y continuar compra.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": false,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "checkout",
+      "name": "Completar pedido",
+      "routes": [
+        "/pagar",
+        "/finalizar-compra"
+      ],
+      "scope": "Información y entrega, datos adicionales y pago; validación, borrador y regreso desde cuenta.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "enlaces",
+      "name": "Enlaces de compra",
+      "routes": [
+        "/c/[codigo]",
+        "/compra/[acceso]"
+      ],
+      "scope": "Resolver enlace corto, validar acceso y cargar la misma compra.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "pedido",
+      "name": "Confirmación y seguimiento",
+      "routes": [
+        "/pago/resultado",
+        "/finalizar-compra/resultado",
+        "/pedido/[token]",
+        "/finalizar-compra/pedido"
+      ],
+      "scope": "Resultado confirmado por servidor, estado, importes y comprobantes SINPE/transferencia.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "soporte",
+      "name": "Soporte",
+      "routes": [
+        "/soporte"
+      ],
+      "scope": "Servicios, proceso, preguntas frecuentes, instalaciones y contacto por WhatsApp.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "empresas",
+      "name": "Empresas",
+      "routes": [
+        "/empresas"
+      ],
+      "scope": "Planes, soluciones, necesidades, proyectos y contacto comercial.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "casos",
+      "name": "Casos de éxito",
+      "routes": [
+        "/casos-de-exito"
+      ],
+      "scope": "Casos publicados, galerías, soluciones y consulta.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "nosotros",
+      "name": "Nosotros",
+      "routes": [
+        "/nosotros"
+      ],
+      "scope": "Presentación, principios, ubicación y contacto.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "contacto",
+      "name": "Contacto",
+      "routes": [
+        "/contacto"
+      ],
+      "scope": "WhatsApp, teléfono, correo, redes, Google Maps y Waze.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "cuenta",
+      "name": "Cuenta",
+      "routes": [
+        "/cuenta",
+        "/cuenta/recuperar"
+      ],
+      "scope": "Ingreso, registro, código de seis dígitos, reenvío, recuperación, proveedores habilitados, mis compras, favoritos, datos, seguridad y cierre de sesión.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "legales",
+      "name": "Información legal",
+      "routes": [
+        "/terminos",
+        "/privacidad"
+      ],
+      "scope": "Contenido vigente, enlaces y traducciones.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "admin",
+      "name": "Acceso administrativo",
+      "routes": [
+        "/admin",
+        "/admin/activar",
+        "/acceso"
+      ],
+      "scope": "Ingreso, activación y autorización por rol; /acceso redirige a /admin.",
+      "audience": "administrator",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "panel",
+      "name": "Inicio administrativo",
+      "routes": [
+        "/panel"
+      ],
+      "scope": "Módulos disponibles según sesión y permisos.",
+      "audience": "administrator",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "catalogo-admin",
+      "name": "Productos administrativos",
+      "routes": [
+        "/panel/catalogo"
+      ],
+      "scope": "Listado y operaciones del catálogo, validaciones y permisos existentes.",
+      "audience": "administrator",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "proveedores",
+      "name": "Proveedores",
+      "routes": [
+        "/panel/proveedores"
+      ],
+      "scope": "Información y operaciones de proveedores.",
+      "audience": "administrator",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "contenido",
+      "name": "Contenido",
+      "routes": [
+        "/panel/contenido"
+      ],
+      "scope": "Editor, imágenes, textos bilingües y configuración del sitio.",
+      "audience": "administrator",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "pedidos-admin",
+      "name": "Pedidos administrativos",
+      "routes": [
+        "/panel/pedidos"
+      ],
+      "scope": "Búsqueda, filtros, contadores, detalle completo, estados, archivo, creación, enlaces, guías y comprobantes.",
+      "audience": "administrator",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "usuarios",
+      "name": "Usuarios",
+      "routes": [
+        "/panel/usuarios"
+      ],
+      "scope": "Usuarios, roles y operaciones autorizadas.",
+      "audience": "administrator",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "estadisticas",
+      "name": "Estadísticas",
+      "routes": [
+        "/panel/estadisticas"
+      ],
+      "scope": "Panel de métricas y controles existentes.",
+      "audience": "administrator",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    },
+    {
+      "id": "vistas-qa",
+      "name": "Vistas de prueba",
+      "routes": [
+        "/vista-previa/pedidos",
+        "/vista-previa/disponibilidad",
+        "/vista-previa/compra/[token]",
+        "/vista-previa/correos"
+      ],
+      "scope": "Solo desarrollo: revisar diseños, disponibilidad, compra y correos; no exponer en menú comercial.",
+      "audience": "development",
+      "status": "in-progress",
+      "evidence": [
+        "mobile/tests/web-preview.mjs",
+        "playwright.mobile-preview.config.ts"
+      ],
+      "preview": {
+        "mode": "local-next-webview",
+        "routesRendered": true,
+        "nativeEndToEndVerified": false,
+        "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
+      }
+    }
+  ]
+}

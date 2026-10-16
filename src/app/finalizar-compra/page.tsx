@@ -4,7 +4,7 @@ import {leerAprobacion} from '@/lib/asesorias';
 import { getTranslations } from "next-intl/server";
 import { leerContenido } from "@/lib/contenido-servidor";
 import { FinalizarCompra } from "@/components/finalizar-compra";
-import { configuracionTilopay } from "@/lib/tilopay";
+import { configuracionTilopay, sdkTilopayHabilitado } from "@/lib/tilopay";
 import { configuracionPedidosManuales } from "@/lib/pedidos-manuales";
 export async function generateMetadata() {
   const t = await getTranslations("Compra");
@@ -19,7 +19,7 @@ export default async function Compra({searchParams}:{searchParams:Promise<{aseso
   const { pagos } = await leerContenido();
   return (
     <main id="contenido" className="contenedor compra-pagina">
-      <FinalizarCompra sdkLocal={process.env.NODE_ENV==="development"&&process.env.SG_ENTORNO!=="produccion"} sdkDisponible={Boolean(configuracionTilopay()?.modo==="pruebas"&&process.env.TILOPAY_RETORNO_URL)} googleDisponible={proveedores.google} datosGuardados={perfilCompra?.datos} cuentaDisponible={Boolean(perfilCompra)} enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
+      <FinalizarCompra sdkIntegrado={sdkTilopayHabilitado()} sdkDisponible={Boolean(configuracionTilopay()&&process.env.TILOPAY_RETORNO_URL)} googleDisponible={proveedores.google} datosGuardados={perfilCompra?.datos} cuentaDisponible={Boolean(perfilCompra)} enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 export type OpcionesSdk = Record<string, string | number>;
+type InicioSdk={test?:number;methods?:{id:string;name:string;type?:string}[]};
 type SDK = {
- Init:(opciones:OpcionesSdk)=>Promise<{test?:number;methods?:{id:string;name:string;type?:string}[]}>;
+ Init:(opciones:OpcionesSdk)=>Promise<InicioSdk>;
  startPayment:()=>Promise<{message?:string}|undefined>;
 };
 declare global {interface Window {Tilopay?:SDK}}
@@ -18,16 +19,20 @@ export function cargarTilopaySdk():Promise<SDK>{
  });
  return carga;
 }
-export async function pagarSdkPruebas(opciones:OpcionesSdk,metodo:string){
+export async function pagarSdkTarjeta(opciones:OpcionesSdk,metodo:string,entorno:'pruebas'|'produccion'){
  const sdk=await cargarTilopaySdk();
  const inicio=await sdk.Init(opciones);
- if(Number(inicio.test)!==1)throw new Error('SDK_NOT_TEST');
+ const elegido=seleccionarTarjetaSdk(inicio,metodo,entorno);
+ const campo=document.getElementById('tlpy_payment_method') as HTMLInputElement|null;
+ if(!campo)throw new Error('SDK_FIELDS_MISSING');
+ campo.value=elegido;campo.dispatchEvent(new Event('change',{bubbles:true}));
+ const resultado=await sdk.startPayment();
+ if(resultado?.message)throw new Error('SDK_PAYMENT_ERROR');
+}
+export function seleccionarTarjetaSdk(inicio:InicioSdk,metodo:string,entorno:'pruebas'|'produccion'){
+ if(inicio.test!==(entorno==='pruebas'?1:0))throw new Error('SDK_ENVIRONMENT_MISMATCH');
  const tarjetas=inicio.methods?.filter(m=>m.type==='card')??[];
  const elegido=metodo?tarjetas.find(m=>m.id===metodo):tarjetas.length===1?tarjetas[0]:undefined;
  if(!elegido)throw new Error('SDK_METHOD_UNAVAILABLE');
- const campo=document.getElementById('tlpy_payment_method') as HTMLInputElement|null;
- if(!campo)throw new Error('SDK_FIELDS_MISSING');
- campo.value=elegido.id;campo.dispatchEvent(new Event('change',{bubbles:true}));
- const resultado=await sdk.startPayment();
- if(resultado?.message)throw new Error('SDK_PAYMENT_ERROR');
+ return elegido.id;
 }

@@ -9,11 +9,13 @@ for(const idioma of ['es','en'] as const)for(const modo of [1,0,-1])test(`SDK in
   inicios++;const data=r.request().postData()!;expect(data).not.toContain('4111111111111111');expect(data).not.toContain('tlpy_');expect(JSON.parse(data).sdk).toBe(true);
   await r.fulfill({json:{sdk:{token:'qa',amount:100,orderNumber:'qa'},metodo:'qa-card'}});
  });
- await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
+ await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto').first().hover();await page.locator('.producto-agregar').first().click();await expect(page.locator('.carrito-cantidad')).toHaveText('1');await page.goto('/pagar');
  await page.locator('[name=nombre]').fill('Cliente');await page.locator('[name=apellidos]').fill('Prueba');await page.locator('[name=correo]').fill('qa@example.com');await page.locator('[name=identificacion]').fill('123456789');await page.locator('.campo-telefono input[type=tel]').fill('88888888');
  await page.getByRole('button',{name:t.pasoSiguiente,exact:true}).click();await page.getByRole('button',{name:t.pasoSiguiente,exact:true}).click();
  await page.locator('[name=pago][value=tarjeta]').check();
  await expect(page.locator('.tarjeta-integrada')).toBeVisible();
+ await expect(page.locator('main')).not.toContainText('Complete el pago en la página segura de Tilopay.');
+ await expect(page.locator('main')).not.toContainText('Complete your payment on Tilopay’s secure page.');
  await page.locator('#tlpy_cc_number').fill('4111111111111111');await page.locator('#tlpy_cc_expiration_date').fill('12/30');await page.locator('#tlpy_cvv').fill('123');
  await page.locator('[name=consentimiento]').check();await page.locator('.compra-acciones-finales button[type=submit]').click();
  if(modo===1)await expect(page.locator('body')).toHaveAttribute('data-sdk-pago','1');

@@ -1,11 +1,11 @@
 'use client';
 import {CreditCard,LockKeyhole} from 'lucide-react';
 import {useTranslations} from 'next-intl';
-export function TarjetaIntegrada({disponible}:{disponible:boolean}){
+export function TarjetaIntegrada({disponible,pruebas=true}:{disponible:boolean;pruebas?:boolean}){
  const t=useTranslations('Compra');
  return <div className="tarjeta-integrada payFormTilopay">
   <header><span className="tarjeta-integrada-icono"><CreditCard size={24} aria-hidden="true"/></span><div><h3>{t('tarjetaDatos')}</h3><p>{t('tarjetaCreditoDebito')}</p></div><LockKeyhole size={18} aria-hidden="true"/></header>
-  <p className="tarjeta-integrada-prueba">{t(disponible?'sdkPruebas':'sdkNoDisponible')}</p>
+  {(!disponible||pruebas)&&<p className="tarjeta-integrada-prueba">{t(disponible?'sdkPruebas':'sdkNoDisponible')}</p>}
   <input id="tlpy_payment_method" type="hidden"/>
   <select id="tlpy_saved_cards" hidden defaultValue="" aria-label={t('tarjetaGuardada')}><option value=""/></select>
   <div id="tlpy_card_payment_div" className="tarjeta-integrada-campos">

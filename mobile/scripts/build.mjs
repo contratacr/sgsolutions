@@ -1,0 +1,10 @@
+import {build} from 'esbuild';
+import {copyFile,mkdir} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+const root=new URL('../',import.meta.url);
+await mkdir(new URL('www',root),{recursive:true});
+for(const name of ['index.html','style.css','offline.html','offline.js','offline.css']) await copyFile(new URL(`src/${name}`,root),new URL(`www/${name}`,root));
+await copyFile(new URL('../public/imagenes/logo-principal.png',root),new URL('www/logo.png',root));
+for(const [source,target] of [['portatil.webp','portatil.webp'],['monitor.webp','oficina.webp'],['red.webp','red.webp'],['teclado.webp','pos.webp']]) await copyFile(new URL(`../public/imagenes/productos/${source}`,root),new URL(`www/${target}`,root));
+await build({entryPoints:[fileURLToPath(new URL('src/app.js',root))],bundle:true,format:'iife',target:['safari15','chrome100'],outfile:fileURLToPath(new URL('www/app.js',root)),minify:true});
+await build({entryPoints:[fileURLToPath(new URL('src/native-bridge.js',root))],bundle:true,format:'iife',target:['safari15','chrome100'],outfile:fileURLToPath(new URL('../public/sg-native-bridge.js',root)),minify:true});

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SG Solutions Dev</string>
+    <string name="title_activity_main">SG Solutions Dev</string>
+    <string name="package_name">com.sgsolutionscr.app.dev</string>
+    <string name="custom_url_scheme">com.sgsolutionscr.app.dev</string>
+</resources>

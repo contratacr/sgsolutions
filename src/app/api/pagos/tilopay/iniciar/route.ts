@@ -4,7 +4,7 @@ import {verificarCompraEurocomp} from '@/lib/eurocomp-compra';
 import {origenPermitido} from '@/lib/origen-permitido';
 import {validarAprobacion,reservarAprobacion,cambiarAsesoria} from '@/lib/asesorias';
 import { z } from 'zod';
-import { basePedidos, configuracionTilopay, iniciarTilopay, tokenTilopay, tokenSdkTilopay } from '@/lib/tilopay';
+import { basePedidos, sdkTilopayHabilitado, configuracionTilopay, iniciarTilopay, tokenTilopay, tokenSdkTilopay } from '@/lib/tilopay';
 
 const solicitud = z.object({
   sdk:z.boolean().optional(),
@@ -41,8 +41,8 @@ export async function POST(request: Request) {
   }
   const aprobacion=await validarAprobacion(entrada);
   if(!aprobacion)return Response.json({error:"asesoria_requerida"},{status:403});
+  if(entrada.sdk&&!sdkTilopayHabilitado())return Response.json({error:'sdk_no_habilitado'},{status:503});
   const config = configuracionTilopay();
-  if (entrada.sdk && (config?.modo!=='pruebas'||process.env.SG_ENTORNO==='produccion'))return Response.json({error:'sdk_solo_pruebas'},{status:503});
   if (!config) return Response.json({ error: 'no_disponible' }, { status: 503 });
   const retorno = process.env.TILOPAY_RETORNO_URL;
   if (!retorno || !/^https:\/\//.test(retorno) && !/^http:\/\/127\.0\.0\.1:3107\//.test(retorno)) {

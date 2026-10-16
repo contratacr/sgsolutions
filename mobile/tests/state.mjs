@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {initialState,normalizeState,changeQuantity,cartTotal,cartCount} from '../src/state.js';
+import {messages} from '../src/messages.js';
+assert.deepEqual(Object.keys(messages.es).sort(),Object.keys(messages.en).sort());
+for(const language of Object.values(messages))for(const value of Object.values(language))assert.ok(value.trim());
+const state=normalizeState({version:1,language:'en',cart:{'demo-notebook':100,'demo-router':-1,'unknown':20},drafts:{support:{subject:'x'.repeat(500)},business:{description:3}}});
+assert.equal(state.cart['demo-notebook'],5);assert.equal(state.cart.unknown,undefined);assert.equal(state.cart['demo-router'],undefined);assert.equal(state.drafts.support.subject.length,100);assert.equal(state.drafts.business.description,undefined);
+assert.equal(changeQuantity(state,'demo-notebook',1),false);assert.equal(changeQuantity(state,'unknown',1),false);
+changeQuantity(state,'demo-notebook',-4);assert.equal(cartCount(state),1);assert.equal(cartTotal(state),245000);changeQuantity(state,'demo-notebook',-1);assert.equal(cartCount(state),0);
+assert.deepEqual(normalizeState({version:99}),initialState());
+console.log('Estado móvil: traducciones, normalización, límites y totales correctos.');
