@@ -24,3 +24,5 @@ supabase/.branches/
 src/lib/catalogo-inicial.json
 
 .next-pruebas/
+
+.next-mobile/

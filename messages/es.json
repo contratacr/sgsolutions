@@ -1021,7 +1021,6 @@
     "juridica": "Persona jurídica",
     "verificando": "Verificando disponibilidad…",
     "stockCambio": "Cambió la disponibilidad o el precio de un producto. Vuelva al carrito y revise su compra.",
-    "tarjetaAviso": "Complete el pago en la página segura de Tilopay.",
     "pagarTarjeta": "Pagar con tarjeta",
     "cuentaCorta": "Cuenta corta",
     "iban": "IBAN",
@@ -1050,7 +1049,7 @@
     "tarjetaCvv": "Código de seguridad",
     "tarjetaSeguridad": "Sus datos de tarjeta se envían directamente a Tilopay.",
     "sdkPruebas": "Modo de pruebas · Utilice únicamente tarjetas de prueba.",
-    "sdkNoDisponible": "Vista previa · El pago con tarjeta estará disponible al conectar la cuenta de pruebas.",
+    "sdkNoDisponible": "El pago con tarjeta no está disponible en este momento.",
     "pagarTotal": "Pagar {total}",
     "revisarTotal": "Revisar pedido · {total}",
     "tarjetaIntegradaDetalle": "Pague con su tarjeta desde esta página.",
@@ -1292,7 +1291,7 @@
         },
         "3": {
           "titulo": "Pagos, facturación y entrega",
-          "texto": "Puede pagar mediante SINPE Móvil, transferencia bancaria o tarjeta a través de Tilopay. Para SINPE o transferencia se requiere adjuntar el comprobante; SG Solutions verificará el ingreso antes de confirmar el pago. Los datos completos de tarjeta y su código de seguridad se ingresan en la pasarela de Tilopay, no en los formularios de SG Solutions. El resumen informa el total y el costo de la modalidad elegida: retiro en tienda o envío. El plazo de entrega se le comunicará según la disponibilidad y el destino. Proporcione datos de facturación y entrega correctos; si necesita corregirlos, contacte al equipo indicando su referencia."
+          "texto": "Puede pagar mediante SINPE Móvil, transferencia bancaria o tarjeta a través de Tilopay. Para SINPE o transferencia se requiere adjuntar el comprobante; SG Solutions verificará el ingreso antes de confirmar el pago. Los datos completos de tarjeta y su código de seguridad se transmiten desde su navegador directamente a Tilopay; SG Solutions no los almacena. El resumen informa el total y el costo de la modalidad elegida: retiro en tienda o envío. El plazo de entrega se le comunicará según la disponibilidad y el destino. Proporcione datos de facturación y entrega correctos; si necesita corregirlos, contacte al equipo indicando su referencia."
         },
         "4": {
           "titulo": "Garantías, devoluciones y reclamos",
@@ -1872,6 +1871,7 @@
     "facturacion": "Datos de facturación",
     "envio": "Dirección de envío",
     "misDatos": "Mis datos",
+    "misFavoritos": "Mis favoritos",
     "misCompras": "Mis compras",
     "navegacion": "Opciones de mi cuenta",
     "guardarAutomatico": "Actualizaremos sus datos para próximas compras."

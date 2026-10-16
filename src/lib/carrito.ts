@@ -41,12 +41,14 @@ function suscribir(observador: () => void) {
   window.addEventListener('storage', actualizar);
   window.addEventListener('pageshow', recuperar);
   window.addEventListener('focus', recuperar);
+  window.addEventListener('sg-app-resume', recuperar);
   document.addEventListener('visibilitychange', visible);
   return () => {
     observadores.delete(observador);
     window.removeEventListener('storage', actualizar);
     window.removeEventListener('pageshow', recuperar);
     window.removeEventListener('focus', recuperar);
+    window.removeEventListener('sg-app-resume', recuperar);
     document.removeEventListener('visibilitychange', visible);
   };
 }

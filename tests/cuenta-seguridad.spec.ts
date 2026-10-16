@@ -8,13 +8,13 @@ async function sesion(context:BrowserContext,n:number,idioma:string){
 }
 for(const idioma of ['es','en'] as const)test(`cuenta: menú y autogestión segura ${idioma}`,async({page,context,request},info)=>{
  const n=(idioma==='es'?5:6)+(info.project.name==='movil'?10:0),id=await sesion(context,n,idioma),t=(idioma==='es'?es:en).SeguridadCuenta;
- await page.goto('/cuenta');await expect(page.locator('.cuenta-menu-secciones a')).toHaveCount(3);await expect(page.locator('.cuenta-datos')).toHaveCount(0);
+ await page.goto('/cuenta');await expect(page.locator('.cuenta-menu-secciones a')).toHaveCount(4);await expect(page.locator('.cuenta-datos')).toHaveCount(0);
  await expect(page.locator('.cuenta-perfil')).toHaveCount(0);
  if(info.project.name==='escritorio'){
   const resumen=page.locator('.nav-cuenta-menu summary');await expect(resumen).toContainText('Ana');await resumen.click();await expect(page.locator('.nav-cuenta-desplegable')).toBeVisible();await resumen.press('Escape');await expect(page.locator('.nav-cuenta-desplegable')).not.toBeVisible();
   await resumen.click();await page.locator('.cuenta-intro h1').click();await expect(page.locator('.nav-cuenta-desplegable')).not.toBeVisible();await expect(page.locator('.cuenta-pedidos')).toBeVisible();
   // Safari puede emitir blur con relatedTarget=null antes del click del enlace.
-  for(const seccion of ['datos','seguridad','compras']){
+  for(const seccion of ['favoritos','datos','seguridad','compras']){
    const altoCerrado=await page.locator('.navegacion').evaluate(e=>e.getBoundingClientRect().height);
    await resumen.click();
    await expect(page.locator('.nav-cuenta-desplegable')).toHaveCSS('position','absolute');

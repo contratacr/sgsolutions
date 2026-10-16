@@ -4,6 +4,12 @@ import { createClient } from '@supabase/supabase-js';
 
 const api = 'https://app.tilopay.com/api/v1';
 
+export function sdkTilopayHabilitado() {
+  return process.env.SG_ENTORNO === 'produccion'
+    ? process.env.TILOPAY_SDK_ACTIVO === '1'
+    : process.env.NODE_ENV === 'development';
+}
+
 export function configuracionTilopay(requerirVerificacionReciente = true) {
   const usuario = process.env.TILOPAY_API_USER;
   const contrasena = process.env.TILOPAY_API_PASSWORD;
@@ -65,7 +71,8 @@ export async function consultarTilopay(config: NonNullable<ReturnType<typeof con
 }
 
 export async function tokenSdkTilopay(config: NonNullable<ReturnType<typeof configuracionTilopay>>) {
- if(config.modo!=='pruebas'||process.env.SG_ENTORNO==='produccion')throw new Error('SDK_SOLO_PRUEBAS');
+ if(!sdkTilopayHabilitado())throw new Error('SDK_NO_HABILITADO');
+ if(config.modo==='produccion'&&process.env.SG_ENTORNO!=='produccion')throw new Error('SDK_ENTORNO_INVALIDO');
  const respuesta=await respuestaJson(`${api}/loginSdk`,{apiuser:config.usuario,password:config.contrasena,key:config.llave});
  if(typeof respuesta.access_token!=='string'||!respuesta.access_token)throw new Error('SDK_TOKEN_INVALIDO');
  return respuesta.access_token;

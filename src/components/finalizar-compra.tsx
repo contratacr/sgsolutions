@@ -1,6 +1,6 @@
 "use client";
 import {TarjetaIntegrada} from "./tarjeta-integrada";
-import {pagarSdkPruebas,type OpcionesSdk} from "@/lib/tilopay-sdk-cliente";
+import {pagarSdkTarjeta,type OpcionesSdk} from "@/lib/tilopay-sdk-cliente";
 import {DireccionCompra} from './direccion-compra';
 import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import {CampoIdentificacion} from './campo-identificacion';
@@ -9,7 +9,7 @@ import {rutaProducto} from "@/lib/rutas-productos";
 import {datosClienteCompra} from '@/lib/datos-cliente-compra';
 import {AccesoCompra} from './acceso-compra';
 import {combinarDatosCompra} from '@/lib/perfil-compra';
-import {guardarDatosCompra,type EstadoDatosCompra} from '@/app/cuenta/datos-acciones';
+import type {EstadoDatosCompra} from '@/lib/guardar-perfil-compra';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import {adjuntarComprobantePedido} from '@/lib/adjuntar-comprobante';
 import {IndicadorCampo} from './indicador-campo';
@@ -35,7 +35,7 @@ import {costoEntrega} from '@/lib/envio';
 import { FotoProducto } from "./foto-producto";
 import { desplazarContenido } from "@/lib/desplazar-contenido";
 const CAMPOS_BORRADOR=['nombre','apellidos','correo','telefono','tipoIdentificacion','identificacion','razonSocial','actividad','correoFactura','direccionFiscal','provincia','canton','distrito','direccion','apartamento','postal','receptor','telefonoReceptor','notas'];
-export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedido, datosGuardados={},cuentaDisponible=false,googleDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { sdkLocal?:boolean;sdkDisponible?:boolean;simularPedido?:(datos:Record<string,string>,metodo:'tarjeta'|'sinpe'|'transferencia',archivo?:File)=>Promise<void>; datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;googleDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
+export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simularPedido, datosGuardados={},cuentaDisponible=false,googleDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { sdkIntegrado?:boolean;sdkDisponible?:boolean;simularPedido?:(datos:Record<string,string>,metodo:'tarjeta'|'sinpe'|'transferencia',archivo?:File)=>Promise<void>; datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;googleDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
   const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
     l = useLocale(),
@@ -62,6 +62,8 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
     [errorPago, setErrorPago] = useState(false),
     [errorPedido, setErrorPedido] = useState(false),
     [errorFormulario, setErrorFormulario] = useState(false);
+  const bloqueoRevision=useRef(false);
+  const [guardandoCompra,setGuardandoCompra]=useState(false);
   const sesionSdk=useRef<{clave:string;sdk:OpcionesSdk;metodo:string}|null>(null);
   const [agregarNotas,setAgregarNotas]=useState(Boolean(borrador.notas));
   const [paso,setPaso]=useState(0),[ultimoPaso,setUltimoPaso]=useState(0);
@@ -100,8 +102,9 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
     };
     guardarBorradorActual.current=guardar;guardar();
     window.addEventListener('pagehide',guardar);
+    window.addEventListener('sg-app-background',guardar);
     document.addEventListener('visibilitychange',guardar);
-    return()=>{guardar();window.removeEventListener('pagehide',guardar);document.removeEventListener('visibilitychange',guardar);};
+    return()=>{guardar();window.removeEventListener('pagehide',guardar);window.removeEventListener('sg-app-background',guardar);document.removeEventListener('visibilitychange',guardar);};
   },[borradorListo,claveBorrador,tipoIdentificacion,express,entrega,factura,otro,agregarNotas,pago,paso]);
   function limpiarBorrador(){compraTerminada.current=true;try{localStorage.removeItem(claveBorrador);}catch{}}
   function cambiarPaso(valor:number){setPaso(valor);setUltimoPaso(actual=>Math.max(actual,valor));setErrorFormulario(false);requestAnimationFrame(()=>{cabeceraPasos.current?.focus({preventScroll:true});cabeceraPasos.current?.scrollIntoView({block:'start',behavior:'instant'});});}
@@ -157,7 +160,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
     total = subtotal + envio;
   async function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if(procesando)return;
+    if(procesando||bloqueoRevision.current)return;
     if(paso<2){avanzar();return;}
     for(let i=0;i<3;i++)if(!validarPaso(e.currentTarget,i))return;
     if(pago!=='tarjeta'&&(!comprobante||errorComprobante)){setErrorFormulario(true);return;}
@@ -172,10 +175,17 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
     setCamposInvalidos([]);
     if(pago!=='tarjeta')setRevision({...datos,...validacion.data});
     medir('pedido_revisado');
-    if(cuentaDisponible&&!simularPedido){
-      try{setGuardadoPerfil(await guardarDatosCompra('inicio',formulario));}catch{setGuardadoPerfil('error');}
-    }
-    if(pago==='tarjeta'&&(sdkLocal?sdkDisponible:tarjetaDisponible))await pagarConTarjeta({...datos,...validacion.data});
+    bloqueoRevision.current=true;setGuardandoCompra(true);
+    try{
+      if(cuentaDisponible&&!simularPedido){
+        try{
+          const respuesta=await fetch('/api/cuenta/datos-compra',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(validacion.data)});
+          const guardado=await respuesta.json();
+          setGuardadoPerfil(guardado.estado==='guardado'?'guardado':'error');
+        }catch{setGuardadoPerfil('error');}
+      }
+      if(pago==='tarjeta'&&(sdkIntegrado?sdkDisponible:tarjetaDisponible))await pagarConTarjeta({...datos,...validacion.data});
+    }finally{bloqueoRevision.current=false;setGuardandoCompra(false);}
   }
   async function accesoCompra(){
     if(aprobacion)return {id:aprobacion.id,token:aprobacion.token};
@@ -188,14 +198,14 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
     setErrorPago(false);
     try {
       if(simularPedido){await simularPedido(datosCompra,'tarjeta');limpiarBorrador();return;}
-      if(sdkLocal&&!sdkDisponible)throw new Error('SDK_NO_DISPONIBLE');
+      if(sdkIntegrado&&!sdkDisponible)throw new Error('SDK_NO_DISPONIBLE');
       const claveSdk=JSON.stringify({datosCompra,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))});
-      if(sdkLocal&&sesionSdk.current?.clave===claveSdk){await pagarSdkPruebas(sesionSdk.current.sdk,sesionSdk.current.metodo);return;}
+      if(sdkIntegrado&&sesionSdk.current?.clave===claveSdk){await pagarSdkTarjeta(sesionSdk.current.sdk,sesionSdk.current.metodo,tarjetaEnPruebas?'pruebas':'produccion');return;}
       const acceso=await accesoCompra();
       const respuesta = await fetch('/api/pagos/tilopay/iniciar', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          sdk:sdkLocal,asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:datosCompra, nombre: datosCompra.nombre, apellidos: datosCompra.apellidos, correo: datosCompra.correo,
+          sdk:sdkIntegrado,asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:datosCompra, nombre: datosCompra.nombre, apellidos: datosCompra.apellidos, correo: datosCompra.correo,
           telefono: datosCompra.telefono, consentimiento: datosCompra.consentimiento === 'on',
           articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })),
         }),
@@ -203,10 +213,10 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
       const datos = await respuesta.json();
       if(datos.error==='catalogo_actualizado')setErrorStock(true);
       if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
-      if(sdkLocal){
+      if(sdkIntegrado){
         if(!respuesta.ok||!datos.sdk||typeof datos.metodo!=='string')throw new Error('SDK_NO_DISPONIBLE');
         sesionSdk.current={clave:claveSdk,sdk:datos.sdk,metodo:datos.metodo};
-        await pagarSdkPruebas(datos.sdk,datos.metodo);return;
+        await pagarSdkTarjeta(datos.sdk,datos.metodo,tarjetaEnPruebas?'pruebas':'produccion');return;
       }
       if (!respuesta.ok || typeof datos.url !== 'string') throw new Error('PAGO_NO_DISPONIBLE');
       if (!aprobacion) retirarArticulosPedido(productos.map(x => ({id:x.p.id,cantidad:x.cantidad})));
@@ -309,7 +319,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
                     ))}
                 </dl>
                 {comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}
-                {pago === 'tarjeta' && tarjetaDisponible && <p>{t(tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso')}</p>}
+                {pago === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas && <p>{t('tarjetaPruebaAviso')}</p>}
                 {pago === 'tarjeta' && tarjetaDisponible && !pendiente && !bloqueado ? (
                   <button className="boton boton-naranja" type="button" onClick={()=>pagarConTarjeta()} disabled={procesando}>
                     {t(procesando ? 'procesandoPago' : tarjetaEnPruebas ? 'pagarPrueba' : 'pagarTarjeta')}
@@ -440,13 +450,13 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
                         <Icon size={23} />
                         <span>
                           <strong>{t(id)}</strong>
-                          <small>{id==='tarjeta'&&sdkLocal?t('tarjetaIntegradaDetalle'):id === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
+                          <small>{id==='tarjeta'&&sdkIntegrado?t('tarjetaIntegradaDetalle'):id === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
                         </span>
                       </label>
                     ))}
                   </fieldset>
-                  {pago === "tarjeta" && sdkLocal && <TarjetaIntegrada disponible={sdkDisponible}/> }
-                  {pago === "tarjeta" && !sdkLocal && <p className="compra-aviso"><ShieldCheck size={19}/>{t(tarjetaDisponible ? tarjetaEnPruebas ? 'tarjetaPruebaAviso' : 'tarjetaAviso' : 'tarjetaPendiente')}</p>}
+                  {pago === "tarjeta" && sdkIntegrado && <TarjetaIntegrada disponible={sdkDisponible} pruebas={tarjetaEnPruebas}/> }
+                  {pago === "tarjeta" && !sdkIntegrado && !tarjetaDisponible && <p className="compra-aviso"><ShieldCheck size={19}/>{t('tarjetaPendiente')}</p>}
                   {pago !== "tarjeta" && (
                     <details key={pago} className="compra-cuentas" open ref={pagoDatos}>
                       <summary>{t("verCuentas")}</summary>
@@ -488,9 +498,9 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
                   <button
                     className="boton boton-naranja"
                     type="submit"
-                    disabled={bloqueado||procesando||(pago==='tarjeta'&&(!(sdkLocal?sdkDisponible:tarjetaDisponible)||pendiente))}
+                    disabled={bloqueado||procesando||guardandoCompra||(pago==='tarjeta'&&(!(sdkIntegrado?sdkDisponible:tarjetaDisponible)||pendiente))}
                   >
-                    {procesando?t('procesandoPago'):t(pago==='tarjeta'?'pagarTotal':'revisarTotal',{total:colones(total)})}
+                    {procesando||guardandoCompra?t('procesandoPago'):t(pago==='tarjeta'?'pagarTotal':'revisarTotal',{total:colones(total)})}
                     <ClipboardCheck size={19} aria-hidden="true" />
                   </button>
                   </div>
@@ -500,7 +510,7 @@ export function FinalizarCompra({ sdkLocal=false,sdkDisponible=false,simularPedi
               </form>
             )}
           </div>
-          {sdkLocal&&<div id="responseTilopay" className="compra-respuesta-sdk" aria-live="polite"/>}
+          {sdkIntegrado&&<div id="responseTilopay" className="compra-respuesta-sdk" aria-live="polite"/>}
           <aside className="compra-resumen">
             <p className="etiqueta">{t("resumen")}</p>
             <h2>{t("seleccion")}</h2>

@@ -1,7 +1,0 @@
-{
-  "appId": "com.sgsolutionscr.app.dev",
-  "appName": "SG Solutions Dev",
-  "webDir": "www",
-  "backgroundColor": "#ffffff",
-  "loggingBehavior": "debug"
-}

@@ -1021,7 +1021,6 @@
     "juridica": "Legal entity",
     "verificando": "Checking availability…",
     "stockCambio": "A product’s availability or price changed. Return to your cart and review your order.",
-    "tarjetaAviso": "Complete your payment on Tilopay’s secure page.",
     "pagarTarjeta": "Pay by card",
     "cuentaCorta": "Local account number",
     "iban": "IBAN",
@@ -1050,7 +1049,7 @@
     "tarjetaCvv": "Security code",
     "tarjetaSeguridad": "Your card details are sent directly to Tilopay.",
     "sdkPruebas": "Test mode · Use test cards only.",
-    "sdkNoDisponible": "Preview · Card payment will be available once the test account is connected.",
+    "sdkNoDisponible": "Card payment is currently unavailable.",
     "pagarTotal": "Pay {total}",
     "revisarTotal": "Review order · {total}",
     "tarjetaIntegradaDetalle": "Pay by card on this page.",
@@ -1292,7 +1291,7 @@
         },
         "3": {
           "titulo": "Payments, invoicing and delivery",
-          "texto": "You can pay by SINPE Móvil, bank transfer or card through Tilopay. SINPE and bank transfers require an attached receipt; SG Solutions verifies the funds before confirming payment. Full card details and the security code are entered in the Tilopay gateway, not in SG Solutions forms. The summary shows the total and the cost of your selected delivery method: store pickup or shipping. Delivery timing will be communicated according to availability and destination. Provide accurate billing and delivery information; contact the team with your reference if you need to correct it."
+          "texto": "You can pay by SINPE Móvil, bank transfer or card through Tilopay. SINPE and bank transfers require an attached receipt; SG Solutions verifies the funds before confirming payment. Full card details and the security code are sent directly from your browser to Tilopay; SG Solutions does not store them. The summary shows the total and the cost of your selected delivery method: store pickup or shipping. Delivery timing will be communicated according to availability and destination. Provide accurate billing and delivery information; contact the team with your reference if you need to correct it."
         },
         "4": {
           "titulo": "Warranties, returns and complaints",
@@ -1872,6 +1871,7 @@
     "facturacion": "Billing details",
     "envio": "Shipping address",
     "misDatos": "My details",
+    "misFavoritos": "My favorites",
     "misCompras": "My purchases",
     "navegacion": "Account options",
     "guardarAutomatico": "We will update your details for future purchases."

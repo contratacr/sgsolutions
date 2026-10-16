@@ -2,7 +2,8 @@ import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const configuracion: NextConfig = {
-  ...(process.env.SG_PRUEBAS_INTEGRACION === '1' && process.env.SG_ENTORNO === 'local' ? {distDir: '.next-pruebas'} : {}),
+  ...(process.env.SG_PRUEBAS_INTEGRACION === '1' && process.env.SG_ENTORNO === 'local' ? {distDir: process.env.SG_MOBILE_PREVIEW === '1' ? '.next-mobile' : '.next-pruebas'} : {}),
+  outputFileTracingExcludes: {'/*': ['./.privado/**/*']},
   images: { unoptimized: true },
   poweredByHeader: false,
   experimental: {serverActions: {bodySizeLimit: '32mb'}},

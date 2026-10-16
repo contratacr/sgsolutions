@@ -3,11 +3,21 @@ import {plantillaCorreo,textoCorreo} from '../src/lib/email/plantilla';
 import {ejemplosCorreo} from '../src/lib/email/ejemplos';
 import es from '../messages/es.json';import en from '../messages/en.json';
 for(const idioma of ['es','en'] as const)test(`Correos de negocio y cuenta: diseño adaptable ${idioma}`,async({page})=>{
- await page.route('https://sgsolutionscr.com/imagenes/logo-principal.png',r=>r.fulfill({path:'public/imagenes/logo-principal.png',contentType:'image/png'}));
+ await page.route('https://sgsolutionscr.com/imagenes/logo-correo-v1.png',r=>r.fulfill({path:'public/imagenes/logo-correo-v1.png',contentType:'image/png'}));
  for(const ejemplo of ejemplosCorreo(idioma)){
   await page.setContent(ejemplo.html);
   await expect(page.locator('html')).toHaveAttribute('lang',idioma);
   await expect(page.getByRole('heading',{level:1})).toBeVisible();
+  await expect(page.locator('body')).toHaveCSS('background-color','rgb(12, 29, 43)');
+  await expect(page.locator('.email-surface')).toHaveCSS('border-top-width','0px');
+  await expect(page.locator('.email-surface')).toHaveCSS('border-radius','0px');
+  await expect(page.locator('.email-surface')).toHaveCSS('box-shadow','none');
+  await expect(page.locator('.email-header')).toHaveCSS('background-color','rgb(12, 29, 43)');
+  await expect(page.locator('img')).toHaveAttribute('src','https://sgsolutionscr.com/imagenes/logo-correo-v1.png');
+  if(ejemplo.id==='confirmation'){
+   await expect(page.locator('.email-code')).toHaveText('123456');
+   await expect(page.locator('.email-code')).toHaveCSS('background-color','rgb(24, 51, 70)');
+  }
   await expect.poll(()=>page.locator('img').evaluate(i=>(i as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
   expect(ejemplo.html).not.toContain('{{');expect(ejemplo.html).not.toContain('white-space:pre-line');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
@@ -25,11 +35,11 @@ test('Contenido escapado y párrafos compatibles con Outlook',async({page})=>{
 for(const idioma of ['es','en'] as const)test(`Vista interactiva de correos ${idioma}`,async({page,context,baseURL})=>{
  const t=(idioma==='es'?es:en).VistaCorreos;
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
- await page.route('https://sgsolutionscr.com/imagenes/logo-principal.png',r=>r.fulfill({path:'public/imagenes/logo-principal.png',contentType:'image/png'}));
+ await page.route('https://sgsolutionscr.com/imagenes/logo-correo-v1.png',r=>r.fulfill({path:'public/imagenes/logo-correo-v1.png',contentType:'image/png'}));
  await page.goto('/vista-previa/correos');
  const correo=page.frameLocator('iframe');await expect(correo.getByRole('heading',{level:1})).toHaveText(idioma==='es'?'Pago confirmado':'Payment confirmed');
  await page.getByRole('button',{name:t.claro,exact:true}).click();
- await expect(correo.locator('body')).toHaveCSS('background-color','rgb(16, 29, 40)');
+ await expect(correo.locator('body')).toHaveCSS('background-color','rgb(12, 29, 43)');
  await page.getByRole('button',{name:t.conImagenes,exact:true}).click();await expect(correo.locator('img')).toHaveCount(0);await expect(correo.locator('body')).toContainText('SG Solutions');
  await page.getByRole('combobox',{name:t.tipo}).selectOption('recovery');await expect(correo.getByRole('heading',{level:1})).toHaveText(idioma==='es'?'Recupere su contraseña':'Reset your password');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);

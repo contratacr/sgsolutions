@@ -7,14 +7,26 @@
     "ios": "cap open ios",
     "android": "cap open android",
     "doctor": "cap doctor",
-    "test": "node tests/smoke.mjs"
+    "test": "node --import tsx tests/native-runtime.mjs && node tests/preview-config.mjs && node tests/parity.mjs && node tests/state.mjs && node tests/smoke.mjs",
+    "build": "node scripts/build.mjs",
+    "presync": "npm run build",
+    "pretest": "npm run build",
+    "test:paridad": "node tests/parity.mjs",
+    "web": "node scripts/serve-web.mjs",
+    "sync:web": "npm run build && node scripts/sync-web.mjs",
+    "test:preview": "node tests/preview-config.mjs && node tests/web-preview.mjs",
+    "android:debug": "node scripts/android-debug.mjs"
   },
   "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/app": "^8.1.2",
     "@capacitor/core": "8.5.3",
     "@capacitor/ios": "8.5.3",
-    "@capacitor/android": "8.5.3"
+    "@capacitor/preferences": "^8.0.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "8.5.3"
-  }
+    "@capacitor/cli": "8.5.3",
+    "esbuild": "^0.28.2"
+  },
+  "type": "module"
 }

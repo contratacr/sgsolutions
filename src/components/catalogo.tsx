@@ -72,13 +72,17 @@ export function Catalogo({inicial}:{inicial:PaginaCatalogo}){
  const resultados=useRef<HTMLParagraphElement>(null);
  const cuadricula=useRef<HTMLDivElement>(null);
  const desplazarResultados=useRef(false);
- const clave=JSON.stringify([aplicados.categoria,aplicados.busqueda,orden,aplicados.marca,aplicados.subcategoria,aplicados.marcasElegidas,aplicados.min,aplicados.max,idioma,[...new Set([...historial.ids,...(sesionIniciada?favoritos.ids:[])])].slice(0,20).join(',')]);
  const marcas=datos.marcas.filter(nombre=>(datos.conteosMarcas[nombre]?.total??0)>0);
 
  const nombreCategoria=(id:string)=>{const c=datos.categorias.find(x=>x.id===id);return c?traducir(c.nombre,idioma):'';};
+ const parametros=new URLSearchParams({categoria:aplicados.categoria,marca:aplicados.marca,subcategoria:aplicados.subcategoria,min:aplicados.min,max:aplicados.max,q:aplicados.busqueda,orden,idioma});for(const m of aplicados.marcasElegidas)parametros.append('marcas',m);
+ if(orden==='recomendados'&&!aplicados.busqueda&&(historial.ids.length||(sesionIniciada&&favoritos.ids.length)))parametros.set('explorados',[...new Set([...historial.ids,...(sesionIniciada?favoritos.ids:[])])].slice(0,20).join(','));
+ // Reset pagination only when the actual query changes. Search results update
+ // exploration history themselves; including that unused history here makes
+ // page 2 reset to page 1, which restores the old history and requests page 2 again.
+ const clave=parametros.toString();
  const solicitada=paginacion.clave===clave?paginacion.pagina:1;
- const parametros=new URLSearchParams({categoria:aplicados.categoria,marca:aplicados.marca,subcategoria:aplicados.subcategoria,min:aplicados.min,max:aplicados.max,q:aplicados.busqueda,orden,idioma,pagina:String(solicitada)});for(const m of aplicados.marcasElegidas)parametros.append('marcas',m);
- if(orden==='recomendados'&&!busqueda&&(historial.ids.length||(sesionIniciada&&favoritos.ids.length)))parametros.set('explorados',[...new Set([...historial.ids,...(sesionIniciada?favoritos.ids:[])])].slice(0,20).join(','));
+ parametros.set('pagina',String(solicitada));
  const consulta=parametros.toString();
  const [respuesta,setRespuesta]=useState<{consulta:string;datos:PaginaCatalogo}>({consulta:new URLSearchParams({categoria:'todos',marca:'',subcategoria:'',min:'',max:'',q:'',orden:'recomendados',idioma,pagina:'1'}).toString(),datos:inicial}),[error,setError]=useState('');
  const recordar=datos.recordar;

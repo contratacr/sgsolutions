@@ -5,6 +5,9 @@
   "ejecucion": "Secuencial: los servidores Next de pruebas comparten .next-pruebas. No ejecutar configuraciones en paralelo.",
   "cobertura": {
     "regresion": [
+      "Catálogo: búsqueda y categorías de tres páginas, con y sin búsqueda, conservan filtro y página al avanzar y retroceder sin alternar ni parpadear",
+      "Acciones de producto sin parpadeo al ordenar o entrar a tienda; hover, teclado y controles táctiles",
+      "Tarjeta integrada en SG: perfil guardado sin navegación a cuenta, validación estricta del entorno SDK y 3DS fuera del formulario",
       "Tres pasos de compra y conservación de datos",
       "Un teléfono y acceso simplificado",
       "Atrás junto a Siguiente/Revisar pedido",
