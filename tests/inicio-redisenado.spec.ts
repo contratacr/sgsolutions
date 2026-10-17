@@ -7,12 +7,13 @@ for (const idioma of ['es', 'en'] as const) {
     await expect(page.locator('html')).toHaveAttribute('lang',idioma);
     await expect(page.getByRole('heading',{level:1})).toHaveText(idioma==='es'?'¿Qué necesita hoy?':'What do you need today?');
     await expect(page.locator('.inicio-camino')).toHaveCount(3);
+    for(const foto of await page.locator('.inicio-camino>img').all()){await expect(foto).toHaveAttribute('loading','eager');await expect(foto).toHaveAttribute('fetchpriority','high');}
     await expect(page.locator('.inicio-triptico-paneles')).toBeVisible();
     if (info.project.name === 'escritorio') {
       const paneles=page.locator('.inicio-triptico-panel');
-      await expect.poll(async()=>paneles.nth(2).evaluate(e=>e.getBoundingClientRect().width)).toBeGreaterThan(await paneles.nth(1).evaluate(e=>e.getBoundingClientRect().width));
+      expect(await paneles.evaluateAll(es=>Math.max(...es.map(e=>e.clientWidth))-Math.min(...es.map(e=>e.clientWidth)))).toBeLessThanOrEqual(1);
       await paneles.nth(1).hover();
-      await expect.poll(async()=>paneles.evaluateAll(es=>es[1].getBoundingClientRect().width-es[2].getBoundingClientRect().width)).toBeGreaterThan(0);
+      expect(await paneles.evaluateAll(es=>Math.max(...es.map(e=>e.clientWidth))-Math.min(...es.map(e=>e.clientWidth)))).toBeLessThanOrEqual(1);
     }
     await expect(page.locator('.inicio-caso,.inicio-cierre')).toHaveCount(0);
     if (info.project.name === 'escritorio') {
@@ -38,6 +39,7 @@ for (const idioma of ['es', 'en'] as const) {
     expect(await page.locator('main img').evaluateAll(imagenes=>imagenes.filter(i=>(i as HTMLImageElement).complete&&(i as HTMLImageElement).naturalWidth===0).length)).toBe(0);
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+    await page.screenshot({path:`.privado/inicio-imagenes/${info.project.name}-${idioma}.png`,fullPage:true});
   });
 }
 
@@ -78,13 +80,13 @@ test('presión sin saltos y navegación directa con movimiento reducido',async({
  await expect(page).toHaveURL(/\/soporte$/);
 });
 
-for(const idioma of ['es','en'])test(`Empresas destacada y toque con transición antes de navegar ${idioma}`,async({page,context})=>{
+for(const idioma of ['es','en'])test(`Tres destinos iguales y toque con transición antes de navegar ${idioma}`,async({page,context})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
  await page.setViewportSize({width:390,height:844});await page.goto('/');
  const paneles=page.locator('.inicio-triptico-panel');
  const alturas=await paneles.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height));
- expect(alturas[2]).toBeGreaterThan(alturas[0]*1.3);
- expect(alturas[2]).toBeGreaterThan(alturas[1]*1.3);
+ expect(Math.abs(alturas[2]-alturas[0])).toBeLessThanOrEqual(1);
+ expect(Math.abs(alturas[2]-alturas[1])).toBeLessThanOrEqual(1);
  const empresa=paneles.nth(2);await expect(empresa.locator('strong')).toContainText(idioma==='es'?'Empresas':'Business');
  // Mantener la siguiente respuesta pendiente para inspeccionar el efecto previo a la navegación.
  let liberar!:()=>void;const espera=new Promise<void>(r=>liberar=r);

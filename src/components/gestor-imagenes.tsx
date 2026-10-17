@@ -6,8 +6,9 @@ import * as Dialog from '@radix-ui/react-dialog';
 import {useLocale,useTranslations} from 'next-intl';
 import {imagenSitioValida} from '@/lib/imagenes-sitio';
 import {subirImagen} from '@/app/panel/imagenes';
+import {optimizarFotoInicio} from '@/lib/optimizar-foto-inicio';
 export type FotoAdmin={src:string;alt?:{es:string;en:string};caption?:{es:string;en:string}};
-export function GestorImagenes({fotos,cambiar,descripciones=false,descripcionesRequeridas=false,maximo=12,minimo=0,onBusy}:{fotos:FotoAdmin[];cambiar:(f:FotoAdmin[])=>void;descripciones?:boolean;descripcionesRequeridas?:boolean;maximo?:number;minimo?:number;onBusy?:(busy:boolean)=>void}){
+export function GestorImagenes({fotos,cambiar,descripciones=false,descripcionesRequeridas=false,maximo=12,minimo=0,portadaInicio=false,onBusy}:{fotos:FotoAdmin[];cambiar:(f:FotoAdmin[])=>void;descripciones?:boolean;descripcionesRequeridas?:boolean;maximo?:number;minimo?:number;portadaInicio?:boolean;onBusy?:(busy:boolean)=>void}){
  const t=useTranslations('AdminImagenes'),idioma=useLocale();
  const [ocupado,setOcupado]=useState(false),[error,setError]=useState(''),[url,setUrl]=useState(''),[visor,setVisor]=useState<string|null>(null),[anterior,setAnterior]=useState<FotoAdmin[]|null>(null);
  const archivo=useRef<HTMLInputElement>(null),reemplazo=useRef<number|null>(null);
@@ -21,7 +22,7 @@ export function GestorImagenes({fotos,cambiar,descripciones=false,descripcionesR
   try{
    const nuevas:FotoAdmin[]=[];
    for(const file of archivos){
-    const datos=new FormData();datos.set('archivo',file);
+    const datos=new FormData();datos.set('archivo',portadaInicio?await optimizarFotoInicio(file):file);
     const r=await subirImagen(datos);if(!r.src){setError(r.error??'errorCarga');return;}
     nuevas.push({src:r.src,alt:{es:'',en:''},caption:{es:'',en:''}});
    }

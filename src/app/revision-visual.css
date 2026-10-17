@@ -24,7 +24,7 @@ body:has(.inicio-triptico) .pie { border-top: 0; }
 .inicio-triptico { height: 100svh; min-height: 580px; display: block; padding: 0; background: #091725; }
 .inicio-triptico .inicio-triptico-paneles { display: flex; min-height: 0; height: 100%; width: 100%; gap: 0; margin: 0; }
 .inicio-triptico .inicio-triptico-panel { flex: 1 1 0; height: 100%; min-height: 0; align-self: stretch; border-radius: 0; }
-.inicio-triptico .inicio-triptico-panel:last-child { flex-grow: 1.65; }
+.inicio-triptico .inicio-triptico-panel:last-child { flex-grow: 1; }
 .inicio-triptico .inicio-triptico-panel + .inicio-triptico-panel { border: 0; }
 .inicio-triptico .inicio-triptico-panel { background: #091725; }
 .inicio-triptico .inicio-triptico-panel > img { z-index: 1; transform: none; filter: saturate(.88); }
@@ -63,13 +63,13 @@ body:has(.inicio-triptico) .pie { border-top: 0; }
 }
 @media (hover:hover) and (min-width:701px) {
   .inicio-triptico .inicio-triptico-paneles:hover .inicio-triptico-panel:last-child { flex-grow: 1; }
-  .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:hover { flex-grow: 1.65; }
+  .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:hover { flex-grow: 1; }
   body:has(.cabecera:hover) .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel { flex-grow: 1; }
-  body:has(.cabecera:hover) .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:last-child { flex-grow: 1.65; }
+  body:has(.cabecera:hover) .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:last-child { flex-grow: 1; }
 }
 @media (min-width:701px) {
   .inicio-triptico .inicio-triptico-paneles:focus-within .inicio-triptico-panel:last-child { flex-grow: 1; }
-  .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:focus-visible { flex-grow: 1.65; }
+  .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:focus-visible { flex-grow: 1; }
 }
 :where(.soporte-editorial,.empresas-editorial,.nosotros-pagina,.contacto-pagina,.historias) :is(h1,h2,h3) { text-wrap: balance; }
 :where(.soporte-editorial,.empresas-editorial,.nosotros-pagina,.contacto-pagina,.historias) :is(p,li) { text-wrap: pretty; }
@@ -226,12 +226,12 @@ html :is(.shop-buscador,.panel-buscador,.busqueda-equipo,.propuesta-buscar) inpu
 .compra-paso:focus{outline:none;scroll-margin-top:100px}
 @media(forced-colors:active){html :is(input,textarea,select):focus-visible{outline:2px solid Highlight!important;outline-offset:2px!important}}
 
-/* Empresas conserva más protagonismo en móvil; el toque anima solo el contenido. */
+/* El toque en móvil anima solo el contenido. */
 .inicio-toque-flecha{display:none}
 @media(max-width:700px){
  .inicio-triptico .inicio-triptico-panel:last-child,
  .inicio-triptico .inicio-triptico-panel:last-child:hover,
- .inicio-triptico .inicio-triptico-panel:last-child:focus-visible{flex-grow:1.45}
+ .inicio-triptico .inicio-triptico-panel:last-child:focus-visible{flex-grow:1}
  .inicio-triptico .inicio-camino-empresas .inicio-triptico-contenido::before{width:72px;height:5px}
  .inicio-triptico .inicio-camino-empresas .inicio-triptico-contenido strong{font-size:clamp(2rem,9vw,2.65rem)}
 }
@@ -1240,3 +1240,7 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 .favoritos-nav-movil{position:relative}
 .indicador-cantidad,.tienda-compacta .shop-resultados-cabecera .indicador-cantidad.shop-favoritos-contador{position:absolute;right:-3px;top:0;display:grid;place-items:center;min-width:20px;height:20px;padding:0 4px;margin:0;box-sizing:border-box;border:2px solid #fff;border-radius:999px;background:#bd421c;color:#fff;font-size:.65rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
 @media(max-width:850px){.accion-confirmacion.carrito-confirmacion,.accion-confirmacion.favoritos-confirmacion{top:calc(84px + env(safe-area-inset-top));right:16px;left:auto;width:min(360px,calc(100vw - 32px))}}
+
+/* Los tres destinos conservan la misma superficie, también con hover y foco. */
+body .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel,
+body .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:is(:hover,:focus-visible){flex-grow:1;transition:box-shadow .25s ease}

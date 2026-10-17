@@ -1,6 +1,7 @@
 'use client';
 import {useConfiguracionSitio} from '@/components/configuracion-sitio';
 import Image from 'next/image';
+import {imagenInicio} from '@/lib/imagenes-inicio';
 import Link from 'next/link';
 import {useRouter,usePathname} from 'next/navigation';
 import {useEffect,useRef,useState} from 'react';
@@ -32,14 +33,14 @@ export function Entrada() {
   return <section className="inicio-triptico inicio-portada inicio-caminos" aria-labelledby="entrada-titulo">
     <h1 id="entrada-titulo" className="sr-only">{t('tripticoTitulo')}</h1>
     <nav className="inicio-triptico-paneles inicio-caminos-grid" aria-label={t('menu')} data-navegando={navegando?'true':undefined}>
-      {destinos.map(({clave,href},indice)=><Link key={clave} href={href} prefetch={true} data-navegando={navegando===clave?'true':undefined} onNavigate={evento=>{
+      {destinos.map(({clave,href})=><Link key={clave} href={href} prefetch={true} data-navegando={navegando===clave?'true':undefined} onNavigate={evento=>{
         if(!window.matchMedia('(max-width:700px), (hover:none)').matches||window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
         evento.preventDefault();
         if(pendiente.current)return;
         pendiente.current=true;setNavegando(clave);
         temporizador.current=setTimeout(()=>router.push(href,{scroll:true}),900);
       }} className={`inicio-camino inicio-camino-${clave} inicio-triptico-panel`}>
-        <Image src={imagenes[({tienda:'inicioTienda',soporte:'inicioSoporte',empresas:'inicioEmpresas'} as const)[clave]]} alt="" fill sizes="(max-width: 700px) 100vw, 40vw" loading="eager" fetchPriority={indice===2?'high':'auto'}/>
+        <Image src={imagenInicio(imagenes[({tienda:'inicioTienda',soporte:'inicioSoporte',empresas:'inicioEmpresas'} as const)[clave]])} alt="" fill sizes="(max-width: 700px) 100vw, 40vw" loading="eager" fetchPriority="high"/>
         <span className="inicio-triptico-sombra" aria-hidden="true"/>
         <span className="inicio-triptico-contenido"><strong>{n(clave)}</strong><ArrowUpRight className="inicio-toque-flecha" size={26} aria-hidden="true"/></span>
       </Link>)}

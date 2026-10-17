@@ -23,8 +23,14 @@ La configuración de prueba omite `global_fetch_strictly_public` para permitir l
 servicios de loopback. Conserva el Worker compilado y `nodejs_compat`. La
 configuración de producción no cambia.
 
-GitHub Actions ejecuta `.github/workflows/pruebas-compras.yml` en pushes a main,
-pull requests y ejecuciones manuales. Arranca una base efímera desde las migraciones,
+GitHub Actions ejecuta las verificaciones rápidas de `.github/workflows/pruebas-compras.yml`
+en pushes a main y pull requests. La regresión completa y el Worker se ejecutan
+únicamente al iniciar el workflow manualmente desde Actions → Pruebas de compras
+sin cobros → Run workflow, seleccionando la rama que se desea probar. También puede
+usarse `gh workflow run pruebas-compras.yml --ref main`. No se inicia automáticamente
+antes de cada despliegue; se ejecuta cuando el usuario lo solicita.
+
+La ejecución manual arranca una base efímera desde las migraciones,
 no usa secretos del repositorio y guarda únicamente un resumen sin credenciales.
 Una prueba fallida impide que el chequeo sea verde; el workflow no despliega la web.
 Configure el chequeo como obligatorio para integrar cambios en main cuando se

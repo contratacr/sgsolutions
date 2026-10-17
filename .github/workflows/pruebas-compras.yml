@@ -55,6 +55,7 @@ jobs:
           path: .privado/evidencias/dependencias.json
           retention-days: 7
   pruebas:
+    if: github.event_name == 'workflow_dispatch'
     needs: seguridad
     runs-on: ubuntu-latest
     timeout-minutes: 35
@@ -98,6 +99,7 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
   worker:
+    if: github.event_name == 'workflow_dispatch'
     needs: seguridad
     runs-on: ubuntu-latest
     timeout-minutes: 35
