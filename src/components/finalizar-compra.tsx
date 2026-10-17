@@ -301,7 +301,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
       ) : (
         <div className="compra-grid">
           <div>
-      {!enlaceInvalido&&!errorAutorizacion&&lineas.length>0&&!revision&&<nav ref={cabeceraPasos} tabIndex={-1} className="compra-pasos" aria-label={t('pasosCompra')}>{['pasoInformacion','pasoAdicional','pasoPago'].map((clave,i)=><button key={clave} type="button" aria-current={paso===i?'step':undefined} disabled={i>ultimoPaso||procesando} onClick={()=>{if(i<=paso)cambiarPaso(i);else if(formularioPasos.current&&validarPaso(formularioPasos.current,paso))cambiarPaso(i);}}><span>{String(i+1).padStart(2,'0')}.</span><strong>{t(clave)}</strong></button>)}</nav>}
+      {!enlaceInvalido&&!errorAutorizacion&&lineas.length>0&&!revision&&<nav ref={cabeceraPasos} tabIndex={-1} className="compra-pasos" aria-label={t('pasosCompra')}>{['pasoInformacion','pasoAdicional','pasoPago'].map((clave,i)=><button key={clave} type="button" aria-current={paso===i?'step':undefined} disabled={!borradorListo||i>ultimoPaso||procesando} onClick={()=>{if(i<=paso)cambiarPaso(i);else if(formularioPasos.current&&validarPaso(formularioPasos.current,paso))cambiarPaso(i);}}><span>{String(i+1).padStart(2,'0')}.</span><strong>{t(clave)}</strong></button>)}</nav>}
             {!simularPedido&&!cuentaDisponible&&!revision&&<AccesoCompra google={googleDisponible} retorno={aprobacion?'/pagar?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}) :'/pagar'}/>}
             {revision ? (
               <section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
@@ -352,7 +352,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
               <form key={borradorListo?'restaurado':'inicial'} ref={formularioPasos} onChangeCapture={()=>{borradorModificado.current=true;queueMicrotask(()=>guardarBorradorActual.current());}} noValidate onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
 
                 {cuentaDisponible&&<p className="compra-guardar-datos">{dc('guardarAutomatico')}</p>}
-                <div data-compra-paso="0" hidden={paso!==0}><section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
+                <div data-compra-paso="0" hidden={paso!==0}><fieldset className="compra-restaurando" disabled={!borradorListo} aria-busy={!borradorListo}><section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">
                   <h2>
                     {t("datosContactoTitulo")}
                   </h2>
@@ -421,7 +421,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                       )}
                     </div>
                   )}
-                </section>
+                </section></fieldset>
                 </div><div data-compra-paso="1"  hidden={paso!==1}><section className="compra-bloque">
                   <h2>
                     {t("pasoAdicional")}
@@ -513,7 +513,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                   </div>
                 </section></div>
                 {paso<2&&errorFormulario&&<p role="alert" className="aviso-formulario">{t('validacion')}</p>}
-                {paso<2&&<div className={`compra-pasos-acciones${paso===0?' compra-acciones-iniciales':''}`}>{paso===0&&<Link className="compra-regresar-tienda" href="/tienda"><ArrowLeft size={18} aria-hidden="true"/>{t('volver')}</Link>}{paso>0&&<button type="button" className="boton boton-contorno" onClick={()=>cambiarPaso(paso-1)} disabled={procesando}>{t('pasoAtras')}</button>}{paso<2&&<button type="submit" className="boton boton-azul">{t('pasoSiguiente')}<ArrowRight size={18} aria-hidden="true"/></button>}</div>}
+                {paso<2&&<div className={`compra-pasos-acciones${paso===0?' compra-acciones-iniciales':''}`}>{paso===0&&<Link className="compra-regresar-tienda" href="/tienda"><ArrowLeft size={18} aria-hidden="true"/>{t('volver')}</Link>}{paso>0&&<button type="button" className="boton boton-contorno" onClick={()=>cambiarPaso(paso-1)} disabled={procesando}>{t('pasoAtras')}</button>}{paso<2&&<button type="submit" className="boton boton-azul" disabled={!borradorListo||procesando}>{t('pasoSiguiente')}<ArrowRight size={18} aria-hidden="true"/></button>}</div>}
               </form>
             )}
           </div>

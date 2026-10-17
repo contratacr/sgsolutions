@@ -37,6 +37,6 @@ for(const idioma of ['es','en'])test(`favoritos dentro de mi cuenta conservan ta
  expect(await page.locator('.favoritos-grid').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length)).toBe(info.project.name==='safari-movil'?2:3);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.screenshot({path:`.privado/favoritos-cuenta-${info.project.name}-${idioma}.png`,fullPage:true});
- await page.reload();await expect(tarjetas).toHaveCount(4);await tarjetas.first().hover();await tarjetas.first().locator('[aria-pressed]').click();await expect(tarjetas).toHaveCount(3);
+ await page.reload();await expect(tarjetas).toHaveCount(4);await tarjetas.first().hover();const guardado=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/favoritos'&&r.request().method()==='POST');await tarjetas.first().locator('[aria-pressed]').click();await expect(tarjetas).toHaveCount(3);expect((await guardado).status()).toBe(204);
  await page.reload();await expect(tarjetas).toHaveCount(3);await expect(page.locator('html')).toHaveAttribute('lang',idioma);
 });
