@@ -19,7 +19,7 @@ try{
   console.log(`\nRegresión: ${nombre}`);
   const inicio=Date.now();let log='';
   const codigo=await new Promise((done)=>{
-   const argumentos=bin==='npx'?[...args,'--output',resolve(carpeta,nombre+'-resultados')]:args;
+   const argumentos=bin==='npx'?[...args,'--output',resolve('test-results',nombre)]:args;
    const hijo=spawn(bin,argumentos,{stdio:['ignore','pipe','pipe'],env:{...process.env,
     PLAYWRIGHT_HTML_OUTPUT_DIR:resolve(carpeta,nombre+'-html'),
     PLAYWRIGHT_JSON_OUTPUT_NAME:resolve(carpeta,nombre+'.json'),
