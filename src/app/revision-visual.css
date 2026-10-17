@@ -1203,3 +1203,11 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 .tienda-compacta .shop-categorias .shop-categoria-empresa>button{background:#eef4f8!important;color:#284c68!important;font-weight:600;border-radius:6px}
 .tienda-compacta .shop-categorias .shop-categoria-empresa>button:hover{background:#e5eef5!important}
 .tienda-compacta .shop-categorias .shop-categoria-empresa>button[aria-pressed=true]{background:#dfeaf3!important;color:#214661!important}
+
+/* Favorites reuse shop cards; columns respond to their actual account/page width. */
+.favoritos-seccion{container-type:inline-size;min-width:0;padding-top:0}
+.tienda-compacta.favoritos-seccion .favoritos-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 14px;margin:20px 0 28px}
+.favoritos-seccion .favoritos-grid .shop-foto{height:auto;min-height:0;max-height:none;aspect-ratio:1}
+@container(min-width:700px){.tienda-compacta.favoritos-seccion .favoritos-grid{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:20px}}
+@container(min-width:980px){.tienda-compacta.favoritos-seccion .favoritos-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:650px){.favoritos-seccion .favoritos-grid .shop-foto{height:168px;min-height:168px;max-height:168px}}

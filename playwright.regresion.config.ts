@@ -2,7 +2,7 @@ import {defineConfig,devices} from '@playwright/test';
 import base from './playwright.checkout-ui.config';
 const servidor=Array.isArray(base.webServer)?base.webServer[0]:base.webServer;
 export default defineConfig({...base,
- testMatch:['soluciones-empresariales.spec.ts',
+ testMatch:['favoritos-diseno.spec.ts','soluciones-empresariales.spec.ts',
   'checkout-pasos.spec.ts','checkout-ingreso.spec.ts','express-envio.spec.ts',
   'identificacion-tipos.spec.ts','telefono.spec.ts','validacion-espaciado.spec.ts',
   'disponibilidad-prueba.spec.ts','pedidos-propuesta.spec.ts',

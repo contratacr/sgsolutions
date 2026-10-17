@@ -1,8 +1,9 @@
 'use client';
+import {patronIdFavorito} from './favoritos-identidad';
 import {useEffect,useState,useRef} from 'react';
 import {useSesionCuenta} from '@/components/sesion-cuenta';
 const claveInvitado='sg-favoritos-invitado';
-function leer(clave:string):string[]{try{const v=JSON.parse(localStorage.getItem(clave)||'[]');return Array.isArray(v)?[...new Set(v.filter(x=>typeof x==='string'&&/^eurocomp-[a-z0-9-]+$/.test(x)))].slice(0,100):[];}catch{return [];}}
+function leer(clave:string):string[]{try{const v=JSON.parse(localStorage.getItem(clave)||'[]');return Array.isArray(v)?[...new Set(v.filter(x=>typeof x==='string'&&patronIdFavorito.test(x)))].slice(0,100):[];}catch{return [];}}
 export function useFavoritos(){
  const iniciada=useSesionCuenta();const [ids,setIds]=useState<string[]>([]),[error,setError]=useState(false),[listo,setListo]=useState(false);
  const clave=useRef(claveInvitado),cola=useRef(Promise.resolve());

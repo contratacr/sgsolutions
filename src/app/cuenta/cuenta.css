@@ -75,3 +75,13 @@
 .cuenta-google-boton[hidden]{display:none}
 
 .cuenta-datos details.cuenta-datos-desplegable{border-top:0;padding:0}.cuenta-datos-desplegable>summary h2{display:inline;margin:0;font-size:1.3rem}.cuenta-datos-desplegable>p{color:#536c7e;font-size:.875rem;line-height:1.6;max-width:620px}
+
+/* Administrative access and sign-out belong to the same account navigation. */
+.cuenta-menu-secciones>form{margin:0}
+.cuenta-menu-secciones>form>.cuenta-salir{display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:15px 14px;border:0;border-radius:9px;background:transparent;color:#244967;font:inherit;font-size:.9rem;font-weight:600;text-align:left;cursor:pointer}
+.cuenta-menu-secciones>form>.cuenta-salir:hover{background:#f3f6f9}
+.cuenta-menu-secciones>form>.cuenta-salir:focus-visible{outline:2px solid #406985;outline-offset:-2px}
+@media(max-width:650px){
+ .cuenta-menu-secciones>form{border-top:1px solid #edf1f5}
+ .cuenta-menu-secciones>form>.cuenta-salir{padding:20px 18px;border-radius:0}
+}

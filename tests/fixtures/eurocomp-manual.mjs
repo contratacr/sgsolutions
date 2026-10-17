@@ -1,6 +1,7 @@
 import http from 'node:http';
 let intento=Date.now()-10*60_000,modo='ok',consultas=0,publicaciones=0;
 const base={gestion:'manual',categorias:[{id:'redes',nombre:{es:'Redes',en:'Networking'}}],productos:[],ajustes:{cambio:500,adicional:0,iva:13,utilidad:20},textos:{titulo:{es:'Tienda',en:'Store'},descripcion:{es:'Equipos',en:'Equipment'},aviso:{es:'Disponibilidad',en:'Availability'}}};
+const favoritos=new Map();
 let privado=structuredClone(base),visible={...base},revision=0,copia={fecha:'2026-10-13T00:00:00Z',articulos:[],bodega:0};
 http.createServer(async(req,res)=>{
  const u=new URL(req.url,'http://127.0.0.1:3121');let text='';for await(const c of req)text+=c;
@@ -17,6 +18,13 @@ http.createServer(async(req,res)=>{
  let sub='';try{sub=JSON.parse(Buffer.from((req.headers.authorization??'').split('.')[1]??'','base64url').toString()).sub??'';}catch{}
  if(u.pathname==='/auth/v1/settings')return send({});
  if(u.pathname==='/auth/v1/user')return sub?send({id:sub,email:'admin-fixture@example.com',aud:'authenticated',email_confirmed_at:'2026-10-13T00:00:00Z',app_metadata:{},user_metadata:{}}):error('SIN_PERMISO',401);
+ if(u.pathname==='/rest/v1/rpc/cuenta_habilitada')return send(Boolean(sub)&&!sub.endsWith('7'));
+ if(u.pathname==='/rest/v1/favoritos'){
+  const ids=favoritos.get(sub)??new Set();favoritos.set(sub,ids);
+  if(req.method==='POST')for(const x of Array.isArray(d)?d:[d])ids.add(x.producto_id);
+  if(req.method==='DELETE')ids.delete((u.searchParams.get('producto_id')??'').replace(/^eq\./,''));
+  return send(req.method==='GET'?[...ids].map(producto_id=>({producto_id})):null);
+ }
  if(u.pathname==='/rest/v1/perfiles')return send({id:sub,rol:'administrador',activo:!sub.endsWith('7')});
  if(u.pathname==='/rest/v1/rpc/es_administrador_activo')return send(Boolean(sub)&&!sub.endsWith('7'));
  if(u.pathname==='/rest/v1/catalogo_publico')return send({contenido:visible});

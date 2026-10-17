@@ -30,3 +30,9 @@ Para pruebas de autenticación en localhost, `CUENTAS_SUPABASE_URL` y `CUENTAS_S
 El 11 de octubre de 2026 se configuró el proyecto de producción con SMTP de Brevo (remitente `asesor@sgsolutionscr.com`), registro con confirmación obligatoria, contraseña mínima de 10 caracteres, cambio seguro de contraseña y callbacks exactos para localhost y el dominio real. Se conservaron los callbacks de activación del administrador. Las plantillas de confirmación y recuperación usan el idioma del perfil y enlaces con token de un solo uso. La clave SMTP solo se guarda en Supabase, no en el repositorio.
 
 Se aplicó primero la migración faltante `20260930000100_pedidos_tilopay.sql` y luego la migración de clientes. Una prueba en transacción con dos usuarios temporales verificó pedidos propios, aislamiento entre usuarios, exclusión de tarjetas en pruebas y ausencia de acceso anónimo o directo a tablas. Se revirtieron todos los datos de prueba. La configuración y esas pruebas no equivalen a verificar la entrega en una bandeja real: falta completar el primer registro desde la interfaz y recibir el correo. Los cambios de interfaz permanecen locales hasta autorizar su publicación.
+
+### Favoritos: tarjetas y equipos empresariales
+
+La tienda y los favoritos comparten `TarjetaProducto`. La cuadrícula se adapta al ancho de su contenedor: dos columnas, tres desde 700 px y cuatro desde 980 px. Conserva las acciones de compra, consulta y vista previa.
+
+La ampliación a identificadores `empresa-intcomex-*` requiere la migración `20261016000100_favoritos_empresariales.sql` antes de publicar el cambio de API. Mantiene las políticas de propiedad y cuenta habilitada. Se probó con PostgreSQL aislado y se aplicó en producción desde SQL Editor, con autorización explícita del usuario el 16 de octubre de 2026. Se verificaron la nueva restricción, RLS activo, las tres políticas originales y la conservación del favorito existente.
