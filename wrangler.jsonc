@@ -2,6 +2,13 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "sgsolutions",
   "workers_dev": true,
+  // Match the audited production settings. Never persist request metadata for
+  // statistics. Query redaction also protects URLs if logging is enabled later.
+  "observability": {
+    "redact_query_string": true,
+    "logs": {"enabled": false, "invocation_logs": false},
+    "traces": {"enabled": false}
+  },
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-09-09",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
