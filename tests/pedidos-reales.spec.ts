@@ -48,8 +48,11 @@ for(const idioma of ['es','en'] as const)test(`header compartido en cada secció
   if(ruta==='/panel/pedidos'){await mkdir('.privado/pedidos-reales',{recursive:true});await page.screenshot({path:`.privado/pedidos-reales/navegacion-${info.project.name}-${idioma}.png`});}
   await expect(header).toBeVisible();await expect(page.locator('header.cabecera')).toHaveCount(0);
   await expect(header.locator('a[aria-current=page]')).toHaveAttribute('href',ruta);
-  await expect(header.locator('.panel-idiomas button[aria-pressed=true]')).toHaveText(idioma.toUpperCase());
+  await expect(header.locator('.panel-idiomas, [data-cerrar-sesion]')).toHaveCount(0);
+  await expect(page.locator('html')).toHaveAttribute('lang',idioma);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
-  if(info.project.name==='safari-mobile'&&ruta==='/panel')await expect.poll(()=>etapasVisibles(header.locator('nav'))).toBe(true);
+  const activo=header.locator('nav a[aria-current=page]');
+  await expect.poll(()=>activo.evaluate(el=>{const texto=el.querySelector('span')!,estilo=getComputedStyle(texto);return estilo.borderBottomColor==='rgb(239, 78, 43)'&&el.clientWidth<texto.clientWidth+40;})).toBe(true);
+  await expect(header.locator('nav')).toHaveCSS('scrollbar-width','none');
  }
 });

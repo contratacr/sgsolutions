@@ -38,7 +38,7 @@ export function BandejaPedidosReales({items,crear,destacado}:{items:ItemPedidoRe
    <div><span>{l('estadoPago')}</span><SelectorMenu etiqueta={l('estadoPago')} valor={pago} cambiar={v=>{setPago(v);setLimite(20);}} opciones={[{valor:'todos',texto:l('todos')},{valor:'pendiente',texto:l('pagoPendiente')},{valor:'confirmado',texto:l('pagoConfirmado')}]}/></div>
    <div><span>{t('ordenar')}</span><SelectorMenu etiqueta={t('ordenFecha')} valor={orden} cambiar={v=>{setOrdenes(o=>({...o,[vista]:v}));setLimite(20);}} opciones={['antiguos','recientes'].map(v=>({valor:v,texto:t(v)}))}/></div>
   </div>
-  <div className="pedidos-reales-resultados"><p role="status">{t('resultados',{cantidad:filtrados.length})}</p>{(buscar||metodo!=='todos'||entrega!=='todos'||pago!=='todos')&&<button type="button" onClick={limpiar}><X size={14} aria-hidden="true"/>{t('limpiar')}</button>}</div>
+  <div className="pedidos-reales-resultados"><p className="solo-lectores" role="status">{t('resultados',{cantidad:filtrados.length})}</p>{(buscar||metodo!=='todos'||entrega!=='todos'||pago!=='todos')&&<button type="button" onClick={limpiar}><X size={14} aria-hidden="true"/>{t('limpiar')}</button>}</div>
   <div className="pedidos-reales-columnas" aria-hidden="true"><span>{t('clientePedido')}</span><span>{t('pago')}</span><span>{t('entrega')}</span><span>{t('total')}</span><span/></div>
   <div className="pedidos-admin-lista">{filtrados.slice(0,limite).map(p=><div key={p.tipo+'-'+p.id} data-pedido={p.id}>{Children.toArray(p.contenido)}</div>)}</div>
   {!filtrados.length&&<div className="pedidos-reales-vacio"><Search size={28} aria-hidden="true"/><h2>{t('vacio')}</h2><p>{t('vacioAyuda')}</p><button type="button" onClick={limpiar}>{t('limpiar')}</button></div>}
