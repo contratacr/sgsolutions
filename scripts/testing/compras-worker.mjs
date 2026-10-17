@@ -13,6 +13,7 @@ import {
   publicarCatalogo,
   calcularPrecio,
 } from "../../src/lib/catalogo-modelo.ts";
+execFileSync(process.execPath, ['scripts/preparar-catalogo.mjs'], {stdio:'inherit'});
 const root = process.cwd(),
   appPort = 3118,
   mockPort = 3119,

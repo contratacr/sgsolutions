@@ -1,4 +1,4 @@
-import {spawn} from 'node:child_process';
+import {spawn,execFileSync} from 'node:child_process';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 const bloques=[
@@ -8,6 +8,8 @@ const bloques=[
 ];
 const seleccion=process.argv.slice(2);
 if(seleccion.some(n=>!bloques.some(([nombre])=>nombre===n))){console.error('Bloques disponibles:',bloques.map(([n])=>n).join(', '));process.exit(2);}
+// Fresh CI checkouts do not contain the ignored local catalogue snapshot.
+execFileSync(process.execPath,['scripts/preparar-catalogo.mjs'],{stdio:'inherit'});
 const carpeta=resolve('.privado/regresion',new Date().toISOString().replaceAll(':','-'));
 await mkdir(carpeta,{recursive:true});
 const resultados=[];
