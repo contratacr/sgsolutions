@@ -1643,7 +1643,7 @@
     "dimex": "DIMEX",
     "nite": "NITE",
     "mensajeDisponibilidadInicio": "Hola, SG Solutions. Quisiera consultar la disponibilidad de lo siguiente:",
-    "mensajeDisponibilidadCierre": "¿Me confirman si tienen disponible la cantidad indicada, el plazo de entrega y cómo realizar la compra?"
+    "mensajeDisponibilidadCierre": "¿Me confirman si tienen disponible este producto, el plazo de entrega y cómo puedo realizar la compra?"
   },
   "AsesoriaAdmin": {
     "titulo": "Solicitudes de asesoría",

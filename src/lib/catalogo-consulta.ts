@@ -1,5 +1,5 @@
 import {nombreMarca} from './marcas-nombres';
-import {catalogoTienda,solucionesEmpresariales} from './soluciones-empresariales';
+import {catalogoTienda,clasificacionesDeProducto,solucionesEmpresariales,seleccionInicioEmpresarial} from './soluciones-empresariales';
 import {prepararBusqueda,coincidenciaBusqueda} from './busqueda-catalogo';
 import {traducir,type CatalogoPublico} from './catalogo-modelo';
 export function resumenCatalogo(c:CatalogoPublico){
@@ -15,8 +15,11 @@ export function resumenCatalogo(c:CatalogoPublico){
   let marca=marcas.get(p.marca);
   if(!marca){marca={total:0,categorias:Object.fromEntries(c.categorias.map(cat=>[cat.id,0])),subcategorias:{}};marcas.set(p.marca,marca);}
   marca.total++;
-  if(p.categoria in conteos){conteos[p.categoria]++;marca.categorias[p.categoria]++;}
-  if(p.subcategoria){const clave=p.categoria+'|'+p.subcategoria.es;subcategorias.set(clave,{categoria:p.categoria,nombre:p.subcategoria,cantidad:(subcategorias.get(clave)?.cantidad??0)+1});marca.subcategorias[clave]=(marca.subcategorias[clave]??0)+1;}
+  for(const clasificacion of clasificacionesDeProducto(p)){
+   const {categoria,subcategoria}=clasificacion;
+   if(categoria in conteos){conteos[categoria]++;marca.categorias[categoria]++;}
+   if(subcategoria){const clave=categoria+'|'+subcategoria.es;subcategorias.set(clave,{categoria,nombre:subcategoria,cantidad:(subcategorias.get(clave)?.cantidad??0)+1});marca.subcategorias[clave]=(marca.subcategorias[clave]??0)+1;}
+  }
  }
  return {precioMinimo:Number.isFinite(precioMinimo)?precioMinimo:0,precioMaximo,conteosMarcas:Object.fromEntries(marcas),subcategorias:[...subcategorias.values()].sort((a,b)=>(a.categoria==='soluciones-empresariales'?solucionesEmpresariales.findIndex(x=>x.nombre.es===a.nombre.es):999)-(b.categoria==='soluciones-empresariales'?solucionesEmpresariales.findIndex(x=>x.nombre.es===b.nombre.es):999)),categorias:c.categorias,textos:c.textos,total:c.productos.length,marcas:[...marcas.keys()].filter(Boolean),conteos};
 }
@@ -28,19 +31,33 @@ export function consultarCatalogo(c:CatalogoPublico,params:URLSearchParams,popul
  const precio=(key:string)=>{const v=params.get(key);if(!v)return null;const n=Number(v);return Number.isFinite(n)&&n>=0&&n<=1000000000?n:null;};
  const min=precio('min'),max=precio('max');
  const busqueda=prepararBusqueda(q);
- const relevancia=new Map(q?c.productos.map(p=>[p.id,coincidenciaBusqueda(p,busqueda,c.categorias.find(cat=>cat.id===p.categoria)?.nombre.es??'')]):[]);
- const candidatos=c.productos.filter(p=>(categoria==='todos'||p.categoria===categoria)&&(!subcategoria||p.subcategoria?.es===subcategoria)&&(!marcas.length||marcas.includes(p.marca))&&(!q||(relevancia.get(p.id)??0)>0));
+ const relevancia=new Map(q?c.productos.map(p=>[p.id,coincidenciaBusqueda(p,busqueda,clasificacionesDeProducto(p).map(x=>{const nombre=c.categorias.find(cat=>cat.id===x.categoria)?.nombre;return [nombre?.es,nombre?.en,x.subcategoria?.es,x.subcategoria?.en].filter(Boolean).join(' ');}).join(' '))]):[]);
+ const candidatos=c.productos.filter(p=>clasificacionesDeProducto(p).some(x=>(categoria==='todos'||x.categoria===categoria)&&(!subcategoria||x.subcategoria?.es===subcategoria))&&(!marcas.length||marcas.includes(p.marca))&&(!q||(relevancia.get(p.id)??0)>0));
  const visibles=candidatos.filter(p=>(min===null||(p.precio!==null&&p.precio>=min))&&(max===null||(p.precio!==null&&p.precio<=max)));
 
  const ids=(params.get('explorados')??'').split(',').filter(id=>/^[a-z0-9][a-z0-9-]{0,59}$/.test(id)).slice(0,20);
  const contexto=ids.flatMap(id=>{const p=c.productos.find(x=>x.id===id);return p?[p]:[];});
  const puntuacion=(p:CatalogoPublico['productos'][number])=>Number(p.destacado)+contexto.reduce((n,x,i)=>n+((x.categoria===p.categoria?3:0)+(x.marca&&x.marca===p.marca?1:0))/(i+1),0);
  visibles.sort((a,b)=>orden==='menor'?(a.precio??Infinity)-(b.precio??Infinity):orden==='mayor'?(b.precio??-Infinity)-(a.precio??-Infinity):orden==='nombre'?traducir(a.nombre,idioma).localeCompare(traducir(b.nombre,idioma)):(q?(relevancia.get(b.id)??0)-(relevancia.get(a.id)??0):0)||puntuacion(b)-puntuacion(a)||(popularidad[b.id]??0)-(popularidad[a.id]??0)||a.id.localeCompare(b.id));
+ // Keep immediate purchases first; reserve the last row for four complete business solutions.
+ let ordenados=visibles;
+ if(orden==='recomendados'&&categoria==='todos'&&!subcategoria&&!marcas.length&&!q){
+  const directos=visibles.filter(p=>p.coleccion!=='empresas'&&p.precio!==null&&p.disponibilidad!=='agotado');
+  const empresariales=visibles.filter(p=>p.coleccion==='empresas');
+  const elegibles=empresariales.filter(p=>p.precio!==null&&p.disponibilidad!=='agotado');
+  const destacados=seleccionInicioEmpresarial.flatMap(({solucion,id})=>{
+   const p=elegibles.find(p=>p.id===id)??elegibles.find(p=>p.solucionEmpresarial===solucion&&/router|gateway|switch|cámara|camara|servidor nas|ups|respaldo de energía/i.test(p.nombre.es));
+   return p?[p]:[];
+  });
+  const idsDestacados=new Set(destacados.map(p=>p.id));
+  const pendientes=visibles.filter(p=>p.coleccion!=='empresas'&&(p.precio===null||p.disponibilidad==='agotado'));
+  ordenados=[...directos.slice(0,20),...destacados,...directos.slice(20),...empresariales.filter(p=>!idsDestacados.has(p.id)),...pendientes];
+ }
  const paginas=Math.max(1,Math.ceil(visibles.length/24)),solicitada=Number(params.get('pagina')??1),pagina=Math.min(paginas,Math.max(1,Number.isSafeInteger(solicitada)?solicitada:1));
  const precios=candidatos.flatMap(p=>p.precio!==null&&Number.isFinite(p.precio)?[p.precio]:[]);
  const rangoPrecios=precios.reduce((r,p)=>({minimo:Math.min(r.minimo,p),maximo:Math.max(r.maximo,p)}),{minimo:Infinity,maximo:0});
  if(!Number.isFinite(rangoPrecios.minimo))rangoPrecios.minimo=0;
- return {rangoPrecios,productos:visibles.slice((pagina-1)*24,pagina*24),total:visibles.length,pagina,paginas};
+ return {rangoPrecios,productos:ordenados.slice((pagina-1)*24,pagina*24),total:visibles.length,pagina,paginas};
 }
 export type ResumenCatalogo=ReturnType<typeof resumenCatalogo>;
 export type PaginaCatalogo=ReturnType<typeof consultarCatalogo>;

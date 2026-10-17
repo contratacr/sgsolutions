@@ -34,7 +34,8 @@ test('categoría, subcategoría y marcas acotan el rango antes de aplicar los l�
 
 for(const idioma of ['es','en'])test(`el rango sigue la selección incluso antes de aplicar el panel móvil ${idioma}`,async({page,context,baseURL,request},info)=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
- await page.locator('.shop-empresa-entrada button').click();
+ if(/movil|mobile/.test(info.project.name))await page.locator('.shop-abrir-filtros').click();
+ await page.locator(/movil|mobile/.test(info.project.name)?'.shop-panel-filtros .shop-categoria-empresa>button':'.shop-sidebar .shop-categoria-empresa>button').click();
  const movil=/movil|mobile/.test(info.project.name),panel=page.locator(movil?'.shop-panel-filtros':'.shop-sidebar');
  await panel.locator('.shop-subcategorias button').filter({hasText:idioma==='es'?'Almacenamiento y respaldo':'Storage and backup'}).click();
  const esperado=(await(await request.get('/api/catalogo?categoria=soluciones-empresariales&subcategoria=Almacenamiento%20y%20respaldo')).json()).rangoPrecios;

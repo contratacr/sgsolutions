@@ -2,6 +2,8 @@ import {test,expect} from '@playwright/test';
 import {consultarCatalogo} from '../src/lib/catalogo-consulta';
 import {recomendaciones} from '../src/lib/recomendaciones';
 import {publicarCatalogo,esquemaCatalogo} from '../src/lib/catalogo-modelo';
+import {seleccionInicioEmpresarial} from '../src/lib/soluciones-empresariales';
+import {incorporarEmpresariales} from '../src/lib/incorporar-empresariales';
 import inicial from '../src/lib/catalogo-inicial.json';
 test('recomendaciones excluyen stock bajo, precios pendientes y el producto actual',()=>{
  const c=esquemaCatalogo.parse(inicial),base=c.productos[0];
@@ -35,4 +37,35 @@ for(const idioma of ['es','en'])test('recomendaciones temporales sin historial p
  await page.locator('.shop-orden-trigger').click();await page.locator('[data-orden="menor"]').click();
  await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});
+
+
+test('la portada conserva compra directa y destaca cuatro soluciones sin perder productos',()=>{
+ const c=publicarCatalogo(incorporarEmpresariales(esquemaCatalogo.parse(inicial)));
+ const primera=consultarCatalogo(c,new URLSearchParams()),segunda=consultarCatalogo(c,new URLSearchParams({pagina:'2'}));
+ expect(primera.productos).toHaveLength(24);
+ expect(primera.productos.slice(0,20).every(p=>p.coleccion!=='empresas')).toBe(true);
+ expect(primera.productos.slice(20).map(p=>p.id)).toEqual(seleccionInicioEmpresarial.map(p=>p.id));
+ expect(segunda.productos.every(p=>p.coleccion!=='empresas')).toBe(true);
+ const todos=Array.from({length:primera.paginas},(_,i)=>consultarCatalogo(c,new URLSearchParams({pagina:String(i+1)})).productos).flat();
+ expect(todos).toHaveLength(primera.total);expect(new Set(todos.map(p=>p.id)).size).toBe(primera.total);
+ const sinPreferido={...c,productos:c.productos.filter(p=>p.id!==seleccionInicioEmpresarial[0].id)};
+ const reemplazos=consultarCatalogo(sinPreferido,new URLSearchParams()).productos.filter(p=>p.coleccion==='empresas');
+ expect(reemplazos).toHaveLength(4);expect(new Set(reemplazos.map(p=>p.solucionEmpresarial)).size).toBe(4);
+ const soloDirectos={...c,productos:c.productos.filter(p=>p.coleccion!=='empresas')};
+ expect(consultarCatalogo(soloDirectos,new URLSearchParams()).total).toBe(soloDirectos.productos.length);
+ const soloEmpresas=consultarCatalogo(c,new URLSearchParams({categoria:'soluciones-empresariales'}));
+ expect(soloEmpresas.productos.every(p=>p.coleccion==='empresas')).toBe(true);
+ for(const orden of ['menor','mayor']){
+  const precios=consultarCatalogo(c,new URLSearchParams({orden})).productos.map(p=>p.precio!);
+  expect(precios).toEqual([...precios].sort((a,b)=>orden==='menor'?a-b:b-a));
+ }
+});
+
+for(const idioma of ['es','en'])test(`tienda abre con veinte compras directas y cuatro soluciones ${idioma}`,async({page,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
+ await expect(page.locator('.shop-orden-trigger')).toBeEnabled();
+ const tarjetas=page.locator('.shop-grid .shop-producto');await expect(tarjetas).toHaveCount(24);
+ for(let i=0;i<24;i++)await expect(tarjetas.nth(i).locator(i>=20?'a.producto-agregar':'button.producto-agregar')).toHaveCount(1);
+ await expect(page.locator('html')).toHaveAttribute('lang',idioma);
 });

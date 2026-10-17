@@ -167,3 +167,94 @@ for(const idioma of ['es','en'])test(`confirmar existencia comparte presentació
  expect(estilos[0]).toEqual(estilos[1]);expect(estilos[0].height).toBeLessThanOrEqual(48);
  await expect(enlaces).toHaveAttribute('target','_blank');await expect(enlaces).toHaveAttribute('rel','noopener noreferrer');
 });
+
+
+test('equipos empresariales aparecen en categorías generales sin duplicarse ni cambiar su venta asistida',async()=>{
+ const {incorporarEmpresariales}=await import('../src/lib/incorporar-empresariales');
+ const {clasificacionesDeProducto,catalogoTienda}=await import('../src/lib/soluciones-empresariales');
+ const {resumenCatalogo}=await import('../src/lib/catalogo-consulta');
+ const {publicarCatalogo,esquemaCatalogo}=await import('../src/lib/catalogo-modelo');
+ const inicial=JSON.parse(await readFile('src/lib/catalogo-inicial.json','utf8'));
+ const c=publicarCatalogo(incorporarEmpresariales(esquemaCatalogo.parse(inicial)));
+ const esperado=c.productos.filter(p=>p.coleccion==='empresas'&&/^Computadora/.test(p.nombre.es));
+ expect(esperado.length).toBeGreaterThan(5);
+ const consultar=(params:Record<string,string>)=>consultarCatalogo(c,new URLSearchParams(params));
+ const computadoras=consultar({categoria:'computadoras',marca:'Dell'});
+ for(const p of esperado)expect(consultar({categoria:'computadoras',q:p.codigoFabricante}).productos.map(p=>p.id)).toContain(p.id);
+ expect(computadoras.productos.some(p=>p.coleccion==='empresas')).toBe(true);
+ for(const q of ['computadoras','computers']){const r=consultar({q});expect(r.productos.some(p=>p.coleccion==='empresas')).toBe(true);expect(r.productos.some(p=>/^Kit |^Mouse |acoplamiento/.test(p.nombre.es))).toBe(false);}
+ expect(computadoras.productos.some(p=>/^Kit |^Mouse |acoplamiento/.test(p.nombre.es))).toBe(false);
+ const categorias=catalogoTienda(c),resumen=resumenCatalogo(c);
+ expect(catalogoTienda(categorias)).toEqual(categorias);
+ expect(new Set(categorias.productos.map(p=>p.id)).size).toBe(c.productos.length);
+ for(const categoria of ['computadoras','redes','seguridad','almacenamiento','energia']){
+  const todos=categorias.productos.filter(p=>clasificacionesDeProducto(p).some(x=>x.categoria===categoria));
+  const r=consultar({categoria});expect(r.total).toBe(todos.length);expect(resumen.conteos[categoria]).toBe(todos.length);
+  expect(resumen.conteosMarcas.Dell?.categorias[categoria]??0).toBe(todos.filter(p=>p.marca==='Dell').length);
+  const precios=todos.flatMap(p=>p.precio===null?[]:[p.precio]);expect(r.rangoPrecios).toEqual({minimo:Math.min(...precios),maximo:Math.max(...precios)});
+ }
+ const portatiles=consultar({categoria:'computadoras',subcategoria:'Portátiles'});
+ expect(portatiles.total).toBeGreaterThan(0);expect(portatiles.productos.every(p=>p.coleccion==='empresas'&&/portátil/.test(p.nombre.es))).toBe(true);
+ for(const p of esperado.slice(0,3))expect(consultar({categoria:'soluciones-empresariales',q:p.codigoFabricante}).productos.map(p=>p.id)).toContain(p.id);
+});
+
+for(const idioma of ['es','en'])test(`Computadoras incluye equipos empresariales y mantiene consultar existencia ${idioma}`,async({page,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
+ const movil=(page.viewportSize()?.width??1440)<=850;
+ if(movil)await page.locator('.shop-abrir-filtros').click();
+ const panel=page.locator(movil?'.shop-panel-filtros':'.shop-sidebar');
+ await panel.getByRole('button',{name:idioma==='es'?'Computadoras':'Computers',exact:true}).click();
+ if(movil)await panel.locator('.shop-panel-filtros-acciones>.boton').first().click();
+ await page.locator('#buscar-equipo').fill('PC14250_U7ARL321TBWPS_3WX');
+ const producto=page.locator('.shop-producto').filter({hasText:'PC14250_U7ARL321TBWPS_3WX'});
+ await expect(producto).toHaveCount(1);await expect(producto.locator('a.producto-agregar')).toContainText(idioma==='es'?'Consultar existencia':'Check stock');
+ await expect(producto.locator('button.producto-agregar')).toHaveCount(0);
+ await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+});
+
+test('fichas empresariales verificadas conservan identidad, precios e imágenes al importar',async()=>{
+ const {completarFichaEmpresarial}=await import('../src/lib/fichas-empresariales');
+ const {esquemaCatalogo}=await import('../src/lib/catalogo-modelo');
+ const base=JSON.parse(await readFile('src/lib/catalogo-base.json','utf8'));
+ const productos=esquemaCatalogo.parse({...base,productos:JSON.parse(await readFile('src/lib/catalogo-empresarial.json','utf8'))}).productos;
+ expect(productos).toHaveLength(211);
+ expect(new Set(productos.map(p=>p.codigoIntcomex)).size).toBe(productos.length);
+ for(const producto of productos){
+  expect(producto.especificaciones.length,producto.codigoIntcomex).toBeGreaterThan(1);
+  expect(producto.descripcion.es).not.toContain('Le ayudamos a confirmar disponibilidad');
+  expect(producto.nombre.es).not.toMatch(/ · \d+$/);
+  const minimo={...producto,nombre:{es:'Genérico',en:'Generic'},descripcion:{es:'Genérica',en:'Generic'},especificaciones:[]};
+  const completo=completarFichaEmpresarial(minimo);
+  expect(completo.especificaciones).toEqual(producto.especificaciones);
+  expect({...completo,nombre:minimo.nombre,descripcion:minimo.descripcion,especificaciones:[]}).toEqual(minimo);
+  const ajeno={...minimo,codigoFabricante:'OTRO-MODELO'};
+  expect(completarFichaEmpresarial(ajeno)).toBe(ajeno);
+  const otraMarca={...minimo,marca:'Otra marca'};
+  expect(completarFichaEmpresarial(otraMarca)).toBe(otraMarca);
+ }
+ const laptop=productos.find(p=>p.codigoIntcomex==='NT086DEL26')!;
+ expect(laptop.nombre.es).toContain('32 GB');expect(laptop.nombre.en).toContain('1 TB');
+ const {incorporarEmpresariales}=await import('../src/lib/incorporar-empresariales');
+ const persistido={...laptop,nombre:{es:'Ficha antigua',en:'Old profile'},descripcion:{es:'Antigua',en:'Old'},especificaciones:[],precioManual:123000};
+ const actualizado=incorporarEmpresariales({...base,productos:[persistido]}).productos;
+ expect(actualizado.filter(p=>p.id===laptop.id)).toHaveLength(1);
+ expect(actualizado.find(p=>p.id===laptop.id)).toMatchObject({nombre:laptop.nombre,especificaciones:laptop.especificaciones,precioManual:123000});
+ expect(laptop.especificaciones.some(x=>x.valor.en==='255U')).toBe(true);
+ const gateway=productos.find(p=>p.codigoIntcomex==='NW608UBQ18')!;
+ expect(gateway.nombre.es).not.toContain(' · 3');
+});
+
+for(const idioma of ['es','en'])test(`ficha empresarial completa muestra características reales sin desbordarse ${idioma}`,async({page,request,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
+ const respuesta=await(await request.get('/api/catalogo?q=PC14250_U7ARL321TBWPS_3WX')).json();
+ const producto=respuesta.productos.find((p:{id:string})=>p.id==='empresa-intcomex-nt086del26');
+ expect(producto).toBeTruthy();
+ await page.goto(`/tienda/${producto.slug}`);
+ await expect(page.locator('h1')).toContainText('32 GB');
+ await expect(page.locator('body')).toContainText('255U');
+ await expect(page.locator('body')).toContainText('1 TB');
+ await expect(page.getByRole('link',{name:idioma==='es'?/Consultar existencia/:/Check stock/}).first()).toBeVisible();
+ await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+});

@@ -1,0 +1,398 @@
+{
+  "EC000UBQ06": {
+    "mpn": "UA-G3-B",
+    "fuente": "https://techspecs.ui.com/unifi/door-access/ua-g3",
+    "especificaciones": [
+      {
+        "nombre": {
+          "es": "Conectividad",
+          "en": "Connectivity"
+        },
+        "valor": {
+          "es": "BLE 4.1, NFC",
+          "en": "BLE 4.1, NFC"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Interfaz de red",
+          "en": "Network interface"
+        },
+        "valor": {
+          "es": "1 × RJ45 10/100 MbE",
+          "en": "1 × RJ45 10/100 MbE"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Alimentación",
+          "en": "Power method"
+        },
+        "valor": {
+          "es": "PoE",
+          "en": "PoE"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Consumo máximo",
+          "en": "Maximum power consumption"
+        },
+        "valor": {
+          "es": "5 W",
+          "en": "5 W"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Protección ambiental",
+          "en": "Weatherproofing"
+        },
+        "valor": {
+          "es": "IP55",
+          "en": "IP55"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Dimensiones",
+          "en": "Dimensions"
+        },
+        "valor": {
+          "es": "93 × 40 × 36.5 mm",
+          "en": "93 × 40 × 36.5 mm"
+        }
+      }
+    ]
+  },
+  "EC000UBQ08": {
+    "mpn": "UA-HUB-DOOR",
+    "fuente": "https://techspecs.ui.com/unifi/door-access/ua-hub-door",
+    "especificaciones": [
+      {
+        "nombre": {
+          "es": "Puertas compatibles",
+          "en": "Supported doors"
+        },
+        "valor": {
+          "es": "1",
+          "en": "1"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Usuarios máximos",
+          "en": "Maximum users"
+        },
+        "valor": {
+          "es": "6000",
+          "en": "6000"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Interfaz de red",
+          "en": "Network interface"
+        },
+        "valor": {
+          "es": "5 × 10/100/1000 Base-T",
+          "en": "5 × 10/100/1000 Base-T"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Alimentación",
+          "en": "Power method"
+        },
+        "valor": {
+          "es": "PoE++",
+          "en": "PoE++"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Salidas PoE",
+          "en": "PoE outputs"
+        },
+        "valor": {
+          "es": "4 × PoE+, 30 W por puerto; 45 W total",
+          "en": "4 × PoE+, 30 W per port; 45 W total"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Uso",
+          "en": "Use"
+        },
+        "valor": {
+          "es": "Solo interiores",
+          "en": "Indoor only"
+        }
+      }
+    ]
+  },
+  "EC000UBQ10": {
+    "mpn": "UA-HUB-GATE",
+    "fuente": "https://techspecs.ui.com/unifi/door-access/ua-hub-gate",
+    "especificaciones": [
+      {
+        "nombre": {
+          "es": "Accesos compatibles",
+          "en": "Supported entrances"
+        },
+        "valor": {
+          "es": "1 portón y 1 puerta peatonal",
+          "en": "1 gate and 1 side door"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Usuarios máximos",
+          "en": "Maximum users"
+        },
+        "valor": {
+          "es": "6000",
+          "en": "6000"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Interfaz de red",
+          "en": "Network interface"
+        },
+        "valor": {
+          "es": "5 × 10/100/1000 Base-T",
+          "en": "5 × 10/100/1000 Base-T"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Alimentación",
+          "en": "Power method"
+        },
+        "valor": {
+          "es": "PoE++",
+          "en": "PoE++"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Salidas PoE",
+          "en": "PoE outputs"
+        },
+        "valor": {
+          "es": "4 × PoE+, 30 W por puerto; 55 W total",
+          "en": "4 × PoE+, 30 W per port; 55 W total"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Uso exterior",
+          "en": "Outdoor use"
+        },
+        "valor": {
+          "es": "Requiere caja impermeable",
+          "en": "Requires waterproof junction box"
+        }
+      }
+    ]
+  },
+  "ES001UBQ55": {
+    "mpn": "EAH-8",
+    "fuente": "https://techspecs.ui.com/unifi/door-access/eah-8",
+    "especificaciones": [
+      {
+        "nombre": {
+          "es": "Puertas compatibles",
+          "en": "Supported doors"
+        },
+        "valor": {
+          "es": "8",
+          "en": "8"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Usuarios máximos",
+          "en": "Maximum users"
+        },
+        "valor": {
+          "es": "10000",
+          "en": "10000"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Interfaz de red",
+          "en": "Network interface"
+        },
+        "valor": {
+          "es": "10 × 10/100/1000 Base-T",
+          "en": "10 × 10/100/1000 Base-T"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Salidas PoE",
+          "en": "PoE outputs"
+        },
+        "valor": {
+          "es": "8 × PoE+, 30 W por puerto; 190 W total",
+          "en": "8 × PoE+, 30 W per port; 190 W total"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Consumo máximo",
+          "en": "Maximum power consumption"
+        },
+        "valor": {
+          "es": "240 W",
+          "en": "240 W"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Uso",
+          "en": "Use"
+        },
+        "valor": {
+          "es": "Solo interiores",
+          "en": "Indoor only"
+        }
+      }
+    ]
+  },
+  "ES215HIK40": {
+    "mpn": "DS-2CD2955G0-ISU (1.05MM)",
+    "fuente": "https://pro-av.hikvision.com/mena-en/products/IP-Products/Network-Cameras/Pro-Series-EasyIP-/ds-2cd2955g0-is-u-/",
+    "especificaciones": [
+      {
+        "nombre": {
+          "es": "Cámara digital > Resolución (MP)",
+          "en": "Digital Camera > Resolution (MP)"
+        },
+        "valor": {
+          "es": "5 MP",
+          "en": "5 MP"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Resolución máxima",
+          "en": "Maximum resolution"
+        },
+        "valor": {
+          "es": "2560 × 1920",
+          "en": "2560 × 1920"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Lente",
+          "en": "Lens"
+        },
+        "valor": {
+          "es": "Fija, 1.05 mm",
+          "en": "Fixed, 1.05 mm"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Campo de visión",
+          "en": "Field of view"
+        },
+        "valor": {
+          "es": "180°",
+          "en": "180°"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Compresión de video",
+          "en": "Video compression"
+        },
+        "valor": {
+          "es": "H.265+, H.265, H.264+, H.264",
+          "en": "H.265+, H.265, H.264+, H.264"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Alcance infrarrojo",
+          "en": "Infrared range"
+        },
+        "valor": {
+          "es": "Hasta 8 m",
+          "en": "Up to 8 m"
+        }
+      }
+    ]
+  },
+  "ES402HIK83": {
+    "mpn": "AE-MN5043",
+    "fuente": "https://www.hikvision.com/content/dam/hikvision/products/S000000001/S000005940/S000005968/S000005984/OFR009329/M000066280/Data_Sheet/AE-MN5043-Series-Mobile-Video-Recorder-Datasheet_20221026.pdf",
+    "especificaciones": [
+      {
+        "nombre": {
+          "es": "Tipo de equipo",
+          "en": "Product type"
+        },
+        "valor": {
+          "es": "Grabador NVR móvil para vehículos",
+          "en": "Mobile NVR for vehicles"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Canales de video",
+          "en": "Video channels"
+        },
+        "valor": {
+          "es": "4 IP PoE; 4 adicionales mediante switch PoE",
+          "en": "4 IP PoE; 4 additional via PoE switch"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Compresión de video",
+          "en": "Video compression"
+        },
+        "valor": {
+          "es": "H.264, H.265",
+          "en": "H.264, H.265"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Alimentación",
+          "en": "Power input"
+        },
+        "valor": {
+          "es": "9–36 V DC",
+          "en": "9–36 V DC"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Posicionamiento",
+          "en": "Positioning"
+        },
+        "valor": {
+          "es": "GPS integrado",
+          "en": "Built-in GPS"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Conectividad móvil",
+          "en": "Mobile connectivity"
+        },
+        "valor": {
+          "es": "4G y Wi-Fi requieren módulo adicional",
+          "en": "4G and Wi-Fi require an additional module"
+        }
+      }
+    ]
+  }
+}

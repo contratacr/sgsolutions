@@ -1,4 +1,4 @@
-import {catalogoTienda} from '../src/lib/soluciones-empresariales';
+import {catalogoTienda,clasificacionesDeProducto} from '../src/lib/soluciones-empresariales';
 import {test,expect} from '@playwright/test';
 import {resumenCatalogo,consultarCatalogo} from '../src/lib/catalogo-consulta';
 import {asignarRutasProductos} from '../src/lib/rutas-productos';
@@ -11,8 +11,8 @@ test('los conteos conservan categorías y marcas canónicas con los límites rea
  expect(resumen.total).toBe(c.productos.length);
  expect(new Set(resumen.marcas)).toEqual(new Set(c.productos.map(p=>p.marca).filter(Boolean)));
  for(const [marca,conteo] of Object.entries(resumen.conteosMarcas))expect(conteo.total).toBe(c.productos.filter(p=>p.marca===marca).length);
- for(const [id,total] of Object.entries(resumen.conteos))expect(total).toBe(c.productos.filter(p=>p.categoria===id).length);
- for(const sub of resumen.subcategorias)expect(sub.cantidad).toBe(c.productos.filter(p=>p.categoria===sub.categoria&&p.subcategoria?.es===sub.nombre.es).length);
+ for(const [id,total] of Object.entries(resumen.conteos))expect(total).toBe(c.productos.filter(p=>clasificacionesDeProducto(p).some(x=>x.categoria===id)).length);
+ for(const sub of resumen.subcategorias)expect(sub.cantidad).toBe(c.productos.filter(p=>clasificacionesDeProducto(p).some(x=>x.categoria===sub.categoria&&x.subcategoria?.es===sub.nombre.es)).length);
  const precios=c.productos.flatMap(p=>p.precio!==null?[p.precio]:[]);
  expect(resumen.precioMinimo).toBe(Math.min(...precios));expect(resumen.precioMaximo).toBe(Math.max(...precios));
  expect(resumenCatalogo({...c,productos:[]})).toMatchObject({precioMinimo:0,precioMaximo:0,total:0,marcas:[]});

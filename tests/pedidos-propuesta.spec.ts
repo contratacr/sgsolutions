@@ -89,7 +89,7 @@ for(const idioma of ['es','en'] as const)test(`Asesoría abre WhatsApp directame
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
  const solicitudes:string[]=[];page.on('request',r=>{if(r.url().includes('/api/asesoria'))solicitudes.push(r.url());});
  await page.goto('/tienda');
- const asesor=page.locator('.shop-empresa-entrada a.shop-asesoria-inline');
+ const asesor=page.locator('.shop-resultados-cabecera a.shop-asesoria-inline');
  await expect(asesor).toHaveAttribute('href',/^https:\/\/wa\.me\//);
  await expect(asesor).toHaveAttribute('target','_blank');
  await expect(asesor).toHaveAttribute('rel','noopener noreferrer');

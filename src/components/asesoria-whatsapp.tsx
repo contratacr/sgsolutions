@@ -14,13 +14,13 @@ export function AsesoriaWhatsApp({lineas=[],onSolicitar,className='boton boton-n
  const t=useTranslations('Asesoria'),n=useTranslations('Navegacion'),idioma=useLocale();
  const origen=useSyncExternalStore(suscribirOrigen,()=>location.protocol==='https:'?location.origin:'',()=>'');
  const limpio=(s:string)=>s.replace(/[\u0000-\u001f\u007f\u202a-\u202e*~`]/g,' ').replace(/\s+/g,' ').trim().slice(0,140);
+ const disponibilidad=etiqueta==='confirmarExistencia';
  const productos=lineas.map(({producto:p,cantidad})=>[
-  `*${cantidad} × ${limpio(traducir(p.nombre,idioma))}*`,
+  `*${disponibilidad?'':`${cantidad} × `}${limpio(traducir(p.nombre,idioma))}*`,
   p.codigoFabricante?`${t('codigo')}: ${limpio(p.codigoFabricante)}`:'',
   p.precio!==null?`${t('precioReferencia')}: ${colones(p.precio)}`:'',
   origen?`${origen}${rutaProducto(p)}`:''
  ].filter(Boolean).join('\n'));
- const disponibilidad=etiqueta==='confirmarExistencia';
  const mensaje=[t(disponibilidad?'mensajeDisponibilidadInicio':'mensajeInicio'),necesidad?t('mensajeNecesidad',{necesidad:t(necesidad)}):'',...(detalle?[limpio(detalle)]:[]),...productos,
   disponibilidad?t('mensajeDisponibilidadCierre'):lineas.length?t('mensajeCierre'):necesidad?'':t('mensajeGeneral')
  ].filter(Boolean).join('\n\n');
