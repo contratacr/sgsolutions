@@ -17,7 +17,11 @@ for(const idioma of ['es','en'] as const)test(`bandeja real unificada, filtros y
  await expect(bandeja.locator('.pedidos-reales-filtros').getByRole('button',{name:estadoPago,exact:true})).toBeVisible();
  await expect(bandeja.locator('.pedidos-reales-resultados').getByRole('button',{name:estadoPago,exact:true})).toHaveCount(0);
  if(info.project.name==='safari-mobile'){
-  expect(await etapasVisibles(bandeja.locator('.pedidos-reales-vistas'))).toBe(true);
+  const barra=bandeja.locator('.pedidos-reales-vistas');
+  await expect.poll(()=>etapasVisibles(barra)).toBe(true);
+  const original=page.viewportSize()!;await page.setViewportSize({width:320,height:original.height});
+  expect(await barra.evaluate(el=>el.scrollWidth>el.clientWidth)).toBe(true);
+  await expect.poll(()=>etapasVisibles(barra)).toBe(true);await page.setViewportSize(original);
  }
  const etapas=bandeja.locator('.pedidos-reales-vistas');const contadores=await etapas.textContent();
  await bandeja.getByLabel(t.buscar,{exact:true}).fill('envio QA');await expect(rows).toHaveCount(1);await expect(rows).toContainText('Envío QA');expect(await etapas.textContent()).toBe(contadores);
@@ -35,7 +39,7 @@ for(const idioma of ['es','en'] as const)test(`bandeja real unificada, filtros y
  await mkdir('.privado/pedidos-reales',{recursive:true});await page.screenshot({path:`.privado/pedidos-reales/${info.project.name}-${idioma}.png`,fullPage:true});await page.screenshot({path:`.privado/pedidos-reales/header-${info.project.name}-${idioma}.png`});expect(errores).toEqual([]);
 });
 
-async function etapasVisibles(barra:import('@playwright/test').Locator){return barra.evaluate(el=>{const r=el.getBoundingClientRect(),botones=[...el.children].map(h=>h.getBoundingClientRect());const ok=getComputedStyle(el).scrollbarWidth==='none'&&botones.some(b=>b.left<r.right&&b.right>r.right);return ok;});}
+async function etapasVisibles(barra:import('@playwright/test').Locator){return barra.evaluate(el=>{const r=el.getBoundingClientRect(),botones=[...el.children].map(h=>h.getBoundingClientRect());const ok=getComputedStyle(el).scrollbarWidth==='none'&&(el.scrollWidth<=el.clientWidth+1||botones.some(b=>b.left<r.right&&b.right>r.right));return ok;});}
 for(const idioma of ['es','en'] as const)test(`header compartido en cada sección administrativa ${idioma}`,async({page,context},info)=>{
  const {token}=JSON.parse(await readFile('.privado/contenido-pruebas/sesion.json','utf8'));
  await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
