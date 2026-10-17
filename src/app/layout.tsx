@@ -26,6 +26,12 @@ import './movimiento-visual.css';
 import './estados.css';
 import './admin.css';
 import './revision-visual.css';
+// Keep administrative chrome and route styles in the initial blocking stylesheet.
+import '@/components/navegacion-panel.css';
+import '@/components/proteger-cambios-panel.css';
+import './panel/pedidos/pedidos.css';
+import './panel/usuarios/usuarios.css';
+import './panel/estadisticas/estadisticas.css';
 import {RevelarScroll} from '@/components/revelar-scroll';
 import {META_PIXEL_ID} from '@/lib/meta-pixel';
 import {ValidacionNativa} from '@/components/validacion-nativa';

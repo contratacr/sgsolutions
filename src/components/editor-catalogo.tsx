@@ -2,13 +2,16 @@
 
 import Image from 'next/image';
 import {tieneImagenProducto} from '@/lib/imagenes-productos';
-import { useEffect, useRef, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition, useSyncExternalStore } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { colones, preciosProducto,descuentosInvalidos,esquemaCatalogo, traducir, type CatalogoAdmin, type Texto } from '@/lib/catalogo-modelo';
 import { useCambiosAdmin } from '@/components/use-cambios-admin';
 import { GestorImagenes } from '@/components/gestor-imagenes';
 import { guardarCatalogo } from '@/app/panel/catalogo/acciones';
 import { ErroresAdmin, enfocarRegistro, type CampoAdmin } from '@/components/errores-admin';
+
+const suscribirListo=()=>()=>{};
+const listoCliente=()=>true,listoServidor=()=>false;
 
 type Producto = CatalogoAdmin['productos'][number];
 const POR_PAGINA = 20;
@@ -89,6 +92,7 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
 }
 
 export function EditorCatalogo({ inicial, revisionInicial }: { inicial: CatalogoAdmin; revisionInicial: number }) {
+  const listo=useSyncExternalStore(suscribirListo,listoCliente,listoServidor);
   const t = useTranslations('AdminCatalogo');
   const u = useTranslations('AdminUX');
   const m = useTranslations('AdminImagenes');
@@ -186,7 +190,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
         </div>
         <div className="admin-lista-filtros">
           <label>{t('categoria')}<select value={categoriaFiltro} onChange={e=>{setCategoriaFiltro(e.target.value);setPaginaAdmin(1);setEditorId(null);}}><option value="todos">{u('todos')}</option>{datos.categorias.map(c=><option key={c.id} value={c.id}>{traducir(c.nombre,idioma)} ({datos.productos.filter(p=>p.categoria===c.id&&(filtroEstado==='todos'||filtroEstado==='publicados'&&p.publicado||filtroEstado==='borradores'&&!p.publicado)).length})</option>)}</select></label>
-          <label>{t('buscarProductos')}<input type="search" value={buscar} onChange={e => { setBuscar(e.target.value); setPaginaAdmin(1); setEditorId(null); }} /></label>
+          <label>{t('buscarProductos')}<input type="search" disabled={!listo} value={buscar} onChange={e => { setBuscar(e.target.value); setPaginaAdmin(1); setEditorId(null); }} /></label>
           <label>{u('estado')}<select value={filtroEstado} onChange={e => { setFiltroEstado(e.target.value); setPaginaAdmin(1); setEditorId(null); }}>{['todos', 'publicados', 'borradores'].map(k => <option key={k} value={k}>{u(k)}</option>)}</select></label>
         </div>
         {seleccion.length ? <>{paginacion()}<div className="admin-productos-lista">{visibles.map(({ p }) => {

@@ -3,7 +3,6 @@ import {redirect} from 'next/navigation';
 import {getLocale,getTranslations} from 'next-intl/server';
 import {accesoUsuarios,type UsuarioPanel} from '@/lib/usuarios-panel';
 import {GestionUsuario} from './gestion';
-import './usuarios.css';
 export async function generateMetadata(){const t=await getTranslations('UsuariosPanel');return {title:t('titulo'),robots:{index:false,follow:false}};}
 export default async function Usuarios({searchParams}:{searchParams:Promise<{q?:string;pagina?:string;resultado?:string}>}){
  const t=await getTranslations('UsuariosPanel'),idioma=await getLocale();const params=await searchParams;

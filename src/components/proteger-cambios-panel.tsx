@@ -4,7 +4,6 @@ import {useRouter,usePathname} from 'next/navigation';
 import {useTranslations} from 'next-intl';
 import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
-import './proteger-cambios-panel.css';
 const Contexto=createContext<{registrar:(id:symbol,pendiente:boolean)=>void;solicitar:(accion:()=>void)=>void}|null>(null);
 export const useProteccionPanel=()=>useContext(Contexto);
 export function ProtegerCambiosPanel({children}:{children:React.ReactNode}){

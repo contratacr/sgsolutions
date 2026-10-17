@@ -493,7 +493,7 @@ try {
         ]);
         const p = await ctx.newPage();
         await p.goto(base + "/tienda");
-        await p.locator(".shop-producto button").first().click();
+        await p.locator(".shop-producto button.producto-agregar").first().click();
         await p.goto(base + "/finalizar-compra");
         const form = p.locator("main form");
         for (const [k, v] of Object.entries({
@@ -503,6 +503,11 @@ try {
           telefono: "+506 (8888) 3333",
         }))
           await form.locator(k==='telefono'?'.campo-telefono input[type=tel]':`[name=${k}]`).fill(v);
+        await form.locator('[name=identificacion]').fill('123456789');
+        await form.locator('input[name=modalidad][value=retiro]').check();
+        const textosCompra=JSON.parse(await readFile(path.join(root,'messages',lang+'.json'),'utf8')).Compra;
+        await p.getByRole('button',{name:textosCompra.pasoSiguiente,exact:true}).click();
+        await p.getByRole('button',{name:textosCompra.pasoSiguiente,exact:true}).click();
         await form.locator("[name=consentimiento]").check();
         await form
           .locator("input[type=file]")

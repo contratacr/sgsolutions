@@ -1,3 +1,4 @@
+import {leerTextoLimitado} from '@/lib/limites-http';
 import {cookies} from 'next/headers';
 import {NextResponse} from 'next/server';
 import {z} from 'zod';
@@ -15,7 +16,7 @@ export async function POST(request:Request){
  if(Number(request.headers.get('content-length')??0)>14000)return respuesta({error:'error'},413);
  if(!request.headers.get('content-type')?.startsWith('application/json'))return respuesta({error:'error'},415);
  try{
-  const texto=await request.text();
+  const texto=await leerTextoLimitado(request,14000);
   if(texto.length>14000)return respuesta({error:'error'},413);
   const datos=entrada.safeParse(JSON.parse(texto));
   if(!datos.success)return respuesta({error:'error'},400);

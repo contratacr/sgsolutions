@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 const baseURL=process.env.SG_TEST_URL??'http://127.0.0.1:3107';
+if(!['127.0.0.1','localhost','[::1]'].includes(new URL(baseURL).hostname))throw new Error('Las pruebas completas requieren un servidor aislado local. Use el smoke de producción para la comprobación pública.');
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,

@@ -1,3 +1,5 @@
+import {permitirRafaga} from '@/lib/limite-rafagas';
+import {leerTextoLimitado} from '@/lib/limites-http';
 import {origenPermitido} from '@/lib/origen-permitido';
 import {esquemaContactoAsesoria} from '@/lib/contacto-asesoria';
 import {z} from 'zod';
@@ -7,7 +9,8 @@ const esquema=z.object({idioma:z.enum(['es','en']),articulos:z.array(z.object({i
 
 export async function POST(request:Request){
  if(!origenPermitido(request))return Response.json({error:'origen'},{status:403});
- let entrada:z.infer<typeof esquema>;try{const texto=await request.text();if(texto.length>10000)throw new Error('limite');entrada=esquema.parse(JSON.parse(texto));}catch{return Response.json({error:'datos_invalidos'},{status:400});}
+ let entrada:z.infer<typeof esquema>;try{const texto=await leerTextoLimitado(request,10000);if(texto.length>10000)throw new Error('limite');entrada=esquema.parse(JSON.parse(texto));}catch{return Response.json({error:'datos_invalidos'},{status:400});}
+ if(!permitirRafaga('asesoria:'+(request.headers.get('cf-connecting-ip')??entrada.contacto.telefono)))return Response.json({error:'no_disponible'},{status:429,headers:{'Retry-After':'600'}});
  if(new Set(entrada.articulos.map(x=>x.id)).size!==entrada.articulos.length)return Response.json({error:'datos_invalidos'},{status:400});
  try{const c=entrada.articulos.length?await leerCatalogoPublico():{productos:[]};const articulos=entrada.articulos.flatMap(x=>{const producto=c.productos.find(p=>p.id===x.id);return producto?[{producto,cantidad:x.cantidad}]:[];});
  if(articulos.length!==entrada.articulos.length)return Response.json({error:'catalogo_actualizado'},{status:409});

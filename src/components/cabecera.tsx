@@ -6,8 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, CircleUserRound, ChevronRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import {FavoritosNav} from './favoritos-nav';
-import { Carrito } from './carrito';
+import {ContadoresNavegacion} from './contadores-navegacion';
 import {MenuCuenta} from './menu-cuenta';
 import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
@@ -29,11 +28,11 @@ export function Cabecera({sesionIniciada=false,nombreCuenta="",administrador=fal
   const [rutaMenu,setRutaMenu]=useState(ruta);
   const cambiarMenu=(valor:boolean)=>{setRutaMenu(ruta);setAbierto(valor);};
   const enlaces = [['/tienda', 'tienda'], ['/soporte', 'soporte'], ['/empresas', 'empresas'], ['/casos-de-exito', 'casos'], ['/nosotros', 'nosotros']] as const;
-  if(ruta==='/panel/pedidos')return null;
+  if(ruta==='/panel'||ruta.startsWith('/panel/'))return null;
   return <header className="cabecera"><div className="contenedor navegacion">
     <Link href="/" aria-label={t('inicio')} onClick={(e)=>{setAbierto(false);if(ruta === '/' && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey){e.preventDefault();window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}}}><Image className="logo" src="/imagenes/logo-principal.png" alt={marca('logo')} width={150} height={63} priority/></Link>
     <nav aria-label={t('principal')} className="nav-escritorio">{enlaces.map(([href, texto]) => <Link href={href} key={texto} aria-current={ruta === href ? 'page' : undefined}>{t(texto)}</Link>)}</nav>
-    <div className="nav-acciones"><form className="idioma-directo" action={cambiarIdioma} role="group" aria-label={t('seleccionarIdioma')}>{(['es','en'] as const).map(opcion=><button key={opcion} type="submit" name="idioma" value={opcion} lang={opcion} aria-pressed={idioma===opcion} aria-label={idioma===opcion ? `${t(opcion==='es'?'espanol':'ingles')} · ${t('idiomaActual')}` : t('cambiarIdioma')}>{opcion.toUpperCase()}</button>)}</form>{sesionIniciada?<MenuCuenta nombre={nombreCuenta} administrador={administrador}/>:<Link className="cuenta-nav" href={destinoCuenta} onNavigate={ingresarDesdeMenu} aria-label={etiquetaCuenta}><CircleUserRound size={21} aria-hidden="true"/><span>{etiquetaCuenta}</span></Link>}<FavoritosNav/><Carrito sesionIniciada={sesionIniciada}/><Dialog.Root open={abierto && rutaMenu===ruta} onOpenChange={cambiarMenu}><Dialog.Trigger className="boton-icono menu-movil" aria-label={t('menu')}><Menu aria-hidden="true"/></Dialog.Trigger>{abierto&&rutaMenu===ruta&&<Dialog.Portal><Dialog.Overlay className="menu-panel-fondo"/><MarcoModal className="menu-panel" aria-describedby={undefined}>
+    <div className="nav-acciones"><form className="idioma-directo" action={cambiarIdioma} role="group" aria-label={t('seleccionarIdioma')}>{(['es','en'] as const).map(opcion=><button key={opcion} type="submit" name="idioma" value={opcion} lang={opcion} aria-pressed={idioma===opcion} aria-label={idioma===opcion ? `${t(opcion==='es'?'espanol':'ingles')} · ${t('idiomaActual')}` : t('cambiarIdioma')}>{opcion.toUpperCase()}</button>)}</form>{sesionIniciada?<MenuCuenta nombre={nombreCuenta} administrador={administrador}/>:<Link className="cuenta-nav" href={destinoCuenta} onNavigate={ingresarDesdeMenu} aria-label={etiquetaCuenta}><CircleUserRound size={21} aria-hidden="true"/><span>{etiquetaCuenta}</span></Link>}<ContadoresNavegacion sesionIniciada={sesionIniciada}/><Dialog.Root open={abierto && rutaMenu===ruta} onOpenChange={cambiarMenu}><Dialog.Trigger className="boton-icono menu-movil" aria-label={t('menu')}><Menu aria-hidden="true"/></Dialog.Trigger>{abierto&&rutaMenu===ruta&&<Dialog.Portal><Dialog.Overlay className="menu-panel-fondo"/><MarcoModal className="menu-panel" aria-describedby={undefined}>
       <div className="menu-panel-cabecera"><Link href="/" onClick={()=>setAbierto(false)} aria-label={t('inicio')}><Image src="/imagenes/logo-principal.png" alt={marca('logo')} className="menu-panel-logo" width={150} height={63}/></Link></div>
       <Dialog.Title className="sr-only">{t('principal')}</Dialog.Title>
       <nav id="navegacion-movil" aria-label={t('principal')} className="menu-panel-enlaces">{enlaces.map(([href,texto])=><Link key={href} href={href} onNavigate={()=>setAbierto(false)} aria-current={ruta===href?'page':undefined}><span>{t(texto)}</span><ChevronRight size={18} aria-hidden="true"/></Link>)}</nav>

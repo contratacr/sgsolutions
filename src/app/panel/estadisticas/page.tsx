@@ -6,7 +6,6 @@ import {getLocale,getTranslations} from 'next-intl/server';
 import {sesionLocal} from '@/lib/admin-local';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
 import {resumenAnalitica,fechasAnalitica,popularidadProductos} from '@/lib/analitica-servidor';
-import './estadisticas.css';
 export async function generateMetadata(){const t=await getTranslations('Analitica');return {title:t('tituloPanel'),robots:{index:false,follow:false}};}
 export default async function Estadisticas({searchParams}:{searchParams:Promise<{dias?:string}>}){
  const local=await sesionLocal();if(!local){const db=await crearClienteServidor();if(!db)redirect('/admin');const {data:{user}}=await db.auth.getUser();if(!user)redirect('/admin');const {data}=await db.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();if(!data?.activo||data.rol!=='administrador')redirect('/panel');}

@@ -12,7 +12,7 @@ for(const idioma of ['es','en'] as const)test(`registro con código, error y ret
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  await page.screenshot({path:`.privado/evidencias/codigo-${idioma}-${test.info().project.name}.png`,fullPage:true});
  await page.clock.runFor(61000);await page.getByRole('button',{name:t.codigoReenviar,exact:true}).click();await expect(page.locator('.cuenta-codigo [role=status]')).toHaveText(t.codigoEnviado);await expect(codigo).toHaveValue('');
- await codigo.fill('123456');await page.getByRole('button',{name:t.codigoVerificar}).click();await expect(page).toHaveURL(/\/pagar$/);expect((await context.cookies()).some(c=>c.name.includes('auth-token'))).toBe(true);
+ await codigo.fill('123456');await page.getByRole('button',{name:t.codigoVerificar}).click();await expect(page).toHaveURL(/\/pagar$/);const tokens=(await context.cookies()).filter(c=>c.name.includes('auth-token'));expect(tokens.length).toBeGreaterThan(0);expect(tokens.every(c=>c.httpOnly)).toBe(true);expect(await page.evaluate(()=>document.cookie)).not.toContain('auth-token');
 });
 
 for(const idioma of ['es','en'] as const)test(`ingresar con contraseña regresa a compra ${idioma}`,async({page,context})=>{

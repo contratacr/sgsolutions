@@ -1,3 +1,4 @@
+import {leerTextoLimitado} from '@/lib/limites-http';
 import {datosClienteCompra,telefonoCompra} from '@/lib/datos-cliente-compra';
 import {costoEntrega} from '@/lib/envio';
 import {verificarCompraEurocomp} from '@/lib/eurocomp-compra';
@@ -26,13 +27,11 @@ const solicitud = z.object({
 
 export async function POST(request: Request) {
   if(!origenPermitido(request))return Response.json({error:'datos_invalidos'},{status:403});
-  let prevalidado;try{const texto=await request.clone().text();if(texto.length>12000)throw new Error("limite");prevalidado=JSON.parse(texto);}catch{return Response.json({error:"datos_invalidos"},{status:400});}
+  let prevalidado;try{const texto=await leerTextoLimitado(request,10000);if(texto.length>12000)throw new Error("limite");prevalidado=JSON.parse(texto);}catch{return Response.json({error:"datos_invalidos"},{status:400});}
   if(!prevalidado || typeof prevalidado.asesoria!=="string" || typeof prevalidado.acceso!=="string")return Response.json({error:"asesoria_requerida"},{status:403});
   let entrada: z.infer<typeof solicitud>;
   try {
-    const cuerpo = await request.text();
-    if (cuerpo.length > 10000) throw new Error('CUERPO_EXCESIVO');
-    entrada = solicitud.parse(JSON.parse(cuerpo));
+    entrada = solicitud.parse(prevalidado);
   } catch {
     return Response.json({ error: 'datos_invalidos' }, { status: 400 });
   }

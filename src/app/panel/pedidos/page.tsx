@@ -8,7 +8,6 @@ import {EnlaceCompra} from '@/components/enlace-compra';
 import {listarAsesorias,enlaceAprobado,referenciaAsesoria} from '@/lib/asesorias';
 import {leerProductosAsesoria} from '@/lib/catalogo-servidor';
 import {BandejaPedidosReales,type ItemPedidoReal} from '@/components/bandeja-pedidos-reales';
-import './pedidos.css';
 import {PrepararAsesoria} from '@/components/preparar-asesoria';
 import {prepararPedidoAsesorado} from './asesoria-acciones';
 import {headers} from 'next/headers';

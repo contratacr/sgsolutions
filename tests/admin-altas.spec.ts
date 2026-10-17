@@ -15,7 +15,7 @@ for(const idioma of ['es','en'])test(`altas visibles y errores precisos ${idioma
  const guardar=()=>page.locator('.admin-actions button').first().click();
  try{
   await page.goto('/panel/catalogo');
-  await expect(page.locator('.panel-navegacion a[href="/panel/catalogo"]')).toHaveAttribute('aria-current','page');
+  await expect(page.locator('.pedidos-reales-nav a[href="/panel/catalogo"]')).toHaveAttribute('aria-current','page');
   await expect(page.locator('main:visible .admin-producto-fila')).toHaveCount(20);
   const primera=await page.locator('main:visible .admin-producto-fila').first().innerText();
   await page.locator('.admin-paginacion select').first().selectOption('2');
@@ -57,7 +57,7 @@ for(const idioma of ['es','en'])test(`altas visibles y errores precisos ${idioma
   await expect(page.locator('.admin-lista-cabecera button')).toHaveCount(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   await page.goto('/panel/contenido');
-  await expect(page.locator('.panel-navegacion a[href="/panel/contenido"]')).toHaveAttribute('aria-current','page');
+  await expect(page.locator('.pedidos-reales-nav a[href="/panel/contenido"]')).toHaveAttribute('aria-current','page');
   await page.locator('fieldset > button').first().click();
   await expect(page.locator('details.admin-item').last()).toHaveAttribute('open','');
   await expect(page.locator('details.admin-item').last().locator('input').first()).toBeFocused();

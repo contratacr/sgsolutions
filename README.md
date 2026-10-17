@@ -55,7 +55,7 @@ Las pruebas usan exclusivamente loopback y guardan capturas/mediciones en `evide
 - [Refinamiento visual de tienda, soporte y empresas](docs/09-refinamiento-visual.md)
 - [Identidad y ondas de luz](docs/10-identidad-y-ondas.md)
 
-La rama `main` representa producción, pero ningún push/merge publica automáticamente. GitHub rechazó la creación de `.github/workflows/` porque la conexión OAuth carece del permiso `workflow`; por eso los cuatro YAML están como plantillas en `docs/automatizaciones/` y **Actions todavía no está activo**. Después de que Isaac autorice `gh auth refresh -h github.com -s workflow`, moverlos a `.github/workflows/`, configurar los environments y subirlos. La rama local `codex/automatizaciones-preparadas` conserva la versión inicial con workflows en su ubicación ejecutable.
+La rama `main` representa producción. Los pushes y PR ejecutan `.github/workflows/pruebas-compras.yml` en GitHub con servidores, proveedores simulados y una base efímera; no despliegan el sitio ni reciben secretos de producción. Las pruebas nuevas de tienda, favoritos, filtros y cuentas están incluidas. `produccion-smoke.yml` es manual: realiza solo seis consultas HTTP de lectura después de un despliegue autorizado. El trabajo programado `eurocomp.yml` actualiza el catálogo real; es una operación de sincronización, no una prueba. Consulte [pruebas locales](docs/pruebas-locales.md).
 
 El despliegue requiere despacho manual, autorización actual de Isaac y environment protegido. No aplicar migraciones locales contra producción. Nunca versionar tokens, llaves, el documento comercial privado ni respaldos sin cifrar.
 

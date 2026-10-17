@@ -8,8 +8,17 @@ for(const idioma of ['es','en'] as const)test(`bandeja real unificada, filtros y
  const t=(idioma==='es'?es:en).PropuestaPedidos;
  const errores:string[]=[];page.on('pageerror',e=>errores.push(e.message));
  await page.goto('/panel/pedidos');
- const bandeja=page.locator('.pedidos-reales-bandeja'),rows=bandeja.locator('.pedidos-admin-tarjeta');
+ const bandeja=page.locator('.pedidos-reales-bandeja:visible'),rows=bandeja.locator('.pedidos-admin-tarjeta');
+ await expect(bandeja.getByLabel(t.buscar,{exact:true})).toBeEnabled();
  await expect(rows).toHaveCount(3);
+ const resumen=rows.first().locator('.panel-pedido-detalle>summary');
+ await expect.poll(()=>resumen.evaluate(el=>{const estilo=getComputedStyle(el,'::after'),r=el.getBoundingClientRect();return estilo.content===String.fromCharCode(34)+'+'+String.fromCharCode(34)&&r.right<=innerWidth;})).toBe(true);
+ const estadoPago=(idioma==='es'?es:en).PanelLista.estadoPago;
+ await expect(bandeja.locator('.pedidos-reales-filtros').getByRole('button',{name:estadoPago,exact:true})).toBeVisible();
+ await expect(bandeja.locator('.pedidos-reales-resultados').getByRole('button',{name:estadoPago,exact:true})).toHaveCount(0);
+ if(info.project.name==='safari-mobile'){
+  expect(await etapasVisibles(bandeja.locator('.pedidos-reales-vistas'))).toBe(true);
+ }
  const etapas=bandeja.locator('.pedidos-reales-vistas');const contadores=await etapas.textContent();
  await bandeja.getByLabel(t.buscar,{exact:true}).fill('envio QA');await expect(rows).toHaveCount(1);await expect(rows).toContainText('Envío QA');expect(await etapas.textContent()).toBe(contadores);
  await bandeja.getByRole('button',{name:t.limpiar,exact:true}).click();await expect(rows).toHaveCount(3);
@@ -23,5 +32,20 @@ for(const idioma of ['es','en'] as const)test(`bandeja real unificada, filtros y
  await expect(page.locator('.pedidos-reales-nav a[aria-current=page]')).toHaveAttribute('href','/panel/pedidos');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  await expect(page.locator('html')).toHaveAttribute('lang',idioma);
- await mkdir('.privado/pedidos-reales',{recursive:true});await page.screenshot({path:`.privado/pedidos-reales/${info.project.name}-${idioma}.png`,fullPage:true});expect(errores).toEqual([]);
+ await mkdir('.privado/pedidos-reales',{recursive:true});await page.screenshot({path:`.privado/pedidos-reales/${info.project.name}-${idioma}.png`,fullPage:true});await page.screenshot({path:`.privado/pedidos-reales/header-${info.project.name}-${idioma}.png`});expect(errores).toEqual([]);
+});
+
+async function etapasVisibles(barra:import('@playwright/test').Locator){return barra.evaluate(el=>{const r=el.getBoundingClientRect(),botones=[...el.children].map(h=>h.getBoundingClientRect());const ok=getComputedStyle(el).scrollbarWidth==='none'&&botones.some(b=>b.left<r.right&&b.right>r.right);return ok;});}
+for(const idioma of ['es','en'] as const)test(`header compartido en cada sección administrativa ${idioma}`,async({page,context},info)=>{
+ const {token}=JSON.parse(await readFile('.privado/contenido-pruebas/sesion.json','utf8'));
+ await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ for(const ruta of ['/panel','/panel/catalogo','/panel/proveedores','/panel/contenido','/panel/pedidos','/panel/usuarios','/panel/estadisticas']){
+  await page.goto(ruta);const header=page.locator('.pedidos-reales-nav');
+  if(ruta==='/panel/pedidos'){await mkdir('.privado/pedidos-reales',{recursive:true});await page.screenshot({path:`.privado/pedidos-reales/navegacion-${info.project.name}-${idioma}.png`});}
+  await expect(header).toBeVisible();await expect(page.locator('header.cabecera')).toHaveCount(0);
+  await expect(header.locator('a[aria-current=page]')).toHaveAttribute('href',ruta);
+  await expect(header.locator('.panel-idiomas button[aria-pressed=true]')).toHaveText(idioma.toUpperCase());
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+  if(info.project.name==='safari-mobile'&&ruta==='/panel')await expect.poll(()=>etapasVisibles(header.locator('nav'))).toBe(true);
+ }
 });

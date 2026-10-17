@@ -9,65 +9,123 @@ permissions:
 concurrency:
   group: compras-${{ github.ref }}
   cancel-in-progress: true
+env:
+  SG_ENTORNO: local
+  SG_PRUEBAS_INTEGRACION: "1"
+  SUPABASE_URL: ""
+  SUPABASE_SERVICE_ROLE_KEY: ""
+  CUENTAS_SUPABASE_URL: ""
+  CUENTAS_SUPABASE_ANON_KEY: ""
+  NEXT_PUBLIC_SUPABASE_URL: ""
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ""
+  BREVO_API_KEY: ""
+  TILOPAY_API_KEY: ""
+  TILOPAY_API_USER: ""
+  TILOPAY_API_PASSWORD: ""
+  EUROCOMP_API_KEY: ""
+  EUROCOMP_PASSWORD: ""
+  WRANGLER_SEND_METRICS: "false"
 jobs:
-  compras:
+  seguridad:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run verificar
+      - name: Buscar secretos también en el historial
+        run: node scripts/verificar-secretos.mjs --historial
+      - name: Revisar dependencias de producción
+        run: npm audit --omit=dev --audit-level=high
+      - name: Revisar dependencias completas y bloquear alertas nuevas graves
+        run: node scripts/verificar-dependencias.mjs
+      - name: Validar restricciones y aislamiento de favoritos en PostgreSQL efímero
+        run: node tests/sql/favoritos-empresariales.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: auditoria-dependencias
+          path: .privado/evidencias/dependencias.json
+          retention-days: 7
+  pruebas:
+    needs: seguridad
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - grupo: tienda
+            bloques: regresion catalogo
+          - grupo: cuentas-panel
+            bloques: cuenta-panel google codigo estadisticas eurocomp-manual
+          - grupo: contenido
+            bloques: contenido
+          - grupo: compras-correos
+            bloques: tilopay-hosted comprobantes confirmaciones entrega empresas-correo
+          - grupo: integraciones-locales
+            bloques: eurocomp disponibilidad fondos inicio-movil modales pedidos-propuesta checkout-pasos correos-diseno mobile-preview
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: "22"
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit
-      - name: Verificar código y traducciones
-        run: npm run verificar
-      - name: Probar rendimiento del catálogo y estabilidad de enlaces
-        run: npx playwright test --config=playwright.catalogo.config.ts
-      - name: Probar acceso Google con proveedor simulado
-        run: npx playwright test --config=playwright.google.config.ts
-      - name: Probar actualización manual de Eurocomp sin consultas reales
-        run: npx playwright test --config=playwright.eurocomp-manual.config.ts
-      - name: Probar estadísticas y filtros del panel
-        run: npx playwright test --config=playwright.estadisticas.config.ts
-      - name: Probar edición de contenido y casos con datos aislados
-        run: npx playwright test --config=playwright.contenido.config.ts
-      - name: Probar catálogo recomendado y validación de datos en Chrome y Safari
-        run: npx playwright test --config=playwright.checkout-ui.config.ts
-      - name: Selector de comprobantes en escritorio y móvil
-        run: npx playwright test --config=playwright.comprobantes.config.ts
-      - name: Pago con tarjeta directo (simulado)
-        run: npx playwright test --config=playwright.tarjeta-directa.config.ts
-      - name: Probar modales, favoritos y desplazamiento del catálogo
-        run: npx playwright test --config=playwright.modales.config.ts
-      - name: Probar confirmaciones reales y simuladas sin pagos
-        run: npx playwright test --config=playwright.confirmaciones.config.ts
-      - name: Probar estados independientes de pago y entrega en Chrome y Safari
-        run: npx playwright test --config=playwright.entrega.config.ts
-      - name: Crear Supabase efímero y aplicar las migraciones
+      - name: Preparar preview de Capacitor
+        if: matrix.grupo == 'integraciones-locales'
+        run: npm ci --prefix mobile
+      - name: Ejecutar pruebas solo contra servidores y proveedores locales
+        run: node scripts/testing/regresion.mjs ${{ matrix.bloques }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: pruebas-${{ matrix.grupo }}
+          path: |
+            .privado/regresion/**/resumen.json
+            .privado/regresion/**/*.json
+            test-results/
+          retention-days: 7
+          if-no-files-found: ignore
+  worker:
+    needs: seguridad
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Crear Supabase efímero sin credenciales de producción
         run: |
           npx supabase start > "$RUNNER_TEMP/supabase-inicio.log" 2>&1
           npx supabase status --output json > "$RUNNER_TEMP/sg-base-local.json"
           chmod 600 "$RUNNER_TEMP/sg-base-local.json"
-      - name: Probar el Worker compilado y compras simuladas
+      - name: Probar Worker local, pagos simulados y archivos públicos
         run: npm run test:compras
         env:
           TEST_SUPABASE_CONFIG: ${{ runner.temp }}/sg-base-local.json
-          WRANGLER_SEND_METRICS: "false"
-      - name: Guardar resumen sin credenciales
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
-          name: resultado-compras-simuladas
+          name: resultado-worker-simulado
           path: .privado/evidencias/compras-worker.json
-          if-no-files-found: ignore
-      - name: Guardar evidencias cuando falle una prueba
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: diagnostico-pruebas
-          path: test-results/
+          retention-days: 7
           if-no-files-found: ignore
       - name: Detener la base efímera
         if: always()

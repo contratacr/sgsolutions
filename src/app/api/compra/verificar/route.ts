@@ -1,3 +1,4 @@
+import {leerTextoLimitado} from '@/lib/limites-http';
 import {z} from 'zod';
 import {origenPermitido} from '@/lib/origen-permitido';
 import {leerCatalogoPublico} from '@/lib/catalogo-servidor';
@@ -9,7 +10,7 @@ export async function POST(request:Request){
  if(!origenPermitido(request))return Response.json({error:'origen'},{status:403});
  const ip=request.headers.get('cf-connecting-ip')??'local';const previo=intentos.get(ip);const ahora=Date.now();
  if(previo&&ahora-previo.fecha<60_000){if(previo.cantidad>=5)return Response.json({error:'no_disponible'},{status:429});previo.cantidad++;}else{if(intentos.size>10000)intentos.clear();intentos.set(ip,{fecha:ahora,cantidad:1});}
- let entrada:z.infer<typeof esquema>;try{const texto=await request.text();if(texto.length>12000)throw new Error();entrada=esquema.parse(JSON.parse(texto));}catch{return Response.json({error:'datos_invalidos'},{status:400});}
+ let entrada:z.infer<typeof esquema>;try{const texto=await leerTextoLimitado(request,12000);if(texto.length>12000)throw new Error();entrada=esquema.parse(JSON.parse(texto));}catch{return Response.json({error:'datos_invalidos'},{status:400});}
  if(new Set(entrada.articulos.map(a=>a.id)).size!==entrada.articulos.length)return Response.json({error:'datos_invalidos'},{status:400});
  let etapa='catalogo';
  try{

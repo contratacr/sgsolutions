@@ -1,3 +1,4 @@
+import {leerBytesLimitados} from '@/lib/limites-http';
 import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import { accesoValido, basePedidosManuales, configuracionPedidosManuales, numeroPedido } from '@/lib/pedidos-manuales';
 import { enviarCorreo } from '@/lib/email/send';
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
   if (request.headers.get('origin') && request.headers.get('origin') !== config.origen) return Response.json({ error: 'datos_invalidos' }, { status: 403 });
   if (Number(request.headers.get('content-length') ?? 0) > 6 * 1024 * 1024) return Response.json({ error: 'archivo_invalido' }, { status: 413 });
   let form: FormData;
-  try { form = await request.formData(); } catch { return Response.json({ error: 'archivo_invalido' }, { status: 400 }); }
+  try { const bytes=await leerBytesLimitados(request,6*1024*1024);form = await new Response(bytes.buffer as ArrayBuffer,{headers:{'Content-Type':request.headers.get('Content-Type')??''}}).formData(); } catch { return Response.json({ error: 'archivo_invalido' }, { status: 400 }); }
   const id = String(form.get('pedido') ?? ''), token = String(form.get('acceso') ?? '');
   const recibido = form.get('archivo');
   if (!accesoValido(config, id, token)) return Response.json({ error: 'no_encontrado' }, { status: 404 });

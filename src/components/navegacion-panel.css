@@ -1,0 +1,13 @@
+.pedidos-reales-nav{background:#0b2432;color:#fff;display:flex;align-items:center;gap:20px;padding:12px max(20px,calc((100vw - 1440px)/2));min-width:0}
+.pedidos-reales-nav>a{flex-shrink:0}.pedidos-reales-nav img{width:120px;height:auto}
+.pedidos-reales-nav nav{display:flex;flex:1;min-width:0;overflow-x:auto;gap:4px;scrollbar-width:none;scroll-snap-type:x proximity;align-self:stretch;overscroll-behavior-x:contain}
+.pedidos-reales-nav nav::-webkit-scrollbar{display:none}
+.pedidos-reales-nav nav a{display:flex;flex-shrink:0;align-items:center;gap:7px;white-space:nowrap;padding:12px 10px;color:#b8c8d1;font-size:14px;border-bottom:2px solid transparent;scroll-snap-align:start}
+.pedidos-reales-nav nav a:hover,.pedidos-reales-nav nav a[aria-current]{color:#fff;border-bottom-color:#ef4e2b;background:transparent}
+.pedidos-reales-nav nav a:focus-visible{outline:2px solid #fff;outline-offset:-3px}
+.pedidos-reales-nav>div{display:flex;gap:12px;align-items:center;font-size:12px;white-space:nowrap}.pedidos-reales-nav form{margin:0}
+.pedidos-reales-nav button{background:transparent;color:inherit;border:1px solid #516675;border-radius:7px;padding:8px;cursor:pointer}
+.pedidos-reales-nav .panel-idiomas{display:flex;gap:2px}.pedidos-reales-nav .panel-idiomas button{border:0;border-radius:0;padding:7px 3px;border-bottom:2px solid transparent;font-size:11px}.pedidos-reales-nav .panel-idiomas button[aria-pressed=true]{border-bottom-color:#ef4e2b}
+@media(max-width:1100px){.pedidos-reales-nav{flex-wrap:wrap;gap:8px 12px;padding:12px 16px}.pedidos-reales-nav nav{order:3;flex-basis:100%}.pedidos-reales-nav>div{margin-left:auto}}
+@media(max-width:600px){.pedidos-reales-nav img{width:100px}.pedidos-reales-nav>div{gap:8px;font-size:11px}.pedidos-reales-nav nav a{min-width:44%;padding:11px 8px;font-size:14px}.pedidos-reales-nav nav a svg{flex-shrink:0}.pedidos-reales-nav button{padding:7px}}
+@media(max-width:359px){.pedidos-reales-nav img{width:82px}.pedidos-reales-nav{padding-inline:12px}.pedidos-reales-nav>div{gap:5px;font-size:10px}}

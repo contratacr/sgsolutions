@@ -1,3 +1,4 @@
+import {leerTextoLimitado} from '@/lib/limites-http';
 import {crearClienteCuenta} from '@/lib/supabase/cuenta';
 import {sesionLocal} from '@/lib/admin-local';
 import {eventoAnalitica} from '@/lib/analitica-modelo';
@@ -9,7 +10,7 @@ export async function POST(request:Request){
  if(!valido)return new Response(null,{status:403});
  if(!request.headers.get('cookie')?.split(';').some(c=>c.trim()==='sg-analitica=1'))return new Response(null,{status:403});
  if(Number(request.headers.get('content-length')||0)>2048)return new Response(null,{status:413});
- const texto=await request.text();if(texto.length>2048)return new Response(null,{status:413});
+ let texto:string;try{texto=await leerTextoLimitado(request,2048);}catch{return new Response(null,{status:413});}if(texto.length>2048)return new Response(null,{status:413});
  let datos;try{datos=eventoAnalitica.safeParse(JSON.parse(texto));}catch{return new Response(null,{status:400});}
  if(!datos.success)return new Response(null,{status:400});
  try{

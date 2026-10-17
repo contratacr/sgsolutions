@@ -1,3 +1,4 @@
+import {leerTextoLimitado} from '@/lib/limites-http';
 import {origenPermitido} from '@/lib/origen-permitido';
 import {esquemaPerfilCompra} from '@/lib/perfil-compra';
 import {guardarPerfilCompra} from '@/lib/guardar-perfil-compra';
@@ -6,7 +7,7 @@ export async function POST(request:Request){
  if(!origenPermitido(request))return Response.json({estado:'invalido'},{status:403});
  let datos;
  try{
-  const body=await request.text();
+  const body=await leerTextoLimitado(request,10000);
   if(body.length>10000)throw new Error('LIMITE');
   datos=esquemaPerfilCompra.parse(JSON.parse(body));
  }catch{return Response.json({estado:'invalido'},{status:400});}

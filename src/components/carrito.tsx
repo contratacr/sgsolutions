@@ -18,7 +18,7 @@ import {ContadorCantidad} from './contador-cantidad';
 import {EsqueletoCarrito} from './esqueletos';
 
 
-export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
+export function Carrito({sesionIniciada=false,cantidadIndicador}:{sesionIniciada?:boolean;cantidadIndicador?:number|null}) {
   const acceso=useTranslations('AccesoCompra');
   const t = useTranslations('Carrito');
 
@@ -37,7 +37,7 @@ export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
   const productoAviso=aviso?productos.find(p=>p.id===aviso.id):undefined;
   const cantidad=todas.reduce((total,l)=>total+l.cantidad,0);
   return <><Dialog.Root open={abierto} onOpenChange={valor=>{setAbierto(valor);if(valor)setAviso(null);}}>
-    <Dialog.Trigger className="boton-icono carrito-trigger" aria-label={n('carrito')} aria-describedby={descripcionCantidad}><ShoppingCart size={24} strokeWidth={2.2} aria-hidden="true"/><span id={descripcionCantidad} className="sr-only" aria-live="polite">{t('articulos',{cantidad})}</span><IndicadorCantidad cantidad={cantidad} clase="carrito-cantidad"/></Dialog.Trigger>
+    <Dialog.Trigger className="boton-icono carrito-trigger" aria-label={n('carrito')} aria-describedby={descripcionCantidad}><ShoppingCart size={24} strokeWidth={2.2} aria-hidden="true"/><span id={descripcionCantidad} className="sr-only" aria-live="polite">{cantidadIndicador!==null&&t('articulos',{cantidad:cantidadIndicador??cantidad})}</span>{cantidadIndicador!==null&&<IndicadorCantidad cantidad={cantidadIndicador??cantidad} clase="carrito-cantidad"/>}</Dialog.Trigger>
     <Dialog.Portal><Dialog.Overlay className="dialogo-fondo"/><MarcoModal className="carrito-panel">
       <div className="carrito-cabecera"><Dialog.Title>{t('titulo')}</Dialog.Title></div>
       <div className="carrito-contenido">

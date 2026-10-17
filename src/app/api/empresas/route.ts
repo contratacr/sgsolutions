@@ -1,3 +1,4 @@
+import {leerTextoLimitado} from '@/lib/limites-http';
 import {z} from 'zod';
 import {getTranslations} from 'next-intl/server';
 import {origenPermitido} from '@/lib/origen-permitido';
@@ -10,7 +11,7 @@ const intentos=new Map<string,{cantidad:number;hasta:number}>();
 export async function POST(request:Request){
  if(!origenPermitido(request))return Response.json({error:'origen'},{status:403});
  let datos:z.infer<typeof esquema>;
- try{const texto=await request.text();if(texto.length>8000)throw new Error('limite');datos=esquema.parse(JSON.parse(texto));}catch{return Response.json({error:'datos'},{status:400});}
+ try{const texto=await leerTextoLimitado(request,8000);if(texto.length>8000)throw new Error('limite');datos=esquema.parse(JSON.parse(texto));}catch{return Response.json({error:'datos'},{status:400});}
  if(datos.sitio)return Response.json({error:'datos'},{status:400});
  const ahora=Date.now();for(const [k,v] of intentos)if(v.hasta<=ahora)intentos.delete(k);
  const clave=request.headers.get('cf-connecting-ip')??datos.correo.toLowerCase();

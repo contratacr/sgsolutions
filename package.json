@@ -12,6 +12,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "verificar:textos": "node scripts/verificar-textos.mjs",
+    "verificar:publico": "node scripts/verificar-publico.mjs",
+    "postbuild": "npm run verificar:publico",
     "verificar:secretos": "node scripts/verificar-secretos.mjs",
     "verificar": "npm run typecheck && npm run lint && npm run verificar:textos && npm run verificar:secretos",
     "test:e2e": "playwright test",
@@ -26,7 +28,8 @@
     "verificar:pedidos": "node scripts/verificar-esquema-pedidos.mjs",
     "test:compras": "node --import tsx scripts/testing/compras-worker.mjs",
     "test:regresion": "node scripts/testing/regresion.mjs",
-    "verificar:imagenes": "node scripts/auditar-imagenes-productos.mjs"
+    "verificar:imagenes": "node scripts/auditar-imagenes-productos.mjs",
+    "test:produccion:smoke": "node scripts/testing/produccion-smoke.mjs"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.17",
@@ -51,6 +54,7 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.10",
     "@playwright/test": "^1.58.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",

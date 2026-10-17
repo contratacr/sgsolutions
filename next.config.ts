@@ -18,12 +18,13 @@ const configuracion: NextConfig = {
   },
   async headers() {
     return [{ source: '/:path*', headers: [
+      { key: 'Strict-Transport-Security', value: 'max-age=31536000' },
       { key: 'X-Content-Type-Options', value: 'nosniff' },
       { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
       { key: 'Content-Security-Policy', value: "frame-ancestors 'self'; object-src 'none'; base-uri 'self'" },
       { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
       { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' }
-    ] }, {source:'/finalizar-compra/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'}]}, {source:'/pagar',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}, {source:'/pago/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}, {source:'/pedido/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}, {source:'/compra/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}];
+    ] }, ...['/cuenta/:path*','/panel/:path*','/admin'].map(source=>({source,headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]})), {source:'/finalizar-compra/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'}]}, {source:'/pagar',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}, {source:'/pago/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}, {source:'/pedido/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}, {source:'/compra/:path*',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'Cache-Control',value:'private, no-store'}]}];
   }
 };
 export default createNextIntlPlugin('./src/i18n/request.ts')(configuracion);
