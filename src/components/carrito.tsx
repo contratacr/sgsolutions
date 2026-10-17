@@ -1,11 +1,12 @@
 'use client';
 import {PrecioProducto} from './precio-producto';
 import Image from 'next/image';
-import {useEffect,useId,useState} from 'react';
+import {useCallback,useEffect,useId,useState} from 'react';
 import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
-import {AnimatePresence,motion,useReducedMotion} from 'motion/react';
-import { ShoppingCart, X, Trash2 } from 'lucide-react';
+import {ConfirmacionAccion} from './confirmacion-accion';
+import {IndicadorCantidad} from './indicador-cantidad';
+import { ShoppingCart, Trash2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import Link from 'next/link';
@@ -31,14 +32,12 @@ export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
   const faltantes=todas.some(l=>!productos.some(p=>p.id===l.id)&&!noDisponibles.includes(l.id));
   const descripcionCantidad=useId();
   const [abierto,setAbierto]=useState(false),[aviso,setAviso]=useState<{id:string;agregadas:number}|null>(null);
-  const [pausado,setPausado]=useState(false);
-  const reducirMovimiento=useReducedMotion();
-  useEffect(()=>{const agregado=(evento:Event)=>{setAviso((evento as CustomEvent<{id:string;agregadas:number}>).detail);setPausado(false);};window.addEventListener('sg-carrito-agregado',agregado);return()=>window.removeEventListener('sg-carrito-agregado',agregado);},[]);
-  useEffect(()=>{if(!aviso||pausado)return;const temporizador=setTimeout(()=>setAviso(null),6000);return()=>clearTimeout(temporizador);},[aviso,pausado]);
+  const cerrarAviso=useCallback(()=>setAviso(null),[]);
+  useEffect(()=>{const agregado=(evento:Event)=>setAviso((evento as CustomEvent<{id:string;agregadas:number}>).detail);window.addEventListener('sg-carrito-agregado',agregado);window.addEventListener('sg-favorito-guardado',cerrarAviso);return()=>{window.removeEventListener('sg-carrito-agregado',agregado);window.removeEventListener('sg-favorito-guardado',cerrarAviso);};},[cerrarAviso]);
   const productoAviso=aviso?productos.find(p=>p.id===aviso.id):undefined;
   const cantidad=todas.reduce((total,l)=>total+l.cantidad,0);
   return <><Dialog.Root open={abierto} onOpenChange={valor=>{setAbierto(valor);if(valor)setAviso(null);}}>
-    <Dialog.Trigger className="boton-icono carrito-trigger" aria-label={n('carrito')} aria-describedby={descripcionCantidad}><ShoppingCart size={24} strokeWidth={2.2} aria-hidden="true"/><span id={descripcionCantidad} className="sr-only" aria-live="polite">{t('articulos',{cantidad})}</span>{cantidad>0&&<span className="carrito-cantidad" aria-hidden="true">{cantidad>99?'99+':cantidad}</span>}</Dialog.Trigger>
+    <Dialog.Trigger className="boton-icono carrito-trigger" aria-label={n('carrito')} aria-describedby={descripcionCantidad}><ShoppingCart size={24} strokeWidth={2.2} aria-hidden="true"/><span id={descripcionCantidad} className="sr-only" aria-live="polite">{t('articulos',{cantidad})}</span><IndicadorCantidad cantidad={cantidad} clase="carrito-cantidad"/></Dialog.Trigger>
     <Dialog.Portal><Dialog.Overlay className="dialogo-fondo"/><MarcoModal className="carrito-panel">
       <div className="carrito-cabecera"><Dialog.Title>{t('titulo')}</Dialog.Title></div>
       <div className="carrito-contenido">
@@ -55,5 +54,7 @@ export function Carrito({sesionIniciada=false}:{sesionIniciada?:boolean}) {
       </div>
       {lineas.length>0&&<div className="carrito-resumen"><div><strong>{t('total')}</strong><strong>{lineas.some(l=>productos.find(p=>p.id===l.id)!.precio===null)?t('pendiente'):colones(lineas.reduce((a,l)=>a+productos.find(p=>p.id===l.id)!.precio!*l.cantidad,0))}</strong></div><p>{t('nota')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/pagar">{t('finalizar')}</Link></Dialog.Close>{!sesionIniciada&&<Dialog.Close asChild><Link className="carrito-ingreso" href={enlaceIngresoCompra()}>{acceso('carrito')}</Link></Dialog.Close>}</div>}
     </MarcoModal></Dialog.Portal>
-  </Dialog.Root><AnimatePresence>{aviso&&<motion.aside className="carrito-confirmacion" aria-label={t('avisoTitulo')} initial={{opacity:0,y:reducirMovimiento?0:-12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:reducirMovimiento?0:-8}} transition={{duration:reducirMovimiento?0:.28,ease:[.22,1,.36,1]}} onPointerEnter={()=>setPausado(true)} onPointerLeave={e=>{if(!e.currentTarget.contains(document.activeElement))setPausado(false);}} onFocusCapture={()=>setPausado(true)} onBlurCapture={e=>{if(!e.currentTarget.contains(e.relatedTarget))setPausado(false);}}><div role="status" aria-atomic="true"><div><strong>{t(aviso.agregadas>0?'productoAgregado':'noAgregado')}</strong>{aviso.agregadas>0&&<small>{t('resumenAgregado',{cantidad:aviso.agregadas,total:cantidad})}</small>}{aviso.agregadas>0&&<p className="carrito-confirmacion-producto">{productoAviso&&<Image src={productoAviso.imagen} alt="" width={56} height={56}/>}<span>{traducir(productoAviso?.nombre??{es:'',en:''},idioma)}</span></p>}</div></div><button type="button" className="boton boton-azul" onClick={()=>{setAviso(null);setAbierto(true);}}><ShoppingCart size={17} aria-hidden="true"/>{t('verCarrito')}</button><button type="button" className="boton-icono carrito-confirmacion-cerrar" aria-label={n('cerrar')} onClick={()=>setAviso(null)}><X size={18}/></button></motion.aside>}</AnimatePresence></>;
+  </Dialog.Root>{aviso&&<ConfirmacionAccion clase="carrito-confirmacion" titulo={t(aviso.agregadas>0?'productoAgregado':'noAgregado')} icono={<ShoppingCart size={21}/>} reiniciar={aviso} cerrar={cerrarAviso} accion={<button type="button" onClick={()=>{cerrarAviso();setAbierto(true);}}>{t('verCarrito')}</button>}>
+   {aviso.agregadas>0&&<><small>{t('resumenAgregado',{cantidad:aviso.agregadas,total:cantidad})}</small><p className="carrito-confirmacion-producto">{productoAviso&&<Image src={productoAviso.imagen} alt="" width={44} height={44}/>}<span>{traducir(productoAviso?.nombre??{es:'',en:''},idioma)}</span></p></>}
+  </ConfirmacionAccion>}</>;
 }

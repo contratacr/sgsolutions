@@ -21,3 +21,19 @@ for(const idioma of ['es','en'])test(`favoritos conserva tarjetas de tienda y eq
  await tarjetas.nth(4).hover();await tarjetas.nth(4).locator('[aria-pressed]').click();await expect(tarjetas).toHaveCount(7);
  await page.reload();await expect(tarjetas).toHaveCount(7);await expect(page.locator('html')).toHaveAttribute('lang',idioma);
 });
+
+for(const idioma of ['es','en'])test(`favoritos vacío sin invitación y un único título ${idioma}`,async({page,context,request,baseURL},info)=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
+ await page.goto('/favoritos');
+ const vacio=page.locator('.favoritos-vacio'),aviso=page.locator('.favoritos-invitado');
+ await expect(vacio).toBeVisible();await expect(aviso).toHaveCount(0);
+ await expect(page.locator('main h1')).toHaveText(idioma==='es'?'Favoritos':'Favorites');await expect(page.locator('main h2')).toHaveCount(0);
+ await expect(vacio.locator('a')).toHaveAttribute('href','/tienda');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.screenshot({path:`.privado/favoritos-vacio-${info.project.name}-${idioma}.png`});
+ const datos=await(await request.get('/api/catalogo')).json();
+ await page.evaluate(id=>localStorage.setItem('sg-favoritos-invitado',JSON.stringify([id])),datos.productos[0].id);
+ await page.reload();await expect(page.locator('.favoritos-grid .shop-producto')).toHaveCount(1);await expect(aviso).toBeVisible();
+ await page.locator('.favoritos-grid .shop-producto').hover();await page.locator('.favoritos-grid [aria-pressed]').click();
+ await expect(vacio).toBeVisible();await expect(aviso).toHaveCount(0);
+});
