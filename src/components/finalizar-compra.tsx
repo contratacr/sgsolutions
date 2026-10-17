@@ -121,7 +121,10 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
     if(!validacion.success)for(const issue of validacion.error.issues){const nombre=String(issue.path[0]);if(campos.some(c=>c.name===nombre))invalidos.push(nombre);}
     if(!invalidos.length)return true;
     setPaso(numero);setCamposInvalidos([...new Set(invalidos)]);setErrorFormulario(true);
-    requestAnimationFrame(()=>{const campo=campos.find(c=>invalidos.includes(c.name));campo?.focus();campo?.reportValidity();});
+    const campo=campos.find(c=>invalidos.includes(c.name));
+    const enfocar=()=>{campo?.focus();campo?.reportValidity();};
+    // Visible fields can focus immediately; a deferred focus can steal the next keystroke.
+    if(campo?.getClientRects().length)enfocar();else requestAnimationFrame(enfocar);
     return false;
   }
   function avanzar(){const form=formularioPasos.current;if(form&&validarPaso(form,paso))cambiarPaso(paso+1);}
