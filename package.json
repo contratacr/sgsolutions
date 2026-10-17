@@ -29,7 +29,8 @@
     "test:compras": "node --import tsx scripts/testing/compras-worker.mjs",
     "test:regresion": "node scripts/testing/regresion.mjs",
     "verificar:imagenes": "node scripts/auditar-imagenes-productos.mjs",
-    "test:produccion:smoke": "node scripts/testing/produccion-smoke.mjs"
+    "test:produccion:smoke": "node scripts/testing/produccion-smoke.mjs",
+    "verificar:estadisticas": "node scripts/verificar-esquema-estadisticas.mjs"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.17",

@@ -1,37 +1,18 @@
 'use client';
+import {conteoAnonimo} from './estadisticas-agregadas-modelo';
 import {rutaPublica,type EventoAnalitica} from './analitica-modelo';
 type Pixel=((...args:unknown[])=>void)&{queue:unknown[][];loaded:boolean;version:string;callMethod?:(...args:unknown[])=>void};
 declare global {interface Window {fbq?:Pixel;_fbq?:Pixel;}}
-export function preferenciasMedicion(){try{return JSON.parse(localStorage.getItem('sg-medicion')||'null') as {analitica:boolean;publicidad:boolean}|null;}catch{return null;}}
-let sesion:string|undefined,visitante:string|undefined,actividad=0;
-const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export function preferenciasMedicion(){try{const p=JSON.parse(localStorage.getItem('sg-medicion')||'null');return typeof p?.publicidad==='boolean'?{publicidad:p.publicidad}:null;}catch{return null;}}
 export function borrarIdentificadoresMedicion(){
- sesion=visitante=undefined;actividad=0;
  try{sessionStorage.removeItem('sg-medicion-sesion');sessionStorage.removeItem('sg-medicion-actividad');localStorage.removeItem('sg-medicion-visitante');}catch{}
-}
-function identificadores(){
- const ahora=Date.now();
- try{
-  const guardada=sessionStorage.getItem('sg-medicion-sesion'),ultima=Number(sessionStorage.getItem('sg-medicion-actividad'));
-  sesion=guardada&&uuid.test(guardada)&&ultima>ahora-30*60_000?guardada:crypto.randomUUID();
-  sessionStorage.setItem('sg-medicion-sesion',sesion);sessionStorage.setItem('sg-medicion-actividad',String(ahora));actividad=ahora;
- }catch{if(!sesion||actividad<ahora-30*60_000)sesion=crypto.randomUUID();actividad=ahora;}
- try{
-  const guardado=JSON.parse(localStorage.getItem('sg-medicion-visitante')||'null');
-  visitante=guardado&&typeof guardado.id==='string'&&uuid.test(guardado.id)&&guardado.vence>ahora?guardado.id:crypto.randomUUID();
-  if(guardado?.id!==visitante)localStorage.setItem('sg-medicion-visitante',JSON.stringify({id:visitante,vence:ahora+30*86400000}));
- }catch{visitante??=crypto.randomUUID();}
- return {sesion:sesion!,visitante:visitante!};
+ document.cookie=`sg-analitica=; Path=/; Max-Age=0; SameSite=Lax${location.protocol==='https:'?'; Secure':''}`;
 }
 export function medir(tipo:EventoAnalitica['tipo'],detalle=''){
  if(document.body.dataset.excluirMedicion==='1')return;
  const p=preferenciasMedicion();if(!rutaPublica(location.pathname))return;
- if(p?.analitica){
-  const ids=identificadores();
-  const campana=new URLSearchParams(location.search).get('utm_campaign')||'';
-  const evento:EventoAnalitica={id:crypto.randomUUID(),...ids,tipo,ruta:location.pathname,detalle,dispositivo:innerWidth<=760?'movil':'escritorio',idioma:document.documentElement.lang==='en'?'en':'es',campana:/^[a-zA-Z0-9_-]{1,80}$/.test(campana)?campana:''};
-  void fetch('/api/analitica',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(evento),keepalive:true}).catch(()=>{});
- }
+ const datos=conteoAnonimo.safeParse({tipo,ruta:location.pathname.startsWith('/tienda/')?'/tienda/producto':location.pathname,detalle,dispositivo:innerWidth<=760?'movil':'escritorio',idioma:document.documentElement.lang==='en'?'en':'es'});
+ if(datos.success)void fetch('/api/estadisticas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos.data),keepalive:true}).catch(()=>{});
  if(p?.publicidad&&window.fbq){const estandar:Partial<Record<EventoAnalitica['tipo'],string>>={pagina:'PageView',producto:'ViewContent',carrito:'AddToCart',whatsapp:'Contact',correo:'Contact',telefono:'Contact'};const nombre=estandar[tipo];if(nombre)window.fbq('track',nombre,tipo==='producto'||tipo==='carrito'?{content_ids:[detalle],content_type:'product'}:{});else window.fbq('trackCustom',tipo,{detalle});}
 }
 export function iniciarPixel(id:string){

@@ -13,7 +13,9 @@ for (const idioma of ['es', 'en'] as const) {
       const paneles=page.locator('.inicio-triptico-panel');
       expect(await paneles.evaluateAll(es=>Math.max(...es.map(e=>e.clientWidth))-Math.min(...es.map(e=>e.clientWidth)))).toBeLessThanOrEqual(1);
       await paneles.nth(1).hover();
-      expect(await paneles.evaluateAll(es=>Math.max(...es.map(e=>e.clientWidth))-Math.min(...es.map(e=>e.clientWidth)))).toBeLessThanOrEqual(1);
+      await expect.poll(()=>paneles.evaluateAll(es=>es[1].clientWidth-es[0].clientWidth)).toBeGreaterThan(20);
+      await page.mouse.move(1,1);
+      await expect.poll(()=>paneles.evaluateAll(es=>Math.max(...es.map(e=>e.clientWidth))-Math.min(...es.map(e=>e.clientWidth)))).toBeLessThanOrEqual(1);
     }
     await expect(page.locator('.inicio-caso,.inicio-cierre')).toHaveCount(0);
     if (info.project.name === 'escritorio') {

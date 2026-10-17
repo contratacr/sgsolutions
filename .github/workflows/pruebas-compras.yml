@@ -46,6 +46,8 @@ jobs:
         run: npm audit --omit=dev --audit-level=high
       - name: Revisar dependencias completas y bloquear alertas nuevas graves
         run: node scripts/verificar-dependencias.mjs
+      - name: Validar contadores agregados y exclusión de administradores en PostgreSQL efímero
+        run: node tests/sql/estadisticas-panel.mjs
       - name: Validar restricciones y aislamiento de favoritos en PostgreSQL efímero
         run: node tests/sql/favoritos-empresariales.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

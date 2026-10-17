@@ -24,7 +24,7 @@ for(const idioma of ['es','en'])test(`navegación compacta y marcas animadas ${i
  await page.screenshot({path:`/tmp/sg-navegacion-compacta-${idioma}-${info.project.name}.png`});
  await page.goto('/privacidad');await expect(page.locator('.medicion-aviso')).toHaveCount(0);
  await page.locator('.pie-preferencias').click();await expect(page.locator('.medicion-aviso')).toBeVisible();
- await page.getByRole('button',{name:idioma==='es'?'Rechazar opcionales':'Reject optional tracking',exact:true}).click();
+ await page.getByRole('button',{name:idioma==='es'?'Sin publicidad':'No advertising',exact:true}).click();
  await page.goto('/terminos');await expect(page.locator('h1')).toBeVisible();
  await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',idioma);
 });

@@ -10,6 +10,7 @@ for(const existente of [false,true]){
  await db.exec(await readFile('supabase/migrations/20260909000100_perfiles.sql','utf8'));
  if(existente)await db.exec(await readFile('supabase/migrations/20260922000100_analitica.sql','utf8'));
  await db.exec(await readFile('supabase/migrations/20261013000300_estadisticas_panel.sql','utf8'));
+ await db.exec(await readFile('supabase/migrations/20261017000100_excluir_analitica_administradores.sql','utf8'));
  const id=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
  await db.query("insert into auth.users(id) values($1)",[id(1)]);await db.query("insert into public.perfiles(id,nombre,rol,activo) values($1,'Administrador','administrador',true)",[id(1)]);
  await db.query("insert into auth.users(id,created_at,last_sign_in_at) values($1,now()-interval '1 day',now()),($2,now()-interval '15 days',now()-interval '15 days'),($3,now(),now())",[id(2),id(3),id(4)]);
@@ -31,5 +32,46 @@ for(const existente of [false,true]){
  await db.query('select public.registrar_evento($1::jsonb)',[JSON.stringify({...evento,id:id(201),tipo:'pagina',ruta:'/pagar'})]);
  await assert.rejects(()=>db.query('select public.registrar_evento($1::jsonb)',[JSON.stringify({...evento,id:id(202),ruta:'/admin'})]),/check constraint/);
  await db.exec('reset role');assert.equal((await db.query('select count(*)::integer as total from public.eventos_analitica where id=$1',[id(200)])).rows[0].total,1);
+ await sesion('authenticated',id(1));
+ const eventoAdmin={...evento,id:id(203),ruta:'/tienda'};
+ await db.query('select public.registrar_evento($1::jsonb)',[JSON.stringify(eventoAdmin)]);
+ await db.exec('reset role');await db.query('update public.perfiles set activo=false where id=$1',[id(1)]);
+ await sesion('authenticated',id(1));await db.query('select public.registrar_evento($1::jsonb)',[JSON.stringify({...eventoAdmin,id:id(204)})]);
+ await db.exec('reset role');assert.equal((await db.query('select count(*)::integer as total from public.eventos_analitica where id in ($1,$2)',[id(203),id(204)])).rows[0].total,0);
+ // Upgrade to daily counters after validating legacy compatibility.
+ await db.exec(`create role service_role;
+ create table public.catalogo_publico(id integer primary key,contenido jsonb);
+ insert into public.catalogo_publico values(1,'{"productos":[{"id":"producto-demo","slug":"demo"}]}');
+ alter table public.pedidos_manuales add column articulos jsonb default '[]';
+ alter table public.pedidos_tilopay add column articulos jsonb default '[]';`);
+ await db.exec(await readFile('supabase/migrations/20261013000600_popularidad_productos.sql','utf8'));
+ const vistasPrevias=Number((await db.query("select coalesce(sum(cantidad),0) as n from public.productos_vistas_diarias where producto_id='producto-demo'")).rows[0].n);
+ await db.exec(await readFile('supabase/migrations/20261017000200_estadisticas_agregadas.sql','utf8'));
+ const conteo={tipo:'pagina',ruta:'/tienda',detalle:'',dispositivo:'movil',idioma:'es'};
+ await sesion('anon');await assert.rejects(()=>db.query('select public.registrar_conteo_anonimo($1)',[JSON.stringify(conteo)]),/permission denied/);
+ await assert.rejects(()=>db.query('select * from public.estadisticas_diarias'),/permission denied/);
+ await assert.rejects(()=>db.query('select public.registrar_evento($1)',[JSON.stringify(evento)]),/permission denied/);
+ await sesion('authenticated',id(1));await assert.rejects(()=>db.query('select public.registrar_conteo_anonimo($1)',[JSON.stringify(conteo)]),/permission denied/);
+ await sesion('service_role');const contar=e=>db.query('select public.registrar_conteo_anonimo($1::jsonb)',[JSON.stringify(e)]);
+ for(let n=0;n<5;n++)await contar(conteo);
+ await contar({...conteo,tipo:'producto',detalle:'demo'});
+ await contar({...conteo,tipo:'producto',detalle:'producto-inexistente'});
+ await assert.rejects(()=>contar({...conteo,sesion:id(999)}),/invalid_event/);
+ await assert.rejects(()=>contar({...conteo,ruta:'/pagar/token'}),/invalid_event/);
+ await assert.rejects(()=>contar({...conteo,detalle:'datos-personales'}),/invalid_event/);
+ await sesion('service_role',id(1));await contar(conteo); // Even privileged calls cannot count an identified admin.
+ await db.exec('reset role');
+ assert.equal(Number((await db.query("select cantidad from public.estadisticas_diarias where tipo='pagina'")).rows[0].cantidad),5);
+ assert.equal((await db.query("select detalle from public.estadisticas_diarias where tipo='producto'")).rows[0].detalle,'producto-demo');
+ assert.equal(Number((await db.query("select cantidad from public.productos_vistas_diarias where producto_id='producto-demo'")).rows[0].cantidad),vistasPrevias+1);
+ const columnas=(await db.query("select column_name from information_schema.columns where table_name='estadisticas_diarias' order by ordinal_position")).rows.map(f=>f.column_name);
+ assert.deepEqual(columnas,['fecha','tipo','ruta','detalle','dispositivo','idioma','cantidad']);
+ await db.query('update public.perfiles set activo=true where id=$1',[id(1)]);
+ await sesion('authenticated',id(2));await assert.rejects(()=>db.query('select public.resumen_estadisticas_agregadas_panel(30)'),/forbidden/);
+ await sesion('authenticated',id(1));
+ const nuevo=(await db.query('select public.resumen_estadisticas_agregadas_panel(7) as r')).rows[0].r;
+ assert.equal(nuevo.modo,'agregado');assert.equal(nuevo.total,6);assert.equal(nuevo.sesiones,null);assert.equal(nuevo.visitantes,null);assert.equal(nuevo.compras.pagados,2);assert.equal(nuevo.clientes.total,2);assert.equal(nuevo.diario[0].paginas,5);
+ const ranking=(await db.query('select public.popularidad_productos_agregada_panel(7) as r')).rows[0].r;
+ assert.equal(ranking.vistas[0].id,'producto-demo');assert.equal(Number(ranking.vistas[0].cantidad),1);
  await db.close();console.log('PASS estadísticas: '+(existente?'actualización de esquema':'instalación nueva')+', permisos, visitantes, períodos, registros y pedidos reales.');
 }

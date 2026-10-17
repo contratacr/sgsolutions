@@ -1241,6 +1241,17 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 .indicador-cantidad,.tienda-compacta .shop-resultados-cabecera .indicador-cantidad.shop-favoritos-contador{position:absolute;right:-3px;top:0;display:grid;place-items:center;min-width:20px;height:20px;padding:0 4px;margin:0;box-sizing:border-box;border:2px solid #fff;border-radius:999px;background:#bd421c;color:#fff;font-size:.65rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
 @media(max-width:850px){.accion-confirmacion.carrito-confirmacion,.accion-confirmacion.favoritos-confirmacion{top:calc(84px + env(safe-area-inset-top));right:16px;left:auto;width:min(360px,calc(100vw - 32px))}}
 
-/* Los tres destinos conservan la misma superficie, también con hover y foco. */
-body .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel,
-body .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:is(:hover,:focus-visible){flex-grow:1;transition:box-shadow .25s ease}
+/* Tamaño inicial igual; expansión al señalar una opción con mouse o teclado. */
+body .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel{flex-grow:1}
+@media(min-width:701px) and (hover:hover) and (prefers-reduced-motion:no-preference){
+ body .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel{transition:flex-grow .5s cubic-bezier(.2,.7,.25,1),box-shadow .25s ease}
+ body .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel:is(:hover,:focus-visible){flex-grow:1.65}
+}
+
+/* Sorting stands out through typography; selection never leaves a focus box. */
+.tienda-compacta .shop-resultados-cabecera>.shop-orden>span{color:#315273;font-weight:600}
+.tienda-compacta .shop-resultados-cabecera .shop-orden-trigger{color:#203e59;font-weight:700}
+.tienda-compacta .shop-resultados-cabecera .shop-orden-trigger:is(:focus,:focus-visible){outline:none;border-radius:0;box-shadow:none}
+html[data-interaccion=teclado] .tienda-compacta .shop-resultados-cabecera .shop-orden-trigger:focus{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+html[data-interaccion=puntero] .tienda-compacta .shop-resultados-cabecera .shop-orden-trigger:focus{text-decoration:none}
+@media(hover:hover){.tienda-compacta .shop-resultados-cabecera .shop-orden-trigger:hover{color:#b84320}}
