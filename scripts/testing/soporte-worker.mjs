@@ -24,7 +24,7 @@ export async function probarSoporteWorker({db,config,base}){
    browser=await engine.launch();
    for(const idioma of ['es','en']){
     const t=JSON.parse(await readFile(`messages/${idioma}.json`,'utf8')).SoportePanel;
-    const ctx=await browser.newContext(movil?{viewport:{width:390,height:844},isMobile:true,hasTouch:true}:{}),page=await ctx.newPage(),fallos=[];
+    const ctx=await browser.newContext({baseURL:base,...(movil?{viewport:{width:390,height:844},isMobile:true,hasTouch:true}:{})}),page=await ctx.newPage(),fallos=[];
     page.on('pageerror',e=>fallos.push(e.message));
     const contexto=`${etiqueta}-${nombre}-${idioma}`,empresa='Empresa '+contexto,equipo='Equipo '+contexto,asunto='Ticket '+contexto;
     await ctx.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'},{name:'sb-127-auth-token',value:'base64-'+Buffer.from(JSON.stringify(clientes.administrador.sesion)).toString('base64url'),domain:'127.0.0.1',path:'/',httpOnly:true}]);
