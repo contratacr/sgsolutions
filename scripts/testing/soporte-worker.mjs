@@ -11,7 +11,7 @@ export async function probarSoporteWorker({db,config,base}){
  const clientes={};let browser;
  try{
   for(const rol of ['administrador','comercial']){
-   const password=randomBytes(24).toString('base64url'),email=`${etiqueta}-${rol}@example.invalid`;
+   const password=`Sg9!${randomBytes(24).toString('base64url')}`,email=`${etiqueta}-${rol}@example.invalid`;
    const alta=await db.auth.admin.createUser({email,password,email_confirm:true});assert.ifError(alta.error);const id=alta.data.user.id;usuarios.push(id);
    assert.ifError((await db.from('perfiles').upsert({id,nombre:etiqueta,rol,activo:true})).error);
    const cliente=createClient(config.API_URL,config.ANON_KEY,{auth:{persistSession:false}}),sesion=await cliente.auth.signInWithPassword({email,password});assert.ifError(sesion.error);clientes[rol]={cliente,sesion:sesion.data.session};
