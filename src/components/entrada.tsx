@@ -21,10 +21,10 @@ export function Entrada() {
   const pendiente=useRef(false);
   const temporizador=useRef<ReturnType<typeof setTimeout>|null>(null);
   useEffect(()=>{
-    const restablecer=()=>{pendiente.current=false;setNavegando(null);};
-    const frame=requestAnimationFrame(restablecer);
+    const restablecer=(evento?:PageTransitionEvent)=>{if(evento&&!evento.persisted&&pendiente.current)return;pendiente.current=false;setNavegando(null);};
+    const frame=requestAnimationFrame(()=>{if(!pendiente.current)restablecer();});
     window.addEventListener('pageshow',restablecer);
-    return ()=>{cancelAnimationFrame(frame);if(temporizador.current)clearTimeout(temporizador.current);window.removeEventListener('pageshow',restablecer);};
+    return ()=>{cancelAnimationFrame(frame);if(temporizador.current)clearTimeout(temporizador.current);pendiente.current=false;window.removeEventListener('pageshow',restablecer);};
   },[ruta]);
   const t = useTranslations('Entrada');
   const n = useTranslations('Navegacion');
