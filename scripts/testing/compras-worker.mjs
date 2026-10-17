@@ -7,7 +7,7 @@ import path from "node:path";
 import { randomBytes } from "node:crypto";
 import assert from "node:assert/strict";
 import { createClient } from "@supabase/supabase-js";
-import { chromium, webkit } from "@playwright/test";
+import { chromium, webkit, expect } from "@playwright/test";
 import {
   esquemaCatalogo,
   publicarCatalogo,
@@ -508,7 +508,9 @@ try {
         await form.locator('input[name=modalidad][value=retiro]').check();
         const textosCompra=JSON.parse(await readFile(path.join(root,'messages',lang+'.json'),'utf8')).Compra;
         await p.getByRole('button',{name:textosCompra.pasoSiguiente,exact:true}).click();
+        await expect(form.locator('[data-compra-paso="1"]')).toBeVisible();
         await p.getByRole('button',{name:textosCompra.pasoSiguiente,exact:true}).click();
+        await expect(form.locator('[data-compra-paso="2"]')).toBeVisible();
         await form.locator("[name=consentimiento]").check();
         await form
           .locator("input[type=file]")
