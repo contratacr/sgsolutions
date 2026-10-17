@@ -1,4 +1,4 @@
-import {completarFichaEmpresarial} from './fichas-empresariales';
+import {completarFichaEmpresarial} from './fichas-empresariales.ts';
 import {resolverImagenProducto} from './imagenes-productos';
 import productos from './catalogo-empresarial.json';
 import {esquemaCatalogo,type CatalogoAdmin} from './catalogo-modelo';

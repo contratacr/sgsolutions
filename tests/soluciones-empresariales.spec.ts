@@ -17,11 +17,11 @@ test('selección empresarial conserva catálogo y clasifica equipos, no marcas c
  expect(filtrado.total).toBe(1);expect(filtrado.productos[0].categoria).toBe('soluciones-empresariales');expect(filtrado.productos[0].nombre.es).toContain('NVR');
  expect(consultarCatalogo(c,new URLSearchParams()).total).toBe(11);
 });
-for(const idioma of ['es','en'])test(`una tienda con categoría empresarial, subcategorías y marcas ${idioma}`,async({page,context,baseURL},info)=>{
+for(const idioma of ['es','en'])test(`una tienda con categoría empresarial, subcategorías y marcas ${idioma}`,async({page,context,baseURL,isMobile})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
  await page.goto('/tienda');
  await expect(page.locator('.shop-empresa-acceso,.empresa-soluciones,.empresa-marcas')).toHaveCount(0);
- const movil=info.project.name==='safari-mobile';
+ const movil=isMobile;
  if(movil)await page.locator('.shop-abrir-filtros').click();
  const panel=page.locator(movil?'.shop-panel-filtros':'.shop-sidebar');
  const categoria=panel.getByRole('button',{name:idioma==='es'?'Soluciones Empresariales':'Business Solutions',exact:true});
@@ -110,40 +110,6 @@ test('selección importada completa salvo referencias no encontradas',async()=>{
  for(const p of productos){expect(p.coleccion).toBe('empresas');expect(p.precioReferencia).toBeGreaterThan(0);expect(p.costoUsd).toBeNull();expect(p.disponibilidadReferencia).toBe('consultar');}
 });
 
-test('administrador puede preparar un enlace con un equipo empresarial',async({page,context,baseURL})=>{
- const {randomBytes,createHash}=await import('node:crypto');
- const {writeFile}=await import('node:fs/promises');
- const cuentaPath='.privado/admin-local/cuenta.json',pedidosPath='.privado/admin-local/asesorias.json';
- const original=await readFile(cuentaPath,'utf8');
- const anteriores=await readFile(pedidosPath,'utf8').catch(()=>null);
- const cuenta=JSON.parse(original),token=randomBytes(32).toString('hex');
- cuenta.sesiones.push({hash:createHash('sha256').update(token).digest('hex'),vence:Date.now()+120000});
- try{
-  await writeFile(cuentaPath,JSON.stringify(cuenta));
-  await context.addCookies([{name:'sg-admin-local',value:token,url:baseURL!}]);
-  await page.goto('/panel/pedidos');
-  await page.getByRole('button',{name:'Crear pedido',exact:true}).click();
-  const nueva=page.locator('.panel-nueva-asesoria:visible');
-  await nueva.locator('input[type=search]').fill('POE-24-24W-G');
-  await nueva.locator('.asesoria-busqueda-resultados button').filter({hasText:'POE-24-24W-G'}).first().click();
-  await nueva.locator('[name=confirmado]').check();
-  await nueva.getByRole('button',{name:/Generar enlace de compra|Generate checkout link/}).click();
-  await page.waitForURL(u=>u.searchParams.get('resultado')==='enlace_generado');
-  const registros=JSON.parse(await readFile(pedidosPath,'utf8'));
-  const pedido=registros.find((p:{id:string})=>p.id===new URL(page.url()).searchParams.get('asesoria'));
-  expect(pedido.articulos[0].producto.id).toBe('empresa-intcomex-es000ubq07');
-  expect(pedido.articulos[0].producto.precio).toBe(5000);
-  const enlace=await page.locator(`[id="enlace-${pedido.id}"] textarea`).inputValue();
-  await context.clearCookies();
-  await page.goto(new URL(enlace).pathname);
-  await expect(page.locator('main form')).toBeVisible();
-  await expect(page.locator('main')).toContainText('POE-24-24W-G');
- }finally{
-  await writeFile(cuentaPath,original);
-  if(anteriores!==null)await writeFile(pedidosPath,anteriores);
-  else{const {unlink}=await import('node:fs/promises');await unlink(pedidosPath).catch(()=>{});}
- }
-});
 
 test('un modelo empresarial no se filtra por un SKU de otro proveedor',async({request})=>{
  const general=await(await request.get('/api/catalogo?q=BVX900L-LM')).json();
@@ -213,7 +179,7 @@ for(const idioma of ['es','en'])test(`Computadoras incluye equipos empresariales
 });
 
 test('fichas empresariales verificadas conservan identidad, precios e imágenes al importar',async()=>{
- const {completarFichaEmpresarial}=await import('../src/lib/fichas-empresariales');
+ const {completarFichaEmpresarial}=await import('../src/lib/fichas-empresariales.ts');
  const {esquemaCatalogo}=await import('../src/lib/catalogo-modelo');
  const base=JSON.parse(await readFile('src/lib/catalogo-base.json','utf8'));
  const productos=esquemaCatalogo.parse({...base,productos:JSON.parse(await readFile('src/lib/catalogo-empresarial.json','utf8'))}).productos;

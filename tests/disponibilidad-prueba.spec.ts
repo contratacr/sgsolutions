@@ -19,7 +19,9 @@ async function completar(page:import('@playwright/test').Page,metodo:string,entr
  await page.locator('[name=direccion]').fill('Frente a Plaza El Bosque');
  }
  await page.getByRole('button',{name:(idioma==='es'?es:en).Compra.pasoSiguiente,exact:true}).click();
+ await expect(page.locator('[data-compra-paso="1"]')).toBeVisible();
  await page.getByRole('button',{name:(idioma==='es'?es:en).Compra.pasoSiguiente,exact:true}).click();
+ await expect(page.locator('[data-compra-paso="2"]')).toBeVisible();
  await page.locator('input[name=pago][value='+metodo+']').check();
  if(metodo!=='tarjeta')await page.locator('#compra-comprobante').setInputFiles({name:'comprobante.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.4\n'+'.'.repeat(200))});
  await page.locator('[name=consentimiento]').check();

@@ -1,4 +1,4 @@
-import {completarDatosAsesoria,contactoPrueba} from './datos-asesoria-fixture';
+import {contactoPrueba} from './datos-asesoria-fixture';
 import {test,expect} from '@playwright/test';
 import {readFile,writeFile,unlink} from 'node:fs/promises';
 import {normalizarTelefonoWhatsApp} from '../src/lib/telefono-whatsapp';
@@ -7,23 +7,12 @@ test('números nacionales e internacionales sin aceptar texto ni códigos incomp
  for(const [entrada,esperado] of [['8888 8888','50688888888'],['+506 8888-8888','50688888888'],['+1 (212) 555-1234','12125551234'],['0034 612 345 678','34612345678'],['+44 20 7946 0958','442079460958']])expect(normalizarTelefonoWhatsApp(entrada)).toBe(esperado);
  for(const entrada of ['+506','+506 1234567','+506 123456789','abc','8888','+506+88888888','1234567890123456'])expect(normalizarTelefonoWhatsApp(entrada)).toBeNull();
 });
-for(const idioma of ['es','en'])test(`datos previos, validación y confirmación del carrito ${idioma}`,async({page,context})=>{
+for(const idioma of ['es','en'])test(`asesoría directa y confirmación del carrito ${idioma}`,async({page,context})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
- let datos:Record<string,unknown>|null=null,fallar=false;
- await page.route('**/api/asesoria',async r=>{datos=r.request().postDataJSON();await r.fulfill({status:fallar?503:201,json:fallar?{error:'no_disponible'}:{referencia:'SG-0001'}});});
- await page.addInitScript(()=>{window.open=()=>null;});
- await page.goto('/tienda');await page.locator('.shop-asesoria-inline').first().click();
- const formulario=page.locator('.contacto-asesoria form');
- await expect(page.getByRole('dialog').getByRole('button',{name:idioma==='es'?'Cerrar':'Close',exact:true})).toBeVisible();
- await expect(formulario.locator('[name=telefono]')).toHaveValue('+506 ');
- await formulario.locator('button').click();await expect(formulario.locator('[name=nombre]')).toBeFocused();
- await expect(formulario.locator('[aria-invalid=true]')).toHaveCount(5);
- await completarDatosAsesoria(page);
- await formulario.locator('[name=nombre]').fill('Cliente QA');await formulario.locator('[name=telefono]').locator('..').locator('input[type=tel]').fill('8888 8888');await formulario.locator('[name=consentimiento]').check();
- fallar=true;await formulario.locator('button').click();await expect(formulario.locator('[role=alert]')).toBeVisible();await expect(formulario.locator('[name=nombre]')).toHaveValue('Cliente QA');
- fallar=false;await formulario.locator('button').click();await expect(page.locator('.contacto-asesoria')).toHaveCount(0);
- expect(datos).toMatchObject({contacto:{telefono:'50688888888',necesidad:''}});
-
+ await page.goto('/tienda');const enlace=page.locator('.shop-asesoria-inline').first();
+ await expect(enlace).toHaveAttribute('target','_blank');await expect(enlace).toHaveAttribute('rel','noopener noreferrer');
+ const url=new URL((await enlace.getAttribute('href'))!);expect(url.hostname).toBe('wa.me');expect(url.searchParams.get('text')).toContain('SG Solutions');
+ await expect(page.locator('.contacto-asesoria')).toHaveCount(0);
  await page.locator('.shop-producto .producto-agregar').first().click();
  await expect(page.locator('.carrito-confirmacion [role=status]')).toContainText(idioma==='es'?'Agregado al carrito':'Added to cart');
  await page.locator('.carrito-confirmacion').getByRole('button',{name:idioma==='es'?'Ver carrito':'View cart',exact:true}).click();
@@ -33,15 +22,12 @@ for(const idioma of ['es','en'])test(`datos previos, validación y confirmación
  await page.goto('/');await expect(page.locator('.inicio-camino-empresas')).toContainText(idioma==='es'?'Empresas':'Business');await expect(page.locator('.inicio-camino-empresas')).toHaveAttribute('href','/empresas');
 });
 
-test('WhatsApp conserva la app y abre una página útil durante la preparación',async({page,context})=>{
- let liberar!:()=>void;const espera=new Promise<void>(r=>liberar=r);
- await context.route('**/api/asesoria',async r=>{await espera;await r.fulfill({status:201,json:{referencia:'SG-0002'}});});
+test('WhatsApp abre una conversación externa y conserva la tienda',async({page,context})=>{
+ let solicitudes=0;page.on('request',r=>{if(new URL(r.url()).pathname==='/api/asesoria')solicitudes++;});
  await context.route('https://wa.me/**',r=>r.fulfill({status:200,body:'WhatsApp simulado: no se envía ningún mensaje'}));
- await page.goto('/tienda');await page.locator('.shop-asesoria-inline').first().click();await completarDatosAsesoria(page);const popupPromesa=page.waitForEvent('popup');
- await page.locator('.contacto-asesoria form>button').click();const popup=await popupPromesa;
- await popup.waitForURL('**/tienda');await expect(popup.locator('main')).toBeVisible();await expect(page).toHaveURL(/\/tienda$/);
- liberar();await popup.waitForURL('https://wa.me/**');await popup.close();
- await expect(page.locator('.shop-grid')).toBeVisible();await expect(page).toHaveURL(/\/tienda$/);
+ await page.goto('/tienda');const popupPromesa=page.waitForEvent('popup');await page.locator('.shop-asesoria-inline').first().click();const popup=await popupPromesa;
+ await popup.waitForURL('https://wa.me/**');await expect(popup.locator('body')).toContainText('WhatsApp simulado');await popup.close();
+ await expect(page.locator('.shop-grid')).toBeVisible();await expect(page).toHaveURL(/\/tienda$/);expect(solicitudes).toBe(0);
 });
 
 test('pocas marcas llenan la ventana durante todo el ciclo',async({page})=>{

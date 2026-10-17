@@ -1,12 +1,13 @@
 'use client';
-import {useState,useRef,useEffect,useId} from 'react';
+import {useState,useRef,useEffect,useId,useSyncExternalStore} from 'react';
 import {useTranslations} from 'next-intl';
 import {LayoutDashboard,Package,Truck,FileText,MessagesSquare,Users,ChartNoAxesCombined,ArrowRight} from 'lucide-react';
 export const modulosPropuesta=['inicio','catalogo','proveedores','contenido','pedidos','usuarios','estadisticas'] as const;
 export type ModuloPropuesta=typeof modulosPropuesta[number];
+const suscribir=()=>()=>{},cliente=()=>true,servidor=()=>false;
 const iconos=[LayoutDashboard,Package,Truck,FileText,MessagesSquare,Users,ChartNoAxesCombined];
 export function NavegacionPropuesta({modulo,cambiar}:{modulo:ModuloPropuesta;cambiar:(m:ModuloPropuesta)=>void}){
- const t=useTranslations('PropuestaPanel');
+ const t=useTranslations('PropuestaPanel'),listo=useSyncExternalStore(suscribir,cliente,servidor);
  const barra=useRef<HTMLElement>(null),ayudaId=useId();
  useEffect(()=>{
   const nav=barra.current;
@@ -23,7 +24,7 @@ export function NavegacionPropuesta({modulo,cambiar}:{modulo:ModuloPropuesta;cam
   const botones=Array.from(barra.current?.querySelectorAll('button')??[]),actual=botones.indexOf(e.target as HTMLButtonElement);
   if(actual<0||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
   e.preventDefault();const siguiente=e.key==='Home'?0:e.key==='End'?botones.length-1:Math.max(0,Math.min(botones.length-1,actual+(e.key==='ArrowRight'?1:-1)));botones[siguiente]?.focus();
- }}>{modulosPropuesta.map((m,i)=>{const Icono=iconos[i];return <button key={m} aria-current={modulo===m?'page':undefined} onClick={()=>cambiar(m)}><Icono size={18} aria-hidden="true"/>{t(m)}</button>;})}</nav></div>;
+ }}>{modulosPropuesta.map((m,i)=>{const Icono=iconos[i];return <button key={m} disabled={!listo} aria-current={modulo===m?'page':undefined} onClick={()=>cambiar(m)}><Icono size={18} aria-hidden="true"/>{t(m)}</button>;})}</nav></div>;
 }
 const productos=[{id:'SG-P01',nombre:'Logitech MK470',marca:'Logitech',precio:30500,stock:59,activo:true},{id:'SG-P02',nombre:'TP-Link Archer C6',marca:'TP-Link',precio:17000,stock:12,activo:true},{id:'SG-P03',nombre:'Samsung 24”',marca:'Samsung',precio:68000,stock:0,activo:false},{id:'SG-P04',nombre:'Logitech M110',marca:'Logitech',precio:11000,stock:24,activo:true}];
 const usuarios=[{id:1,nombre:'María Solís',correo:'maria@example.com',rol:'cliente',activo:true},{id:2,nombre:'Daniela Castro',correo:'daniela@example.com',rol:'administrador',activo:true},{id:3,nombre:'Carlos Rojas',correo:'carlos@example.com',rol:'cliente',activo:false},{id:4,nombre:'Andrea Vega',correo:'andrea@example.com',rol:'cliente',activo:true}];
