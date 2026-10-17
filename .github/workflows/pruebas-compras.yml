@@ -48,6 +48,8 @@ jobs:
         run: node scripts/verificar-dependencias.mjs
       - name: Validar contadores agregados y exclusión de administradores en PostgreSQL efímero
         run: node tests/sql/estadisticas-panel.mjs
+      - name: Validar permisos, relaciones y archivos de soporte en PostgreSQL efímero
+        run: node tests/sql/soporte-panel.mjs
       - name: Validar restricciones y aislamiento de favoritos en PostgreSQL efímero
         run: node tests/sql/favoritos-empresariales.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -69,6 +71,8 @@ jobs:
             bloques: regresion catalogo
           - grupo: cuentas-panel
             bloques: cuenta-panel google codigo estadisticas eurocomp-manual
+          - grupo: soporte
+            bloques: soporte
           - grupo: contenido
             bloques: contenido
           - grupo: compras-correos

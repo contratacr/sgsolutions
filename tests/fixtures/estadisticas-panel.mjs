@@ -1,14 +1,15 @@
 import http from 'node:http';
-let error=false,eventos=0,activo=true,errorPerfil=false;
+let error=false,eventos=0,activo=true,errorPerfil=false,consultasCuenta=0,transporte=null;
 http.createServer(async(req,res)=>{
  const u=new URL(req.url,'http://127.0.0.1:3123');let s='';for await(const c of req)s+=c;const d=s?JSON.parse(s):{};
  const send=x=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(x));};
  if(u.pathname==='/__test/perfil'){activo=d.activo!==false;errorPerfil=d.error===true;return send({});}
- if(u.pathname==='/__test/eventos')return send({eventos});
- if(u.pathname==='/rest/v1/rpc/registrar_conteo_anonimo'){eventos++;return send(null);}
+ if(u.pathname==='/__test/eventos')return send({eventos,consultasCuenta,transporte});
+ if(u.pathname==='/rest/v1/rpc/registrar_conteo_anonimo'){eventos++;transporte={cookie:Boolean(req.headers.cookie),referer:Boolean(req.headers.referer),ipVisitante:Boolean(req.headers['x-forwarded-for']||req.headers['cf-connecting-ip']||req.headers['x-real-ip']),soloServicio:req.headers.authorization==='Bearer fixture-only'};return send(null);}
  if(u.pathname==='/__test/error'){error=Boolean(d.error);return send({});}
  if(u.pathname==='/auth/v1/settings')return send({});
  let sub='';try{sub=JSON.parse(Buffer.from((req.headers.authorization??'').split('.')[1]??'','base64url').toString()).sub??'';}catch{}
+ if(u.pathname==='/auth/v1/user')consultasCuenta++;
  if(u.pathname==='/auth/v1/user')return send({id:sub,email:'admin-fixture@example.com',aud:'authenticated',email_confirmed_at:'2026-10-13T00:00:00Z',user_metadata:{},app_metadata:{}});
  if(u.pathname==='/rest/v1/perfiles'){if(errorPerfil){res.statusCode=503;return send({code:'FIXTURE_ROLE_UNAVAILABLE',message:'No disponible'});}return send({id:sub,rol:'administrador',activo});}
  if(u.pathname==='/rest/v1/rpc/es_administrador_activo')return send(Boolean(sub));

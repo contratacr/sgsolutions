@@ -35,7 +35,7 @@ for(const estado of ['inactivo','rol-no-disponible'])test(`no medir administraci
   const enviados:string[]=[];page.on('request',r=>{if(r.url().includes('/api/estadisticas')||r.url().includes('connect.facebook.net'))enviados.push(r.url());});
   await page.goto('/');await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');await expect(page.locator('.inicio-camino')).toHaveCount(3);expect(enviados).toHaveLength(0);
   const r=await context.request.post('/api/estadisticas',{headers:{Origin:'http://127.0.0.1:3122'},data:{tipo:'pagina',ruta:'/tienda',detalle:'',dispositivo:'movil',idioma:'es'}});
-  expect(r.status()).toBe(estado==='inactivo'?204:503);
+  expect(r.status()).toBe(204);
   expect((await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).eventos).toBe(antes);
  }finally{await request.post('http://127.0.0.1:3123/__test/perfil',{data:{activo:true,error:false}});}
 });

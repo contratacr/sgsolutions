@@ -4,7 +4,7 @@ import {randomBytes,scryptSync,timingSafeEqual,createHash} from 'node:crypto';
 import {readFile,writeFile,mkdir,rename} from 'node:fs/promises';
 import path from 'node:path';
 
-const carpeta=path.join(process.cwd(),'.privado',process.env.SG_PRUEBAS_INTEGRACION==='1'&&process.env.SG_ENTORNO==='local'?(process.env.SG_MOBILE_PREVIEW==='1'?'mobile-preview':process.env.SG_ADMIN_CONTENIDO_PRUEBAS==='1'?'contenido-pruebas':'admin-local'):'admin-local');
+const carpeta=path.join(process.cwd(),'.privado',process.env.SG_PRUEBAS_INTEGRACION==='1'&&process.env.SG_ENTORNO==='local'?(process.env.SG_SOPORTE_PRUEBAS==='1'?'soporte-pruebas':process.env.SG_MOBILE_PREVIEW==='1'?'mobile-preview':process.env.SG_ADMIN_CONTENIDO_PRUEBAS==='1'?'contenido-pruebas':'admin-local'):'admin-local');
 const cookie='sg-admin-local';
 type Cuenta={correo:string;salt:string;hash:string;intentos:number;bloqueadoHasta:number;sesiones:{hash:string;vence:number}[]};
 export async function adminLocalDisponible(){
@@ -41,11 +41,11 @@ export async function salirLocal(){
  if(!await adminLocalDisponible())return;
  await exclusivo(async()=>{const token=(await cookies()).get(cookie)?.value;const c=await cuenta();c.sesiones=c.sesiones.filter(s=>s.hash!==hashToken(token??''));await escribir('cuenta',c);(await cookies()).delete(cookie);});
 }
-export async function leerLocal<T>(nombre:'catalogo'|'contenido'):Promise<{contenido:T;revision:number}|null>{
+export async function leerLocal<T>(nombre:'catalogo'|'contenido'|'soporte'):Promise<{contenido:T;revision:number}|null>{
  if(!await adminLocalDisponible())return null;
  try{return JSON.parse(await readFile(path.join(carpeta,nombre+'.json'),'utf8'));}catch(e){if((e as NodeJS.ErrnoException).code==='ENOENT')return null;throw e;}
 }
-export async function guardarLocal(nombre:'catalogo'|'contenido',contenido:unknown,revision:number):Promise<{error?:string;revision?:number}>{
+export async function guardarLocal(nombre:'catalogo'|'contenido'|'soporte',contenido:unknown,revision:number):Promise<{error?:string;revision?:number}>{
  if(!await sesionLocal())return {error:'sinPermiso'};
  return exclusivo(async()=>{const actual=await leerLocal(nombre);if((actual?.revision??0)!==revision)return {error:'conflicto'};await escribir(nombre,{contenido,revision:revision+1});return {revision:revision+1};});
 }

@@ -8,7 +8,7 @@ test('solo admite dimensiones cerradas, sin identidad ni contenido libre',()=>{
 });
 for(const idioma of ['es','en'] as const)test(`contadores sin cookies, identidad ni publicidad por defecto ${idioma}`,async({page,context})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
- const eventos:Record<string,string>[]=[];await page.route('**/api/estadisticas',async r=>{eventos.push(r.request().postDataJSON());await r.fulfill({status:204});});
+ const eventos:Record<string,string>[]=[];await page.route('**/api/estadisticas',async r=>{const headers=await r.request().allHeaders();expect(headers.cookie).toBeUndefined();expect(headers.authorization).toBeUndefined();expect(headers.referer).toBeUndefined();expect(headers['x-sg-conteo']).toBeTruthy();eventos.push(r.request().postDataJSON());await r.fulfill({status:204});});
  await page.goto('/?utm_campaign=persona-identificable');await expect.poll(()=>eventos.filter(e=>e.tipo==='pagina').length).toBe(1);
  await expect(page.locator('.medicion-aviso')).toHaveCount(0);expect(await page.evaluate(()=>Boolean(window.fbq))).toBe(false);
  for(const e of eventos){expect(Object.keys(e).sort()).toEqual(['detalle','dispositivo','idioma','ruta','tipo']);expect(JSON.stringify(e)).not.toContain('persona-identificable');}
@@ -39,4 +39,23 @@ for(const idioma of ['es','en'] as const)test(`Meta separado y limpieza de ident
  await page.locator('.pie-preferencias').click();await page.getByRole('button',{name:t.rechazar,exact:true}).click();expect(await page.evaluate(()=>window.fbq?.queue.some(e=>e[0]==='consent'&&e[1]==='revoke'))).toBe(true);
  await expect(page.locator('html')).toHaveAttribute('lang',idioma);
  await page.screenshot({path:`.privado/estadisticas-anonimas/privacidad-${test.info().project.name}-${idioma}.png`,fullPage:true});
+});
+
+test('permiso compartido, sin identificador de navegador y sin consulta de cuenta por evento',async({browser,request,baseURL})=>{
+ const contextos=await Promise.all([browser.newContext(),browser.newContext()]);
+ try{
+  const permisos=[];
+  for(const contexto of contextos){const pagina=await contexto.newPage();await pagina.goto(baseURL+'/privacidad');permisos.push(await pagina.locator('body').getAttribute('data-permiso-conteo'));}
+  expect(permisos[0]).toBeTruthy();expect(permisos[0]).toBe(permisos[1]);
+  const encabezados={Origin:baseURL!,'X-SG-Conteo':permisos[0]!};
+  const anterior=await (await request.get('http://127.0.0.1:3123/__test/eventos')).json();
+  expect((await request.post('/api/estadisticas',{headers:encabezados,data:evento})).status()).toBe(204);
+  expect((await request.post('/api/estadisticas',{headers:{Origin:baseURL!},data:evento})).status()).toBe(403);
+  expect((await request.post('/api/estadisticas',{headers:{...encabezados,'X-SG-Conteo':'é'.repeat(43)},data:evento})).status()).toBe(403);
+  const transporte=await (await request.get('http://127.0.0.1:3123/__test/eventos')).json();
+  expect(transporte.transporte).toEqual({cookie:false,referer:false,ipVisitante:false,soloServicio:true});
+  // Refuse credentialed collection, without resolving or logging an account.
+  expect((await request.post('/api/estadisticas',{headers:{...encabezados,Cookie:'sb-prueba-auth-token=privado'},data:evento})).status()).toBe(204);
+  expect((await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).consultasCuenta).toBe(anterior.consultasCuenta);
+ }finally{await Promise.all(contextos.map(c=>c.close()));}
 });

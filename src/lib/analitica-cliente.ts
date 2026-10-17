@@ -12,7 +12,8 @@ export function medir(tipo:EventoAnalitica['tipo'],detalle=''){
  if(document.body.dataset.excluirMedicion==='1')return;
  const p=preferenciasMedicion();if(!rutaPublica(location.pathname))return;
  const datos=conteoAnonimo.safeParse({tipo,ruta:location.pathname.startsWith('/tienda/')?'/tienda/producto':location.pathname,detalle,dispositivo:innerWidth<=760?'movil':'escritorio',idioma:document.documentElement.lang==='en'?'en':'es'});
- if(datos.success)void fetch('/api/estadisticas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos.data),keepalive:true}).catch(()=>{});
+ const permiso=document.body.dataset.permisoConteo;
+ if(datos.success&&permiso)void fetch('/api/estadisticas',{method:'POST',headers:{'Content-Type':'application/json','X-SG-Conteo':permiso},body:JSON.stringify(datos.data),credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',keepalive:true}).catch(()=>{});
  if(p?.publicidad&&window.fbq){const estandar:Partial<Record<EventoAnalitica['tipo'],string>>={pagina:'PageView',producto:'ViewContent',carrito:'AddToCart',whatsapp:'Contact',correo:'Contact',telefono:'Contact'};const nombre=estandar[tipo];if(nombre)window.fbq('track',nombre,tipo==='producto'||tipo==='carrito'?{content_ids:[detalle],content_type:'product'}:{});else window.fbq('trackCustom',tipo,{detalle});}
 }
 export function iniciarPixel(id:string){

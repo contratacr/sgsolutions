@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import {useEffect,useRef} from 'react';
-import {LayoutDashboard,Package,FileText,MessagesSquare,ChartNoAxesCombined,Truck,Users} from 'lucide-react';
+import {Headset,LayoutDashboard,Package,FileText,MessagesSquare,ChartNoAxesCombined,Truck,Users} from 'lucide-react';
 import {usePathname} from 'next/navigation';
 import {useTranslations} from 'next-intl';
 
@@ -11,6 +11,7 @@ export function NavegacionPanel() {
   const ruta = usePathname();
   const t = useTranslations('Panel');
   const m = useTranslations('Analitica');
+  const soporte=useTranslations('SoportePanel');
   const preview=useTranslations('PropuestaPedidos');
   const modulos=useTranslations('PropuestaPanel');
   const nav=useRef<HTMLElement>(null);
@@ -21,6 +22,7 @@ export function NavegacionPanel() {
     {href:'/panel/proveedores', texto:t('proveedores'),Icono:Truck,Users},
     {href:'/panel/contenido', texto:t('contenido'),Icono:FileText},
     {href:'/panel/pedidos', texto:t('pedidos'),Icono:MessagesSquare},
+    {href:'/panel/soporte',texto:soporte('titulo'),Icono:Headset},
     {href:'/panel/usuarios',texto:t('usuarios'),Icono:Users},
     {href:'/panel/estadisticas', texto:m('tituloPanel'),Icono:ChartNoAxesCombined,Truck,Users},
   ];

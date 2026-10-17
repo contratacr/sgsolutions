@@ -1,4 +1,5 @@
 import Script from 'next/script';
+import {permisoConteo} from '@/lib/permiso-conteo';
 import {AvisoFavoritos} from '@/components/aviso-favoritos';
 import {SesionCuentaProvider} from '@/components/sesion-cuenta';
 import {ConfiguracionSitio} from '@/components/configuracion-sitio';
@@ -31,6 +32,7 @@ import '@/components/navegacion-panel.css';
 import '@/components/proteger-cambios-panel.css';
 import './panel/pedidos/pedidos.css';
 import './panel/usuarios/usuarios.css';
+import './panel/soporte/soporte.css';
 import './panel/estadisticas/estadisticas.css';
 import {RevelarScroll} from '@/components/revelar-scroll';
 import {META_PIXEL_ID} from '@/lib/meta-pixel';
@@ -51,5 +53,5 @@ export default async function DisenoRaiz({children}: {children: React.ReactNode}
   }
   const vistaMovilLocal=process.env.NODE_ENV==='development'&&process.env.SG_ENTORNO==='local'&&process.env.SG_MOBILE_PREVIEW==='1';
   const excluirMedicion=vistaMovilLocal||cuentaExcluida||administradorCuenta||Boolean(await (await import('@/lib/admin-local')).sesionLocal());
-  return <html lang={idioma}><body data-excluir-medicion={excluirMedicion?'1':undefined}><Script src="/panel-history.js" strategy="beforeInteractive"/>{vistaMovilLocal&&<Script src="/sg-native-bridge.js" strategy="afterInteractive"/>}{process.env.NODE_ENV==='development'&&process.env.SG_ENTORNO==='local'&&process.env.SG_QA_LOCAL==='1'&&<aside className="aviso-qa-local" role="status">{t('entornoPruebas')}</aside>}<FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><SesionCuentaProvider iniciada={sesionIniciada}><ConfiguracionSitio contacto={contenido.contacto} imagenes={contenido.imagenes}><ValidacionNativa/><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera sesionIniciada={sesionIniciada} nombreCuenta={nombreCuenta} administrador={administradorCuenta}/>{children}<Pie/><AvisoFavoritos/><Medicion pixel={META_PIXEL_ID}/></DatosCatalogo></ConfiguracionSitio></SesionCuentaProvider></NextIntlClientProvider></body></html>;
+  return <html lang={idioma}><body data-excluir-medicion={excluirMedicion?'1':undefined} data-permiso-conteo={permisoConteo(excluirMedicion)}><Script src="/panel-history.js" strategy="beforeInteractive"/>{vistaMovilLocal&&<Script src="/sg-native-bridge.js" strategy="afterInteractive"/>}{process.env.NODE_ENV==='development'&&process.env.SG_ENTORNO==='local'&&process.env.SG_QA_LOCAL==='1'&&<aside className="aviso-qa-local" role="status">{t('entornoPruebas')}</aside>}<FocoInteraccion/><RevelarScroll/><NextIntlClientProvider><SesionCuentaProvider iniciada={sesionIniciada}><ConfiguracionSitio contacto={contenido.contacto} imagenes={contenido.imagenes}><ValidacionNativa/><DatosCatalogo datos={{...resumenCatalogo(catalogo),productos:consultarCatalogo(catalogo,new URLSearchParams()).productos}}><a className="saltar" href="#contenido">{t('saltar')}</a><Cabecera sesionIniciada={sesionIniciada} nombreCuenta={nombreCuenta} administrador={administradorCuenta}/>{children}<Pie/><AvisoFavoritos/><Medicion pixel={META_PIXEL_ID}/></DatosCatalogo></ConfiguracionSitio></SesionCuentaProvider></NextIntlClientProvider></body></html>;
 }

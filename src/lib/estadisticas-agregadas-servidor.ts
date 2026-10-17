@@ -16,6 +16,6 @@ export async function registrarConteo(datos:ConteoAnonimo){
  const local=['127.0.0.1','localhost','[::1]'].includes(new URL(url).hostname);
  if(!local&&!['produccion','test'].includes(process.env.SG_ENTORNO??'local'))throw new Error('SUPABASE_REMOTO_BLOQUEADO_EN_LOCAL');
  if(process.env.CUENTAS_SUPABASE_URL&&new URL(process.env.CUENTAS_SUPABASE_URL).origin!==new URL(url).origin)throw new Error('ESTADISTICAS_PROYECTOS_DISTINTOS');
- const r=await fetch(new URL('/rest/v1/rpc/registrar_conteo_anonimo',url),{method:'POST',headers:{apikey:clave,Authorization:`Bearer ${clave}`,'Content-Type':'application/json'},body:JSON.stringify({evento})});
+ const r=await fetch(new URL('/rest/v1/rpc/registrar_conteo_anonimo',url),{method:'POST',credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',headers:{apikey:clave,Authorization:`Bearer ${clave}`,'Content-Type':'application/json'},body:JSON.stringify({evento})});
  if(!r.ok){console.error('ESTADISTICAS_REGISTRO_NO_DISPONIBLE',r.status);throw new Error('ESTADISTICAS_NO_DISPONIBLES');}
 }

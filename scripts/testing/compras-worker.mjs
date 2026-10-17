@@ -1,3 +1,4 @@
+import {probarSoporteWorker} from './soporte-worker.mjs';
 import {datosEnlacePedido} from '../../src/lib/enlace-pedido.ts';
 // Exercises a production Worker build against LOCAL Supabase. No production credentials.
 import { createServer } from "node:http";
@@ -200,6 +201,7 @@ const run = (args) =>
           ),
     );
   });
+let soporteVerificado;
 let ipSequence = 0;
 const post = (route, body) =>
   fetch(base + route, {
@@ -325,6 +327,7 @@ try {
     await new Promise((r) => setTimeout(r, 500));
   }
   assert.ok(ready, "Compiled Worker did not start.");
+  soporteVerificado=await probarSoporteWorker({db,config,base});
   console.log(
     "Testing stock, prices, real database writes, duplicate submits and receipt storage.",
   );
@@ -547,6 +550,7 @@ try {
   await writeFile(
     ".privado/evidencias/compras-worker.json",
     JSON.stringify({
+      soporte:soporteVerificado,
       workerCompilado: true,
       baseLocal: true,
       pedidos: orders.length,
