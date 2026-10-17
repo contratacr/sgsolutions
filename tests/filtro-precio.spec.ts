@@ -11,5 +11,5 @@ for(const idioma of ['es','en'])test('rango de precio filtra con teclado y se re
  await mayor.focus();await mayor.press('ArrowLeft');if(movil)await panel.locator('.shop-panel-filtros-acciones>.boton').click();const datos=await (await respuesta).json();expect(datos.productos.every((p:{precio:number|null})=>p.precio!==null&&p.precio<=limite-500)).toBe(true);
  await expect(page.locator('.shop-filtros-activos button')).toHaveCount(0);if(movil)await page.locator('.shop-abrir-filtros').click();await menor.focus();await menor.press('End');expect(Number(await menor.inputValue())).toBeLessThanOrEqual(Number(await mayor.inputValue()));
  await menor.press('Home');await mayor.press('End');if(movil){await panel.locator('.shop-panel-filtros-acciones>.boton').click();await page.locator('.shop-abrir-filtros').click();}await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
- await expect(menor).toHaveValue('0');await expect(mayor).toHaveValue(String(limite));expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ await expect(menor).toHaveValue((await menor.getAttribute('min'))!);await expect(mayor).toHaveValue(String(limite));expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });

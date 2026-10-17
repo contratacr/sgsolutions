@@ -12,7 +12,7 @@ test('mínimo de 15, categorías tecnológicas y precio final con IVA',()=>{
  expect(precioVentaEurocomp(100,'USD',500,20)).toBe(68000);
  const privado=esquemaCatalogo.parse(base);const p=privado.productos[0];p.eurocomp={codigo:'DEMO',stock:14,costo:123.45,moneda:'USD',actualizado:new Date().toISOString()};
  expect(publicarCatalogo(privado).productos.find(x=>x.id===p.id)).toBeUndefined();p.eurocomp.stock=15;const visible=publicarCatalogo(privado).productos.find(x=>x.id===p.id)!;expect(visible.codigoEurocomp).toBe('DEMO');expect(JSON.stringify(visible)).not.toContain('123.45');expect(visible).not.toHaveProperty('eurocomp');
- const publico=publicarCatalogo(esquemaCatalogo.parse(base));expect(publico.productos.length).toBe(1469);expect(JSON.stringify(publico)).not.toContain('costo');
+ const publico=publicarCatalogo(esquemaCatalogo.parse(base));expect(publico.productos.length).toBe(1468);expect(JSON.stringify(publico)).not.toContain('costo');
 });
 for(const idioma of ['es','en'])test(`tienda, cantidad y carrito en ${idioma}`,async({page})=>{
  await page.context().addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);

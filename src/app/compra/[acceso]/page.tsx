@@ -4,6 +4,6 @@ export {generateMetadata} from '@/app/finalizar-compra/page';
 
 export default async function CompraPrivada({params}:{params:Promise<{acceso:string}>}){
  const {acceso}=await params;
- const solicitud=await leerEnlaceCompra(acceso);
+ const solicitud=await leerEnlaceCompra(acceso,true);
  return <Compra searchParams={Promise.resolve({asesoria:solicitud?.id??'invalido',acceso:solicitud?.token??''})}/>;
 }

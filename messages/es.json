@@ -620,7 +620,8 @@
     "recomendados": "Recomendados",
     "verMasOpciones": "Ver más opciones",
     "abrirCategoria": "Abrir subcategorías",
-    "cerrarCategoria": "Cerrar categoría"
+    "cerrarCategoria": "Cerrar categoría",
+    "errorRangoPrecio": "No pudimos actualizar el rango de precios."
   },
   "AdminCatalogo": {
     "titulo": "Productos",
@@ -1066,6 +1067,7 @@
     "pendiente": "Estamos verificando el resultado.",
     "pendienteDetalle": "No marque el pedido como pagado todavía. Si necesita ayuda, comuníquese con nuestro equipo.",
     "volver": "Volver a la tienda",
+    "volverCompra": "Volver a mi pedido",
     "prueba": "Transacción de prueba · Sin cobro real",
     "expressSeparado": "El total pagado incluye únicamente los productos. Express se cotiza según su ubicación y se paga por separado."
   },
@@ -1488,7 +1490,9 @@
     "editar": "Editar",
     "todos": "Todos",
     "publicados": "Publicados",
-    "borradores": "Borradores"
+    "borradores": "Borradores",
+    "imagenPendientePublicacion": "Pendiente de una fotografía real verificada. El producto se conserva en el panel y no se muestra en la tienda hasta agregar una imagen válida.",
+    "imagenPendienteCorta": "Imagen pendiente"
   },
   "Analitica": {
     "masVistos": "Productos más vistos",
@@ -1564,6 +1568,7 @@
     "ingles": "Inglés"
   },
   "Asesoria": {
+    "confirmarExistencia": "Consultar existencia",
     "etiqueta": "SG Solutions · Tienda",
     "aSuLado": "A SU LADO",
     "promesaTitulo": "La tecnología correcta empieza con una buena conversación.",
@@ -1636,7 +1641,9 @@
     "abrirWhatsapp": "Abrir conversación en WhatsApp",
     "ayudaOpcional": "¿Necesita ayuda para elegir?",
     "dimex": "DIMEX",
-    "nite": "NITE"
+    "nite": "NITE",
+    "mensajeDisponibilidadInicio": "Hola, SG Solutions. Quisiera consultar la disponibilidad de lo siguiente:",
+    "mensajeDisponibilidadCierre": "¿Me confirman si tienen disponible la cantidad indicada, el plazo de entrega y cómo realizar la compra?"
   },
   "AsesoriaAdmin": {
     "titulo": "Solicitudes de asesoría",
@@ -2326,5 +2333,21 @@
   "PedidosReales": {
     "crear": "Crear pedido",
     "enlace": "Enlace de compra"
+  },
+  "SolucionesEmpresariales": {
+    "titulo": "Soluciones Empresariales",
+    "etiqueta": "Tecnología para su empresa",
+    "resumen": "Redes, seguridad, infraestructura y continuidad operativa, con asesoría de SG Solutions.",
+    "introduccion": "Elija lo que su empresa necesita resolver. Le ayudamos a seleccionar e integrar los equipos adecuados para su operación.",
+    "volver": "Todas las categorías de la tienda",
+    "servicios": "Conozca nuestros servicios para empresas",
+    "porNecesidad": "Soluciones por necesidad",
+    "verEquipos": "Ver equipos ({cantidad})",
+    "consultarSolucion": "Consultar esta solución",
+    "sinEquipos": "Preparemos una solución para su empresa",
+    "asesoriaVacio": "No hay equipos publicados que coincidan con esta selección. Consúltenos para revisar opciones y disponibilidad según su proyecto.",
+    "mensajeProyecto": "Me interesa: {solucion}. Marca: {marca}.",
+    "marcaPorDefinir": "por definir con su asesoría",
+    "consultaEmpresa": "Quisiera recibir asesoría sobre una solución tecnológica para mi empresa."
   }
 }

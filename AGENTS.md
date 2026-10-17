@@ -3,6 +3,7 @@
 - Todo cambio de interfaz debe incluir español e inglés: textos, accesibilidad, mensajes y metadatos. Mantener el selector de idioma en cada página y verificar la persistencia de la preferencia. Ejecutar `npm run verificar:textos`.
 - La navegación entre páginas de SG Solutions abre en la misma pestaña. WhatsApp, Outlook y mapas externos abren en otra pestaña con `rel="noopener noreferrer"` e indicación accesible traducida, según la última preferencia del usuario.
 - Antes de entregar cambios, verificar las rutas afectadas en escritorio/móvil y ambos idiomas. Mantener `npm run verificar`, build y pruebas pertinentes.
+- Al importar o modificar productos, ejecutar `npm run verificar:imagenes` contra el catálogo actualizado (`SG_CATALOGO_URL`). No usar imágenes generadas ni de otro modelo. Conservar fuente y coincidencia de marca/código en el registro de fotos verificadas. Ante fallos, corregir la foto o ejecutar `npm run verificar:imagenes -- --registrar-fallos` para dejarla pendiente de publicación; repetir la auditoría antes de publicar.
 - No desplegar a producción ni activar cobros reales sin autorización explícita del usuario.
 - Preferencia explícita del usuario: cuando diga «pushea», hacer push y desplegar ese bloque a producción, con las verificaciones correspondientes. Esta autorización no incluye activar cobros reales.
 - Mantener los cambios locales durante las iteraciones de diseño. No hacer push en cada cambio; agrupar entregas grandes y esperar indicación del usuario para publicar el siguiente bloque.

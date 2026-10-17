@@ -491,6 +491,17 @@
         "nativeEndToEndVerified": false,
         "limitations": "Servicios de cuenta, pedidos y pagos pendientes de backend de pruebas; desarrollo, no distribución."
       }
+    },
+    {
+      "id": "soluciones-empresariales",
+      "name": "Soluciones Empresariales",
+      "routes": [
+        "/tienda/soluciones-empresariales"
+      ],
+      "scope": "Categoría integrada en los filtros de Tienda: cinco subcategorías, marcas correspondientes y compra asistida por enlace; la ruta anterior redirige a Tienda.",
+      "audience": "customer",
+      "status": "in-progress",
+      "evidence": []
     }
   ]
 }

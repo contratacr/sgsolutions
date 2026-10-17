@@ -4,7 +4,7 @@ import {resolve} from 'node:path';
 const bloques=[
  ['verificar',['npm','run','verificar']],
  ['build',['npm','run','build']],
- ...['regresion','comprobantes','catalogo','tilopay-sdk','empresas-correo','entrega','confirmaciones','contenido','google','codigo','estadisticas','eurocomp-manual'].map(nombre=>[nombre,['npx','playwright','test','--reporter=list,json,html',`--config=playwright.${nombre}.config.ts`]]),
+ ...['regresion','comprobantes','catalogo','tilopay-hosted','empresas-correo','entrega','confirmaciones','contenido','google','codigo','estadisticas','eurocomp-manual'].map(nombre=>[nombre,['npx','playwright','test','--reporter=list,json,html',`--config=playwright.${nombre}.config.ts`]]),
 ];
 const seleccion=process.argv.slice(2);
 if(seleccion.some(n=>!bloques.some(([nombre])=>nombre===n))){console.error('Bloques disponibles:',bloques.map(([n])=>n).join(', '));process.exit(2);}

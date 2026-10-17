@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import {tieneImagenProducto} from '@/lib/imagenes-productos';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { colones, preciosProducto,descuentosInvalidos,esquemaCatalogo, traducir, type CatalogoAdmin, type Texto } from '@/lib/catalogo-modelo';
@@ -63,6 +64,7 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
     </section>
     <section className="admin-producto-seccion" id={seccion('imagenes')}>
       <div className="admin-producto-seccion-cabecera"><span>03</span><div><h3>{u('imagenes')}</h3><p>{u('imagenesAyuda')}</p></div></div>
+      {!tieneImagenProducto(p)&&<p role="status">{u('imagenPendientePublicacion')}</p>}
       <GestorImagenes onBusy={onBusy} fotos={[...new Set([p.imagen, ...p.imagenes])].filter(src => src !== '/imagenes/producto-sin-imagen.svg').map(src => ({ src }))} cambiar={fotos => cambiar(i, { imagen: fotos[0]?.src ?? '/imagenes/producto-sin-imagen.svg', imagenes: fotos.slice(1).map(f => f.src) })} />
       <label>{t('fichaTecnica')}<input type="url" value={p.fichaTecnica ?? ''} onChange={e => cambiar(i, { fichaTecnica: e.target.value || undefined })} /></label>
     </section>
@@ -192,7 +194,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
           return <div className="admin-producto-contenedor" key={p.id}><div className="admin-producto-fila">
             <div className="admin-producto-foto"><Image src={p.imagen} alt="" width={64} height={64} unoptimized /></div>
             <div className="admin-producto-datos"><strong>{traducir(p.nombre, idioma) || t('nuevoProducto')}</strong><span>{p.marca || u('sinMarca')} · {p.codigoFabricante || u('sinCodigo')}</span></div>
-            <div className="admin-producto-estado"><span>{p.publicado ? t('publicado') : t('borrador')}</span><strong>{precio === null ? t('sinPrecio') : colones(precio)}</strong></div>
+            <div className="admin-producto-estado"><span>{!tieneImagenProducto(p)?u('imagenPendienteCorta'):p.publicado ? t('publicado') : t('borrador')}</span><strong>{precio === null ? t('sinPrecio') : colones(precio)}</strong></div>
             <button type="button" className="boton boton-contorno" onClick={() => abrirProducto(p.id)}>{u('editar')}</button>
           </div></div>;
         })}</div>{paginacion()}</> : <p className="admin-lista-vacia">{u('vacio')}</p>}

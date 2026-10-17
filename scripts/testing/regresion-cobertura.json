@@ -7,7 +7,7 @@
     "regresion": [
       "Catálogo: búsqueda y categorías de tres páginas, con y sin búsqueda, conservan filtro y página al avanzar y retroceder sin alternar ni parpadear",
       "Acciones de producto sin parpadeo al ordenar o entrar a tienda; hover, teclado y controles táctiles",
-      "Tarjeta integrada en SG: perfil guardado sin navegación a cuenta, validación estricta del entorno SDK y 3DS fuera del formulario",
+      "Pago alojado en Tilopay: navegación directa, sin campos de tarjeta en SG y conservación al volver",
       "Tres pasos de compra y conservación de datos",
       "Un teléfono y acceso simplificado",
       "Atrás junto a Siguiente/Revisar pedido",
@@ -18,15 +18,20 @@
       "Pedidos: filtros, fechas, contadores, archivo, guía y seguimiento al cambiar estado",
       "WhatsApp directo y contextual",
       "Correos: logo, diseño y traducciones",
-      "Fondos blancos, navbar móvil, favicon, modales, catálogo e idiomas"
+      "Fondos blancos, navbar móvil, favicon, modales, catálogo e idiomas",
+      "Imágenes: archivos reales decodificables, reparación por marca/modelo, pendientes conservados en administración y foto Blackview en escritorio/móvil ES/EN",
+      "Soluciones Empresariales: categoría única, cinco subcategorías, acceso y apertura de filtros en PC y móvil; compra mediante consulta de existencia",
+      "Filtros: jerarquía sin chips redundantes, categorías alineadas sin recortes y controles alineados desde 320 px",
+      "Precios: mínimo y máximo del contexto de categoría, subcategoría, marca y búsqueda; actualización al cambiar productos sin encoger el rango por su propio filtro",
+      "Marcas canónicas sin duplicados; favoritos sin cambios de altura; WhatsApp con producto y consulta de existencia contextual"
     ],
     "catalogo": [
       "Precios, descuentos, integridad y reglas de disponibilidad"
     ],
-    "tilopay-sdk": [
-      "Campos integrados y datos de tarjeta excluidos del servidor",
-      "Bloqueo de SDK en entorno real o no identificado",
-      "Inicio con respuesta de pruebas simulada"
+    "tilopay-hosted": [
+      "Ningún campo de tarjeta ni SDK en web/Capacitor",
+      "Sin navegación intermedia a cuenta o compra vacía",
+      "Regreso, recarga y reintento sin perder carrito ni datos"
     ],
     "empresas-correo": [
       "Envío de formularios mediante servicio local simulado"

@@ -35,9 +35,9 @@ for(const idioma of ['es','en'])test(`acciones de producto no parpadean al naveg
  });
  await expect(page).toHaveURL(/\/tienda$/);
  const sort=page.locator('.shop-orden-trigger'),cards=page.locator('.shop-grid .shop-producto');
- await expect(sort).toBeEnabled();await expect(cards.first()).toBeVisible();
+ await expect(sort).toBeEnabled();await page.locator('#buscar-equipo').fill('conector');await expect(cards.first().locator('button.producto-agregar')).toBeVisible();
  const desktop=await page.evaluate(()=>matchMedia('(hover:hover) and (pointer:fine)').matches);
- const base=await(await page.request.get('/api/catalogo')).json();
+ const base=await(await page.request.get('/api/catalogo?q=conector')).json();
  let release!:()=>void;
  const pending=new Promise<void>(resolve=>{release=resolve;});
  await page.route('**/api/catalogo?**',async route=>{
@@ -59,7 +59,7 @@ for(const idioma of ['es','en'])test(`acciones de producto no parpadean al naveg
  if(desktop){
   expect(await page.evaluate(()=>Reflect.get(window,'accionesEstables').flashes)).toEqual([]);
   // Keyboard focus still reveals the card, including disabled/sold-out controls.
-  await cards.first().locator('.shop-foto>a').focus();
+  await cards.first().locator('.shop-foto>a:not(.producto-agregar)').focus();
   await expect(cards.first().locator('.producto-acciones')).toHaveCSS('opacity','1');
   await expect(cards.first().locator('.producto-agregar')).toHaveCSS('opacity','1');
   await cards.first().locator('.producto-accion').first().focus();

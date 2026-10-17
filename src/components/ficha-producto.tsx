@@ -36,7 +36,7 @@ export function FichaProducto({
   const fotos = [...new Set([p.imagen, ...(p.imagenes ?? [])])];
   return (
     <>
-      <Link className="ficha-volver" href="/tienda">
+      <Link className="ficha-volver" href={p.coleccion==='empresas'?'/tienda?categoria=soluciones-empresariales':'/tienda'}>
         <ArrowLeft size={17} />
         {t("volver")}
       </Link>
@@ -75,7 +75,7 @@ export function FichaProducto({
           </div><AsesoriaWhatsApp etiqueta="asesorar" className="shop-asesoria-inline" lineas={[{producto:p,cantidad}]}/></div>
           {p.disponibilidad==='agotado'&&<p className="ficha-stock">{s('agotado')}</p>}
           <div className="producto-compra-fila"><ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/>
-          <button
+          {p.coleccion==='empresas'?<AsesoriaWhatsApp etiqueta="confirmarExistencia" className="boton boton-azul" lineas={[{producto:p,cantidad}]}/>:          <button
             className="boton boton-azul ficha-agregar"
             disabled={p.disponibilidad === "agotado"}
             onClick={() => {
@@ -85,7 +85,7 @@ export function FichaProducto({
           >
             <ShoppingCart size={19} aria-hidden="true" />
             {s("agregar")}
-          </button></div>
+          </button>}</div>
 
 
       {(p.especificaciones.length>0||p.fichaTecnica)&&<section className="ficha-detalles">

@@ -620,7 +620,8 @@
     "recomendados": "Recommended",
     "verMasOpciones": "Show more options",
     "abrirCategoria": "Expand subcategories",
-    "cerrarCategoria": "Close category"
+    "cerrarCategoria": "Close category",
+    "errorRangoPrecio": "We could not update the price range."
   },
   "AdminCatalogo": {
     "titulo": "Products",
@@ -1066,6 +1067,7 @@
     "pendiente": "We are checking the result.",
     "pendienteDetalle": "Do not mark the order as paid yet. Please contact our team if you need help.",
     "volver": "Back to store",
+    "volverCompra": "Return to my order",
     "prueba": "Test transaction · No real charge",
     "expressSeparado": "The paid total covers products only. Express delivery is quoted based on your location and paid separately."
   },
@@ -1488,7 +1490,9 @@
     "editar": "Edit",
     "todos": "All",
     "publicados": "Published",
-    "borradores": "Drafts"
+    "borradores": "Drafts",
+    "imagenPendientePublicacion": "Awaiting a verified real product photo. The product remains in the admin panel and is hidden from the store until a valid image is added.",
+    "imagenPendienteCorta": "Image pending"
   },
   "Analitica": {
     "masVistos": "Most viewed products",
@@ -1564,6 +1568,7 @@
     "ingles": "English"
   },
   "Asesoria": {
+    "confirmarExistencia": "Check stock",
     "etiqueta": "SG Solutions · Store",
     "aSuLado": "BY YOUR SIDE",
     "promesaTitulo": "The right technology starts with a good conversation.",
@@ -1636,7 +1641,9 @@
     "abrirWhatsapp": "Open conversation in WhatsApp",
     "ayudaOpcional": "Need help choosing?",
     "dimex": "DIMEX",
-    "nite": "NITE"
+    "nite": "NITE",
+    "mensajeDisponibilidadInicio": "Hello, SG Solutions. I would like to check availability for the following:",
+    "mensajeDisponibilidadCierre": "Could you confirm availability for the requested quantity, the delivery timeframe and how to place an order?"
   },
   "AsesoriaAdmin": {
     "titulo": "Advice requests",
@@ -2326,5 +2333,21 @@
   "PedidosReales": {
     "crear": "Create order",
     "enlace": "Purchase link"
+  },
+  "SolucionesEmpresariales": {
+    "titulo": "Business Solutions",
+    "etiqueta": "Technology for your business",
+    "resumen": "Networks, security, infrastructure and business continuity, with advice from SG Solutions.",
+    "introduccion": "Choose what your business needs to solve. We help you select and integrate the right equipment for your operation.",
+    "volver": "All store categories",
+    "servicios": "Explore our business services",
+    "porNecesidad": "Solutions by need",
+    "verEquipos": "View equipment ({cantidad})",
+    "consultarSolucion": "Ask about this solution",
+    "sinEquipos": "Let’s plan a solution for your business",
+    "asesoriaVacio": "No published equipment matches this selection. Contact us to review options and availability for your project.",
+    "mensajeProyecto": "I am interested in: {solucion}. Brand: {marca}.",
+    "marcaPorDefinir": "to be chosen with your advice",
+    "consultaEmpresa": "I would like advice on a technology solution for my business."
   }
 }

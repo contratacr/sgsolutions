@@ -6,3 +6,21 @@ for(const idioma of ['es','en'])test(`pagos reales y simulados muestran etiqueta
  await page.goto('/pago/resultado?pedido=00000000-0000-4000-8000-000000000001');await expect(page.locator('.panel-aviso')).toContainText(idioma==='es'?'Transacción de prueba':'Test transaction');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });
+
+for(const idioma of ['es','en'])for(const pagado of [false,true])test(`retorno ${pagado?'confirmado':'cancelado'} conserva o retira solo la compra correcta ${idioma}`,async({page,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
+ const pedido='00000000-0000-4000-8000-00000000000'+(pagado?'0':'9');
+ await page.goto('/tienda');
+ await page.evaluate(({pedido})=>{
+  const claveBorrador='sg-compra-borrador-v1:carrito';const borrador=JSON.stringify({fecha:Date.now(),datos:{nombre:'Ana'},paso:2,pago:'tarjeta'});
+  localStorage.setItem('sg-carrito-v1',JSON.stringify([{id:'qa-producto',cantidad:3}]));
+  localStorage.setItem(claveBorrador,borrador);
+  localStorage.setItem('sg-pago-pendiente-v1:'+claveBorrador,JSON.stringify({pedido,ruta:'/pagar',claveBorrador,borrador,articulos:[{id:'qa-producto',cantidad:1}]}));
+ },{pedido});
+ await page.goto('/pago/resultado?pedido='+pedido);
+ await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('sg-carrito-v1')!)[0].cantidad)).toBe(pagado?2:3);
+ expect(await page.evaluate(()=>localStorage.getItem('sg-compra-borrador-v1:carrito')!==null)).toBe(!pagado);
+ if(!pagado)await expect(page.getByRole('link',{name:idioma==='es'?'Volver a mi pedido':'Return to my order'})).toHaveAttribute('href','/pagar');
+ await page.reload();
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('sg-carrito-v1')!)[0].cantidad)).toBe(pagado?2:3);
+});

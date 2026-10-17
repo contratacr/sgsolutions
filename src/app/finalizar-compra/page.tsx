@@ -4,7 +4,7 @@ import {leerAprobacion} from '@/lib/asesorias';
 import { getTranslations } from "next-intl/server";
 import { leerContenido } from "@/lib/contenido-servidor";
 import { FinalizarCompra } from "@/components/finalizar-compra";
-import { configuracionTilopay, sdkTilopayHabilitado } from "@/lib/tilopay";
+import { configuracionTilopay } from "@/lib/tilopay";
 import { configuracionPedidosManuales } from "@/lib/pedidos-manuales";
 export async function generateMetadata() {
   const t = await getTranslations("Compra");
@@ -12,14 +12,14 @@ export async function generateMetadata() {
 }
 export default async function Compra({searchParams}:{searchParams:Promise<{asesoria?:string;acceso?:string}>}) {
   const parametros=await searchParams;
-  const solicitud=await leerAprobacion(parametros.asesoria??"",parametros.acceso??"");
+  const solicitud=await leerAprobacion(parametros.asesoria??"",parametros.acceso??"",true);
   const aprobacion=solicitud?{id:solicitud.id,token:solicitud.token!,articulos:solicitud.articulos,contacto:solicitud.contacto}:null;
   const perfilCompra=await leerPerfilCompra();
   const proveedores=perfilCompra?{google:false}:await proveedoresCuenta();
   const { pagos } = await leerContenido();
   return (
     <main id="contenido" className="contenedor compra-pagina">
-      <FinalizarCompra sdkIntegrado={sdkTilopayHabilitado()} sdkDisponible={Boolean(configuracionTilopay()&&process.env.TILOPAY_RETORNO_URL)} googleDisponible={proveedores.google} datosGuardados={perfilCompra?.datos} cuentaDisponible={Boolean(perfilCompra)} enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
+      <FinalizarCompra googleDisponible={proveedores.google} datosGuardados={perfilCompra?.datos} cuentaDisponible={Boolean(perfilCompra)} enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />
     </main>
   );
 }

@@ -1,0 +1,24 @@
+import {test,expect} from '@playwright/test';
+for(const idioma of ['es','en'])test(`acceso empresarial compacto y una sola asesoría ${idioma}`,async({page,context,baseURL},info)=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
+ const acceso=page.locator('.shop-empresa-entrada button');await expect(acceso).toBeVisible();
+ await expect(acceso).toHaveText(idioma==='es'?'Soluciones Empresariales':'Business Solutions');
+ await acceso.click();await expect(acceso).toHaveAttribute('aria-pressed','true');
+ await expect(page.locator('.shop-empresa-contexto,.shop-empresa-invitacion')).toHaveCount(0);
+ await expect(page.locator('.shop-empresa-entrada .shop-asesoria-inline')).toHaveCount(1);
+ const asesoria=page.locator('.shop-asesoria-inline');
+ const posiciones=await page.locator('.shop-empresa-entrada').evaluate(e=>{const b=e.querySelector('button')!.getBoundingClientRect(),a=e.querySelector('a')!.getBoundingClientRect();return {diferencia:Math.abs((b.top+b.height/2)-(a.top+a.height/2)),separados:b.right<=a.left};});
+ expect(posiciones.diferencia).toBeLessThan(2);expect(posiciones.separados).toBe(true);
+ const bordes=await page.evaluate(()=>{const ultimo=Math.max(...[...document.querySelectorAll('.shop-producto-info')].map(e=>e.getBoundingClientRect().right-parseFloat(getComputedStyle(e).paddingRight)));return ['.shop-empresa-entrada .shop-asesoria-inline','.shop-orden'].map(s=>Math.abs(document.querySelector(s)!.getBoundingClientRect().right-ultimo));});
+ for(const diferencia of bordes)expect(diferencia).toBeLessThan(1);
+ if(/movil|mobile/.test(info.project.name)){const alineacion=await page.evaluate(()=>Math.abs(document.querySelector('.shop-empresa-entrada .shop-asesoria-inline')!.getBoundingClientRect().right-document.querySelector('.shop-orden')!.getBoundingClientRect().right));expect(alineacion).toBeLessThan(1);}await expect(asesoria).toHaveAttribute('target','_blank');await expect(asesoria).toHaveAttribute('rel','noopener noreferrer');
+ await expect(page.locator('.shop-filtros-activos')).toContainText(idioma==='es'?'Soluciones Empresariales':'Business Solutions');
+ const panel=page.locator(/movil|mobile/.test(info.project.name)?'.shop-panel-filtros':'.shop-sidebar');
+ await expect(panel.locator('.shop-categoria-empresa>button')).toHaveAttribute('aria-expanded','true');await expect(panel.locator('.shop-categoria-empresa .shop-subcategorias button')).toHaveCount(5);
+ if(/movil|mobile/.test(info.project.name))await panel.locator('.shop-panel-filtros-acciones>.boton').first().click();
+ await acceso.click();await expect(panel.locator('.shop-categoria-empresa>button')).toHaveAttribute('aria-expanded','true');
+ if(/movil|mobile/.test(info.project.name))await panel.locator('.shop-panel-filtros-acciones>.boton').first().click();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`.privado/empresa-simple-${info.project.name}-${idioma}.png`});
+ await page.reload();await expect(acceso).toHaveAttribute('aria-pressed','true');await expect(page.locator('html')).toHaveAttribute('lang',idioma);
+});

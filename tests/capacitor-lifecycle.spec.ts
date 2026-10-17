@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import es from '../messages/es.json';import en from '../messages/en.json';
 for(const idioma of ['es','en'])test(`retorno nativo conserva carrito, idioma y borrador sin guardar tarjeta ${idioma}`,async({page,context,baseURL})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
- await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto').first().hover();await page.locator('.producto-agregar').first().click();
+ await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto').first().hover();await page.locator('.producto-agregar').first().click();
  await expect(page.locator('.carrito-cantidad')).toHaveText('1');
  await page.evaluate(()=>{const items=JSON.parse(localStorage.getItem('sg-carrito-v1')!);items[0].cantidad=3;localStorage.setItem('sg-carrito-v1',JSON.stringify(items));});
  await expect(page.locator('.carrito-cantidad')).toHaveText('1');
@@ -13,10 +13,9 @@ for(const idioma of ['es','en'])test(`retorno nativo conserva carrito, idioma y 
  const t=(idioma==='es'?es:en).Compra;
  await page.getByRole('button',{name:t.pasoSiguiente,exact:true}).click();await page.getByRole('button',{name:t.pasoSiguiente,exact:true}).click();
  await page.locator('[name=nombre]').evaluate((input:HTMLInputElement)=>{input.value='Autocompletado nativo';});
- // Card fields must never be part of the draft, even when native autofill writes them.
+ // El formulario nativo tampoco solicita datos de tarjeta.
+ await expect(page.locator('[id^=tlpy_],input[autocomplete^="cc-"]')).toHaveCount(0);
  await page.locator('[name=pago][value=tarjeta]').check();
- await page.locator('#tlpy_cc_number').evaluate((input:HTMLInputElement)=>{input.value='4111111111111111';});
- await page.locator('#tlpy_cvv').evaluate((input:HTMLInputElement)=>{input.value='987';});
  await page.evaluate(()=>window.dispatchEvent(new Event('sg-app-background')));
  const draft=await page.evaluate(()=>localStorage.getItem('sg-compra-borrador-v1:carrito'));
  expect(JSON.parse(draft!).datos.nombre).toBe('Autocompletado nativo');expect(draft).not.toContain('4111111111111111');expect(draft).not.toContain('987');expect(draft).not.toContain('tlpy_');

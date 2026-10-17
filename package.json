@@ -25,7 +25,8 @@
     "sincronizar:eurocomp": "tsx scripts/sincronizar-eurocomp.ts",
     "verificar:pedidos": "node scripts/verificar-esquema-pedidos.mjs",
     "test:compras": "node --import tsx scripts/testing/compras-worker.mjs",
-    "test:regresion": "node scripts/testing/regresion.mjs"
+    "test:regresion": "node scripts/testing/regresion.mjs",
+    "verificar:imagenes": "node scripts/auditar-imagenes-productos.mjs"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.17",

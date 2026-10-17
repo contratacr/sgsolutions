@@ -1,3 +1,4 @@
+import {catalogoTienda} from '@/lib/soluciones-empresariales';
 import {buscarProductoPorRuta,rutaProducto} from "@/lib/rutas-productos";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
@@ -10,7 +11,7 @@ import { FichaProducto } from "@/components/ficha-producto";
 type Props = { params: Promise<{ id: string }> };
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
-  const c = await leerCatalogoPublico();
+  const c = catalogoTienda(await leerCatalogoPublico());
   const p = buscarProductoPorRuta(c.productos,id);
   if (!p) return {};
   const l = await getLocale();
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: Props) {
 }
 export default async function Producto({ params }: Props) {
   const { id } = await params;
-  const c = await leerCatalogoPublico();
+  const c = catalogoTienda(await leerCatalogoPublico());
   const p = buscarProductoPorRuta(c.productos,id);
   if (!p) notFound();
   if(p.slug && id!==p.slug)permanentRedirect(rutaProducto(p));

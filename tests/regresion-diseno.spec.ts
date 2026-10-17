@@ -5,7 +5,7 @@ import {llegarAPago} from './ayudas/compra';
 for(const idioma of ['es','en'] as const){
  test(`Compra conserva la simplificación, alineación y datos ${idioma}`,async({page,context,baseURL})=>{
   await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
-  await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
+  await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
   await expect(page.locator('.campo-telefono')).toHaveCount(1);
   await expect(page.locator('.compra-acceso a')).toHaveCount(1);
   await expect(page.locator('h1')).toHaveClass(/sr-only/);

@@ -97,5 +97,21 @@
     "archivo": "asus.webp",
     "fuente": "https://www.asus.com/media/img/2017/images/n-logo-asus.svg",
     "paginaOficial": "https://www.asus.com/"
+  },
+  "Dell": {
+    "archivo": "dell.webp",
+    "fuente": "https://www.dell.com/en-us/legal/lp/trademarks",
+    "paginaOficial": "https://www.dell.com/en-us/legal/lp/trademarks",
+    "nota": "Logo SVG del encabezado oficial de Dell Technologies, optimizado con fondo transparente."
+  },
+  "APC": {
+    "archivo": "apc.webp",
+    "fuente": "https://www.se.com/us/en/assets/v2/739/media/202251/APC_logo_toggle.svg",
+    "paginaOficial": "https://www.se.com/us/en/brands/apc/"
+  },
+  "QNAP": {
+    "archivo": "qnap.webp",
+    "fuente": "https://marketing.qnap.com/wp-content/uploads/2021/06/QNAP_LOGO_標準色.png",
+    "paginaOficial": "https://marketing.qnap.com/resource/qnap-logo-standard/"
   }
 }

@@ -3,7 +3,7 @@ import es from '../messages/es.json';import en from '../messages/en.json';
 for(const idioma of ['es','en'] as const)test(`Primer paso reúne facturación, contacto y dirección ${idioma}`,async({page,context,baseURL})=>{
  const t=(idioma==='es'?es:en).Compra;
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
- await page.goto('/tienda');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
+ await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
  const nav=page.getByRole('navigation',{name:t.pasosCompra,exact:true});
  await expect(nav.getByRole('button')).toHaveCount(3);
  await expect(page.locator('[data-compra-paso="1"]')).toBeHidden();

@@ -1,4 +1,5 @@
-import {esProductoEurocomp} from './catalogo-fuente';
+import {resolverImagenProducto,tieneImagenProducto} from './imagenes-productos';
+import {esProductoEurocomp,esProductoEmpresarial,esDuplicadoEmpresarial} from './catalogo-fuente';
 import {asignarRutasProductos} from './rutas-productos';
 import {type CatalogoAdmin, type CatalogoPublico} from './catalogo-modelo';
 
@@ -8,12 +9,13 @@ const textos={
  aviso:{es:'Precios de referencia con IVA incluido. Su carrito no reserva productos ni genera un cobro.',en:'Reference prices include VAT. Your cart does not reserve products or create a charge.'}
 };
 
-// Preserve editorial changes only for products originating in Eurocomp.
+// Preserve Eurocomp products and the explicitly curated business selection.
 export function catalogoPublicoManual(c:CatalogoPublico):CatalogoPublico{
- return actualizarPromesa({...c,gestion:'manual',productos:asignarRutasProductos(c.productos.filter(esProductoEurocomp))});
+ return actualizarPromesa({...c,gestion:'manual',productos:asignarRutasProductos(c.productos.map(resolverImagenProducto).filter(tieneImagenProducto).filter(p=>(esProductoEurocomp(p)||esProductoEmpresarial(p))&&!esDuplicadoEmpresarial(p)))});
 }
 export function migrarCatalogoManual(c:CatalogoAdmin):CatalogoAdmin{
- const siguiente={...c,gestion:'manual' as const,productos:c.productos.filter(esProductoEurocomp).map(p=>{
+ const siguiente={...c,gestion:'manual' as const,productos:c.productos.filter(p=>esProductoEurocomp(p)||esProductoEmpresarial(p)).map(resolverImagenProducto).map(p=>{
+  if(esProductoEmpresarial(p))return {...p,disponibilidadReferencia:'consultar' as const};
   const limpio={...p};delete limpio.proveedor;delete limpio.codigoIntcomex;delete limpio.estadoIntcomex;return limpio;
  })};
  delete siguiente.sincronizacion;delete siguiente.inventario;

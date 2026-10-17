@@ -80,7 +80,7 @@ body:has(.inicio-triptico) .pie { border-top: 0; }
 .tienda-compacta .shop-buscador { margin-bottom: 20px; }
 .tienda-compacta .shop-resultados-cabecera { margin-bottom: 18px; }
 .tienda-compacta .shop-foto { background: #fff; border: 0; border-radius: 0; overflow: hidden; }
-.tienda-compacta .shop-foto > a { padding: 10px; }
+.tienda-compacta .shop-foto > a:not(.producto-agregar) { padding: 10px; }
 .tienda-compacta .shop-foto img { background: #fff; object-fit: contain; mix-blend-mode: normal; }
 .tienda-compacta .shop-foto .guardar-seleccion { border-radius: 0 10px 0 0; }
 .tienda-compacta .shop-producto h3 { text-wrap: pretty; }
@@ -277,14 +277,14 @@ body:has(.inicio-triptico) .barra-local .contenedor{min-height:32px}
 .tienda-compacta .shop-resultados-cabecera .shop-orden select{border:0;border-bottom:1px solid #cbd7e1;border-radius:0;background-color:transparent;padding-left:4px;box-shadow:none}
 .tienda-compacta .shop-foto>.producto-descuento,.ficha-pagina .ficha-foto>.producto-descuento{position:absolute;top:10px;left:10px;z-index:2;display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:6px 10px;border:0;border-radius:3px;background:#c62828;color:#fff;font-size:.8rem;font-weight:700;line-height:1;box-shadow:none;pointer-events:none}
 .producto-acciones{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px;z-index:3}.producto-accion{display:grid;place-items:center;width:40px;height:40px;border:1px solid #e1e8ed;border-radius:50%;background:#fff;color:var(--azul);cursor:pointer}.producto-accion[aria-pressed=true]{color:#c62828;background:#ffffff}.producto-accion:hover{background:#ffffff}.producto-accion:focus-visible,.producto-agregar:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
-.producto-agregar{position:absolute;inset:auto 0 0;z-index:3;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px;border:0;background:var(--azul);color:#fff;font:inherit;font-size:.8rem;cursor:pointer;transition:background .2s}.producto-agregar:hover{background:var(--naranja)}.producto-agregar:disabled{opacity:.6;cursor:not-allowed}
+.producto-agregar{position:absolute;inset:auto 0 0;z-index:3;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px;border:0;background:var(--azul);color:#fff;font:inherit;font-size:.8rem;text-decoration:none;cursor:pointer;transition:background .2s}.producto-agregar:hover{background:var(--naranja)}.producto-agregar:disabled{opacity:.6;cursor:not-allowed}
 /* Keep disabled/loading actions hidden too; disabled opacity rules must not reveal every card. */
 @media(hover:hover) and (pointer:fine){.shop-producto .producto-acciones,.shop-producto .producto-agregar,.shop-producto .producto-agregar:disabled{opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s,background .2s}.shop-producto:hover .producto-acciones,.shop-producto:focus-within .producto-acciones,.shop-producto:hover .producto-agregar,.shop-producto:focus-within .producto-agregar{opacity:1;transform:none}.tienda-compacta .shop-producto .shop-foto img{transition:transform .2s}.tienda-compacta .shop-producto:hover .shop-foto img{transform:scale(1.025)}}
 .producto-preview-overlay{position:fixed;inset:0;background:#081c2c99;z-index:120}.producto-preview{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(920px,94vw);max-height:90dvh;overflow:auto;background:#fff;border-radius:18px;padding:32px;z-index:121;display:grid;grid-template-columns:1fr 1fr;gap:28px;box-shadow:0 20px 70px #071b2b30}.producto-preview-cerrar{position:absolute;right:12px;top:12px;display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:50%;background:#ffffff;color:var(--azul);z-index:2}.producto-preview-foto{position:relative;display:grid;align-items:center;min-width:0}.producto-preview-foto img{width:100%;height:340px;object-fit:contain}.producto-preview-foto>.producto-descuento{position:absolute;top:0;left:0;background:#c62828;color:#fff;padding:8px;font-weight:700}.producto-preview-datos{min-width:0;padding-top:16px}.producto-preview-datos h2{font-size:1.3rem;line-height:1.35;margin:8px 0 16px}.producto-preview-datos>p{font-size:.85rem;line-height:1.6;color:#536d80}.producto-preview-precio{margin:20px 0}.producto-preview-precio small{font-size:.75rem;margin-left:8px}.producto-preview-datos dl{font-size:.8rem}.producto-preview-datos dl>div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #e1e8ed}.producto-preview-datos dd{margin:0}.producto-preview-cantidad{display:flex;align-items:center;gap:12px;margin:16px 0;font-size:.85rem}.producto-preview-cantidad input{width:72px;padding:8px;border:1px solid #cbd7e1;border-radius:8px}.producto-preview-detalles{display:inline-block;margin:16px 0 0;text-decoration:underline;color:var(--azul);font-size:.85rem}.producto-preview-datos>.boton{display:flex;width:100%;justify-content:center}
 .shop-favoritos-enlace{display:flex;justify-content:flex-end;gap:12px;font-size:.78rem;margin-bottom:8px;color:var(--azul)}.shop-favoritos-enlace a{text-decoration:underline}.favoritos-pagina h2{font-size:1.6rem;margin-bottom:20px}.favoritos-invitado{font-size:.85rem;margin-bottom:20px;line-height:1.6}.favoritos-invitado a{text-decoration:underline}.favoritos-grid{margin:20px 0}.favoritos-grid .shop-foto{position:relative;height:200px}.favoritos-grid .shop-foto img{width:100%;height:100%;object-fit:contain}.favoritos-grid h3{font-size:.9rem;line-height:1.5;margin:12px 0}
 @media(max-width:650px){.producto-preview{grid-template-columns:1fr;gap:12px;padding:20px}.producto-preview-foto img{height:210px}.producto-preview-datos{padding-top:0}.producto-acciones{right:4px;top:4px;gap:4px}.producto-accion{width:36px;height:36px}.producto-agregar{font-size:.7rem;min-height:40px;padding:8px}.producto-preview-datos h2{font-size:1.1rem}}
 @media(prefers-reduced-motion:reduce){.producto-acciones,.producto-agregar,.tienda-compacta .shop-producto .shop-foto img{transition:none!important;transform:none!important}}
-.tienda-compacta .shop-foto:has(.producto-agregar)>a{padding-bottom:48px}
+.tienda-compacta .shop-foto:has(.producto-agregar)>a:not(.producto-agregar){padding-bottom:48px}
 @media(max-width:650px){.tienda-compacta .shop-foto:has(.producto-agregar){height:200px;min-height:200px;max-height:200px}}
 .ficha-pagina .ficha-detalles{display:block;max-width:1000px;margin:32px 0 0;padding:24px 0 0;border-top:1px solid #e1e8ed}
 .ficha-detalles-cabecera{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px}
@@ -625,7 +625,7 @@ dialog.shop-panel-filtros>.modal-nativo-cuerpo{margin:0;clear:none}
 /* Full-height left filter drawer, occupying half the viewport. */
 .tienda-compacta dialog.shop-panel-filtros{inset:0 auto 0 0;margin:0;width:50vw;max-width:50vw;height:100dvh;max-height:100dvh;border-radius:0}
 .tienda-compacta dialog.shop-panel-filtros>.modal-nativo-cuerpo{height:100dvh;max-height:100dvh;border-radius:0;box-sizing:border-box;padding:20px 12px;overflow-y:auto}
-.tienda-compacta dialog.shop-panel-filtros>button:first-child{top:16px;right:10px}
+.tienda-compacta dialog.shop-panel-filtros>button:first-child{top:16px;right:16px}
 .tienda-compacta dialog.shop-panel-filtros .modal-nativo-cuerpo>h2{font-size:1.15rem;margin-bottom:14px}
 .tienda-compacta dialog.shop-panel-filtros .shop-buscar-marca{width:100%;min-width:0;box-sizing:border-box}
 .tienda-compacta dialog.shop-panel-filtros .shop-categorias button{font-size:.72rem;padding:8px 2px!important;gap:4px}
@@ -775,7 +775,7 @@ dialog.shop-panel-filtros>.modal-nativo-cuerpo{margin:0;clear:none}
 .shop-categoria-indicador{display:inline-flex;align-items:center;gap:5px;flex:none}
 .shop-categoria-flecha{transition:transform .18s ease;flex:none}
 .shop-categorias button[aria-expanded=true] .shop-categoria-flecha{transform:rotate(180deg)}
-.tienda-compacta .shop-subcategorias{margin:4px 0 6px 8px;padding-left:8px;border-left:2px solid #e0e8ef}
+.tienda-compacta .shop-subcategorias{margin:4px 0 6px 8px;padding-left:8px;border-left:0}
 @media(prefers-reduced-motion:reduce){.shop-categoria-flecha{transition:none}}
 
 .shop-lista-barra{display:none}
@@ -856,8 +856,8 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 .pago-resultado-envio{display:flex;align-items:flex-start;gap:10px;text-align:left;margin:20px 0;background:#ffffff;padding:14px;border-radius:10px;color:#536d80}
 .pago-resultado-envio svg{flex:none;margin-top:2px}
 .pago-resultado-envio p{font-size:.78rem;line-height:1.55;margin:0}
-.pago-resultado>.boton{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:22px;min-height:44px;padding:10px 20px;font-size:.82rem;width:auto}
-@media(max-width:650px){.compra-pagina .pago-resultado{margin:20px auto;padding:24px 18px}.pago-resultado>.boton{width:100%}}
+.pago-resultado>.boton{margin-inline:4px;display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:22px;min-height:44px;padding:10px 20px;font-size:.82rem;width:auto}
+@media(max-width:650px){.compra-pagina .pago-resultado{margin:20px auto;padding:24px 18px}.pago-resultado>.boton{width:100%;margin-inline:0}}
 
 /* En móvil, separar la navegación de las fotografías de la portada. */
 @media(max-width:900px){
@@ -942,18 +942,6 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 .compra-pagina .compra-acciones-finales>.boton-naranja{flex:1}
 @media(max-width:760px){.compra-pagina .compra-acciones-finales>.boton{padding-inline:14px;font-size:13px}}
 
-.tarjeta-integrada{padding:24px;border:1px solid #ccd9e4;border-radius:14px;background:#fff;margin:24px 0}
-.tarjeta-integrada header{display:flex;align-items:center;gap:12px;margin-bottom:20px}.tarjeta-integrada header>svg{margin-left:auto;color:#577185}
-.tarjeta-integrada-icono{display:grid;place-items:center;width:44px;height:44px;border:1px solid #d9e3eb;border-radius:10px;color:#315a78}
-.tarjeta-integrada h3{font-size:17px;margin:0 0 4px;color:#19394f}.tarjeta-integrada header p{font-size:13px;margin:0;color:#526b7e}
-.tarjeta-integrada-prueba{font-size:12px;line-height:1.6;margin:0 0 20px;color:#6a5839}
-.tarjeta-integrada-campos{display:grid;grid-template-columns:1fr 1fr;gap:20px 16px}.tarjeta-integrada-numero{grid-column:1/-1}
-.compra-bloque .tarjeta-integrada label{display:flex;flex-direction:column;gap:8px;font-size:13px;color:#31536c;min-width:0}
-.tarjeta-integrada input:not([type=hidden]){width:100%;min-width:0;min-height:50px;padding:12px 14px;border:1px solid #b9cbd8;border-radius:8px;background:#fff;color:#19394f;font-size:16px;letter-spacing:.04em}
-.tarjeta-integrada input:disabled{opacity:1;color:#65798a;border-style:dashed;cursor:not-allowed}
-.tarjeta-integrada-seguridad{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.6;margin:20px 0 0;color:#536b7e}.tarjeta-integrada-seguridad svg{flex-shrink:0;margin-top:3px}
-.compra-respuesta-sdk:empty{display:none}.compra-respuesta-sdk:not(:empty){position:fixed;inset:0;z-index:250;background:#fff;overflow:auto}
-@media(max-width:760px){.tarjeta-integrada{padding:18px}.tarjeta-integrada-campos{gap:16px 12px}.tarjeta-integrada h3{font-size:16px}}
 
 /* Ritmo compartido por las compras de tienda y los enlaces autorizados. */
 .compra-pagina .compra-grid{grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);gap:clamp(28px,4vw,64px);align-items:start}
@@ -1052,3 +1040,136 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
  .compra-pagina .compra-pasos button>span{flex-shrink:0;font-size:18px;line-height:1.4}
  .compra-pagina .compra-pasos button>strong{font-size:clamp(14px,1.1vw,17px);line-height:1.4}
 }
+
+/* Keep the business category aligned with its peers; only a slim accent distinguishes it. */
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button{position:relative;align-items:center;padding-left:16px!important;border-radius:4px;box-shadow:none!important}
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button::before{content:"";position:absolute;left:0;top:50%;width:3px;height:20px;transform:translateY(-50%);border-radius:3px;background:#ef5a2a;pointer-events:none}
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button .shop-empresa-nombre{display:block;white-space:nowrap;color:inherit!important;font:inherit;font-size:inherit!important;font-weight:inherit;line-height:1.45;min-width:0}
+.tienda-compacta .shop-categoria-empresa>button .shop-categoria-indicador{font-weight:400}
+.tienda-compacta .shop-categoria-empresa .shop-subcategorias button[aria-pressed=true]{color:#a84527!important;font-weight:600;box-shadow:none!important;border-left-color:transparent!important}
+.tienda-compacta .shop-categoria-empresa>button:focus-visible{outline:2px solid #315e7b;outline-offset:-2px}
+@media(max-width:850px){.tienda-compacta dialog.shop-panel-filtros{width:min(344px,92vw);max-width:92vw}.tienda-compacta dialog.shop-panel-filtros .shop-categoria-empresa>button{height:auto;min-height:44px}}
+.tienda-compacta .shop-categoria-empresa .shop-subcategorias button{white-space:nowrap;gap:8px}
+@media(min-width:851px){.tienda-compacta .shop-distribucion{grid-template-columns:280px minmax(0,1fr)}}
+@media(max-width:400px){.tienda-compacta dialog.shop-panel-filtros{width:min(344px,calc(100vw - 16px));max-width:calc(100vw - 16px);padding-inline:16px}.tienda-compacta dialog.shop-panel-filtros .shop-categoria-empresa .shop-subcategorias{margin-left:4px;padding-left:4px}.tienda-compacta dialog.shop-panel-filtros .shop-categoria-empresa .shop-subcategorias button{padding-inline:6px;font-size:.74rem}}
+
+/* Compact filters retain complete labels and separate counts without wrapping. */
+.tienda-compacta .shop-categorias button{white-space:nowrap;gap:6px}
+.tienda-compacta .shop-subcategorias{margin-left:4px;padding-left:5px}
+.tienda-compacta .shop-sidebar .shop-subcategorias button{padding-inline:5px!important;gap:5px;font-size:.73rem!important}
+@media(min-width:851px){.tienda-compacta .shop-sidebar{padding-right:12px!important}}
+.tienda-compacta dialog.shop-panel-filtros .shop-subcategorias button{padding-inline:5px;gap:5px;font-size:.74rem}
+
+/* Use the same breakpoint for the filter toolbar and the sidebar. */
+@media(max-width:850px){
+ .tienda-compacta .shop-distribucion{display:block}
+ .tienda-compacta .shop-sidebar{display:none!important}
+}
+.tienda-compacta .shop-categoria-indicador{flex-shrink:0}
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button .shop-empresa-nombre{flex-shrink:0}
+.tienda-compacta .shop-lista-marco>.shop-categorias{overflow-x:hidden!important}
+
+/* Keep the marker clear of the label and restore contrast on white selections. */
+.tienda-compacta dialog.shop-panel-filtros .shop-categorias .shop-categoria-empresa>button{padding-left:16px!important}
+.tienda-compacta .shop-categorias .shop-categoria-indicador,
+.tienda-compacta .shop-categorias .shop-categoria-indicador>span{color:#587084!important;opacity:1}
+
+/* Reserve the compact favorite slot so toggling it never changes the toolbar. */
+.tienda-compacta .shop-resultados-cabecera>.shop-favoritos-enlace{width:44px;min-width:44px;height:32px;min-height:32px;margin:0;padding:0;align-self:center}
+.tienda-compacta .shop-resultados-cabecera>.shop-favoritos-enlace[data-vacio=true]{visibility:hidden;pointer-events:none}
+.tienda-compacta .shop-resultados-cabecera .shop-favoritos-contador{position:absolute;top:-2px;right:0}
+
+/* A single compact category shortcut; solution details remain in the filters. */
+.shop-empresa-entrada{margin:-4px 0 20px;display:flex;align-items:center}
+.shop-empresa-entrada>button{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:6px 0;border:0;background:#fff;color:#31536d;font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+.shop-empresa-entrada>button[aria-pressed=true]{color:#a84527}
+.shop-empresa-entrada>button:focus-visible{outline:2px solid #315e7b;outline-offset:4px;border-radius:2px}
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button,
+.tienda-compacta dialog.shop-panel-filtros .shop-categorias .shop-categoria-empresa>button{padding-left:10px!important;font-weight:600;border-left-color:transparent!important;box-shadow:none!important}
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button::before{content:none}
+@media(max-width:850px){.shop-empresa-entrada{margin:-4px 0 12px}.shop-empresa-entrada>button{font-size:.82rem}}
+.tienda-compacta .shop-sidebar .shop-categorias .shop-categoria-empresa>button[aria-pressed=true]{border-left-color:transparent!important;box-shadow:none!important}
+
+/* Business entry and advice share one compact row on every viewport. */
+.shop-empresa-entrada{justify-content:space-between;gap:16px}
+.shop-empresa-entrada>.shop-asesoria-inline{display:inline-flex;align-items:center;justify-content:flex-end;flex:none;gap:7px;min-height:44px;padding:0;margin:0;color:#a84527;font-size:.82rem;font-weight:600;white-space:nowrap;text-decoration:none}
+.shop-empresa-entrada>button{white-space:nowrap;flex:none}
+@media(max-width:850px){.shop-empresa-entrada{gap:10px}.shop-empresa-entrada>button,.shop-empresa-entrada>.shop-asesoria-inline{font-size:.76rem}.shop-empresa-entrada>button{gap:6px}.shop-empresa-entrada>.shop-asesoria-inline{gap:5px}.shop-empresa-entrada>.shop-asesoria-inline svg{width:18px;height:18px}}
+@media(max-width:380px){.shop-empresa-entrada>button,.shop-empresa-entrada>.shop-asesoria-inline{font-size:.72rem}.shop-empresa-entrada>button>svg{display:none}}
+
+/* Results first, selected filters underneath, sorting consistently on the right. */
+.tienda-compacta .shop-resultados-cabecera{display:grid;grid-template-columns:minmax(0,1fr) auto 44px;align-items:start;gap:8px 16px;padding:0 0 16px;margin-bottom:16px}
+.tienda-compacta .shop-resultados-cabecera>.shop-conteo-ayuda{grid-column:1;grid-row:1;display:flex;flex-direction:column-reverse;align-items:flex-start;gap:4px;margin:0;padding:0!important;width:auto;min-width:0}
+.tienda-compacta .shop-resultados-cabecera .conteo{display:flex;align-items:center;min-height:44px;margin:0;font-size:.8rem;line-height:1.4;color:#587084}
+.tienda-compacta .shop-resultados-cabecera .shop-filtros-activos{gap:6px;max-width:100%}
+.tienda-compacta .shop-resultados-cabecera .shop-filtros-activos button{padding:5px 9px;border:1px solid #d6e0e8;border-radius:6px;background:#fff;min-width:0;max-width:100%;min-height:32px;font-size:.75rem;line-height:1.4;text-align:left}
+.tienda-compacta .shop-resultados-cabecera .shop-filtros-activos button svg{flex:none}
+.tienda-compacta .shop-resultados-cabecera>.shop-orden{grid-column:2;grid-row:1;display:flex;align-items:center;justify-self:end;min-height:44px;gap:7px;margin:0}
+.tienda-compacta .shop-resultados-cabecera>.shop-orden>span{display:inline;font-size:.75rem;color:#587084}
+.tienda-compacta .shop-resultados-cabecera>.shop-orden .shop-orden-trigger{min-height:44px;padding:0;font-size:.8rem;gap:5px}
+.tienda-compacta .shop-resultados-cabecera>.shop-favoritos-enlace{grid-column:3;grid-row:1;justify-self:end;align-self:start;margin-top:6px}
+@media(min-width:851px){.tienda-compacta .shop-resultados-cabecera>.shop-abrir-filtros{display:none}}
+@media(max-width:850px){
+ .tienda-compacta .shop-resultados-cabecera{grid-template-columns:auto minmax(0,1fr) 44px;column-gap:12px;row-gap:4px}
+ .tienda-compacta .shop-resultados-cabecera>.shop-abrir-filtros{grid-column:1;grid-row:1;display:inline-flex;margin:0;padding:0;font-size:.8rem}
+ .tienda-compacta .shop-resultados-cabecera>.shop-orden{grid-column:2;grid-row:1}
+ .tienda-compacta .shop-resultados-cabecera>.shop-orden>span{display:none}
+ .tienda-compacta .shop-resultados-cabecera>.shop-conteo-ayuda,
+ .tienda-compacta .shop-resultados-cabecera:has(>.shop-favoritos-enlace)>.shop-conteo-ayuda{grid-column:1 / -1;grid-row:2;justify-self:stretch;width:100%;padding:0!important}
+ .tienda-compacta .shop-resultados-cabecera .conteo{min-height:32px}
+}
+
+/* Compact mobile controls: actions together, count and selection on one row when they fit. */
+@media(max-width:850px){
+ .tienda-compacta .shop-busqueda-acciones{margin-bottom:10px}
+ .shop-empresa-entrada{margin-bottom:4px}
+ .tienda-compacta .shop-resultados-cabecera{row-gap:2px;padding-bottom:12px;margin-bottom:12px}
+ .tienda-compacta .shop-resultados-cabecera>.shop-conteo-ayuda,
+ .tienda-compacta .shop-resultados-cabecera:has(>.shop-favoritos-enlace)>.shop-conteo-ayuda{flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px}
+ .tienda-compacta .shop-resultados-cabecera .conteo{order:0;flex:none;font-size:.78rem;min-height:32px}
+ .tienda-compacta .shop-resultados-cabecera .shop-filtros-activos{order:1;min-width:0}
+ .tienda-compacta .shop-resultados-cabecera .shop-filtros-activos button{font-size:.72rem}
+}
+
+/* Mobile actions share the same right edge; favorites do not offset sorting. */
+@media(max-width:850px){
+ .tienda-compacta .shop-resultados-cabecera{grid-template-columns:auto 44px minmax(0,1fr);column-gap:8px}
+ .tienda-compacta .shop-resultados-cabecera>.shop-favoritos-enlace{grid-column:2;grid-row:1;justify-self:start}
+ .tienda-compacta .shop-resultados-cabecera>.shop-orden{grid-column:3;grid-row:1;justify-self:end}
+}
+
+/* All parent categories share one text edge; indentation belongs to children. */
+.tienda-compacta .shop-sidebar .shop-categorias .shop-categoria-rama>button,
+.tienda-compacta dialog.shop-panel-filtros .shop-categorias .shop-categoria-rama>button{padding-inline:10px!important;border-left:0 solid transparent!important}
+.tienda-compacta .shop-subcategorias{margin-left:10px;padding-left:8px;border-left:0}
+.tienda-compacta .shop-sidebar .shop-categorias .shop-categoria-rama>.shop-subcategorias,
+.tienda-compacta dialog.shop-panel-filtros .shop-categorias .shop-categoria-rama>.shop-subcategorias{margin-left:10px;padding-left:8px}
+
+/* Availability CTA: center the icon and a balanced label on narrow product cards. */
+.producto-agregar .disponibilidad-etiqueta{text-align:center;line-height:1.3;text-wrap:balance}
+.producto-agregar:has(.disponibilidad-etiqueta)>svg{flex:none}
+@media(max-width:650px){
+ .tienda-compacta .producto-agregar{justify-content:center;gap:6px;min-height:44px;padding:7px 6px;font-size:.7rem}
+ .tienda-compacta .producto-agregar:has(.disponibilidad-etiqueta)>svg{width:17px;height:17px}
+}
+
+@media(max-width:650px){.tienda-compacta .producto-agregar .disponibilidad-etiqueta{white-space:nowrap;text-wrap:nowrap}}
+@media(max-width:360px){
+ .tienda-compacta .producto-agregar{padding-inline:3px;gap:4px}
+ .tienda-compacta .producto-agregar:has(.disponibilidad-etiqueta)>svg{width:15px;height:15px}
+ .tienda-compacta .producto-agregar .disponibilidad-etiqueta{letter-spacing:-.1px}
+}
+
+/* Align desktop actions with the text edge of the last product column. */
+@media(min-width:851px){
+ .shop-empresa-entrada{padding-right:4px}
+ .tienda-compacta .shop-resultados-cabecera{grid-template-columns:minmax(0,1fr) 44px auto;padding-right:4px}
+ .tienda-compacta .shop-resultados-cabecera>.shop-favoritos-enlace{grid-column:2;grid-row:1}
+ .tienda-compacta .shop-resultados-cabecera>.shop-orden{grid-column:3;grid-row:1}
+}
+
+/* Selected filter chips follow the count; the business entry stays above. */
+.tienda-compacta .shop-resultados-cabecera>.shop-conteo-ayuda,
+.tienda-compacta .shop-resultados-cabecera:has(>.shop-favoritos-enlace)>.shop-conteo-ayuda{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:6px 12px}
+.tienda-compacta .shop-conteo-ayuda>.conteo{order:0;flex:none}
+.tienda-compacta .shop-conteo-ayuda>.shop-filtros-activos{order:1}

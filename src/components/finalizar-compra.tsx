@@ -1,6 +1,4 @@
 "use client";
-import {TarjetaIntegrada} from "./tarjeta-integrada";
-import {pagarSdkTarjeta,type OpcionesSdk} from "@/lib/tilopay-sdk-cliente";
 import {DireccionCompra} from './direccion-compra';
 import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import {CampoIdentificacion} from './campo-identificacion';
@@ -34,8 +32,9 @@ import { colones, traducir } from "@/lib/catalogo-modelo";
 import {costoEntrega} from '@/lib/envio';
 import { FotoProducto } from "./foto-producto";
 import { desplazarContenido } from "@/lib/desplazar-contenido";
+const instantePago=()=>Date.now();
 const CAMPOS_BORRADOR=['nombre','apellidos','correo','telefono','tipoIdentificacion','identificacion','razonSocial','actividad','correoFactura','direccionFiscal','provincia','canton','distrito','direccion','apartamento','postal','receptor','telefonoReceptor','notas'];
-export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simularPedido, datosGuardados={},cuentaDisponible=false,googleDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { sdkIntegrado?:boolean;sdkDisponible?:boolean;simularPedido?:(datos:Record<string,string>,metodo:'tarjeta'|'sinpe'|'transferencia',archivo?:File)=>Promise<void>; datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;googleDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
+export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponible=false,googleDisponible=false,pagos, aprobacion, enlaceInvalido=false, tarjetaDisponible = false, tarjetaEnPruebas = true, pedidosManualesDisponibles = false }: { simularPedido?:(datos:Record<string,string>,metodo:'tarjeta'|'sinpe'|'transferencia',archivo?:File)=>Promise<void>; datosGuardados?:Record<string,string>;cuentaDisponible?:boolean;googleDisponible?:boolean;pagos: Contenido["pagos"]; aprobacion?: {contacto?:import('@/lib/asesorias').SolicitudAsesoria['contacto'];id:string;token:string;articulos:{producto:import("@/lib/catalogo-modelo").CatalogoPublico["productos"][number];cantidad:number}[]}|null; tarjetaDisponible?: boolean; tarjetaEnPruebas?: boolean; pedidosManualesDisponibles?: boolean;enlaceInvalido?:boolean }) {
   const a = useTranslations("Asesoria");
   const t = useTranslations("Compra"),
     l = useLocale(),
@@ -64,7 +63,12 @@ export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simular
     [errorFormulario, setErrorFormulario] = useState(false);
   const bloqueoRevision=useRef(false);
   const [guardandoCompra,setGuardandoCompra]=useState(false);
-  const sesionSdk=useRef<{clave:string;sdk:OpcionesSdk;metodo:string}|null>(null);
+  useEffect(()=>{
+    const volver=()=>{setProcesando(false);setGuardandoCompra(false);bloqueoRevision.current=false;};
+    window.addEventListener('pageshow',volver);
+    window.addEventListener('sg-app-resume',volver);
+    return()=>{window.removeEventListener('pageshow',volver);window.removeEventListener('sg-app-resume',volver);};
+  },[]);
   const [agregarNotas,setAgregarNotas]=useState(Boolean(borrador.notas));
   const [paso,setPaso]=useState(0),[ultimoPaso,setUltimoPaso]=useState(0);
   const formularioPasos=useRef<HTMLFormElement>(null),cabeceraPasos=useRef<HTMLElement>(null);
@@ -184,7 +188,7 @@ export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simular
           setGuardadoPerfil(guardado.estado==='guardado'?'guardado':'error');
         }catch{setGuardadoPerfil('error');}
       }
-      if(pago==='tarjeta'&&(sdkIntegrado?sdkDisponible:tarjetaDisponible))await pagarConTarjeta({...datos,...validacion.data});
+      if(pago==='tarjeta'&&tarjetaDisponible)await pagarConTarjeta({...datos,...validacion.data});
     }finally{bloqueoRevision.current=false;setGuardandoCompra(false);}
   }
   async function accesoCompra(){
@@ -198,14 +202,21 @@ export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simular
     setErrorPago(false);
     try {
       if(simularPedido){await simularPedido(datosCompra,'tarjeta');limpiarBorrador();return;}
-      if(sdkIntegrado&&!sdkDisponible)throw new Error('SDK_NO_DISPONIBLE');
-      const claveSdk=JSON.stringify({datosCompra,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))});
-      if(sdkIntegrado&&sesionSdk.current?.clave===claveSdk){await pagarSdkTarjeta(sesionSdk.current.sdk,sesionSdk.current.metodo,tarjetaEnPruebas?'pruebas':'produccion');return;}
+      const huella=JSON.stringify({datosCompra,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))});
+      const clavePendiente='sg-pago-pendiente-v1:'+claveBorrador;
+      let anterior=null;
+      try{anterior=JSON.parse(localStorage.getItem(clavePendiente)||'null');}catch{}
+      if(anterior?.huella===huella&&instantePago()-anterior.fecha<86400000&&typeof anterior.url==='string'){
+        const url=new URL(anterior.url);
+        if(url.protocol==='https:'&&['secure.tilopay.com','securepayment.tilopay.com','app.tilopay.com'].includes(url.hostname)){
+          guardarBorradorActual.current();window.location.assign(url.href);return;
+        }
+      }
       const acceso=await accesoCompra();
       const respuesta = await fetch('/api/pagos/tilopay/iniciar', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          sdk:sdkIntegrado,asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:datosCompra, nombre: datosCompra.nombre, apellidos: datosCompra.apellidos, correo: datosCompra.correo,
+          asesoria:acceso.id,acceso:acceso.token, idioma:l, datos:datosCompra, nombre: datosCompra.nombre, apellidos: datosCompra.apellidos, correo: datosCompra.correo,
           telefono: datosCompra.telefono, consentimiento: datosCompra.consentimiento === 'on',
           articulos: productos.map(x => ({ id: x.p.id, cantidad: x.cantidad })),
         }),
@@ -213,14 +224,11 @@ export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simular
       const datos = await respuesta.json();
       if(datos.error==='catalogo_actualizado')setErrorStock(true);
       if(respuesta.status===403&&datos.error==='asesoria_requerida')setErrorAutorizacion(true);
-      if(sdkIntegrado){
-        if(!respuesta.ok||!datos.sdk||typeof datos.metodo!=='string')throw new Error('SDK_NO_DISPONIBLE');
-        sesionSdk.current={clave:claveSdk,sdk:datos.sdk,metodo:datos.metodo};
-        await pagarSdkTarjeta(datos.sdk,datos.metodo,tarjetaEnPruebas?'pruebas':'produccion');return;
-      }
       if (!respuesta.ok || typeof datos.url !== 'string') throw new Error('PAGO_NO_DISPONIBLE');
-      if (!aprobacion) retirarArticulosPedido(productos.map(x => ({id:x.p.id,cantidad:x.cantidad})));
-      limpiarBorrador();
+      const destino=new URL(datos.url);
+      if(destino.protocol!=='https:'||!['secure.tilopay.com','securepayment.tilopay.com','app.tilopay.com'].includes(destino.hostname))throw new Error('PAGO_NO_DISPONIBLE');
+      guardarBorradorActual.current();
+      try{localStorage.setItem(clavePendiente,JSON.stringify({fecha:instantePago(),huella,url:datos.url,pedido:datos.pedido,ruta:location.pathname+location.search,claveBorrador,borrador:localStorage.getItem(claveBorrador),articulos:aprobacion?[]:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))}));}catch{/* La navegación no depende del almacenamiento. */}
       window.location.assign(datos.url);
     } catch {
       setErrorPago(true);
@@ -450,13 +458,12 @@ export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simular
                         <Icon size={23} />
                         <span>
                           <strong>{t(id)}</strong>
-                          <small>{id==='tarjeta'&&sdkIntegrado?t('tarjetaIntegradaDetalle'):id === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
+                          <small>{id === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas ? t('tarjetaPruebaDetalle') : t(`${id}Detalle`)}</small>
                         </span>
                       </label>
                     ))}
                   </fieldset>
-                  {pago === "tarjeta" && sdkIntegrado && <TarjetaIntegrada disponible={sdkDisponible} pruebas={tarjetaEnPruebas}/> }
-                  {pago === "tarjeta" && !sdkIntegrado && !tarjetaDisponible && <p className="compra-aviso"><ShieldCheck size={19}/>{t('tarjetaPendiente')}</p>}
+                  {pago === "tarjeta" && !tarjetaDisponible && <p className="compra-aviso"><ShieldCheck size={19}/>{t('tarjetaPendiente')}</p>}
                   {pago !== "tarjeta" && (
                     <details key={pago} className="compra-cuentas" open ref={pagoDatos}>
                       <summary>{t("verCuentas")}</summary>
@@ -498,7 +505,7 @@ export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simular
                   <button
                     className="boton boton-naranja"
                     type="submit"
-                    disabled={bloqueado||procesando||guardandoCompra||(pago==='tarjeta'&&(!(sdkIntegrado?sdkDisponible:tarjetaDisponible)||pendiente))}
+                    disabled={bloqueado||procesando||guardandoCompra||(pago==='tarjeta'&&(!tarjetaDisponible||pendiente))}
                   >
                     {procesando||guardandoCompra?t('procesandoPago'):t(pago==='tarjeta'?'pagarTotal':'revisarTotal',{total:colones(total)})}
                     <ClipboardCheck size={19} aria-hidden="true" />
@@ -510,7 +517,6 @@ export function FinalizarCompra({ sdkIntegrado=false,sdkDisponible=false,simular
               </form>
             )}
           </div>
-          {sdkIntegrado&&<div id="responseTilopay" className="compra-respuesta-sdk" aria-live="polite"/>}
           <aside className="compra-resumen">
             <p className="etiqueta">{t("resumen")}</p>
             <h2>{t("seleccion")}</h2>

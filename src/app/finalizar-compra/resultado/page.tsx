@@ -1,3 +1,4 @@
+import {RetornoPago} from '@/components/retorno-pago';
 import Link from 'next/link';
 import {Check,Clock,X,Truck,ArrowRight} from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
@@ -26,7 +27,7 @@ export default async function ResultadoPago({ searchParams }: { searchParams: Pr
       <div className="pago-resultado-icono" aria-hidden="true">{estado==='pagado'?<Check size={28}/>:estado==='rechazado'?<X size={28}/>:<Clock size={28}/>}</div>
       <h1>{t(estado)}</h1>
       <p className="pago-resultado-descripcion">{t(`${estado}Detalle`)}</p>{express&&<div className="pago-resultado-envio"><Truck size={20} aria-hidden="true"/><p>{t('expressSeparado')}</p></div>}
-      <Link className="boton boton-azul" href="/tienda">{t('volver')}<ArrowRight size={17} aria-hidden="true"/></Link>
+      <RetornoPago pedido={pedido} pagado={estado==='pagado'}/><Link className="boton boton-azul" href="/tienda">{t('volver')}<ArrowRight size={17} aria-hidden="true"/></Link>
     </section>
   </main>;
 }

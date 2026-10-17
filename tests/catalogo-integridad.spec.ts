@@ -14,6 +14,7 @@ for(const idioma of ['es','en'])test(`marcas, categorías y carrusel coinciden c
  const totalCategorias=await page.locator('.shop-sidebar .shop-categoria-rama>button>.shop-categoria-indicador>span').evaluateAll(es=>es.reduce((n,e)=>n+Number(e.textContent),0));expect(totalCategorias).toBe(primera.total);
  const visibles=await page.locator('.marcas-grupo').first().locator('.marca-pie>span').allTextContents();
  const normalizar=(n:string)=>n.toUpperCase().replace(/[^A-Z0-9]/g,'');
+ expect(visibles.length).toBe(new Set(visibles.map(normalizar)).size);
  const conLogo=new Set([...Object.keys(logos).map(normalizar),'CUSTOMAMERICA']);
  const esperadas=[...marcas.keys()].filter(n=>conLogo.has(normalizar(n)));
  expect([...new Set(visibles)].sort()).toEqual(esperadas.sort());

@@ -4,7 +4,7 @@ La web es la referencia funcional y visual. La demo actual no acredita paridad. 
 
 ## Inventario y orden de trabajo
 
-Estado actual: todas las secciones en progreso mediante la vista de desarrollo de la web real. Ninguna se marca como paridad nativa terminada. El inventario cubre las 35 rutas actuales; también incluye el carrito, que no tiene una página independiente.
+Estado actual: todas las secciones en progreso mediante la vista de desarrollo de la web real. Ninguna se marca como paridad nativa terminada. El inventario cubre las 36 rutas actuales; también incluye el carrito, que no tiene una página independiente.
 
 | Nº | Sección | Alcance |
 |---|---|---|
@@ -70,3 +70,7 @@ Implementado: inventario, guardia automática, modo local de Capacitor que carga
 - La apertura completa de enlaces en dispositivos y los retornos de banco/autenticación necesitan validación adicional. No se marca ninguna sección como paridad nativa completa ni se publica esta entrega.
 
 Evidencia Android: APK instalado en el emulador dedicado `SGSolutions_QA`; el enlace de desarrollo abrió `/soporte` con la web real. Captura local: `.privado/mobile-testing/android-deep-link-soporte.png`. En iOS el esquema está registrado y el binario compila, pero la confirmación de apertura del sistema impidió acreditar el recorrido completo en esta ronda.
+
+## Soluciones Empresariales
+
+Soluciones Empresariales se integra como primera categoría de los filtros de `/tienda`, con cinco subcategorías y las marcas en el filtro habitual. La ruta anterior `/tienda/soluciones-empresariales` redirige a la misma tienda con la categoría seleccionada. Los equipos de Intcomex conservan confirmación de existencia y compra por enlace. Validación nativa completa pendiente, como las demás secciones.

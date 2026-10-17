@@ -1,4 +1,5 @@
 import 'server-only';
+import {incorporarEmpresariales} from './incorporar-empresariales';
 import {completarExistencias} from './existencias-catalogo';
 import {cache} from 'react';
 import {migrarCatalogoManual,catalogoPublicoManual} from './catalogo-manual';
@@ -8,15 +9,19 @@ import {crearClienteServidor} from './supabase/servidor';
 import {leerLocal} from './admin-local';
 let inicialValidado:CatalogoAdmin|undefined;
 export function obtenerCatalogoInicial(){
- return inicialValidado??=migrarCatalogoManual(esquemaCatalogo.parse(inicial));
+ return inicialValidado??=incorporarEmpresariales(migrarCatalogoManual(esquemaCatalogo.parse(inicial)));
 }
 export const leerCatalogoPublico=cache(async():Promise<CatalogoPublico>=>{
-  const local=await leerLocal('catalogo');if(local)return publicarCatalogo(migrarCatalogoManual(esquemaCatalogo.parse(local.contenido)));
+  const local=await leerLocal('catalogo');if(local)return publicarCatalogo(incorporarEmpresariales(migrarCatalogoManual(esquemaCatalogo.parse(local.contenido))));
   const cliente=await crearClienteServidor();
   if(!cliente) return publicarCatalogo(obtenerCatalogoInicial());
   const {data,error}=await cliente.from('catalogo_publico').select('contenido').eq('id',1).maybeSingle();
   if(error) console.error('CATALOGO_LECTURA_NO_DISPONIBLE',error.code);
-  return data?.contenido ? completarExistencias(catalogoPublicoManual(data.contenido)) : publicarCatalogo(obtenerCatalogoInicial());
+  const c=data?.contenido?await completarExistencias(catalogoPublicoManual(data.contenido)):publicarCatalogo(obtenerCatalogoInicial());
+  if(c.versionEmpresarial===1)return c;
+  const empresas=publicarCatalogo(obtenerCatalogoInicial()).productos.filter(p=>p.coleccion==='empresas');
+  const ids=new Set(c.productos.map(p=>p.id));
+  return {...c,productos:[...c.productos,...empresas.filter(p=>!ids.has(p.id))]};
 });
 
 // Only for authenticated administrators preparing an assisted order.
@@ -34,6 +39,7 @@ export async function leerProductosAsesoria(){
   if(error)throw new Error('CATALOGO_NO_DISPONIBLE');
   datos=data?migrarCatalogoManual(esquemaCatalogo.parse(data.contenido)):obtenerCatalogoInicial();
  }
+ datos=incorporarEmpresariales(datos);
  const publicados=new Map(datos.productos.map(p=>[p.id,p.publicado]));
- return publicarCatalogo({...datos,productos:datos.productos.map(p=>({...p,publicado:true}))}).productos.map(p=>({...p,publicado:publicados.get(p.id)??false}));
+ return publicarCatalogo({...datos,productos:datos.productos.map(p=>({...p,publicado:true}))},true).productos.map(p=>({...p,publicado:publicados.get(p.id)??false}));
 }

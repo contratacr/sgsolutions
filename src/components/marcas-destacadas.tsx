@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import {nombreMarca} from '@/lib/marcas-nombres';
 import {useEffect,useRef,useState} from 'react';
 import {useTranslations} from 'next-intl';
 
@@ -14,7 +15,7 @@ export const logoMarca=(nombre:string)=>porNombre.get(normalizarMarca(nombre));
 
 export function MarcasDestacadas({marcas:marcasEntrada,seleccionada,seleccionar}:{marcas:string[];seleccionada:string;seleccionar:(marca:string)=>void}) {
   const t=useTranslations('Tienda');
-  const marcas=[...new Set(marcasEntrada)].filter(nombre=>Boolean(logoMarca(nombre)));
+  const marcas=[...new Set(marcasEntrada.map(nombreMarca))].filter(nombre=>Boolean(logoMarca(nombre)));
   const pista=useRef<HTMLDivElement>(null);
   const ventana=useRef<HTMLDivElement>(null);
   const [repeticiones,setRepeticiones]=useState(1);

@@ -52,7 +52,8 @@ for(const idioma of ['es','en'])for(const conBusqueda of [false,true])test(`cate
  await page.route('**/api/catalogo?**',async route=>{
   const params=new URL(route.request().url()).searchParams;
   const categoria=params.get('categoria');
-  if(!categoria||categoria==='todos'){await route.continue();return;}
+  // El rango del borrador móvil se consulta por separado, sin paginación.
+  if(!categoria||categoria==='todos'||!params.has('pagina')){await route.continue();return;}
   const pagina=Number(params.get('pagina')||1);peticiones.push({categoria,pagina,q:params.get('q')||''});
   const productos=Array.from({length:24},(_,i)=>({...base,categoria,id:`qa-categoria-${pagina}-${i}`,slug:`qa-categoria-${pagina}-${i}`,nombre:{es:`Equipo ${pagina} ${i}`,en:`Equipment ${pagina} ${i}`}}));
   await route.fulfill({json:{productos,total:72,pagina,paginas:3}});
