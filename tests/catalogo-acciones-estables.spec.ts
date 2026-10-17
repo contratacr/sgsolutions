@@ -7,7 +7,14 @@ for(const idioma of ['es','en'])test(`acciones de producto no parpadean al naveg
   const state={frames:0,flashes:[] as string[]};
   Object.assign(window,{accionesEstables:state});
   function sample(){
-   if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+   const desktop=matchMedia('(hover:hover) and (pointer:fine)').matches;
+   if(!desktop){
+    document.querySelectorAll<HTMLElement>('.shop-producto .producto-accion,.shop-producto .producto-agregar').forEach(control=>{
+     const opacity=Number(getComputedStyle(control).opacity);
+     if(opacity!==1&&state.flashes.length<5)state.flashes.push(`${control.className}: ${opacity}`);
+    });
+   }
+   if(desktop){
     document.querySelectorAll<HTMLElement>('.shop-producto').forEach(card=>{
      if(card.matches(':hover,:focus-within'))return;
      card.querySelectorAll<HTMLElement>('.producto-agregar,.producto-acciones').forEach(control=>{
@@ -26,6 +33,11 @@ for(const idioma of ['es','en'])test(`acciones de producto no parpadean al naveg
   requestAnimationFrame(sample);
  });
  await page.mouse.move(0,0);
+ // A cold entry includes the server-rendered, initially disabled favorite button.
+ await page.goto('/tienda');
+ await expect(page.locator('.shop-grid .producto-accion').first()).toBeEnabled();
+ await page.waitForTimeout(200);
+ expect(await page.evaluate(()=>Reflect.get(window,'accionesEstables').flashes)).toEqual([]);
  await page.goto('/soporte');
  // Same-tab App Router navigation, which also mounts the initial product controls.
  await page.evaluate(()=>{
@@ -52,10 +64,11 @@ for(const idioma of ['es','en'])test(`acciones de producto no parpadean al naveg
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','true');
   await expect(cards.first().locator('.producto-agregar')).toBeDisabled();
   await page.waitForTimeout(300);
-  if(desktop)expect(await page.evaluate(()=>Reflect.get(window,'accionesEstables').flashes)).toEqual([]);
+  expect(await page.evaluate(()=>Reflect.get(window,'accionesEstables').flashes)).toEqual([]);
  }finally{release();}
  await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
  await page.mouse.move(0,0);await page.waitForTimeout(300);
+ expect(await page.evaluate(()=>Reflect.get(window,'accionesEstables').flashes)).toEqual([]);
  if(desktop){
   expect(await page.evaluate(()=>Reflect.get(window,'accionesEstables').flashes)).toEqual([]);
   // Keyboard focus still reveals the card, including disabled/sold-out controls.
