@@ -52,7 +52,12 @@ for(const idioma of ['es','en'] as const)test(`header compartido en cada secció
   await expect(page.locator('html')).toHaveAttribute('lang',idioma);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   const activo=header.locator('nav a[aria-current=page]');
-  await expect.poll(()=>activo.evaluate(el=>{const texto=el.querySelector('span')!,estilo=getComputedStyle(texto);return estilo.borderBottomColor==='rgb(239, 78, 43)'&&el.clientWidth<texto.clientWidth+40;})).toBe(true);
+  await expect.poll(()=>activo.evaluate(el=>{
+   const header=el.closest('header')!,nav=el.closest('nav')!,texto=el.querySelector('span')!,h=header.getBoundingClientRect();
+   if(innerWidth>1100){const main=document.querySelector('.panel-diseno>main')!.getBoundingClientRect();return getComputedStyle(nav).flexDirection==='column'&&h.width<=260&&main.left>=h.right-1&&getComputedStyle(el,'::before').backgroundColor==='rgb(239, 78, 43)';}
+   const s=texto.getBoundingClientRect(),indicador=getComputedStyle(texto,'::after');
+   return Math.abs(s.bottom-h.bottom)<=1&&indicador.backgroundColor==='rgb(239, 78, 43)'&&indicador.bottom==='0px'&&Math.abs(parseFloat(indicador.width)-s.width)<=1&&el.clientWidth<texto.clientWidth+40;
+  })).toBe(true);
   await expect(header.locator('nav')).toHaveCSS('scrollbar-width','none');
  }
 });
