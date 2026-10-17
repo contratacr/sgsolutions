@@ -39,7 +39,7 @@ export function consultarCatalogo(c:CatalogoPublico,params:URLSearchParams,popul
  const contexto=ids.flatMap(id=>{const p=c.productos.find(x=>x.id===id);return p?[p]:[];});
  const puntuacion=(p:CatalogoPublico['productos'][number])=>Number(p.destacado)+contexto.reduce((n,x,i)=>n+((x.categoria===p.categoria?3:0)+(x.marca&&x.marca===p.marca?1:0))/(i+1),0);
  visibles.sort((a,b)=>orden==='menor'?(a.precio??Infinity)-(b.precio??Infinity):orden==='mayor'?(b.precio??-Infinity)-(a.precio??-Infinity):orden==='nombre'?traducir(a.nombre,idioma).localeCompare(traducir(b.nombre,idioma)):(q?(relevancia.get(b.id)??0)-(relevancia.get(a.id)??0):0)||puntuacion(b)-puntuacion(a)||(popularidad[b.id]??0)-(popularidad[a.id]??0)||a.id.localeCompare(b.id));
- // Keep immediate purchases first; reserve the last row for four complete business solutions.
+ // Lead with immediate purchases and distribute four business solutions through page one.
  let ordenados=visibles;
  if(orden==='recomendados'&&categoria==='todos'&&!subcategoria&&!marcas.length&&!q){
   const directos=visibles.filter(p=>p.coleccion!=='empresas'&&p.precio!==null&&p.disponibilidad!=='agotado');
@@ -51,7 +51,10 @@ export function consultarCatalogo(c:CatalogoPublico,params:URLSearchParams,popul
   });
   const idsDestacados=new Set(destacados.map(p=>p.id));
   const pendientes=visibles.filter(p=>p.coleccion!=='empresas'&&(p.precio===null||p.disponibilidad==='agotado'));
-  ordenados=[...directos.slice(0,20),...destacados,...directos.slice(20),...empresariales.filter(p=>!idsDestacados.has(p.id)),...pendientes];
+  const mezcla=[...directos];
+  // One-based positions 2, 4, 7 and 10: spread visibility across the opening rows.
+  destacados.forEach((p,i)=>mezcla.splice(Math.min([1,3,6,9][i],mezcla.length),0,p));
+  ordenados=[...mezcla,...empresariales.filter(p=>!idsDestacados.has(p.id)),...pendientes];
  }
  const paginas=Math.max(1,Math.ceil(visibles.length/24)),solicitada=Number(params.get('pagina')??1),pagina=Math.min(paginas,Math.max(1,Number.isSafeInteger(solicitada)?solicitada:1));
  const precios=candidatos.flatMap(p=>p.precio!==null&&Number.isFinite(p.precio)?[p.precio]:[]);

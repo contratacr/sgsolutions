@@ -44,8 +44,9 @@ test('la portada conserva compra directa y destaca cuatro soluciones sin perder 
  const c=publicarCatalogo(incorporarEmpresariales(esquemaCatalogo.parse(inicial)));
  const primera=consultarCatalogo(c,new URLSearchParams()),segunda=consultarCatalogo(c,new URLSearchParams({pagina:'2'}));
  expect(primera.productos).toHaveLength(24);
- expect(primera.productos.slice(0,20).every(p=>p.coleccion!=='empresas')).toBe(true);
- expect(primera.productos.slice(20).map(p=>p.id)).toEqual(seleccionInicioEmpresarial.map(p=>p.id));
+ expect(primera.productos.slice(0,1).every(p=>p.coleccion!=='empresas')).toBe(true);
+ expect(primera.productos.flatMap((p,i)=>p.coleccion==='empresas'?[i+1]:[])).toEqual([2,4,7,10]);
+ expect(primera.productos.filter(p=>p.coleccion==='empresas').map(p=>p.id)).toEqual(seleccionInicioEmpresarial.map(p=>p.id));
  expect(segunda.productos.every(p=>p.coleccion!=='empresas')).toBe(true);
  const todos=Array.from({length:primera.paginas},(_,i)=>consultarCatalogo(c,new URLSearchParams({pagina:String(i+1)})).productos).flat();
  expect(todos).toHaveLength(primera.total);expect(new Set(todos.map(p=>p.id)).size).toBe(primera.total);
@@ -66,6 +67,6 @@ for(const idioma of ['es','en'])test(`tienda abre con veinte compras directas y 
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
  await expect(page.locator('.shop-orden-trigger')).toBeEnabled();
  const tarjetas=page.locator('.shop-grid .shop-producto');await expect(tarjetas).toHaveCount(24);
- for(let i=0;i<24;i++)await expect(tarjetas.nth(i).locator(i>=20?'a.producto-agregar':'button.producto-agregar')).toHaveCount(1);
+ for(let i=0;i<24;i++)await expect(tarjetas.nth(i).locator([1,3,6,9].includes(i)?'a.producto-agregar':'button.producto-agregar')).toHaveCount(1);
  await expect(page.locator('html')).toHaveAttribute('lang',idioma);
 });

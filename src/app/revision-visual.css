@@ -1195,3 +1195,8 @@ body:has(.inicio-triptico) .cabecera{background:transparent;box-shadow:none}
 
 /* Programmatic result announcements are text, not interactive controls. */
 .tienda-compacta .shop-resultados-cabecera .conteo:focus{outline:none}
+
+/* Distinguish the business category without adding width or shifting its label. */
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button{background:#eef4f8!important;color:#284c68!important;font-weight:600;border-radius:6px}
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button:hover{background:#e5eef5!important}
+.tienda-compacta .shop-categorias .shop-categoria-empresa>button[aria-pressed=true]{background:#dfeaf3!important;color:#214661!important}
