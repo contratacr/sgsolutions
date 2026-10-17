@@ -16,7 +16,7 @@ export function NavegacionPropuesta({modulo,cambiar}:{modulo:ModuloPropuesta;cam
    const activo=nav.querySelector<HTMLButtonElement>('[aria-current="page"]');if(!activo)return;
    const borde=nav.getBoundingClientRect(),boton=activo.getBoundingClientRect();
    const mover=boton.left<borde.left+12?boton.left-borde.left-12:boton.right>borde.right-12?boton.right-borde.right+12:0;
-   if(mover)nav.scrollBy({left:mover,behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'});
+   if(mover)nav.scrollLeft+=mover;
   };
   mostrar();const observador=new ResizeObserver(mostrar);observador.observe(nav);return()=>observador.disconnect();
  },[modulo]);

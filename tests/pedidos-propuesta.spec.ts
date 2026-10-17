@@ -118,6 +118,7 @@ test('Navegación horizontal del panel, selección visible y teclado',async({pag
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.setViewportSize({width:390,height:844});await page.goto('/vista-previa/pedidos');
  const nav=page.locator('.propuesta-nav');
+ await expect(nav.locator('button').first()).toBeEnabled();
  await expect.poll(()=>nav.evaluate(n=>n.scrollWidth>n.clientWidth)).toBe(true);
  const alturas=await nav.locator('button').evaluateAll(botones=>botones.map(b=>Math.round(b.getBoundingClientRect().top)));expect(new Set(alturas).size).toBe(1);
  await nav.locator('button').first().focus();await page.keyboard.press('End');await page.keyboard.press('Enter');await expect(nav.locator('button').last()).toHaveAttribute('aria-current','page');await expect.poll(()=>nav.evaluate(n=>n.scrollLeft)).toBeGreaterThan(0);

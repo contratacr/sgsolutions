@@ -94,6 +94,7 @@ jobs:
           path: |
             .privado/regresion/**/resumen.json
             .privado/regresion/**/*.json
+            .privado/regresion/**/*-resultados/**
             test-results/
           retention-days: 7
           if-no-files-found: ignore
