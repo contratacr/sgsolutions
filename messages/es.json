@@ -1500,7 +1500,7 @@
   "Analitica": {
     "masVistos": "Productos más vistos",
     "masComprados": "Productos más comprados",
-    "aperturasProductos": "Aperturas de productos, sin identificar visitantes",
+    "aperturasProductos": "Aperturas de ficha o vista rápida; no son visitantes únicos.",
     "unidadesPagadas": "Unidades con pago confirmado",
     "tituloPanel": "Estadísticas",
     "titulo": "Sus preferencias de privacidad",
@@ -1568,7 +1568,21 @@
     "movil": "Móvil",
     "escritorio": "Escritorio",
     "espanol": "Español",
-    "ingles": "Inglés"
+    "ingles": "Inglés",
+    "exclusionAdministrativa": "Las cuentas administrativas y los navegadores donde se ha usado el panel quedan fuera de la medición, también en celular.",
+    "alcanceConteos": "Son aperturas y acciones acumuladas, no personas ni sesiones únicas. Se usa la hora de Costa Rica.",
+    "categoriasVistas": "Categorías con más vistas de productos",
+    "subcategoriasVistas": "Subcategorías con más vistas de productos",
+    "criterioCategorias": "Se suman las aperturas de fichas y vistas rápidas en la categoría principal actual de cada producto. No son clics en filtros; cada apertura se cuenta una sola vez.",
+    "fueraCatalogo": "{total} aperturas corresponden a productos que ya no están en el catálogo y no se pueden clasificar.",
+    "vistasCantidad": "Aperturas",
+    "codigoProducto": "Código: {codigo}",
+    "productoRetirado": "Producto fuera del catálogo actual",
+    "masVistosDetalle": "Las fichas y vistas rápidas se agrupan por producto, aunque se hayan abierto usando su código o su enlace.",
+    "resultadosBusqueda": "Productos mostrados en búsquedas",
+    "resultadosBusquedaDetalle": "Veces que un producto apareció entre los primeros resultados de una búsqueda. No significa que se haya abierto.",
+    "sinPopularidad": "El detalle de productos no está disponible en este momento.",
+    "accionesProducto": "{total} acciones de agregar al carrito"
   },
   "Asesoria": {
     "confirmarExistencia": "Consultar existencia",

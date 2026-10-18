@@ -31,3 +31,13 @@ Fuentes oficiales: [Cloudflare Workers Logs](https://developers.cloudflare.com/w
 Meta permanece separado y solo se inicia tras aceptar publicidad en las preferencias del footer. Sin esa decisión no se carga el píxel. No se hace grabación de sesiones. El ID público configurado no es una clave privada.
 
 Pruebas dirigidas: `npx playwright test --config playwright.estadisticas.config.ts` cubre escritorio y Safari móvil, ambos idiomas, exclusión administrativa, fallos de rol, ausencia de cookies/Referer, igualdad del permiso entre navegadores y transporte servidor–Supabase sin datos del visitante. `npm run verificar` y build antes de entregar cambios. La regresión completa solo se ejecuta manualmente según la preferencia del usuario; nunca contra producción.
+
+### Exclusión del navegador administrativo y detalle del catálogo
+
+La elegibilidad se vuelve a comprobar al navegar y al recuperar el foco o visibilidad, mediante `/api/medicion/permiso`, con respuesta privada sin caché. Esta comprobación usa la sesión para verificar el rol, pero no recibe eventos ni conserva identificadores. La colección de contadores sigue sin cookies ni consultas de cuenta por evento. Ante un fallo, se suspende la medición.
+
+Al detectar administración se guarda únicamente `sg-excluir-medicion=1` en el navegador: una preferencia de exclusión, sin ID. Se comunica a las otras pestañas, permanece después de cerrar sesión y bloquea también Meta. No permite reconocer a un administrador anónimo en un navegador nuevo o con almacenamiento borrado. No se intenta reconstruir ni borrar selectivamente visitas históricas ya agregadas.
+
+El panel agrupa ID y slug de un producto. Las categorías y subcategorías suman aperturas de fichas y vistas rápidas según la categoría principal del catálogo actual; no miden clics de filtros ni personas únicas. Los productos retirados se conservan en el ranking como no clasificables. Las apariciones en búsquedas se muestran por separado y no se llaman visitas. Cambiar la clasificación actual puede cambiar el reparto histórico por categoría. No se añade información personal ni una nueva dimensión a la base de contadores.
+
+Referencias: [persistencia de layouts de Next.js](https://nextjs.org/docs/app/api-reference/file-conventions/layout), [verificación de usuario de Supabase](https://supabase.com/docs/reference/javascript/auth-getuser).

@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import {detalleEstadisticasCatalogo} from '@/lib/estadisticas-catalogo';
+import {rutaProducto} from '@/lib/rutas-productos';
 import {redirect} from 'next/navigation';
 import {leerCatalogoPublico} from '@/lib/catalogo-servidor';
 import {traducir} from '@/lib/catalogo-modelo';
@@ -29,11 +31,13 @@ export default async function Estadisticas({searchParams}:{searchParams:Promise<
  const lista=(tipo:string)=>{
   const grupos=new Map<string,number>();for(const f of resumen?.filas.filter(f=>f.tipo===tipo)??[]){const n=nombre(tipo,f.detalle);grupos.set(n,(grupos.get(n)??0)+f.cantidad);}
   const filas=[...grupos].sort((a,b)=>b[1]-a[1]).slice(0,5);
-  return <section className="estadisticas-lista" key={tipo}><div className="metrica-encabezado"><h2>{t(tipo)}</h2><span>{numero(total(tipo))}</span></div>{filas.length?<ol>{filas.map(([n,c])=><li key={n}><span>{n}</span><strong>{numero(c)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>;
+  return <section className="estadisticas-lista" key={tipo}><div className="metrica-encabezado"><h2>{t(tipo==='busqueda_producto'?'resultadosBusqueda':tipo)}</h2><span>{numero(total(tipo))}</span></div>{tipo==='busqueda_producto'&&<p>{t('resultadosBusquedaDetalle')}</p>}{filas.length?<ol>{filas.map(([n,c])=><li key={n}><span>{n}</span><strong>{numero(c)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>;
  };
+ const detalle=detalleEstadisticasCatalogo(catalogo,popularidad?.vistas??resumen?.filas.filter(f=>f.tipo==='producto').map(f=>({id:f.detalle,cantidad:f.cantidad}))??[],idioma);
+ const categorias=(sub=false)=>{const filas=sub?detalle.subcategorias:detalle.categorias;return <section className="estadisticas-lista"><h2>{t(sub?'subcategoriasVistas':'categoriasVistas')}</h2><p>{t('criterioCategorias')}</p>{filas.length?<ol>{filas.slice(0,10).map(f=><li key={f.id}><span>{f.nombre}{'categoria' in f&&<small>{String(f.categoria)}</small>}</span><strong>{numero(f.cantidad)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}{detalle.sinClasificar>0&&<p>{t('fueraCatalogo',{total:numero(detalle.sinClasificar)})}</p>}</section>;};
  const ranking=(tipo:'vistas'|'compras')=>{
-  const filas=[...(popularidad?.[tipo]??[])].sort((a,b)=>b.cantidad-a.cantidad).slice(0,10);
-  return <section className="estadisticas-lista"><h2>{t(tipo==='vistas'?'masVistos':'masComprados')}</h2><p>{t(tipo==='vistas'?'aperturasProductos':'unidadesPagadas')}</p>{filas.length?<ol>{filas.map(f=>{const p=catalogo.productos.find(p=>p.id===f.id||p.slug===f.id);return <li key={f.id}><span>{p?traducir(p.nombre,idioma):('nombre' in f&&typeof f.nombre==='string'?f.nombre:f.id)}</span><strong>{numero(f.cantidad)}</strong></li>;})}</ol>:<p>{t('sinDatos')}</p>}</section>;
+  const filas=[...(tipo==='vistas'?detalle.productos:popularidad?.compras??[])].sort((a,b)=>b.cantidad-a.cantidad).slice(0,10);
+  return <section className="estadisticas-lista"><h2>{t(tipo==='vistas'?'masVistos':'masComprados')}</h2><p>{t(tipo==='vistas'?'masVistosDetalle':'unidadesPagadas')}</p>{filas.length?<ol>{filas.map(f=>{const p=catalogo.productos.find(p=>p.id===f.id||p.slug===f.id);const agregados=resumen?.filas.filter(x=>x.tipo==='carrito'&&(x.detalle===f.id||p&&(x.detalle===p.id||x.detalle===p.slug))).reduce((s,x)=>s+x.cantidad,0)??0;return <li key={f.id}><span>{p?<><Link href={rutaProducto(p)}>{traducir(p.nombre,idioma)}</Link><small>{p.marca}{p.codigoFabricante&&<> · {t('codigoProducto',{codigo:p.codigoFabricante})}</>}</small>{tipo==='vistas'&&<small>{t('accionesProducto',{total:numero(agregados)})}</small>}</>:<>{'nombre' in f&&typeof f.nombre==='string'?f.nombre:f.id}<small>{t('productoRetirado')}</small></>}</span><strong>{numero(f.cantidad)}</strong></li>;})}</ol>:<p>{t('sinDatos')}</p>}</section>;
  };
  const diario=resumen?.diario??[],max=Math.max(1,...diario.map(d=>d.visitas));
  const fechas=fechasAnalitica(dias);
@@ -50,6 +54,7 @@ export default async function Estadisticas({searchParams}:{searchParams:Promise<
   <section aria-labelledby="compras-titulo"><h2 id="compras-titulo" className="estadisticas-grupo">{t('compras')}</h2><div className="estadisticas-tarjetas">
    {tarjeta(t('pedidos'),numero(resumen?.compras?.total))}{tarjeta(t('pedidosPagados'),numero(resumen?.compras?.pagados))}{tarjeta(t('ingresos'),dinero(resumen?.compras?.ingresos))}{tarjeta(t('ticketPromedio'),dinero(resumen?.compras?.promedio))}
   </div>{resumen?.compras&&<p className="estadisticas-pendientes"><Link href="/panel/pedidos">{t('pendientesPago',{total:numero(resumen.compras.pendientes)})}</Link></p>}</section>
-  {resumen&&<div className="estadisticas-detalles">{popularidad?<>{ranking('vistas')}{ranking('compras')}</>:lista('producto')}{['pagina','carrito','busqueda_producto','campana','plan'].filter(tipo=>(total(tipo)??0)>0).map(lista)}{Boolean(clics)&&<section className="estadisticas-lista"><h2>{t('contactos')}</h2><ol>{contactos.map(tipo=><li key={tipo}><span>{t(tipo)}</span><strong>{numero(total(tipo))}</strong></li>)}</ol></section>}{(['dispositivos','idiomas'] as const).filter(tipo=>Boolean(resumen[tipo]?.length)).map(tipo=><section className="estadisticas-lista" key={tipo}><h2>{t(tipo)}</h2>{resumen[tipo]?.length?<ol>{resumen[tipo]!.map(f=><li key={f.detalle}><span>{t(f.detalle==='es'?'espanol':f.detalle==='en'?'ingles':f.detalle==='movil'?'movil':'escritorio')}</span><strong>{numero(f.cantidad)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>)}</div>}
+  <p className="estadisticas-nota">{t('exclusionAdministrativa')} {t('alcanceConteos')}</p>
+  {resumen&&<div className="estadisticas-detalles">{categorias()}{categorias(true)}{popularidad?<>{ranking('vistas')}{ranking('compras')}</>:lista('producto')}{['pagina','carrito','busqueda_producto','campana','plan'].filter(tipo=>(total(tipo)??0)>0).map(lista)}{Boolean(clics)&&<section className="estadisticas-lista"><h2>{t('contactos')}</h2><ol>{contactos.map(tipo=><li key={tipo}><span>{t(tipo)}</span><strong>{numero(total(tipo))}</strong></li>)}</ol></section>}{(['dispositivos','idiomas'] as const).filter(tipo=>Boolean(resumen[tipo]?.length)).map(tipo=><section className="estadisticas-lista" key={tipo}><h2>{t(tipo)}</h2>{resumen[tipo]?.length?<ol>{resumen[tipo]!.map(f=><li key={f.detalle}><span>{t(f.detalle==='es'?'espanol':f.detalle==='en'?'ingles':f.detalle==='movil'?'movil':'escritorio')}</span><strong>{numero(f.cantidad)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>)}</div>}
  </main>;
 }

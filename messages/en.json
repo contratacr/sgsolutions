@@ -1500,7 +1500,7 @@
   "Analitica": {
     "masVistos": "Most viewed products",
     "masComprados": "Most purchased products",
-    "aperturasProductos": "Product opens, without identifying visitors",
+    "aperturasProductos": "Product page or quick view opens; not unique visitors.",
     "unidadesPagadas": "Units with confirmed payment",
     "tituloPanel": "Analytics",
     "titulo": "Your privacy preferences",
@@ -1568,7 +1568,21 @@
     "movil": "Mobile",
     "escritorio": "Desktop",
     "espanol": "Spanish",
-    "ingles": "English"
+    "ingles": "English",
+    "exclusionAdministrativa": "Administrator accounts and browsers used to access the panel are excluded from measurement, including on mobile.",
+    "alcanceConteos": "These are accumulated opens and actions, not unique people or sessions. Dates use Costa Rica time.",
+    "categoriasVistas": "Categories with the most product views",
+    "subcategoriasVistas": "Subcategories with the most product views",
+    "criterioCategorias": "Product page and quick view opens are added to each product’s current primary category. These are not filter clicks; each open is counted once.",
+    "fueraCatalogo": "{total} opens belong to products no longer in the catalogue and cannot be classified.",
+    "vistasCantidad": "Opens",
+    "codigoProducto": "Code: {codigo}",
+    "productoRetirado": "Product no longer in the current catalogue",
+    "masVistosDetalle": "Product page and quick view opens are grouped by product, whether opened using its code or link.",
+    "resultadosBusqueda": "Products displayed in search results",
+    "resultadosBusquedaDetalle": "Times a product appeared among the first search results. This does not mean it was opened.",
+    "sinPopularidad": "Product details are currently unavailable.",
+    "accionesProducto": "{total} add-to-cart actions"
   },
   "Asesoria": {
     "confirmarExistencia": "Check stock",
