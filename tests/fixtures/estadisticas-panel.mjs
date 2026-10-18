@@ -11,7 +11,7 @@ http.createServer(async(req,res)=>{
  let sub='';try{sub=JSON.parse(Buffer.from((req.headers.authorization??'').split('.')[1]??'','base64url').toString()).sub??'';}catch{}
  if(u.pathname==='/auth/v1/user')consultasCuenta++;
  if(u.pathname==='/auth/v1/user')return send({id:sub,email:'admin-fixture@example.com',aud:'authenticated',email_confirmed_at:'2026-10-13T00:00:00Z',user_metadata:{},app_metadata:{}});
- if(u.pathname==='/rest/v1/perfiles'){if(errorPerfil){res.statusCode=503;return send({code:'FIXTURE_ROLE_UNAVAILABLE',message:'No disponible'});}return send({id:sub,rol,activo});}
+ if(u.pathname==='/rest/v1/perfiles'){if(errorPerfil){res.statusCode=503;return send({code:'FIXTURE_ROLE_UNAVAILABLE',message:'No disponible'});}return send(rol==='sin-perfil'?null:{id:sub,rol,activo});}
  if(u.pathname==='/rest/v1/rpc/es_administrador_activo')return send(Boolean(sub));
  if(u.pathname==='/rest/v1/catalogo_publico')return send(null);
  if(u.pathname==='/rest/v1/rpc/popularidad_productos_agregada_panel')return send(error?null:{vistas:[{id:'eurocomp-e0eb3b52b9d3ca4a',cantidad:d.dias===7?2:8}],compras:[{id:'eurocomp-e0eb3b52b9d3ca4a',nombre:'Producto comprado',cantidad:d.dias===7?1:5,pedidos:2}]});

@@ -24,6 +24,7 @@ for(const idioma of ['es','en'] as const)test('estadísticas, períodos, privaci
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);await page.screenshot({path:'.privado/evidencias/estadisticas-'+idioma+'-'+test.info().project.name+'.png',fullPage:true});
  await request.post('http://127.0.0.1:3123/__test/error',{data:{error:true}});await page.reload();await expect(page.locator('main.estadisticas-panel:visible').getByRole('alert')).toContainText(t.noDisponible);await expect(tarjeta(t.pagina).locator('strong')).toHaveText('—');
  await request.post('http://127.0.0.1:3123/__test/error',{data:{error:false}});await page.getByRole('link',{name:t.reintentar,exact:true}).click();await expect(tarjeta(t.pagina).locator('strong')).toHaveText('30');
+ const otro=idioma==='es'?'en':'es';await page.locator('.estadisticas-idioma button[value='+otro+']').click();await expect(page.locator('html')).toHaveAttribute('lang',otro);await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',otro);
 });
 
 for(const estado of ['inactivo','rol-no-disponible'])test(`no medir administración con estado ${estado}`,async({page,context,request})=>{
@@ -62,10 +63,10 @@ for(const idioma of ['es','en'] as const)test(`excluye una pestaña abierta ante
  await context.clearCookies({name:/^sb-/});await page.goto('/nosotros');await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');expect(await total()).toBe(guardados);
 });
 
-test('la exclusión administrativa no bloquea a clientes con cuenta',async({page,context,request})=>{
+for(const rol of ['cliente','sin-perfil'])test('la exclusión administrativa no bloquea a clientes con cuenta '+rol,async({page,context,request})=>{
  const sub='00000000-0000-4000-8000-000000000007',jwt=[{alg:'HS256',typ:'JWT'},{sub,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600}].map(x=>Buffer.from(JSON.stringify(x)).toString('base64url')).join('.')+'.fixture';
  await context.addCookies([{name:'sb-127-auth-token',value:'base64-'+Buffer.from(JSON.stringify({access_token:jwt,refresh_token:'fixture',expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user:{id:sub}})).toString('base64url'),domain:'127.0.0.1',path:'/'}]);
- await request.post('http://127.0.0.1:3123/__test/perfil',{data:{rol:'cliente',activo:true}});
+ await request.post('http://127.0.0.1:3123/__test/perfil',{data:{rol,activo:true}});
  try{
   const total=async()=>(await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).eventos as number,antes=await total();
   await page.goto('/nosotros');await expect.poll(total).toBeGreaterThan(antes);await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','0');expect(await page.evaluate(()=>localStorage.getItem('sg-excluir-medicion'))).toBeNull();
