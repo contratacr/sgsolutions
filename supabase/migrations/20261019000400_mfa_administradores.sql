@@ -11,12 +11,16 @@ $$;
 revoke all on function public.es_administrador_identificado() from public,anon;
 grant execute on function public.es_administrador_identificado() to authenticated;
 -- All existing administrative RPCs/RLS/storage policies already call this function.
--- Enrollment alone is insufficient. Removing the last verified factor locks access immediately.
+-- Require the same live session and verified factor that produced the AAL2 token.
+-- Revocation or factor replacement cannot reactivate an old token.
 create or replace function public.es_administrador_activo()
 returns boolean language sql stable security definer set search_path='' as $$
  select public.es_administrador_identificado()
  and coalesce(auth.jwt()->>'aal','aal1')='aal2'
- and exists(select 1 from auth.mfa_factors f where f.user_id=auth.uid() and f.factor_type='totp' and f.status='verified');
+ and exists(select 1 from auth.sessions s join auth.mfa_factors f on f.id=s.factor_id
+ where s.id::text=auth.jwt()->>'session_id' and s.user_id=auth.uid() and s.aal='aal2'
+ and (s.not_after is null or s.not_after>now())
+ and f.user_id=auth.uid() and f.factor_type='totp' and f.status='verified');
 $$;
 revoke all on function public.es_administrador_activo() from public,anon;
 grant execute on function public.es_administrador_activo() to authenticated;
