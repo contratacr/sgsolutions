@@ -22,6 +22,10 @@ jobs:
           npx supabase start > "$RUNNER_TEMP/mfa-supabase.log" 2>&1
           npx supabase status --output json > "$RUNNER_TEMP/mfa-base.json"
           chmod 600 "$RUNNER_TEMP/mfa-base.json"
+      - name: Validar el contrato de MFA nativo sin interfaz ni mocks
+        run: node tests/integracion/mfa-auth.mjs
+        env:
+          TEST_SUPABASE_CONFIG: ${{ runner.temp }}/mfa-base.json
       - name: Probar configuración, verificación y evasiones con Auth y PostgreSQL reales
         run: npx playwright test -c playwright.mfa.config.ts
         env:
