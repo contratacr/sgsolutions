@@ -7,7 +7,8 @@ import { leerContenido } from '@/lib/contenido-servidor';
 import { colones } from '@/lib/catalogo-modelo';
 import { SubirComprobante } from '@/components/subir-comprobante';
 
-type PedidoConsulta = { cliente?:{modalidad?:string}; estado: EstadoPedidoManual; metodo: 'sinpe' | 'transferencia'; total_productos: number; costo_envio: number | null; total_cobrar: number | null; articulos: { nombre: string; cantidad: number }[]; comprobante_path: string | null; correo_cliente_en: string | null };
+type PedidoConsulta = {
+  referencia_numero?:number; cliente?:{modalidad?:string}; estado: EstadoPedidoManual; metodo: 'sinpe' | 'transferencia'; total_productos: number; costo_envio: number | null; total_cobrar: number | null; articulos: { nombre: string; cantidad: number }[]; comprobante_path: string | null; correo_cliente_en: string | null };
 
 export async function generateMetadata() {
   const t = await getTranslations('PedidoManual');
@@ -20,7 +21,7 @@ export default async function PedidoManual({ searchParams }: { searchParams: Pro
   const config = configuracionPedidosManuales();
   let pedido: PedidoConsulta | null = null;
   if (config && accesoValido(config, id, acceso)) {
-    const { data } = await basePedidosManuales(config).from('pedidos_manuales').select('cliente,estado,metodo,total_productos,costo_envio,total_cobrar,articulos,comprobante_path,correo_cliente_en').eq('id', id).maybeSingle();
+    const { data } = await basePedidosManuales(config).from('pedidos_manuales').select('referencia_numero,cliente,estado,metodo,total_productos,costo_envio,total_cobrar,articulos,comprobante_path,correo_cliente_en').eq('id', id).maybeSingle();
     pedido = data as PedidoConsulta | null;
   }
   const pagos = pedido?.estado === 'pendiente_pago' ? (await leerContenido()).pagos : null;
@@ -28,7 +29,7 @@ export default async function PedidoManual({ searchParams }: { searchParams: Pro
     <section className="compra-bloque pedido-resultado">
       <header className="pedido-confirmacion-cabecera"><span className="pedido-confirmacion-icono"><ClipboardCheck size={28} aria-hidden="true"/></span><div><p className="etiqueta">{t('etiqueta')}</p><h1>{pedido ? t('creado') : t('noEncontrado')}</h1></div></header>
       {pedido ? <>
-        <p className="pedido-numero">{t('numero')}: <strong>{numeroPedido(id)}</strong></p>
+        <p className="pedido-numero">{t('numero')}: <strong>{numeroPedido(id,pedido.referencia_numero)}</strong></p>
         {!pedido.correo_cliente_en && <p role="status" className="panel-aviso">{t('guardarEnlace')}</p>}
         <p role="status" className="pedido-confirmacion-estado">{pedido.estado==='pagado'?<ShieldCheck size={19} aria-hidden="true"/>:pedido.estado==='cancelado'?<CircleX size={19} aria-hidden="true"/>:<Clock3 size={19} aria-hidden="true"/>}<span>{t(`estado_${pedido.estado}`)}</span></p>
         <div className="pedido-confirmacion-resumen"><section className="pedido-confirmacion-productos"><h2>{t('productos')}</h2><ul>{pedido.articulos?.map((a,i)=><li key={i}><span className="pedido-confirmacion-cantidad">{a.cantidad} ×</span><span>{a.nombre}</span></li>)}</ul></section><section className="pedido-confirmacion-importes"><h2>{t('resumen')}</h2><dl><div><dt>{t('subtotal')}</dt><dd>{colones(pedido.total_productos)}</dd></div>{pedido.cliente?.modalidad==='express'?<div><dt>{t('costoEnvio')}</dt><dd>{t('expressSeparado')}</dd></div>:pedido.costo_envio!==null&&<div><dt>{t('costoEnvio')}</dt><dd>{colones(pedido.costo_envio)}</dd></div>}{pedido.total_cobrar!==null&&<div className="pedido-confirmacion-total"><dt>{t(pedido.estado==='revision'?'totalEstimado':'total')}</dt><dd>{colones(pedido.total_cobrar)}</dd></div>}</dl></section></div>
@@ -36,7 +37,7 @@ export default async function PedidoManual({ searchParams }: { searchParams: Pro
         {pedido.estado === 'pendiente_pago' && pagos && <section className="pedido-pago-datos">
           <h2>{t('datosPago')}</h2><p>{t('montoConfirmado')}</p><p>{pagos.titular}</p>
           {pedido.metodo === 'sinpe' ? <strong>{pagos.sinpe.replace(/(\d{4})(\d{4})/, '$1 $2')}</strong> : pagos.cuentas.map(c => <p key={c.iban}><strong>{c.banco}</strong>{cuentaCorta(c) && <span>{t('cuentaCorta')}: <code>{cuentaCorta(c)}</code></span>}<span>{t('iban')}: <code>{c.iban}</code></span></p>)}
-          <p>{t('usarReferencia', { numero: numeroPedido(id) })}</p>
+          <p>{t('usarReferencia', { numero: numeroPedido(id,pedido.referencia_numero) })}</p>
           {comprobante==='pendiente'&&<p role="alert">{t('reintentarComprobante')}</p>}
           <SubirComprobante pedido={id} acceso={acceso} />
           <p>{t('verificacion')}</p>

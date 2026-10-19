@@ -7,11 +7,11 @@ import {colones} from '../catalogo-modelo';
 
 /** Reintenta correos pendientes; la reserva atómica evita duplicados por callbacks simultáneos. */
 export async function notificarPagoTarjeta(db:SupabaseClient,id:string){
- const {data:pedido,error}=await db.from('pedidos_tilopay').select('id,estado,entorno,total,cliente,articulos').eq('id',id).maybeSingle();
+ const {data:pedido,error}=await db.from('pedidos_tilopay').select('id,referencia_numero,estado,entorno,total,cliente,articulos').eq('id',id).maybeSingle();
  if(error||pedido?.estado!=='pagado')return;
  // Las transacciones ficticias nunca envían correo fuera del laboratorio aislado.
  if(pedido.entorno==='pruebas'&&!(process.env.SG_ENTORNO==='local'&&process.env.SG_QA_LOCAL==='1'))return;
- const numero=numeroPedido(id),ingles=pedido.cliente?.idioma==='en';
+ const numero=numeroPedido(id,pedido.referencia_numero),ingles=pedido.cliente?.idioma==='en';
  await Promise.all(['cliente','equipo'].map(async destinatario=>{
   const alta=await db.from('correos_pago_tarjeta').upsert({pedido_id:id,destinatario},{onConflict:'pedido_id,destinatario',ignoreDuplicates:true});
   if(alta.error){console.error('PAGO_CORREO_COLA_NO_DISPONIBLE');return;}

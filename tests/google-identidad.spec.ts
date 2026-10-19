@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 test.skip(process.env.SG_TEST_GIS!=='1','Requiere el proveedor simulado de playwright.google.config.ts');
-const origen='http://127.0.0.1:3120';
+const origen=`http://127.0.0.1:${process.env.SG_GOOGLE_APP_PORT??3120}`;
 test('GIS rechaza peticiones cruzadas, nonce ausente, token inválido y registro sin aceptación',async({request})=>{
  const post=(data:unknown,origin=origen)=>request.post('/cuenta/google',{headers:{origin},data});
  expect((await post({accion:'preparar'},'https://otro.example')).status()).toBe(403);
@@ -44,4 +44,5 @@ for(const idioma of ['es','en'])test(`botón GIS y carrito se conservan al ingre
  const cookies=await context.cookies();expect(cookies.some(c=>c.name.includes('auth-token'))).toBeTruthy();
  await page.goto('/cuenta?seccion=compras');
  await expect(page.getByText('2 × Compra previa de prueba')).toBeVisible();
+ await expect(page.locator('.cuenta-pedido-cabecera')).toContainText('SG-0042');
 });

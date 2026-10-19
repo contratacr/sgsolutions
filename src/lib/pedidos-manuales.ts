@@ -26,7 +26,7 @@ export function basePedidosManuales(config: NonNullable<ReturnType<typeof config
   return createClient(config.url, config.llave, { auth: { persistSession: false, autoRefreshToken: false } });
 }
 
-export function numeroPedido(id: string) { return `SG-${id.replaceAll('-', '').slice(0, 10).toUpperCase()}`; }
+export {referenciaPedido as numeroPedido} from './referencia-pedido';
 export function accesoPedido(config: NonNullable<ReturnType<typeof configuracionPedidosManuales>>, id: string) {
   return createHmac('sha256', config.secreto).update(`pedido:${id}`).digest('hex');
 }

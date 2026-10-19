@@ -67,7 +67,7 @@ export async function POST(request: Request) {
   const id = crypto.randomUUID();
   const db = basePedidos(config);
   const { error: guardarError } = await db.from('pedidos_tilopay').insert({
-    id, estado: 'iniciado', entorno: config.modo, total, moneda: 'CRC',
+    id, solicitud_asesoria_id:aprobacion.id, estado: 'iniciado', entorno: config.modo, total, moneda: 'CRC',
     cliente: { ...(entrada.datos ?? {nombre:entrada.nombre,apellidos:entrada.apellidos,correo:entrada.correo,telefono:entrada.telefono,modalidad:'retiro'}), idioma:entrada.idioma, total_productos:subtotal, costo_envio:envio, envio_cobro_separado:entrada.datos?.modalidad==='express' },
     articulos,
   });

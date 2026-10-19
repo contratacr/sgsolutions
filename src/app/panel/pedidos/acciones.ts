@@ -32,7 +32,7 @@ export async function actualizarPedidoManual(form: FormData) {
   const nuevo = String(form.get('estado') ?? '') as EstadoPedidoManual;
   if (!/^[0-9a-f-]{36}$/.test(id) || !['pendiente_pago', 'pagado', 'cancelado'].includes(nuevo)) redirect('/panel/pedidos?resultado=invalido');
   const db = basePedidosManuales(config);
-  const { data: pedido } = await db.from('pedidos_manuales').select('id,estado,metodo,total_productos,cliente').eq('id', id).maybeSingle();
+  const { data: pedido } = await db.from('pedidos_manuales').select('id,referencia_numero,estado,metodo,total_productos,cliente').eq('id', id).maybeSingle();
   if (!pedido || !estadosPermitidos[pedido.estado as EstadoPedidoManual]?.includes(nuevo)) redirect('/panel/pedidos?resultado=invalido');
   const cambios: Record<string, unknown> = { estado: nuevo, actualizado_en: new Date().toISOString() };
   if (nuevo === 'pendiente_pago') {
@@ -48,7 +48,7 @@ export async function actualizarPedidoManual(form: FormData) {
   if (error || !data) redirect('/panel/pedidos?resultado=error');
   const ingles = pedido.cliente?.idioma === 'en';
   let correoEnviado = false;
-  const numero = numeroPedido(id);
+  const numero = numeroPedido(id,pedido.referencia_numero);
   if (nuevo === 'pendiente_pago') {
     const pagos = (await leerContenido()).pagos;
     const destino = new URL(enlacePedido(config, id, config.origen));
@@ -83,10 +83,10 @@ export async function reenviarCorreoPedido(form:FormData){
  const id=String(form.get('id')??'');
  if(!/^[0-9a-f-]{36}$/.test(id))redirect('/panel/pedidos?resultado=invalido');
  const db=basePedidosManuales(config);
- const {data:p}=await db.from('pedidos_manuales').select('id,estado,total_cobrar,cliente').eq('id',id).maybeSingle();
+ const {data:p}=await db.from('pedidos_manuales').select('id,referencia_numero,estado,total_cobrar,cliente').eq('id',id).maybeSingle();
  if(!p||!['pendiente_pago','comprobante_recibido','pagado'].includes(p.estado))redirect('/panel/pedidos?resultado=invalido');
  const enlace=new URL(enlacePedido(config,id,config.origen));
- const ingles=p.cliente?.idioma==='en',numero=numeroPedido(id);
+ const ingles=p.cliente?.idioma==='en',numero=numeroPedido(id,p.referencia_numero);
  const estado=ingles?{pendiente_pago:'Pending payment',comprobante_recibido:'Receipt received, awaiting bank verification',pagado:'Payment verified'}:{pendiente_pago:'Pendiente de pago',comprobante_recibido:'Comprobante recibido, pendiente de verificación bancaria',pagado:'Pago verificado'};
  let enviado=false;
  try{await enviarCorreo({destinatario:p.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},accion:{texto:ingles?'View my order':'Ver mi pedido',url:enlace.href},asunto:ingles?`Your SG Solutions order ${numero}`:`Su pedido ${numero} de SG Solutions`,texto:[`${ingles?'Order':'Pedido'}: ${numero}`,`${ingles?'Status':'Estado'}: ${estado[p.estado as keyof typeof estado]}`,`Total: ${colones(Number(p.total_cobrar))}`,`${ingles?'Order details and payment receipt':'Detalle del pedido y comprobante'}: ${enlace.href}`].filter(Boolean).join('\n\n')});enviado=true;await db.from('pedidos_manuales').update({correo_cliente_en:new Date().toISOString(),...(p.estado==='pendiente_pago'?{correo_pago_en:new Date().toISOString()}:{})}).eq('id',id);}catch{/* The order remains intact and can be shared through its private link. */}

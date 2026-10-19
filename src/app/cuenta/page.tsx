@@ -15,6 +15,7 @@ import {proveedoresCuenta} from '@/lib/supabase/proveedores-cuenta';
 import './cuenta.css';
 
 type PedidoCuenta = {
+  referencia_numero?:number;
   id: string;
   origen: 'manual' | 'tarjeta';
   creado_en: string;
@@ -47,7 +48,7 @@ export default async function CuentaCliente({ searchParams }: { searchParams: Pr
   let pedidos: PedidoCuenta[] = [];
   let errorPedidos = false;
   if (cliente && confirmado) {
-    const respuesta = await cliente.rpc('mis_pedidos');
+    const respuesta = await cliente.rpc('mis_pedidos_referencias');
     errorPedidos = Boolean(respuesta.error);
     pedidos = (respuesta.data ?? []) as PedidoCuenta[];
   }
@@ -66,7 +67,7 @@ export default async function CuentaCliente({ searchParams }: { searchParams: Pr
       <section className="cuenta-pedidos" aria-labelledby="cuenta-pedidos-titulo">
         <div className="cuenta-pedidos-titulo"><h2 id="cuenta-pedidos-titulo">{t('pedidos')}</h2><span>{pedidos.length}</span></div>
         {errorPedidos ? <p role="alert">{t('pedidosError')}</p> : pedidos.length === 0 ? <div className="cuenta-bloque"><p>{t('sinPedidos')}</p><Link className="boton boton-azul" href="/tienda">{t('verTienda')}</Link></div> : <ol className="cuenta-lista">{pedidos.map(pedido => <li className="cuenta-pedido" key={`${pedido.origen}-${pedido.id}`}>
-          <div className="cuenta-pedido-cabecera"><div><strong>{numeroPedido(pedido.id)}</strong><span>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))}</span></div><span className="cuenta-estado">{t(`estado_${pedido.estado}` as 'estado_pagado')}</span></div>
+          <div className="cuenta-pedido-cabecera"><div><strong>{numeroPedido(pedido.id,pedido.referencia_numero)}</strong><span>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))}</span></div><span className="cuenta-estado">{t(`estado_${pedido.estado}` as 'estado_pagado')}</span></div>
           <ul>{pedido.articulos?.map((articulo, indice) => <li key={indice}>{articulo.cantidad ?? 1} × {articulo.nombre ?? t('producto')}</li>)}</ul>
           <div className="cuenta-pedido-pie"><span>{pedido.origen === 'tarjeta' ? t('tarjeta') : t('pagoManual')}</span><strong>{pedido.total == null ? t('totalPendiente') : colones(Number(pedido.total))}</strong></div>
         </li>)}</ol>}

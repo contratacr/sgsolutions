@@ -14,7 +14,7 @@ http.createServer(async(req,res)=>{
  if(url.pathname==='/rest/v1/rpc/cuenta_habilitada')return res.end('true');
  if(url.pathname==='/rest/v1/rpc/es_administrador_activo')return res.end('false');
  if(url.pathname==='/rest/v1/perfiles_compra_clientes')return res.end('null');
- if(url.pathname==='/rest/v1/rpc/mis_pedidos')return res.end(JSON.stringify([{id:'11111111-1111-4111-8111-111111111111',origen:'manual',creado_en:'2026-10-12T12:00:00Z',estado:'pagado',total:15000,articulos:[{nombre:'Compra previa de prueba',cantidad:2}]}]));
+ if(['/rest/v1/rpc/mis_pedidos','/rest/v1/rpc/mis_pedidos_referencias'].includes(url.pathname))return res.end(JSON.stringify([{id:'11111111-1111-4111-8111-111111111111',origen:'manual',referencia_numero:42,creado_en:'2026-10-12T12:00:00Z',estado:'pagado',total:15000,articulos:[{nombre:'Compra previa de prueba',cantidad:2}]}]));
  if(url.pathname==='/auth/v1/signup')return res.end(JSON.stringify({user:usuario}));
  if(url.pathname==='/auth/v1/resend')return res.end('{}');
  if(url.pathname==='/auth/v1/verify'){
@@ -29,4 +29,4 @@ http.createServer(async(req,res)=>{
   return res.end(JSON.stringify({access_token:jwt,refresh_token:'fixture-refresh',expires_in:3600,token_type:'bearer',user:usuario}));
  }
  res.statusCode=404;res.end('{}');
-}).listen(3121,'127.0.0.1');
+}).listen(Number(process.env.SG_GOOGLE_FIXTURE_PORT??3121),'127.0.0.1');

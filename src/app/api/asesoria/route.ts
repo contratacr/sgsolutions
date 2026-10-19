@@ -14,5 +14,5 @@ export async function POST(request:Request){
  if(new Set(entrada.articulos.map(x=>x.id)).size!==entrada.articulos.length)return Response.json({error:'datos_invalidos'},{status:400});
  try{const c=entrada.articulos.length?await leerCatalogoPublico():{productos:[]};const articulos=entrada.articulos.flatMap(x=>{const producto=c.productos.find(p=>p.id===x.id);return producto?[{producto,cantidad:x.cantidad}]:[];});
  if(articulos.length!==entrada.articulos.length)return Response.json({error:'catalogo_actualizado'},{status:409});
- const s=await crearAsesoria(articulos,entrada.idioma,entrada.contacto);return Response.json({referencia:referenciaAsesoria(s.id,s.numero)},{status:201,headers:{'Cache-Control':'no-store'}});}catch{return Response.json({error:'no_disponible'},{status:503});}
+ const s=await crearAsesoria(articulos,entrada.idioma,entrada.contacto);return Response.json({referencia:referenciaAsesoria(s.id,s.numero,s.referencia_numero)},{status:201,headers:{'Cache-Control':'no-store'}});}catch{return Response.json({error:'no_disponible'},{status:503});}
 }

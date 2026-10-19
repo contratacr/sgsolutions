@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   const tipo = tipos[archivo.type];
   if (!tipo.firma.every((v, i) => bytes[i] === v)) return Response.json({ error: 'archivo_invalido' }, { status: 400 });
   const db = basePedidosManuales(config);
-  const { data: pedido } = await db.from('pedidos_manuales').select('estado,comprobante_path').eq('id', id).maybeSingle();
+  const { data: pedido } = await db.from('pedidos_manuales').select('referencia_numero,estado,comprobante_path').eq('id', id).maybeSingle();
   if (pedido?.estado !== 'pendiente_pago' || pedido.comprobante_path) return Response.json({ error: 'estado_invalido' }, { status: 409 });
   const ruta = `${id}/${crypto.randomUUID()}.${tipo.extension}`;
   const { error: archivoError } = await db.storage.from('comprobantes-pedidos').upload(ruta, bytes, { contentType: archivo.type, upsert: false });
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     return Response.json({ error: 'estado_invalido' }, { status: 409 });
   }
   try {
-    await enviarCorreo({ destinatario: empresa.correo,diseno:{referencia:numeroPedido(id)}, asunto: `Comprobante recibido · ${numeroPedido(id)}`, texto: `El cliente adjuntó un comprobante al pedido ${numeroPedido(id)}. Revíselo en el panel y verifique el ingreso en el banco antes de marcarlo como pagado.` });
+    await enviarCorreo({ destinatario: empresa.correo,diseno:{referencia:numeroPedido(id,pedido.referencia_numero)}, asunto: `Comprobante recibido · ${numeroPedido(id,pedido.referencia_numero)}`, texto: `El cliente adjuntó un comprobante al pedido ${numeroPedido(id,pedido.referencia_numero)}. Revíselo en el panel y verifique el ingreso en el banco antes de marcarlo como pagado.` });
   } catch { /* El comprobante y su estado permanecen disponibles en el panel. */ }
   return Response.json({ ok: true }, { headers: { 'Cache-Control': 'no-store' } });
 }

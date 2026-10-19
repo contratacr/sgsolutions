@@ -12,6 +12,6 @@ http.createServer(async(req,res)=>{
  if(url.pathname==='/rest/v1/rpc/cuenta_habilitada'){res.end('true');return;}
  if(url.pathname==='/rest/v1/rpc/es_administrador_activo'){res.end('false');return;}
  if(url.pathname==='/rest/v1/perfiles_compra_clientes'){res.end(JSON.stringify([{datos:{nombre:'Ana',apellidos:'Prueba',telefono:'+506 88883333'}}]));return;}
- if(url.pathname==='/rest/v1/rpc/mis_pedidos'){res.end('[]');return;}
+ if(['/rest/v1/rpc/mis_pedidos','/rest/v1/rpc/mis_pedidos_referencias'].includes(url.pathname)){res.end('[]');return;}
  res.writeHead(401);res.end(JSON.stringify({code:'session_not_found',message:'Fixture has no authenticated session'}));
 }).listen(3114,'127.0.0.1');

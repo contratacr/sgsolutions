@@ -12,7 +12,7 @@ http.createServer(async(req,res)=>{
  }
  if(url.pathname==='/rest/v1/rpc/cuenta_habilitada')return res.end('true');
  if(url.pathname==='/rest/v1/rpc/es_administrador_activo')return res.end('false');
- if(url.pathname==='/rest/v1/rpc/mis_pedidos')return res.end('[]');
+ if(['/rest/v1/rpc/mis_pedidos','/rest/v1/rpc/mis_pedidos_referencias'].includes(url.pathname))return res.end('[]');
  if(url.pathname==='/rest/v1/perfiles_compra_clientes'){
   if(req.method==='POST'){profile=JSON.parse(body).datos;return res.end('{}');}
   return res.end(JSON.stringify(profile?[{datos:profile}]:[]));
