@@ -18,7 +18,7 @@ export function excluirNavegadorAdministrativo(){
 export async function comprobarPermisoMedicion(signal:AbortSignal){
  permisoEnRevision=true;
  try{
-  if(navegadorAdministrativo()){excluirNavegadorAdministrativo();return false;}
+  if(navegadorAdministrativo()||document.body.dataset.administracionMedicion==='1'){excluirNavegadorAdministrativo();return false;}
   const r=await fetch('/api/medicion/permiso',{credentials:'same-origin',cache:'no-store',referrerPolicy:'no-referrer',signal});
   if(!r.ok)throw new Error('SIN_PERMISO');
   const datos=await r.json();if(signal.aborted)return false;

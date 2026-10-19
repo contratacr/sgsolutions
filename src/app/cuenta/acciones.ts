@@ -1,4 +1,5 @@
 'use server';
+import {conservarExclusionAdministrativa} from '@/lib/exclusion-medicion';
 import {retornoCompra} from '@/lib/retorno-compra';
 import { z } from 'zod';
 import { cookies, headers } from 'next/headers';
@@ -81,6 +82,7 @@ export async function actualizarClaveCliente(_anterior: EstadoAccesoCliente, for
 }
 export async function cerrarSesionCliente() {
   const cliente = await crearClienteCuenta();
+  await conservarExclusionAdministrativa(cliente);
   if (cliente) await cliente.auth.signOut();
   (await cookies()).delete('sg-recuperacion');
   redirect('/cuenta');

@@ -11,6 +11,7 @@ export function Medicion({pixel}:{pixel:string}){
  const ruta=usePathname(),t=useTranslations('Analitica');const abierto=useSyncExternalStore(suscribirPreferenciasMedicion,preferenciasMedicionAbiertas,preferenciasMedicionServidor),[version,setVersion]=useState(0);
  useEffect(()=>{borrarIdentificadoresMedicion();const abrir=abrirPreferenciasMedicion;window.addEventListener('sg-abrir-preferencias',abrir);return()=>window.removeEventListener('sg-abrir-preferencias',abrir);},[]);
  useEffect(()=>{
+  if(document.body.dataset.administracionMedicion==='1')excluirNavegadorAdministrativo();
   if(!rutaPublica(ruta)){ultimaRuta.current=ruta;if(ruta.startsWith('/panel')&&document.body.dataset.excluirMedicion==='1')excluirNavegadorAdministrativo();return;}
   let control:AbortController|undefined;
   const comprobar=async()=>{

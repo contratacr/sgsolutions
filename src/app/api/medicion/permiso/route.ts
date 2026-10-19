@@ -1,3 +1,4 @@
+import {navegadorAdministrativoGuardado,guardarNavegadorAdministrativo} from '@/lib/exclusion-medicion';
 import {cookies} from 'next/headers';
 import {sesionLocal} from '@/lib/admin-local';
 import {crearClienteCuenta} from '@/lib/supabase/cuenta';
@@ -6,12 +7,14 @@ import {permisoConteo} from '@/lib/permiso-conteo';
 export async function GET(){
  const respuesta=(excluir:boolean,administracion=false)=>Response.json({excluir,administracion,...(!excluir?{permiso:permisoConteo()}: {})},{headers:{'Cache-Control':'private, no-store','Vary':'Cookie'}});
  try{
+  if(await navegadorAdministrativoGuardado())return respuesta(true,true);
   if(await sesionLocal())return respuesta(true,true);
   if(!(await cookies()).getAll().some(c=>/^sb-.*-auth-token(?:\.\d+)?$/.test(c.name)))return respuesta(false);
   const db=await crearClienteCuenta();if(!db)return respuesta(true);
   const {data,error}=await db.auth.getUser();if(error||!data.user)return respuesta(true);
   const perfil=await db.from('perfiles').select('rol,activo').eq('id',data.user.id).maybeSingle();
   if(perfil.error)return respuesta(true);
+  if(perfil.data?.rol==='administrador')await guardarNavegadorAdministrativo();
   return respuesta(perfil.data?.rol==='administrador'||perfil.data?.activo===false,perfil.data?.rol==='administrador');
  }catch{return respuesta(true);}
 }
