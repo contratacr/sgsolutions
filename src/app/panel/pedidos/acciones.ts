@@ -1,4 +1,5 @@
 'use server';
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {archivarAsesoriaPanel} from '@/lib/asesorias';
 import {puedeArchivar,motivoArchivoValido,type TipoRegistroPanel} from '@/lib/archivo-pedidos';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
@@ -25,6 +26,7 @@ async function autorizado() {
 }
 
 export async function actualizarPedidoManual(form: FormData) {
+ await exigirAdminMfa();
   if (!await autorizado()) redirect('/admin');
   const config = configuracionPedidosManuales();
   if (!config) redirect('/panel/pedidos?resultado=no_disponible');
@@ -77,6 +79,7 @@ export async function actualizarPedidoManual(form: FormData) {
 }
 
 export async function reenviarCorreoPedido(form:FormData){
+ await exigirAdminMfa();
  if(!await autorizado())redirect('/admin');
  const config=configuracionPedidosManuales();
  if(!config)redirect('/panel/pedidos?resultado=no_disponible');
@@ -94,6 +97,7 @@ export async function reenviarCorreoPedido(form:FormData){
 }
 
 export async function actualizarEntregaPedido(form:FormData) {
+ await exigirAdminMfa();
  if(!await autorizado())redirect('/admin');
  const id=String(form.get('id')??''),tipo=String(form.get('tipo')??'');
  const actual=String(form.get('actual')??'') as EstadoEntrega,siguiente=String(form.get('siguiente')??'') as EstadoEntrega;
@@ -113,6 +117,7 @@ export async function actualizarEntregaPedido(form:FormData) {
 }
 
 export async function cambiarArchivoPanel(form:FormData){
+ await exigirAdminMfa();
  if(!await autorizado())redirect('/admin');
  const id=String(form.get('id')??''),tipo=String(form.get('tipo')??'') as TipoRegistroPanel,operacion=String(form.get('operacion')??'');
  const destino=tipo==='asesoria'?'asesorias':tipo==='tarjeta'?'tarjeta':'manuales';

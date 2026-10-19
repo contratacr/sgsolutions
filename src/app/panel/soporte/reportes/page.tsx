@@ -1,3 +1,4 @@
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {IdiomaSoporte} from '../idioma';
 import {resumenSoporteLocal} from '@/lib/soporte-local';
 import Link from 'next/link';
@@ -6,6 +7,7 @@ import {accesoSoporte} from '@/lib/soporte-servidor';
 import {entidadesSoporte} from '@/lib/soporte-modelo';
 export async function generateMetadata(){const t=await getTranslations('SoportePanel');return {title:t('reportes'),robots:{index:false,follow:false}};}
 export default async function Reportes(){
+ await exigirAdminMfa();
  const t=await getTranslations('SoportePanel'),idioma=await getLocale();
  let resumen:{pendientes:number;enProceso:number;programados:number;meses:{mes:string;cantidad:number}[]}|null=null;
  try{const acceso=await accesoSoporte();if(acceso.local)resumen=await resumenSoporteLocal();else{const r=await acceso.cliente.rpc('resumen_soporte');if(!r.error)resumen=r.data;}}catch{}

@@ -40,6 +40,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run verificar
+      - name: Validar cobertura administrativa y MFA en PostgreSQL efímero
+        run: |
+          node scripts/verificar-mfa.mjs
+          node tests/sql/mfa-administradores.mjs
       - name: Buscar secretos también en el historial
         run: node scripts/verificar-secretos.mjs --historial
       - name: Revisar dependencias de producción

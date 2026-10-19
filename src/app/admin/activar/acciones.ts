@@ -12,7 +12,7 @@ export async function aceptarInvitacion(accessToken:string,refreshToken:string){
  if(error)return false;
  const {data:{user}}=await cliente.auth.getUser();
  if(!user)return false;
- const permiso=await cliente.rpc('es_administrador_activo');
+ const permiso=await cliente.rpc('es_administrador_identificado');
  if(permiso.error||permiso.data!==true){await cliente.auth.signOut();return false;}
  return true;
 }
@@ -24,7 +24,7 @@ export async function guardarClave(_estado:string,form:FormData){
  if(!cliente)return 'invalido';
  const {data:{user}}=await cliente.auth.getUser();
  if(!user)return 'invalido';
- const permiso=await cliente.rpc('es_administrador_activo');
+ const permiso=await cliente.rpc('es_administrador_identificado');
  if(permiso.error||permiso.data!==true)return 'invalido';
  const {error}=await cliente.auth.updateUser({password:clave});
  if(error)return 'error';

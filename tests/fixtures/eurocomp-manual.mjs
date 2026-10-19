@@ -26,7 +26,7 @@ http.createServer(async(req,res)=>{
   return send(req.method==='GET'?[...ids].map(producto_id=>({producto_id})):null);
  }
  if(u.pathname==='/rest/v1/perfiles')return send({id:sub,rol:'administrador',activo:!sub.endsWith('7')});
- if(u.pathname==='/rest/v1/rpc/es_administrador_activo')return send(Boolean(sub)&&!sub.endsWith('7'));
+ if(['/rest/v1/rpc/es_administrador_activo','/rest/v1/rpc/es_administrador_identificado'].includes(u.pathname))return send(Boolean(sub)&&!sub.endsWith('7'));
  if(u.pathname==='/rest/v1/catalogo_publico')return send({contenido:visible});
  if(u.pathname==='/rest/v1/catalogo_privado')return send({contenido:privado,revision});
  if(u.pathname==='/rest/v1/rpc/consultar_eurocomp')return send({fecha:copia.fecha,total:copia.articulos.length,resultados:copia.articulos.length,pagina:1,paginas:1,articulos:copia.articulos});

@@ -11,7 +11,7 @@ http.createServer(async(req,res)=>{
   return res.end(JSON.stringify(user));
  }
  if(url.pathname==='/rest/v1/rpc/cuenta_habilitada')return res.end('true');
- if(url.pathname==='/rest/v1/rpc/es_administrador_activo')return res.end('false');
+ if(['/rest/v1/rpc/es_administrador_activo','/rest/v1/rpc/es_administrador_identificado'].includes(url.pathname))return res.end('false');
  if(['/rest/v1/rpc/mis_pedidos','/rest/v1/rpc/mis_pedidos_referencias'].includes(url.pathname))return res.end('[]');
  if(url.pathname==='/rest/v1/perfiles_compra_clientes'){
   if(req.method==='POST'){profile=JSON.parse(body).datos;return res.end('{}');}

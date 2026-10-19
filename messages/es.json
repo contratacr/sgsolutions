@@ -1886,7 +1886,9 @@
     "eventoEliminarSolicitud": "Eliminación iniciada",
     "eventoEliminado": "Cuenta eliminada",
     "eventoTipoCliente": "Tipo de cliente actualizado",
-    "cliente": "Cliente"
+    "cliente": "Cliente",
+    "mfaConfigurado": "Doble factor configurado",
+    "mfaPendiente": "Doble factor pendiente"
   },
   "DatosCuenta": {
     "titulo": "Mis datos de compra",
@@ -2502,5 +2504,33 @@
       "restaurado": "Registro restaurado"
     },
     "local": "Entorno local de prueba. Estos registros y archivos no se envían a producción."
+  },
+  "MfaAdmin": {
+    "etiqueta": "ACCESO ADMINISTRATIVO",
+    "titulo": "Verificación en dos pasos",
+    "configurarDescripcion": "Para entrar al panel, configure una aplicación autenticadora, como Microsoft Authenticator o Google Authenticator. Cada administrador utiliza su propio autenticador.",
+    "verificarDescripcion": "Ingrese el código de su aplicación autenticadora para acceder al panel administrativo.",
+    "autenticador": "Aplicación autenticadora",
+    "configurar": "Configurar autenticador",
+    "preparando": "Preparando…",
+    "escanear": "Agregue una cuenta en su aplicación autenticadora y escanee este código QR. Después, ingrese el código de seis dígitos.",
+    "qrAlt": "Código QR privado para configurar su autenticador de SG Solutions",
+    "manual": "¿No puede escanear el código QR?",
+    "claveManual": "Clave para configuración manual",
+    "mostrar": "Mostrar clave",
+    "ocultar": "Ocultar clave",
+    "noCompartir": "Esta clave permite generar sus códigos. No la comparta.",
+    "dispositivo": "Autenticador",
+    "codigo": "Código de seis dígitos",
+    "codigoAyuda": "Utilice el código vigente de su aplicación autenticadora.",
+    "verificar": "Verificar y entrar",
+    "verificando": "Verificando…",
+    "salir": "Cerrar sesión",
+    "recuperacion": "Si perdió acceso a su autenticador, solicite recuperación al responsable de SG Solutions. Por seguridad, se verificará su identidad antes de restablecerlo. Recuperar la contraseña no elimina este requisito.",
+    "error": "No pudimos completar la verificación. Inténtelo nuevamente.",
+    "codigoInvalido": "El código no es válido o ya venció. Revise el código actual y vuelva a intentarlo.",
+    "sinPermiso": "Su sesión no permite realizar esta acción. Ingrese nuevamente.",
+    "yaConfigurado": "Su autenticador ya está configurado. Recargue la página para ingresar su código.",
+    "muchosIntentos": "Demasiados intentos. Espere unos minutos y vuelva a intentarlo."
   }
 }

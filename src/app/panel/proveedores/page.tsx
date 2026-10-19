@@ -1,3 +1,4 @@
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import Link from 'next/link';
 import {redirect} from 'next/navigation';
 import {getLocale,getTranslations} from 'next-intl/server';
@@ -8,6 +9,7 @@ import {ActualizarEurocomp} from '@/components/actualizar-eurocomp';
 export async function generateMetadata(){const t=await getTranslations('Proveedores');return {title:t('titulo'),robots:{index:false,follow:false}};}
 const errores=new Set(['configuracion','espera','conexion','respuesta','tiempo','almacenamiento','conflicto','sinPermiso','codigo1','codigo2','codigo3','codigo4','codigo5','codigo6','codigo20','codigo26','codigo27','codigo28']);
 export default async function Proveedores({searchParams}:{searchParams:Promise<{q?:string;pagina?:string;resultado?:string}>}){
+ await exigirAdminMfa();
  const t=await getTranslations('Proveedores');const idioma=await getLocale();const params=await searchParams;
  const q=typeof params.q==='string'?params.q.trim().slice(0,150):'';
  const solicitada=Number(params.pagina);const numeroPagina=Number.isSafeInteger(solicitada)&&solicitada>0?Math.min(2500,solicitada):1;

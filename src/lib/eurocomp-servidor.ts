@@ -19,6 +19,7 @@ async function acceso(){
  const {data:{user}}=await cliente.auth.getUser();if(!user)throw new ErrorEurocomp('sinPermiso');
  const {data:perfil}=await cliente.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();
  if(perfil?.rol!=='administrador'||!perfil.activo)throw new ErrorEurocomp('sinPermiso');
+  const mfa=await cliente.rpc('es_administrador_activo');if(mfa.error||mfa.data!==true)throw new Error('SIN_PERMISO');
  return {local:false as const,cliente};
 }
 async function local():Promise<Guardado|null>{try{return JSON.parse(await readFile(archivo,'utf8'));}catch(e){if((e as NodeJS.ErrnoException).code==='ENOENT')return null;throw e;}}

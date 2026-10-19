@@ -36,6 +36,7 @@ export async function leerProductosAsesoria(){
   const {data:{user}}=await cliente.auth.getUser();if(!user)throw new Error('SIN_PERMISO');
   const {data:perfil}=await cliente.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();
   if(!perfil?.activo||perfil.rol!=='administrador')throw new Error('SIN_PERMISO');
+  const mfa=await cliente.rpc('es_administrador_activo');if(mfa.error||mfa.data!==true)throw new Error('SIN_PERMISO');
   const {data,error}=await cliente.from('catalogo_privado').select('contenido').eq('id',1).maybeSingle();
   if(error)throw new Error('CATALOGO_NO_DISPONIBLE');
   datos=data?migrarCatalogoManual(esquemaCatalogo.parse(data.contenido)):obtenerCatalogoInicial();

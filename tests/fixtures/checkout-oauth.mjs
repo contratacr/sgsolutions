@@ -10,7 +10,7 @@ http.createServer(async(req,res)=>{
  if(url.pathname==='/auth/v1/token'&&url.searchParams.get('grant_type')==='pkce'&&datos.auth_code==='fixture-success'&&datos.code_verifier?.length>=43){res.end(JSON.stringify({access_token:token(),refresh_token:'fixture-refresh-token',token_type:'bearer',expires_in:3600,user:usuario}));return;}
  if(url.pathname==='/auth/v1/user'&&req.headers.authorization?.includes('.fixture')){res.end(JSON.stringify(usuario));return;}
  if(url.pathname==='/rest/v1/rpc/cuenta_habilitada'){res.end('true');return;}
- if(url.pathname==='/rest/v1/rpc/es_administrador_activo'){res.end('false');return;}
+ if(['/rest/v1/rpc/es_administrador_activo','/rest/v1/rpc/es_administrador_identificado'].includes(url.pathname)){res.end('false');return;}
  if(url.pathname==='/rest/v1/perfiles_compra_clientes'){res.end(JSON.stringify([{datos:{nombre:'Ana',apellidos:'Prueba',telefono:'+506 88883333'}}]));return;}
  if(['/rest/v1/rpc/mis_pedidos','/rest/v1/rpc/mis_pedidos_referencias'].includes(url.pathname)){res.end('[]');return;}
  res.writeHead(401);res.end(JSON.stringify({code:'session_not_found',message:'Fixture has no authenticated session'}));

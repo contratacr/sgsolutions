@@ -1,4 +1,5 @@
 'use server';
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {z} from 'zod';
 import {redirect} from 'next/navigation';
 import {revalidatePath} from 'next/cache';
@@ -6,6 +7,7 @@ import {accesoUsuarios} from '@/lib/usuarios-panel';
 export type EstadoRol='inicio'|'guardado'|'error'|'sinPermiso'|'conflicto'|'local';
 const esquema=z.object({usuario:z.uuid(),nuevo:z.enum(['particular','empresa']),anterior:z.enum(['particular','empresa'])});
 export async function asignarRolCliente(_estado:EstadoRol,formulario:FormData):Promise<EstadoRol>{
+ await exigirAdminMfa();
  const datos=esquema.safeParse(Object.fromEntries(formulario));if(!datos.success)return 'error';
  try{
   const acceso=await accesoUsuarios();if(acceso.local)return 'local';
@@ -26,6 +28,7 @@ function falloGestion(error:{code?:string;message?:string;status?:number}):Estad
  return 'error';
 }
 export async function administrarUsuario(_estado:EstadoGestion,formulario:FormData):Promise<EstadoGestion>{
+ await exigirAdminMfa();
  const datos=gestion.safeParse(Object.fromEntries(formulario));if(!datos.success)return 'error';
  let resultado:EstadoGestion='error',cambio=false,borrado=false;
  try{
@@ -95,6 +98,7 @@ export async function administrarUsuario(_estado:EstadoGestion,formulario:FormDa
  return resultado;
 }
 export async function historialUsuario(usuario:string):Promise<{accion:string;creado_en:string;actor:string}[]|null>{
+ await exigirAdminMfa();
  if(!z.uuid().safeParse(usuario).success)return null;
  try{const acceso=await accesoUsuarios();if(acceso.local)return null;const r=await acceso.cliente.rpc('historial_gestion_usuario',{usuario});return r.error?null:r.data;}catch{return null;}
 }

@@ -1,3 +1,4 @@
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {IdiomaSoporte} from './idioma';
 import Link from 'next/link';
 import {getTranslations} from 'next-intl/server';
@@ -7,6 +8,7 @@ import {leerSoporte} from '@/lib/soporte-servidor';
 import {GestionSoporte} from './gestion';
 export async function generateMetadata(){const t=await getTranslations('SoportePanel');return {title:t('titulo'),robots:{index:false,follow:false}};}
 export default async function Soporte({searchParams}:{searchParams:Promise<{tipo?:string;q?:string;archivados?:string;pagina?:string}>}){
+ await exigirAdminMfa();
  const t=await getTranslations('SoportePanel'),p=await searchParams,local=await adminLocalDisponible();
  const tipo=entidadesSoporte.find(e=>e===p.tipo)??'tickets',q=typeof p.q==='string'?p.q.trim().slice(0,100):'',archivado=p.archivados==='1',pagina=Math.max(1,Math.min(10000,Math.floor(Number(p.pagina)||1)));
  let datos;try{datos=await leerSoporte(tipo,q,archivado,pagina);}catch{}

@@ -10,6 +10,7 @@ export default async function Admin(){
  if(await sesionLocal())redirect('/panel');
  const acceso=await leerAccesoPanel();
  if(acceso==='administrador')redirect('/panel');
+ if(acceso==='mfa')redirect('/admin/doble-factor');
  if(acceso==='sinPermiso'||acceso==='error')return <AccesoDenegado error={acceso==='error'}/>;
  const t=await getTranslations('Acceso');
  const local=await adminLocalDisponible();

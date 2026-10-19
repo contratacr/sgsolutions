@@ -1,4 +1,5 @@
 'use server';
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {getLocale} from 'next-intl/server';
 import {redirect} from 'next/navigation';
 import {revalidatePath} from 'next/cache';
@@ -24,6 +25,7 @@ async function preparar(form:FormData){
  return {resultado:aprobado?'enlace_generado':'error',id:solicitud.id};
 }
 export async function prepararPedidoAsesorado(form:FormData){
+ await exigirAdminMfa();
  if(!await sesionLocal()){const cliente=await crearClienteServidor();const user=cliente?(await cliente.auth.getUser()).data.user:null;if(!user)redirect('/admin');const perfil=await cliente!.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();if(!perfil.data?.activo||perfil.data.rol!=='administrador')redirect('/panel');}
  const resultado=await preparar(form).catch(()=>({resultado:'error',id:''}));
  revalidatePath('/panel/pedidos');
@@ -32,6 +34,7 @@ export async function prepararPedidoAsesorado(form:FormData){
 }
 
 export async function eliminarConsulta(form:FormData){
+ await exigirAdminMfa();
  if(!await sesionLocal()){const cliente=await crearClienteServidor();const user=cliente?(await cliente.auth.getUser()).data.user:null;if(!user)redirect('/admin');const perfil=await cliente!.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();if(!perfil.data?.activo||perfil.data.rol!=='administrador')redirect('/panel');}
  const id=String(form.get('id')??'');
  if(!/^[0-9a-f-]{36}$/.test(id)||form.get('confirmarEliminar')!=='on')redirect('/panel/pedidos?resultado=invalido');

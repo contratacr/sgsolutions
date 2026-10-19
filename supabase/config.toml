@@ -73,3 +73,10 @@ content_path = "./supabase/templates/email_change.html"
 [auth.email.template.reauthentication]
 subject = "Verifique su identidad / Verify your identity | SG Solutions"
 content_path = "./supabase/templates/reauthentication.html"
+
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true

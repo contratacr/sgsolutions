@@ -41,7 +41,7 @@ export default async function CuentaCliente({ searchParams }: { searchParams: Pr
   const confirmado = Boolean(user?.email && user.email_confirmed_at&&!bloqueada);
   const destinoCompra=retornoCompra(retorno);
   if(confirmado&&destinoCompra)redirect(destinoCompra);
-  const permisoAdmin=confirmado&&cliente?await solicitudCuenta(()=>cliente.rpc('es_administrador_activo')):null;
+  const permisoAdmin=confirmado&&cliente?await solicitudCuenta(()=>cliente.rpc('es_administrador_identificado')):null;
   const administrador=permisoAdmin&&'data' in permisoAdmin&&permisoAdmin.data===true;
   const seguridad=await getTranslations('SeguridadCuenta');
   const proveedores=confirmado?{google:false,facebook:false}:await proveedoresCuenta();

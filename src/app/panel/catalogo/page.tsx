@@ -1,3 +1,4 @@
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {incorporarEmpresariales} from '@/lib/incorporar-empresariales';
 import {migrarCatalogoManual} from '@/lib/catalogo-manual';
 import {redirect} from 'next/navigation';
@@ -9,6 +10,7 @@ import {EditorCatalogo} from '@/components/editor-catalogo';
 import {sesionLocal,leerLocal} from '@/lib/admin-local';
 export const metadata={robots:{index:false,follow:false}};
 export default async function Administrar(){
+ await exigirAdminMfa();
  const local=await sesionLocal();
  if(local){const guardado=await leerLocal('catalogo');const t=await getTranslations('AdminCatalogo');return <main id="contenido" className="contenedor seccion"><h1>{t('titulo')}</h1><EditorCatalogo inicial={guardado?incorporarEmpresariales(migrarCatalogoManual(esquemaCatalogo.parse(guardado.contenido))):obtenerCatalogoInicial()} revisionInicial={guardado?.revision??0}/></main>;}
  const cliente=await crearClienteServidor();if(!cliente)redirect('/admin');

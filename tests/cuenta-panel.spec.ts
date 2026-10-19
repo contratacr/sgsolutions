@@ -23,7 +23,7 @@ for(const idioma of ['es','en'])test(`cuenta y panel comparten sesión de produc
 test('entrar al panel sigue exigiendo sesión y permiso de administrador',async({page,context})=>{
  await page.goto('/panel');await expect(page).toHaveURL(/\/admin$/);
  await sesion(context,'es',7);await page.goto('/panel');await expect(page.locator('.panel-modulos')).toHaveCount(0);
- await expect(page).not.toHaveURL(/\/admin$/);
+ await expect(page.locator('.acceso-denegado')).toBeVisible();
 });
 
 for(const idioma of ['es','en'])test(`favoritos dentro de mi cuenta conservan tarjetas y guardan equipos empresariales ${idioma}`,async({page,context,baseURL},info)=>{

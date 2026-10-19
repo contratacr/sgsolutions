@@ -1,10 +1,12 @@
 'use server';
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {migrarCatalogoManual} from '@/lib/catalogo-manual';
 import {revalidatePath} from 'next/cache';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
 import {esquemaCatalogo,publicarCatalogo,descuentosInvalidos} from '@/lib/catalogo-modelo';
 import {adminLocalDisponible,guardarLocal} from '@/lib/admin-local';
 export async function guardarCatalogo(datos:unknown,revision:number){
+ await exigirAdminMfa();
  if(await adminLocalDisponible()){
   const p=esquemaCatalogo.safeParse(datos);if(!p.success||descuentosInvalidos(p.data).length>0||!Number.isInteger(revision)||revision<0)return {error:'validacion'};
   const r=await guardarLocal('catalogo',migrarCatalogoManual(p.data),revision);if(!r.error)revalidatePath('/','layout');return r;

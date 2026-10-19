@@ -1,4 +1,5 @@
 'use server';
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {guardarSoporteLocal,archivarSoporteLocal} from '@/lib/soporte-local';
 import {revalidatePath} from 'next/cache';
 import {z} from 'zod';
@@ -10,6 +11,7 @@ function fallo(error:unknown):ResultadoSoporte{
  return {estado:mensaje.includes('SIN_PERMISO')?'sinPermiso':mensaje.includes('CONFLICTO')?'conflicto':mensaje.includes('RELACION_INVALIDA')?'relacion':mensaje.includes('duplicate key')?'duplicado':mensaje.includes('check constraint')||mensaje.includes('VALIDACION')?'validacion':'noDisponible'};
 }
 export async function guardarSoporte(_:ResultadoSoporte,form:FormData):Promise<ResultadoSoporte>{
+ await exigirAdminMfa();
  try{
   const acceso=await accesoSoporte();
   const entidad=z.enum(entidadesSoporte).safeParse(form.get('entidad'));
@@ -26,6 +28,7 @@ export async function guardarSoporte(_:ResultadoSoporte,form:FormData):Promise<R
  }catch(e){return fallo(e);}
 }
 export async function archivarSoporte(_:ResultadoSoporte,form:FormData):Promise<ResultadoSoporte>{
+ await exigirAdminMfa();
  try{
   const acceso=await accesoSoporte();
   const datos=z.strictObject({entidad:z.enum(entidadesSoporte),id:z.uuid(),version:z.coerce.number().int().positive().max(2147483646),archivar:z.enum(['si','no'])}).safeParse(Object.fromEntries(['entidad','id','version','archivar'].map(k=>[k,form.get(k)])));

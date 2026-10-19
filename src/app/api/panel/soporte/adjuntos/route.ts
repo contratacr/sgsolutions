@@ -1,3 +1,4 @@
+import {leerAccesoPanel} from '@/lib/acceso-panel';
 import {listarAdjuntosLocales,guardarAdjuntoLocal} from '@/lib/soporte-local';
 import {z} from 'zod';
 import {imageSize} from 'image-size';
@@ -5,6 +6,7 @@ import {accesoSoporte} from '@/lib/soporte-servidor';
 import {leerBytesLimitados} from '@/lib/limites-http';
 const cabeceras={'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'};
 export async function GET(request:Request){
+ if(await leerAccesoPanel()!=='administrador')return new Response(null,{status:403,headers:{'Cache-Control':'private, no-store'}});
  try{
   const acceso=await accesoSoporte(),ticket=new URL(request.url).searchParams.get('ticket');
   if(!z.uuid().safeParse(ticket).success)return new Response(null,{status:400,headers:cabeceras});
@@ -14,6 +16,7 @@ export async function GET(request:Request){
  }catch{return new Response(null,{status:403,headers:cabeceras});}
 }
 export async function POST(request:Request){
+ if(await leerAccesoPanel()!=='administrador')return new Response(null,{status:403,headers:{'Cache-Control':'private, no-store'}});
  const origen=request.headers.get('origin');let valido=false;try{const url=new URL(origen||'');valido=['http:','https:'].includes(url.protocol)&&url.host===(request.headers.get('host')||new URL(request.url).host);}catch{}
  if(!valido)return new Response(null,{status:403,headers:cabeceras});
  let acceso:Awaited<ReturnType<typeof accesoSoporte>>;try{acceso=await accesoSoporte();}catch{return new Response(null,{status:403,headers:cabeceras});}

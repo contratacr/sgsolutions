@@ -1,4 +1,5 @@
 'use server';
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {randomUUID} from 'node:crypto';
 import {mkdir,writeFile} from 'node:fs/promises';
 import path from 'node:path';
@@ -6,6 +7,7 @@ import {sesionLocal} from '@/lib/admin-local';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
 
 export async function subirImagen(datos:FormData):Promise<{src?:string;error?:string}>{
+ await exigirAdminMfa();
  const local=await sesionLocal();
  const cliente=local?null:await crearClienteServidor();
  if(!local){

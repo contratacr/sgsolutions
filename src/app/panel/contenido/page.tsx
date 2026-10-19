@@ -1,3 +1,4 @@
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { crearClienteServidor } from "@/lib/supabase/servidor";
@@ -10,6 +11,7 @@ import {textosEditables} from '@/lib/textos-editables';
 import {sesionLocal,leerLocal} from '@/lib/admin-local';
 export async function generateMetadata(){const t=await getTranslations('AdminContenido');return {title:t('titulo'),robots:{index:false,follow:false}};}
 export default async function Pagina() {
+ await exigirAdminMfa();
   const local=await sesionLocal();
   const c = local?null:await crearClienteServidor();
   if (!local && !c) redirect("/admin");

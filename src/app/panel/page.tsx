@@ -1,3 +1,4 @@
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import Link from 'next/link';
 import {Headset,Package,MessagesSquare,ChartNoAxesCombined,FileText,Truck,Users} from 'lucide-react';
 import { redirect } from 'next/navigation';
@@ -7,6 +8,7 @@ import { cerrarSesion } from '@/app/acceso/acciones';
 import {sesionLocal} from '@/lib/admin-local';
 export const metadata = {robots: {index: false, follow: false}};
 export default async function Panel() {
+ await exigirAdminMfa();
   const cliente = await crearClienteServidor();
   const local=await sesionLocal();
   if (!cliente&&!local) redirect('/admin');

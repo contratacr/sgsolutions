@@ -1,3 +1,4 @@
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {ArchivoPanel} from '@/components/archivo-panel';
 import {puedeArchivar} from '@/lib/archivo-pedidos';
 import {EstadosPedidoAdmin,GestionEntregaPedido} from '@/components/estados-pedido-admin';
@@ -43,6 +44,7 @@ type Manual = {
 };
 
 export default async function Pedidos({ searchParams }: { searchParams: Promise<{ resultado?: string; asesoria?:string; seccion?:string; pedido?:string }> }) {
+ await exigirAdminMfa();
   const local = await sesionLocal();
   if (!local) {
     const cliente = await crearClienteServidor();

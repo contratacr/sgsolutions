@@ -10,5 +10,8 @@ for(const idioma of ['es','en'])for(const ruta of ['/tienda','/favoritos']){
 const rutaCatalogo=process.env.SG_SMOKE_SOFTWARE==='1'?'/api/catalogo?ids=software-intcomex-se027mse92':'/api/catalogo';
 const c=await fetch(origen+rutaCatalogo,{signal:AbortSignal.timeout(20000)});assert.equal(c.status,200);const catalogo=await c.json();assert.ok(catalogo.productos.length>0);for(const p of catalogo.productos)for(const k of ['costoUsd','costoCrc','proveedor','eurocomp','password','apiKey'])assert.ok(!(k in p));if(process.env.SG_SMOKE_SOFTWARE==='1'){assert.equal(catalogo.productos.length,1);const p=catalogo.productos[0];assert.equal(p.id,'software-intcomex-se027mse92');assert.equal(p.codigoFabricante,'EP2-32316');assert.equal(p.categoria,'software');assert.equal(p.precio,42000);assert.equal(p.stockDisponible,null);assert.equal(p.entregaDigital,true);assert.equal(p.limitePorPedido,30);}
 resultados.push({ruta:rutaCatalogo,status:c.status});
-const f=await fetch(origen+'/api/favoritos',{signal:AbortSignal.timeout(20000)});assert.equal(f.status,401);resultados.push({ruta:'/api/favoritos',status:f.status});
+const rutaProtegida=process.env.SG_SMOKE_MFA==='1'?'/panel/pedidos':'/api/favoritos';
+const f=await fetch(origen+rutaProtegida,{redirect:'manual',signal:AbortSignal.timeout(20000)});
+if(process.env.SG_SMOKE_MFA==='1'){assert.equal(f.status,307);assert.equal(new URL(f.headers.get('location'),origen).pathname,'/admin');assert.ok(f.headers.get('cache-control')?.includes('no-store'));}else assert.equal(f.status,401);
+resultados.push({ruta:rutaProtegida,status:f.status});
 await mkdir('.privado/evidencias',{recursive:true});await writeFile('.privado/evidencias/produccion-smoke.json',JSON.stringify({fecha:new Date().toISOString(),peticiones:6,resultados},null,2));console.log('Producción: seis comprobaciones de solo lectura aprobadas.');

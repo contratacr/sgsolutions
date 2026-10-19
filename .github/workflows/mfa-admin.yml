@@ -1,0 +1,41 @@
+name: Verificación aislada de MFA administrativo
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mfa-real:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Crear Supabase efímero con MFA nativo y migraciones reales
+        run: |
+          npx supabase start > "$RUNNER_TEMP/mfa-supabase.log" 2>&1
+          npx supabase status --output json > "$RUNNER_TEMP/mfa-base.json"
+          chmod 600 "$RUNNER_TEMP/mfa-base.json"
+      - name: Probar configuración, verificación y evasiones con Auth y PostgreSQL reales
+        run: npx playwright test -c playwright.mfa.config.ts
+        env:
+          TEST_SUPABASE_CONFIG: ${{ runner.temp }}/mfa-base.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mfa-resultados-sin-credenciales
+          path: |
+            .privado/evidencias/mfa-*.json
+            .privado/evidencias/mfa-configurar-*.png
+            .privado/evidencias/mfa-verificar-*.png
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Detener y descartar los servicios aislados
+        if: always()
+        run: npx supabase stop --no-backup

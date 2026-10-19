@@ -1,4 +1,5 @@
 "use server";
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import { revalidatePath } from "next/cache";
 import { crearClienteServidor } from "@/lib/supabase/servidor";
 import es from "../../../../messages/es.json";
@@ -7,6 +8,7 @@ import {leerTexto,textoCompatible} from '@/lib/textos-editables';
 import { esquemaContenido } from "@/lib/contenido-modelo";
 import {adminLocalDisponible,sesionLocal,guardarLocal} from '@/lib/admin-local';
 export async function guardarContenido(datos: unknown, revision: number):Promise<{error?:string;revision?:number;campos?:(string|number)[][]}> {
+ await exigirAdminMfa();
   const local=await adminLocalDisponible();
   if(local&&!await sesionLocal())return {error:'sinPermiso'};
   const c = local?null:await crearClienteServidor();

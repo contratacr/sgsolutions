@@ -1886,7 +1886,9 @@
     "eventoEliminarSolicitud": "Deletion started",
     "eventoEliminado": "Account deleted",
     "eventoTipoCliente": "Customer type updated",
-    "cliente": "Customer"
+    "cliente": "Customer",
+    "mfaConfigurado": "Two-factor authentication set up",
+    "mfaPendiente": "Two-factor setup required"
   },
   "DatosCuenta": {
     "titulo": "My checkout details",
@@ -2502,5 +2504,33 @@
       "restaurado": "Record restored"
     },
     "local": "Local test environment. These records and files are not sent to production."
+  },
+  "MfaAdmin": {
+    "etiqueta": "ADMINISTRATOR ACCESS",
+    "titulo": "Two-step verification",
+    "configurarDescripcion": "To access the panel, set up an authenticator app, such as Microsoft Authenticator or Google Authenticator. Each administrator uses their own authenticator.",
+    "verificarDescripcion": "Enter the code from your authenticator app to access the administration panel.",
+    "autenticador": "Authenticator app",
+    "configurar": "Set up authenticator",
+    "preparando": "Preparing…",
+    "escanear": "Add an account in your authenticator app and scan this QR code. Then enter the six-digit code.",
+    "qrAlt": "Private QR code to set up your SG Solutions authenticator",
+    "manual": "Unable to scan the QR code?",
+    "claveManual": "Manual setup key",
+    "mostrar": "Show key",
+    "ocultar": "Hide key",
+    "noCompartir": "This key generates your codes. Do not share it.",
+    "dispositivo": "Authenticator",
+    "codigo": "Six-digit code",
+    "codigoAyuda": "Use the current code from your authenticator app.",
+    "verificar": "Verify and continue",
+    "verificando": "Verifying…",
+    "salir": "Sign out",
+    "recuperacion": "If you lost access to your authenticator, contact the person responsible for SG Solutions to request recovery. Your identity must be verified before it can be reset. Resetting your password does not remove this requirement.",
+    "error": "We could not complete verification. Please try again.",
+    "codigoInvalido": "The code is invalid or has expired. Check the current code and try again.",
+    "sinPermiso": "Your session does not allow this action. Please sign in again.",
+    "yaConfigurado": "Your authenticator is already configured. Reload this page to enter your code.",
+    "muchosIntentos": "Too many attempts. Wait a few minutes and try again."
   }
 }

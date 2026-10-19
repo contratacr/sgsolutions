@@ -15,10 +15,10 @@ export async function iniciarSesion(_estado: string, datos: FormData): Promise<s
   if (!cliente) return 'noDisponible';
   const {error} = await cliente.auth.signInWithPassword({email: validado.data.correo, password: validado.data.clave});
   if (error) return 'error';
-  const permiso=await cliente.rpc('es_administrador_activo');
+  const permiso=await cliente.rpc('es_administrador_identificado');
   if(permiso.error)return 'error';
   if(permiso.data!==true)return 'sinPermiso';
-  redirect('/panel');
+  redirect('/admin');
 }
 export async function cerrarSesion() {
   await salirLocal();

@@ -1,7 +1,9 @@
+import {leerAccesoPanel} from '@/lib/acceso-panel';
 import {leerAdjuntoLocal} from '@/lib/soporte-local';
 import {z} from 'zod';
 import {accesoSoporte} from '@/lib/soporte-servidor';
 export async function GET(_:Request,{params}:{params:Promise<{id:string}>}){
+ if(await leerAccesoPanel()!=='administrador')return new Response(null,{status:403,headers:{'Cache-Control':'private, no-store'}});
  const headers={'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox"};
  try{
   const acceso=await accesoSoporte(),{id}=await params;

@@ -1,3 +1,4 @@
+import {exigirAdminMfa} from '@/lib/acceso-panel';
 import Link from 'next/link';
 import {cambiarIdioma} from '@/app/acciones-idioma';
 import {detalleEstadisticasCatalogo} from '@/lib/estadisticas-catalogo';
@@ -11,6 +12,7 @@ import {crearClienteServidor} from '@/lib/supabase/servidor';
 import {resumenAnalitica,fechasAnalitica,popularidadProductos} from '@/lib/analitica-servidor';
 export async function generateMetadata(){const t=await getTranslations('Analitica');return {title:t('tituloPanel'),robots:{index:false,follow:false}};}
 export default async function Estadisticas({searchParams}:{searchParams:Promise<{dias?:string}>}){
+ await exigirAdminMfa();
  const local=await sesionLocal();if(!local){const db=await crearClienteServidor();if(!db)redirect('/admin');const {data:{user}}=await db.auth.getUser();if(!user)redirect('/admin');const {data}=await db.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();if(!data?.activo||data.rol!=='administrador')redirect('/panel');}
  const dias=(await searchParams).dias==='7'?7:30;
  const t=await getTranslations('Analitica'),idioma=await getLocale();
