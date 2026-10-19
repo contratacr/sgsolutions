@@ -1255,3 +1255,7 @@ body .inicio-triptico .inicio-triptico-paneles .inicio-triptico-panel{flex-grow:
 html[data-interaccion=teclado] .tienda-compacta .shop-resultados-cabecera .shop-orden-trigger:focus{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 html[data-interaccion=puntero] .tienda-compacta .shop-resultados-cabecera .shop-orden-trigger:focus{text-decoration:none}
 @media(hover:hover){.tienda-compacta .shop-resultados-cabecera .shop-orden-trigger:hover{color:#b84320}}
+
+/* Digital licenses retain the same price and disclose on-order delivery. */
+.precio-producto:has(.producto-bajo-pedido),.shop-producto .shop-precio .precio-producto:has(.producto-bajo-pedido){flex-direction:column;align-items:flex-start;gap:4px;white-space:normal}
+.producto-bajo-pedido{display:block;font-size:.75rem;line-height:1.4;font-weight:500;color:var(--texto-secundario,#526b80)}

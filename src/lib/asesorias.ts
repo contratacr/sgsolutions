@@ -1,11 +1,12 @@
 import 'server-only';
+import {motivoArchivoValido} from './archivo-pedidos';
 import {referenciaPedido} from './referencia-pedido';
 import {createClient} from '@supabase/supabase-js';
 import {randomBytes} from 'node:crypto';
 import {mkdir,readFile,writeFile,rename} from 'node:fs/promises';
 import {adminLocalDisponible} from './admin-local';
 import type {CatalogoPublico} from './catalogo-modelo';
-export type SolicitudAsesoria={id:string;origen?:'asesoria'|'tienda';numero?:number;referencia_numero?:number;eliminado_en?:string|null;archivado_en?:string|null;creado_en:string;estado:'solicitada'|'aprobada'|'procesando'|'utilizada'|'cancelada';idioma:'es'|'en';articulos:{producto:CatalogoPublico['productos'][number];cantidad:number}[];token:string|null;vence_en:string|null;pedido_id:string|null;contacto?:{nombre:string;telefono:string;necesidad:string;correo?:string;tipoIdentificacion?:'fisica'|'juridica'|'dimex'|'nite';identificacion?:string}|null};
+export type SolicitudAsesoria={id:string;origen?:'asesoria'|'tienda';numero?:number;referencia_numero?:number;eliminado_en?:string|null;archivado_en?:string|null;archivado_motivo?:string|null;creado_en:string;estado:'solicitada'|'aprobada'|'procesando'|'utilizada'|'cancelada';idioma:'es'|'en';articulos:{producto:CatalogoPublico['productos'][number];cantidad:number}[];token:string|null;vence_en:string|null;pedido_id:string|null;contacto?:{nombre:string;telefono:string;necesidad:string;correo?:string;tipoIdentificacion?:'fisica'|'juridica'|'dimex'|'nite';identificacion?:string}|null};
 const carpeta=process.env.SG_PRUEBAS_INTEGRACION==='1'&&process.env.SG_ENTORNO==='local'&&process.env.SG_ADMIN_CONTENIDO_PRUEBAS==='1'?'.privado/contenido-pruebas':'.privado/admin-local';
 const archivo=carpeta+'/asesorias.json';
 let cola=Promise.resolve();
@@ -49,13 +50,14 @@ export async function eliminarConsultaCancelada(id:string){
  return !error&&Boolean(data);
 }
 
-export async function archivarAsesoriaPanel(id:string,archivar:boolean){
+export async function archivarAsesoriaPanel(id:string,archivar:boolean,motivo=''){
+ if(archivar&&!motivoArchivoValido(motivo))return false;
  if(await adminLocalDisponible())return localModificar(f=>{
   const s=f.find(x=>x.id===id&&!x.eliminado_en);if(!s||Boolean(s.archivado_en)===archivar||archivar&&!['utilizada','cancelada'].includes(s.estado))return false;
-  s.archivado_en=archivar?new Date().toISOString():null;return true;
+  s.archivado_en=archivar?new Date().toISOString():null;if(archivar)s.archivado_motivo=motivo.trim();return true;
  });
  const cliente=db();if(!cliente)return false;
- let q=cliente.from('solicitudes_asesoria').update({archivado_en:archivar?new Date().toISOString():null}).eq('id',id).is('eliminado_en',null);
+ let q=cliente.from('solicitudes_asesoria').update({archivado_en:archivar?new Date().toISOString():null,...(archivar?{archivado_motivo:motivo.trim()}:{})}).eq('id',id).is('eliminado_en',null);
  q=archivar?q.is('archivado_en',null).in('estado',['utilizada','cancelada']):q.not('archivado_en','is',null);
  const {data,error}=await q.select('id').maybeSingle();return !error&&Boolean(data);
 }

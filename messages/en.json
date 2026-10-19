@@ -624,7 +624,8 @@
     "verMasOpciones": "Show more options",
     "abrirCategoria": "Expand subcategories",
     "cerrarCategoria": "Close category",
-    "errorRangoPrecio": "We could not update the price range."
+    "errorRangoPrecio": "We could not update the price range.",
+    "bajoPedidoDigital": "On order · Digital delivery"
   },
   "AdminCatalogo": {
     "titulo": "Products",
@@ -1058,7 +1059,9 @@
     "revisarTotal": "Review order · {total}",
     "tarjetaIntegradaDetalle": "Pay by card on this page.",
     "tarjetaNumeroEjemplo": "0000 0000 0000 0000",
-    "tarjetaCvvEjemplo": "•••"
+    "tarjetaCvvEjemplo": "•••",
+    "digital": "Digital delivery",
+    "digitalDetalle": "License sourced on order. We will arrange email delivery after payment and availability are confirmed. No physical shipping."
   },
   "ResultadoPago": {
     "titulo": "Payment result",
@@ -1113,6 +1116,9 @@
     "expressSeparado": "The amount due covers products only. Express delivery is quoted based on your location and paid separately."
   },
   "PedidosAdmin": {
+    "ayudarCompra": "Offer help with checkout",
+    "mensajeCompraPendienteSinNombre": "Hello, your order {referencia} is waiting for you. Do you need help completing your purchase?",
+    "mensajeCompraPendiente": "Hello {nombre}, your order {referencia} is waiting for you. Do you need help completing your purchase?",
     "etiqueta": "Operations",
     "titulo": "Orders",
     "descripcion": "Handle advice requests first. Payment orders appear after the customer completes checkout.",
@@ -1171,7 +1177,8 @@
     "modalidad_express": "Express delivery service",
     "expressSeparado": "The amount due covers products only. Express delivery is quoted based on your location and paid separately.",
     "motivoTilopay": "Reason reported by Tilopay",
-    "motivoNoInformado": "Reason not provided"
+    "motivoNoInformado": "Reason not provided",
+    "modalidad_digital": "Digital delivery"
   },
   "AdminContenido": {
     "titulo": "Manage content",
@@ -2018,6 +2025,10 @@
     "guardado": "Order status updated."
   },
   "ArchivoPanel": {
+    "motivo": "Reason for archiving",
+    "motivoGuardado": "Last archive reason",
+    "motivoEjemplo": "For example: demonstration or checkout not completed.",
+    "motivoPrivado": "Internal note. It is not sent to the customer.",
     "opciones": "Other actions",
     "archivar": "Archive",
     "restaurar": "Restore",
@@ -2191,7 +2202,8 @@
     "antiguos": "Oldest first",
     "producto_cargador": "Nova 45 W wall charger",
     "ordenar": "Sort",
-    "volverSitio": "Back to website"
+    "volverSitio": "Back to website",
+    "entrega_digital": "Digital delivery"
   },
   "PropuestaPanel": {
     "navegacion": "Admin sections",

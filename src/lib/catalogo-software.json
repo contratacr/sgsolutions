@@ -1,0 +1,74 @@
+[
+  {
+    "id": "software-intcomex-se027mse92",
+    "categoria": "software",
+    "subcategoria": {
+      "es": "Ofimática y productividad",
+      "en": "Office and productivity"
+    },
+    "nombre": {
+      "es": "Microsoft 365 Personal · 1 usuario · 12 meses",
+      "en": "Microsoft 365 Personal · 1 user · 12 months"
+    },
+    "descripcion": {
+      "es": "Suscripción para 1 usuario por 12 meses. Licencia digital adquirida a Intcomex bajo pedido; se coordina su entrega por correo después de confirmar el pago y la disponibilidad. No incluye envío físico.",
+      "en": "12-month subscription for 1 user. Digital license sourced from Intcomex on order; email delivery is arranged after payment and availability are confirmed. No physical shipping."
+    },
+    "imagen": "/imagenes/productos/ic-b86e4e1b67af9e0181a581cb.webp",
+    "imagenes": [],
+    "marca": "Microsoft",
+    "codigoFabricante": "EP2-32316",
+    "codigoIntcomex": "SE027MSE92",
+    "inventarioPropio": false,
+    "costoUsd": null,
+    "costoCrc": null,
+    "precioReferencia": 42000,
+    "disponibilidadReferencia": "proveedor",
+    "revisionPrecio": false,
+    "precioManual": null,
+    "publicado": true,
+    "destacado": false,
+    "especificaciones": [
+      {
+        "nombre": {
+          "es": "Licencia",
+          "en": "License"
+        },
+        "valor": {
+          "es": "1 usuario · 12 meses",
+          "en": "1 user · 12 months"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Entrega",
+          "en": "Delivery"
+        },
+        "valor": {
+          "es": "Descarga digital · Bajo pedido",
+          "en": "Digital download · On order"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Compatibilidad",
+          "en": "Compatibility"
+        },
+        "valor": {
+          "es": "Windows / macOS / iOS / Android",
+          "en": "Windows / macOS / iOS / Android"
+        }
+      },
+      {
+        "nombre": {
+          "es": "Almacenamiento",
+          "en": "Storage"
+        },
+        "valor": {
+          "es": "1 TB en OneDrive",
+          "en": "1 TB on OneDrive"
+        }
+      }
+    ]
+  }
+]

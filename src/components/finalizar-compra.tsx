@@ -29,6 +29,7 @@ import {
 import { useCatalogo } from "./datos-catalogo";
 import { useCarrito, retirarArticulosPedido } from "@/lib/carrito";
 import { colones, traducir } from "@/lib/catalogo-modelo";
+import {esProductoSoftware} from '@/lib/software';
 import {costoEntrega} from '@/lib/envio';
 import { FotoProducto } from "./foto-producto";
 import { desplazarContenido } from "@/lib/desplazar-contenido";
@@ -157,13 +158,14 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
     const p = aprobacion?.articulos.find(a=>a.producto.id===x.id)?.producto ?? c.productos.find((p) => p.id === x.id);
     return p ? [{ ...x, p }] : [];
   });
+  const soloDigital=productos.length>0&&productos.every(x=>esProductoSoftware(x.p));
   const bloqueado =
     (!aprobacion && c.errorCarrito) ||
     productos.length !== lineas.length ||
     productos.some((x) => x.p.disponibilidad === "agotado");
   const pendiente = productos.some((x) => x.p.precio === null),
     subtotal = productos.reduce((s, x) => s + (x.p.precio ?? 0) * x.cantidad, 0),
-    envio = costoEntrega(express?'express':entrega?'envio':'retiro'),
+    envio = costoEntrega(soloDigital?'digital':express?'express':entrega?'envio':'retiro'),
     total = subtotal + envio;
   async function revisar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -385,14 +387,14 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                   </h2>
                   <fieldset className="compra-opciones">
                     <legend>{t("modalidad")}<IndicadorCampo obligatorio/></legend>
-                    {["retiro", "envio", "express"].map((m, i) => (
+                    {(soloDigital?["digital"]:["retiro", "envio", "express"]).map((m, i) => (
                       <label key={m}>
                         <input
                           type="radio"
                           required
                           name="modalidad"
                           value={m}
-                          checked={express ? m==='express' : entrega === (i === 1)&&m!=='express'}
+                          checked={soloDigital|| (express ? m==='express' : entrega === (i === 1)&&m!=='express')}
                           onChange={() => {if(i > 0) desplazamientoPendiente.current="entrega";setEntrega(i > 0);setExpress(m==='express');}}
                         />
                         <strong>{t(m)}</strong>
@@ -402,7 +404,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                     ))}
                   </fieldset>
                   <input type="hidden" name="pais" value="CR"/>
-                  {entrega && (
+                  {entrega && !soloDigital && (
                     <div className="compra-campos" ref={entregaCampos}>
                       <div className="compra-ubicacion compra-ancho"><DireccionCompra inicial={borrador}/></div>
                       <div className="compra-ancho">{campo("direccion", true, "text", "street-address")}</div>
@@ -544,7 +546,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
               </div>
               <div>
                 <dt>{t("costoEnvio")}</dt>
-                <dd>{express?t('expressPendiente'):colones(envio)}</dd>
+                <dd>{express&&!soloDigital?t('expressPendiente'):colones(envio)}</dd>
               </div>
               <div className="compra-total"><dt>{t('total')}</dt><dd>{pendiente ? t('pendiente') : colones(total)}</dd></div>
             </dl>

@@ -1,4 +1,5 @@
 "use client";
+import {limiteCantidadProducto} from '@/lib/software';
 import {PrecioProducto,EtiquetaDescuento} from './precio-producto';
 import Link from "next/link";
 import {descripcionUtil} from '@/lib/descripcion-producto';
@@ -74,7 +75,7 @@ export function FichaProducto({
             {typeof p.stockDisponible==='number'&&Number.isSafeInteger(p.stockDisponible)&&p.stockDisponible>=0&&<small className="ficha-disponibles" aria-label={t('existenciasProveedor',{cantidad:p.stockDisponible})}>{t('disponibles',{cantidad:p.stockDisponible})}</small>}
           </div><AsesoriaWhatsApp etiqueta="asesorar" className="shop-asesoria-inline" lineas={[{producto:p,cantidad}]}/></div>
           {p.disponibilidad==='agotado'&&<p className="ficha-stock">{s('agotado')}</p>}
-          <div className="producto-compra-fila">{p.coleccion!=='empresas'&&<ContadorCantidad cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/>}
+          <div className="producto-compra-fila">{p.coleccion!=='empresas'&&<ContadorCantidad maximo={limiteCantidadProducto(p.id)} cantidad={cantidad} cambiar={setCantidad} nombre={traducir(p.nombre,l)}/>}
           {p.coleccion==='empresas'?<AsesoriaWhatsApp etiqueta="confirmarExistencia" className="boton boton-azul" lineas={[{producto:p,cantidad:1}]}/>:          <button
             className="boton boton-azul ficha-agregar"
             disabled={p.disponibilidad === "agotado"}

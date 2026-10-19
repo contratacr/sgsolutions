@@ -376,5 +376,15 @@
     "sustituye": [
       "/imagenes/producto-sin-imagen.svg"
     ]
+  },
+  {
+    "id": "software-intcomex-se027mse92",
+    "marca": "Microsoft",
+    "mpn": "EP2-32316",
+    "imagen": "/imagenes/productos/ic-b86e4e1b67af9e0181a581cb.webp",
+    "origen": "https://cdn.cs.1worldsync.com/syndication/mediaserverredirect/156ff9c5e8a1006a91650e66a4d3c6f7/original.png",
+    "evidencia": "Microsoft 365 Personal, SKU SE027MSE92 / EP2-32316. Imagen existente cotejada visualmente con ficha autenticada de Intcomex Costa Rica el 19 de octubre de 2026.",
+    "fecha": "2026-10-19T12:00:00.000Z",
+    "sustituye": []
   }
 ]

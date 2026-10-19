@@ -34,7 +34,7 @@ export function BandejaPedidosReales({items,crear,destacado}:{items:ItemPedidoRe
   <details className="panel-nueva-asesoria" ref={nuevo}><summary>{r('crear')}</summary>{Children.toArray(crear)}</details>
   <div className="pedidos-reales-filtros">
    <div><span>{t('formaPago')}</span><SelectorMenu etiqueta={t('formaPago')} valor={metodo} cambiar={v=>{setMetodo(v);setLimite(20);}} opciones={['todos','sinpe','transferencia','tarjeta','enlace'].map(v=>({valor:v,texto:v==='enlace'?r('enlace'):t(`metodo_${v}`)}))}/></div>
-   <div><span>{t('entrega')}</span><SelectorMenu etiqueta={t('entrega')} valor={entrega} cambiar={v=>{setEntrega(v);setLimite(20);}} opciones={['todos','retiro','envio','express'].map(v=>({valor:v,texto:t(`entrega_${v}`)}))}/></div>
+   <div><span>{t('entrega')}</span><SelectorMenu etiqueta={t('entrega')} valor={entrega} cambiar={v=>{setEntrega(v);setLimite(20);}} opciones={['todos','retiro','envio','express','digital'].map(v=>({valor:v,texto:t(`entrega_${v}`)}))}/></div>
    <div><span>{l('estadoPago')}</span><SelectorMenu etiqueta={l('estadoPago')} valor={pago} cambiar={v=>{setPago(v);setLimite(20);}} opciones={[{valor:'todos',texto:l('todos')},{valor:'pendiente',texto:l('pagoPendiente')},{valor:'confirmado',texto:l('pagoConfirmado')}]}/></div>
    <div><span>{t('ordenar')}</span><SelectorMenu etiqueta={t('ordenFecha')} valor={orden} cambiar={v=>{setOrdenes(o=>({...o,[vista]:v}));setLimite(20);}} opciones={['antiguos','recientes'].map(v=>({valor:v,texto:t(v)}))}/></div>
   </div>

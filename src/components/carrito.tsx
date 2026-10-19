@@ -1,4 +1,5 @@
 'use client';
+import {limiteCantidadProducto} from '@/lib/software';
 import {PrecioProducto} from './precio-producto';
 import Image from 'next/image';
 import {useCallback,useEffect,useId,useState} from 'react';
@@ -47,7 +48,7 @@ export function Carrito({sesionIniciada=false,cantidadIndicador}:{sesionIniciada
       {lineas.length === 0 && todas.length>0 ? null : lineas.length === 0 ? <div className="carrito-vacio"><ShoppingCart size={44} aria-hidden="true"/><p>{faltantes?tienda('productoNoDisponible'):t('vacio')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/tienda">{t('explorar')}</Link></Dialog.Close></div> : <>
         <ul className="carrito-lineas">{lineas.map(linea => {
           const producto = productos.find(p => p.id === linea.id)!;
-          return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><PrecioProducto producto={producto} pendiente={tienda('precioPendiente')}/><ContadorCantidad cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;
+          return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><PrecioProducto producto={producto} pendiente={tienda('precioPendiente')}/><ContadorCantidad maximo={limiteCantidadProducto(linea.id)} cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;
         })}</ul>
 
       </>}

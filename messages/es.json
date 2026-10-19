@@ -624,7 +624,8 @@
     "verMasOpciones": "Ver más opciones",
     "abrirCategoria": "Abrir subcategorías",
     "cerrarCategoria": "Cerrar categoría",
-    "errorRangoPrecio": "No pudimos actualizar el rango de precios."
+    "errorRangoPrecio": "No pudimos actualizar el rango de precios.",
+    "bajoPedidoDigital": "Bajo pedido · Entrega digital"
   },
   "AdminCatalogo": {
     "titulo": "Productos",
@@ -1058,7 +1059,9 @@
     "revisarTotal": "Revisar pedido · {total}",
     "tarjetaIntegradaDetalle": "Pague con su tarjeta desde esta página.",
     "tarjetaNumeroEjemplo": "0000 0000 0000 0000",
-    "tarjetaCvvEjemplo": "•••"
+    "tarjetaCvvEjemplo": "•••",
+    "digital": "Entrega digital",
+    "digitalDetalle": "Licencia bajo pedido. Coordinaremos su entrega por correo después de confirmar el pago y la disponibilidad. Sin envío físico."
   },
   "ResultadoPago": {
     "titulo": "Resultado del pago",
@@ -1113,6 +1116,9 @@
     "expressSeparado": "El total a pagar incluye únicamente los productos. El servicio de Express se cotiza según su ubicación y se paga por separado."
   },
   "PedidosAdmin": {
+    "ayudarCompra": "Ofrecer ayuda con la compra",
+    "mensajeCompraPendienteSinNombre": "Hola, su compra {referencia} le está esperando. ¿Necesita ayuda para completarla?",
+    "mensajeCompraPendiente": "Hola {nombre}, su compra {referencia} le está esperando. ¿Necesita ayuda para completarla?",
     "etiqueta": "Operación",
     "titulo": "Pedidos",
     "descripcion": "Primero atienda las asesorías. Los pedidos de pago aparecen después de que el cliente completa su compra.",
@@ -1171,7 +1177,8 @@
     "modalidad_express": "Servicio de Express",
     "expressSeparado": "El total a pagar incluye únicamente los productos. El servicio de Express se cotiza según su ubicación y se paga por separado.",
     "motivoTilopay": "Motivo informado por Tilopay",
-    "motivoNoInformado": "Motivo no informado"
+    "motivoNoInformado": "Motivo no informado",
+    "modalidad_digital": "Entrega digital"
   },
   "AdminContenido": {
     "titulo": "Administrar contenido",
@@ -2018,6 +2025,10 @@
     "guardado": "Estado del pedido actualizado."
   },
   "ArchivoPanel": {
+    "motivo": "Motivo del archivo",
+    "motivoGuardado": "Motivo del último archivo",
+    "motivoEjemplo": "Por ejemplo: demostración o compra no completada.",
+    "motivoPrivado": "Comentario interno. No se envía al cliente.",
     "opciones": "Otras acciones",
     "archivar": "Archivar",
     "restaurar": "Restaurar",
@@ -2191,7 +2202,8 @@
     "antiguos": "Más antiguos primero",
     "producto_cargador": "Cargador de pared Nova 45 W",
     "ordenar": "Ordenar",
-    "volverSitio": "Volver al sitio"
+    "volverSitio": "Volver al sitio",
+    "entrega_digital": "Entrega digital"
   },
   "PropuestaPanel": {
     "navegacion": "Secciones del panel",

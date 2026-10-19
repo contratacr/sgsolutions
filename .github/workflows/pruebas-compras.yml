@@ -52,6 +52,8 @@ jobs:
         run: node tests/sql/soporte-panel.mjs
       - name: Validar referencias de pedidos y conservación de datos
         run: node tests/sql/referencias-pedidos.mjs
+      - name: Validar archivo de pedidos y envíos Express
+        run: node tests/sql/pedidos-archivo-express.mjs
       - name: Validar restricciones y aislamiento de favoritos en PostgreSQL efímero
         run: node tests/sql/favoritos-empresariales.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

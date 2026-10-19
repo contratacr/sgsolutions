@@ -1,6 +1,6 @@
 'use server';
 import {archivarAsesoriaPanel} from '@/lib/asesorias';
-import {puedeArchivar,type TipoRegistroPanel} from '@/lib/archivo-pedidos';
+import {puedeArchivar,motivoArchivoValido,type TipoRegistroPanel} from '@/lib/archivo-pedidos';
 import {cuentaCorta} from '@/lib/cuentas-bancarias';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
@@ -36,8 +36,8 @@ export async function actualizarPedidoManual(form: FormData) {
   if (!pedido || !estadosPermitidos[pedido.estado as EstadoPedidoManual]?.includes(nuevo)) redirect('/panel/pedidos?resultado=invalido');
   const cambios: Record<string, unknown> = { estado: nuevo, actualizado_en: new Date().toISOString() };
   if (nuevo === 'pendiente_pago') {
-    if (!['retiro', 'envio', 'express'].includes(pedido.cliente?.modalidad)) redirect('/panel/pedidos?resultado=invalido');
-    const envio = costoEntrega(pedido.cliente.modalidad as 'retiro' | 'envio' | 'express');
+    if (!['retiro', 'envio', 'express', 'digital'].includes(pedido.cliente?.modalidad)) redirect('/panel/pedidos?resultado=invalido');
+    const envio = costoEntrega(pedido.cliente.modalidad as 'retiro' | 'envio' | 'express' | 'digital');
     cambios.costo_envio = envio;
     const totalDefinitivo = Number(pedido.total_productos) + envio;
     cambios.total_cobrar = totalDefinitivo;
@@ -118,15 +118,16 @@ export async function cambiarArchivoPanel(form:FormData){
  const destino=tipo==='asesoria'?'asesorias':tipo==='tarjeta'?'tarjeta':'manuales';
  const fallo=`/panel/pedidos?seccion=${destino}&resultado=archivo_conflicto`;
  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)||!['asesoria','manual','tarjeta'].includes(tipo)||!['archivar','restaurar'].includes(operacion)||form.get('confirmar')!=='on')redirect(fallo);
- const archivar=operacion==='archivar';
+ const archivar=operacion==='archivar',motivo=String(form.get('motivo')??'').trim();
+ if(archivar&&!motivoArchivoValido(motivo))redirect(fallo);
  if(tipo==='asesoria'){
-  if(!await archivarAsesoriaPanel(id,archivar))redirect(fallo);
+  if(!await archivarAsesoriaPanel(id,archivar,motivo))redirect(fallo);
  }else{
   const config=configuracionPedidosManuales();const db=tipo==='tarjeta'?basePedidosAdministracion():config?basePedidosManuales(config):null;if(!db)redirect(fallo);
   const tabla=tipo==='tarjeta'?'pedidos_tilopay':'pedidos_manuales';
   const {data:p,error}=await db.from(tabla).select('estado,estado_entrega,creado_en,archivado_en').eq('id',id).maybeSingle();
   if(error||!p||Boolean(p.archivado_en)===archivar||archivar&&!puedeArchivar(tipo,p))redirect(fallo);
-  let q=db.from(tabla).update({archivado_en:archivar?new Date().toISOString():null}).eq('id',id).eq('estado',p.estado).eq('estado_entrega',p.estado_entrega);
+  let q=db.from(tabla).update({archivado_en:archivar?new Date().toISOString():null,...(archivar?{archivado_motivo:motivo}:{})}).eq('id',id).eq('estado',p.estado).eq('estado_entrega',p.estado_entrega);
   q=archivar?q.is('archivado_en',null):q.eq('archivado_en',p.archivado_en);
   const actualizado=await q.select('id').maybeSingle();if(actualizado.error||!actualizado.data)redirect(fallo);
  }

@@ -1,3 +1,4 @@
+import {esProductoSoftware} from './software';
 import {esProductoEurocomp,esProductoEmpresarial} from './catalogo-fuente';
 import {subcategoriaEurocomp} from './eurocomp-subcategorias';
 import {createHash} from 'node:crypto';
@@ -19,11 +20,11 @@ export function reconciliarEurocomp(base:CatalogoAdmin,copia:CatalogoEurocomp):C
   productos.push({...nuevo,...anterior,subcategoria:anterior?.subcategoria ?? subcategoriaEurocomp(a.familia),codigoEurocomp:a.codigo,precioManual:precioVentaEurocomp(a.precio,a.moneda,base.ajustes.cambio,base.ajustes.utilidad,base.ajustes.iva,base.ajustes.adicional),eurocomp:{codigo:a.codigo,stock:a.stock??0,costo:a.precio,moneda:a.moneda as 'USD'|'CRC',actualizado:copia.fecha}});
  }
  for(const [codigo,p]of anteriores)if(!recibidos.has(codigo))productos.push({...p,eurocomp:{codigo,stock:0,costo:p.eurocomp?.costo??0,moneda:p.eurocomp?.moneda??'USD',actualizado:copia.fecha}});
- productos.push(...base.productos.filter(esProductoEmpresarial));
+ productos.push(...base.productos.filter(p=>esProductoEmpresarial(p)||esProductoSoftware(p)));
  const ids=new Set(categoriasEurocomp.map(c=>c.id));
  const usadas=new Set(productos.map(p=>p.categoria));
  const categorias=[...categoriasEurocomp,...base.categorias.filter(c=>!ids.has(c.id)&&usadas.has(c.id))];
- const siguiente={...base,gestion:'manual' as const,categorias,productos:productos.map(p=>{if(esProductoEmpresarial(p))return p;const limpio={...p};delete limpio.codigoIntcomex;delete limpio.estadoIntcomex;delete limpio.proveedor;return limpio;})};
+ const siguiente={...base,gestion:'manual' as const,categorias,productos:productos.map(p=>{if(esProductoEmpresarial(p)||esProductoSoftware(p))return p;const limpio={...p};delete limpio.codigoIntcomex;delete limpio.estadoIntcomex;delete limpio.proveedor;return limpio;})};
  delete siguiente.sincronizacion;delete siguiente.inventario;
  return siguiente;
 }

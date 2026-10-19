@@ -1,0 +1,3 @@
+import {defineConfig} from '@playwright/test';import base from './playwright.entrega.config';
+const servidores=base.webServer as {command:string;url:string;env?:Record<string,string>}[];
+export default defineConfig({...base,testMatch:['software-bajo-pedido.spec.ts','catalogo-fuente.spec.ts','pedidos-bugs-octubre.spec.ts'],webServer:servidores.map((s,i)=>i===1?{...s,env:{...s.env,SG_SERVICIOS_PRUEBA_ORIGEN:'http://127.0.0.1:3135',TILOPAY_API_USER:'fixture',TILOPAY_API_PASSWORD:'fixture',TILOPAY_API_KEY:'fixture',TILOPAY_MODO:'pruebas',TILOPAY_PRUEBA_VERIFICADA_EN:new Date().toISOString(),TILOPAY_RETORNO_URL:'https://example.test/finalizar-compra/resultado',BREVO_API_KEY:''}}:s)});

@@ -11,7 +11,7 @@ export const datosClienteCompra = z.object({
     pais:z.literal('CR').optional(),
     tipoCliente:z.enum(['fisica','juridica']).optional(),
     contacto: z.enum(['whatsapp', 'llamada', 'email']).default('whatsapp'),
-    modalidad: z.enum(['retiro', 'envio', 'express']),
+    modalidad: z.enum(['retiro', 'envio', 'express', 'digital']),
     provincia: z.string().trim().max(80).optional(), canton: z.string().trim().max(80).optional(),
     distrito: z.string().trim().max(80).optional(), direccion: z.string().trim().max(350).optional(),
     apartamento: z.string().trim().max(150).optional(), postal: z.string().trim().max(30).optional(),
@@ -22,6 +22,6 @@ export const datosClienteCompra = z.object({
     notas: z.string().trim().max(600).optional(), consentimiento: z.literal('on'),
   }).superRefine((datos,ctx)=>{
     if(datos.tipoCliente==='juridica'&&!datos.razonSocial?.trim())ctx.addIssue({code:'custom',path:['razonSocial'],message:'empresa'});
-    if(datos.modalidad!=='retiro')for(const campo of ['provincia','canton','distrito','direccion'] as const)if(!datos[campo]?.trim())ctx.addIssue({code:'custom',path:[campo],message:'entrega'});
+    if(['envio','express'].includes(datos.modalidad))for(const campo of ['provincia','canton','distrito','direccion'] as const)if(!datos[campo]?.trim())ctx.addIssue({code:'custom',path:[campo],message:'entrega'});
     if((datos.factura==='electronica'||datos.identificacion?.trim())&&!identificacionCompraValida(datos.tipoIdentificacion,datos.identificacion??''))ctx.addIssue({code:'custom',path:['identificacion'],message:'identificacion'});
   });

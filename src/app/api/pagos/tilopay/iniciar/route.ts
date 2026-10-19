@@ -1,3 +1,4 @@
+import {modalidadCompraValida} from '@/lib/software';
 import {leerTextoLimitado} from '@/lib/limites-http';
 import {datosClienteCompra,telefonoCompra} from '@/lib/datos-cliente-compra';
 import {costoEntrega} from '@/lib/envio';
@@ -21,7 +22,7 @@ const solicitud = z.object({
 }).superRefine((v,ctx)=>{
   const d=v.datos;
   if(d && (d.nombre!==v.nombre || d.apellidos!==v.apellidos || d.correo!==v.correo || d.telefono!==v.telefono))ctx.addIssue({code:'custom',message:'cliente'});
-  if(d&&d.modalidad!=='retiro' && (!d.provincia || !d.canton || !d.distrito || !d.direccion))ctx.addIssue({code:'custom',message:'entrega'});
+  if(d&&['envio','express'].includes(d.modalidad) && (!d.provincia || !d.canton || !d.distrito || !d.direccion))ctx.addIssue({code:'custom',message:'entrega'});
   if(d?.factura==='electronica' && (!d.identificacion || !d.razonSocial || !d.correoFactura || !d.direccionFiscal))ctx.addIssue({code:'custom',message:'factura'});
 });
 
@@ -56,6 +57,7 @@ export async function POST(request: Request) {
     total += producto.precio * linea.cantidad;
     articulos.push({ id: producto.id, codigo: producto.codigoFabricante, nombre: producto.nombre.es, cantidad: linea.cantidad, precio: producto.precio });
   }
+  if(!modalidadCompraValida(aprobacion.articulos,entrada.datos?.modalidad??'retiro'))return Response.json({error:'datos_invalidos'},{status:400});
   const subtotal=total;
   const envio=costoEntrega(entrada.datos?.modalidad ?? 'retiro');
   total+=envio;

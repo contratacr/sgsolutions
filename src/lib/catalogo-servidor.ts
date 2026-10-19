@@ -1,4 +1,5 @@
 import 'server-only';
+import {completarSoftwarePublico} from './incorporar-software';
 import {incorporarEmpresariales} from './incorporar-empresariales';
 import {completarExistencias} from './existencias-catalogo';
 import {cache} from 'react';
@@ -17,7 +18,7 @@ export const leerCatalogoPublico=cache(async():Promise<CatalogoPublico>=>{
   if(!cliente) return publicarCatalogo(obtenerCatalogoInicial());
   const {data,error}=await cliente.from('catalogo_publico').select('contenido').eq('id',1).maybeSingle();
   if(error) console.error('CATALOGO_LECTURA_NO_DISPONIBLE',error.code);
-  const c=data?.contenido?await completarExistencias(catalogoPublicoManual(data.contenido)):publicarCatalogo(obtenerCatalogoInicial());
+  const c=completarSoftwarePublico(data?.contenido?await completarExistencias(catalogoPublicoManual(data.contenido)):publicarCatalogo(obtenerCatalogoInicial()),obtenerCatalogoInicial());
   if(c.versionEmpresarial===1)return c;
   const empresas=publicarCatalogo(obtenerCatalogoInicial()).productos.filter(p=>p.coleccion==='empresas');
   const ids=new Set(c.productos.map(p=>p.id));

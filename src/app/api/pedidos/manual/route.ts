@@ -1,3 +1,4 @@
+import {modalidadCompraValida} from '@/lib/software';
 import {leerTextoLimitado} from '@/lib/limites-http';
 import {datosClienteCompra} from '@/lib/datos-cliente-compra';
 import {verificarCompraEurocomp} from '@/lib/eurocomp-compra';
@@ -17,7 +18,7 @@ const entrada = z.object({
   metodo: z.enum(['sinpe', 'transferencia']),
   articulos: z.array(z.object({ id: z.string().regex(/^[a-z0-9-]{1,60}$/), cantidad: z.number().int().min(1).max(99) })).min(1).max(30),
 }).superRefine((v, ctx) => {
-  if (v.datos.modalidad !== 'retiro' && (!v.datos.provincia || !v.datos.canton || !v.datos.distrito || !v.datos.direccion)) ctx.addIssue({ code: 'custom', message: 'entrega' });
+  if (['envio','express'].includes(v.datos.modalidad) && (!v.datos.provincia || !v.datos.canton || !v.datos.distrito || !v.datos.direccion)) ctx.addIssue({ code: 'custom', message: 'entrega' });
   if (v.datos.factura === 'electronica' && (!v.datos.identificacion || !v.datos.razonSocial || !v.datos.correoFactura || !v.datos.direccionFiscal)) ctx.addIssue({ code: 'custom', message: 'factura' });
   if (new Set(v.articulos.map(x => x.id)).size !== v.articulos.length) ctx.addIssue({ code: 'custom', message: 'duplicado' });
 });
@@ -45,6 +46,7 @@ export async function POST(request: Request) {
     total += producto.precio * linea.cantidad;
     articulos.push({ id: producto.id, codigo: producto.codigoFabricante, nombre: producto.nombre.es, cantidad: linea.cantidad, precio: producto.precio });
   }
+  if(!modalidadCompraValida(aprobacion.articulos,datos.datos.modalidad))return Response.json({error:'datos_invalidos'},{status:400});
   const envio = costoEntrega(datos.datos.modalidad);
   const totalConEnvio = total + envio;
   if (!Number.isSafeInteger(totalConEnvio) || total <= 0 || totalConEnvio > 100000000) return Response.json({ error: 'datos_invalidos' }, { status: 400 });
@@ -58,8 +60,8 @@ export async function POST(request: Request) {
   const numero = numeroPedido(id,guardado?.referencia_numero);
   const enlace = enlacePedido(config, id, config.origen);
   const ingles = datos.idioma === 'en';
-  const entregaEs=datos.datos.modalidad==='express'?'Servicio de Express: se cotiza y paga por separado':`${datos.datos.modalidad==='envio'?'Envío por Correos de Costa Rica':'Retiro en tienda'}: ${colones(envio)}`;
-  const entregaEn=datos.datos.modalidad==='express'?'Express delivery: quoted and paid separately':`${datos.datos.modalidad==='envio'?'Correos de Costa Rica shipping':'Store pickup'}: ${colones(envio)}`;
+  const entregaEs=datos.datos.modalidad==='digital'?'Entrega digital por correo · Bajo pedido':datos.datos.modalidad==='express'?'Servicio de Express: se cotiza y paga por separado':`${datos.datos.modalidad==='envio'?'Envío por Correos de Costa Rica':'Retiro en tienda'}: ${colones(envio)}`;
+  const entregaEn=datos.datos.modalidad==='digital'?'Digital delivery by email · On order':datos.datos.modalidad==='express'?'Express delivery: quoted and paid separately':`${datos.datos.modalidad==='envio'?'Correos de Costa Rica shipping':'Store pickup'}: ${colones(envio)}`;
   const cliente = enviarCorreo({ destinatario: datos.datos.correo,idioma:ingles?'en':'es',
     diseno:{titulo:ingles?'Order received':'Pedido recibido',etiqueta:ingles?'YOUR NEXT STEP':'EL SIGUIENTE PASO',referencia:numero,total:{etiqueta:ingles?'Total to pay':'Total por pagar',valor:colones(totalConEnvio)},productos:articulos,detalles:[{etiqueta:ingles?'Payment method':'Forma de pago',valor:datos.metodo==='sinpe'?'SINPE Móvil':ingles?'Bank transfer':'Transferencia bancaria'},{etiqueta:ingles?'Delivery':'Entrega',valor:ingles?entregaEn:entregaEs}]},
     accion: {texto: ingles ? 'View my order' : 'Ver mi pedido', url: enlace},
