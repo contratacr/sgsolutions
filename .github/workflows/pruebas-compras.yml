@@ -40,10 +40,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run verificar
-      - name: Validar cobertura administrativa y MFA en PostgreSQL efímero
-        run: |
-          node scripts/verificar-mfa.mjs
-          node tests/sql/mfa-administradores.mjs
+      - name: Revisar cobertura de entradas administrativas
+        run: node scripts/verificar-mfa.mjs
+      - name: Validar MFA en PostgreSQL efímero
+        if: github.event_name == 'workflow_dispatch'
+        run: node tests/sql/mfa-administradores.mjs
       - name: Buscar secretos también en el historial
         run: node scripts/verificar-secretos.mjs --historial
       - name: Revisar dependencias de producción
@@ -51,14 +52,19 @@ jobs:
       - name: Revisar dependencias completas y bloquear alertas nuevas graves
         run: node scripts/verificar-dependencias.mjs
       - name: Validar contadores agregados y exclusión de administradores en PostgreSQL efímero
+        if: github.event_name == 'workflow_dispatch'
         run: node tests/sql/estadisticas-panel.mjs
       - name: Validar permisos, relaciones y archivos de soporte en PostgreSQL efímero
+        if: github.event_name == 'workflow_dispatch'
         run: node tests/sql/soporte-panel.mjs
       - name: Validar referencias de pedidos y conservación de datos
+        if: github.event_name == 'workflow_dispatch'
         run: node tests/sql/referencias-pedidos.mjs
       - name: Validar archivo de pedidos y envíos Express
+        if: github.event_name == 'workflow_dispatch'
         run: node tests/sql/pedidos-archivo-express.mjs
       - name: Validar restricciones y aislamiento de favoritos en PostgreSQL efímero
+        if: github.event_name == 'workflow_dispatch'
         run: node tests/sql/favoritos-empresariales.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()

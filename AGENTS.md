@@ -1,5 +1,7 @@
 # SG Solutions
 
+- Preferencia actual del usuario (2026-10-19): después de la validación de doble factor ya autorizada, preguntar antes de ejecutar cualquier prueba y esperar su confirmación explícita. Esto incluye pruebas pertinentes, regresiones, workflows de testing y smoke de producción; un pedido de push o despliegue por sí solo no autoriza esas pruebas. Esta preferencia prevalece sobre las instrucciones de pruebas automáticas que siguen. Mantener los controles rápidos de tipos, lint, textos, secretos y dependencias.
+
 - Todo cambio de interfaz debe incluir español e inglés: textos, accesibilidad, mensajes y metadatos. Mantener el selector de idioma en cada página y verificar la persistencia de la preferencia. Ejecutar `npm run verificar:textos`.
 - La navegación entre páginas de SG Solutions abre en la misma pestaña. WhatsApp, Outlook y mapas externos abren en otra pestaña con `rel="noopener noreferrer"` e indicación accesible traducida, según la última preferencia del usuario.
 - Antes de entregar cambios, verificar las rutas afectadas en escritorio/móvil y ambos idiomas. Mantener `npm run verificar`, build y pruebas pertinentes.
