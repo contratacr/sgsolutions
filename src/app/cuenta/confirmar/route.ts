@@ -1,3 +1,4 @@
+import {VERSION_POLITICAS} from '@/lib/politicas';
 import {retornoCompra} from '@/lib/retorno-compra';
 import {solicitudCuenta,errorCuenta} from '@/lib/cuenta-errores';
 import { NextRequest, NextResponse } from 'next/server';
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
     const almacen=await cookies();
     const aceptacion=almacen.get('sg-aceptacion-oauth')?.value;
     if(aceptacion){
-      const guardado=await solicitudCuenta(()=>cliente.auth.updateUser({data:{aceptacion_terminos_fecha:aceptacion,aceptacion_terminos_version:'2026-10-12'}}));
+      const guardado=await solicitudCuenta(()=>cliente.auth.updateUser({data:{aceptacion_terminos_fecha:aceptacion,aceptacion_terminos_version:VERSION_POLITICAS}}));
       if(guardado.error){
         await solicitudCuenta(()=>cliente.auth.signOut());
         destino.searchParams.set('error','conexion');

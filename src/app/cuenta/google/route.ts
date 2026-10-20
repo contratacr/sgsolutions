@@ -1,3 +1,4 @@
+import {VERSION_POLITICAS} from '@/lib/politicas';
 import {leerTextoLimitado} from '@/lib/limites-http';
 import {cookies} from 'next/headers';
 import {NextResponse} from 'next/server';
@@ -33,7 +34,7 @@ export async function POST(request:Request){
   almacen.set(cookie,'',{...opciones,maxAge:0});
   const [fecha,nonce]=valor.split('.');
   if(!/^\d{13}$/.test(fecha)||!nonce||!/^[a-f0-9]{64}$/.test(nonce)||Date.now()-Number(fecha)>600000||Number(fecha)>Date.now()||!datos.data.credential)return respuesta({error:'sesionVencida'},400);
-  if(datos.data.registro&&!datos.data.aceptado)return respuesta({error:'aceptacionRequerida'},400);
+  if(!datos.data.aceptado)return respuesta({error:'aceptacionRequerida'},400);
   const cliente=await crearClienteCuenta();
   if(!cliente)return respuesta({error:'noDisponible'},503);
   // Supabase verifies Google's signature, audience, expiry and hashed nonce. Never
@@ -45,8 +46,8 @@ export async function POST(request:Request){
    await cliente.auth.signOut({scope:'local'});
    return respuesta({error:habilitada.error?'conexion':'cuentaBloqueada'},403);
   }
-  if(datos.data.registro){
-   const guardado=await cliente.auth.updateUser({data:{aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:'2026-10-12'}});
+  if(datos.data.aceptado){
+   const guardado=await cliente.auth.updateUser({data:{aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:VERSION_POLITICAS}});
    if(guardado.error){await cliente.auth.signOut({scope:'local'});return respuesta({error:'conexion'},503);}
   }
   return respuesta({destino:retornoCompra(datos.data.retorno)??'/cuenta'});

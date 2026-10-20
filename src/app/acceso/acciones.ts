@@ -1,4 +1,5 @@
 'use server';
+import {marcarLimpiezaCompra} from '@/lib/limpieza-compra-servidor';
 import {conservarExclusionAdministrativa,guardarNavegadorAdministrativo} from '@/lib/exclusion-medicion';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
@@ -22,6 +23,7 @@ export async function iniciarSesion(_estado: string, datos: FormData): Promise<s
   redirect('/admin');
 }
 export async function cerrarSesion() {
+  await marcarLimpiezaCompra();
   if(await sesionLocal())await guardarNavegadorAdministrativo();
   await salirLocal();
   const cliente = await crearClienteServidor();

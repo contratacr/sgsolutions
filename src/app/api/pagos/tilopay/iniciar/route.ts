@@ -1,3 +1,4 @@
+import {aceptacionPedido} from '@/lib/politicas';
 import {modalidadCompraValida} from '@/lib/software';
 import {leerTextoLimitado} from '@/lib/limites-http';
 import {datosClienteCompra,telefonoCompra} from '@/lib/datos-cliente-compra';
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
   const db = basePedidos(config);
   const { error: guardarError } = await db.from('pedidos_tilopay').insert({
     id, solicitud_asesoria_id:aprobacion.id, estado: 'iniciado', entorno: config.modo, total, moneda: 'CRC',
-    cliente: { ...(entrada.datos ?? {nombre:entrada.nombre,apellidos:entrada.apellidos,correo:entrada.correo,telefono:entrada.telefono,modalidad:'retiro'}), idioma:entrada.idioma, total_productos:subtotal, costo_envio:envio, envio_cobro_separado:entrada.datos?.modalidad==='express' },
+    cliente: { ...(entrada.datos ?? {nombre:entrada.nombre,apellidos:entrada.apellidos,correo:entrada.correo,telefono:entrada.telefono,modalidad:'retiro'}), ...aceptacionPedido(), idioma:entrada.idioma, total_productos:subtotal, costo_envio:envio, envio_cobro_separado:entrada.datos?.modalidad==='express' },
     articulos,
   });
   if (guardarError) {await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}

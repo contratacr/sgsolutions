@@ -1,4 +1,5 @@
 'use server';
+import {marcarLimpiezaCompra} from '@/lib/limpieza-compra-servidor';
 import {redirect} from 'next/navigation';
 import {revalidatePath} from 'next/cache';
 import {crearClienteCuenta} from '@/lib/supabase/cuenta';
@@ -40,7 +41,7 @@ export async function desactivarCuentaPropia(_estado:EstadoSeguridad,formulario:
   if(formulario.get('acepta')!=='si'||String(formulario.get('confirmacion')??'').trim().toLowerCase()!==sesion.user.email!.toLowerCase())return 'confirmarDesactivacion';
   const {error}=await sesion.cliente.rpc('desactivar_mi_cuenta');
   if(error)return error.message.includes('ADMIN_PROTEGIDO')?'adminProtegido':error.message.includes('REAUTENTICAR')?'reautenticar':error.code==='PGRST202'?'noDisponible':'error';
-  desactivada=true;await sesion.cliente.auth.signOut({scope:'global'});
+  desactivada=true;await marcarLimpiezaCompra();await sesion.cliente.auth.signOut({scope:'global'});
  }catch{if(!desactivada)return 'error';}
  redirect('/cuenta?desactivada=si');
 }

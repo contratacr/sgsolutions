@@ -1,4 +1,5 @@
 'use server';
+import {PLAZO_ENTREGA_DIAS_HABILES,textoPlazoEntrega} from '@/lib/politicas';
 import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {archivarAsesoriaPanel} from '@/lib/asesorias';
 import {puedeArchivar,motivoArchivoValido,type TipoRegistroPanel} from '@/lib/archivo-pedidos';
@@ -59,9 +60,9 @@ export async function actualizarPedidoManual(form: FormData) {
       await enviarCorreo({ destinatario: pedido.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},
         accion: {texto: ingles ? 'View my order' : 'Ver mi pedido', url: destino.href},
         asunto: ingles ? `Payment details for order ${numero}` : `Datos de pago del pedido ${numero}`,
-        texto: ingles
+        texto: (ingles
           ? `Your order ${numero} is ready for payment. Final total: ${colones(Number(cambios.total_cobrar))}. Pay to ${pagos.titular}: ${cuenta}. Use ${numero} as reference. You may upload the receipt here: ${destino.href}. We will verify the funds in our bank before preparing the order.`
-          : `Su pedido ${numero} está listo para pago. Total definitivo: ${colones(Number(cambios.total_cobrar))}. Pague a ${pagos.titular}: ${cuenta}. Use ${numero} como referencia. Puede adjuntar el comprobante aquí: ${destino.href}. Verificaremos el ingreso en el banco antes de preparar el pedido.`,
+          : `Su pedido ${numero} está listo para pago. Total definitivo: ${colones(Number(cambios.total_cobrar))}. Pague a ${pagos.titular}: ${cuenta}. Use ${numero} como referencia. Puede adjuntar el comprobante aquí: ${destino.href}. Verificaremos el ingreso en el banco antes de preparar el pedido.`)+(pedido.cliente?.plazo_entrega_dias_habiles===PLAZO_ENTREGA_DIAS_HABILES?`\n\n${textoPlazoEntrega(ingles)}`:''),
       });
       correoEnviado = true;
       await db.from('pedidos_manuales').update({ correo_pago_en: new Date().toISOString() }).eq('id', id);
@@ -70,7 +71,7 @@ export async function actualizarPedidoManual(form: FormData) {
     try {
       await enviarCorreo({ destinatario: pedido.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},
         asunto: ingles ? `Payment confirmed for ${numero}` : `Pago confirmado para ${numero}`,
-        texto: ingles ? `We verified payment for order ${numero}. Our team will coordinate the next step with you.` : `Verificamos el pago del pedido ${numero}. Nuestro equipo coordinará el siguiente paso con usted.`,
+        texto: (ingles ? `We verified payment for order ${numero}. Our team will coordinate the next step with you.` : `Verificamos el pago del pedido ${numero}. Nuestro equipo coordinará el siguiente paso con usted.`)+(pedido.cliente?.plazo_entrega_dias_habiles===PLAZO_ENTREGA_DIAS_HABILES?`\n\n${textoPlazoEntrega(ingles)}`:''),
       }); correoEnviado = true;
     } catch { /* El pedido conserva el estado; avisar desde el panel. */ }
   }
@@ -92,7 +93,7 @@ export async function reenviarCorreoPedido(form:FormData){
  const ingles=p.cliente?.idioma==='en',numero=numeroPedido(id,p.referencia_numero);
  const estado=ingles?{pendiente_pago:'Pending payment',comprobante_recibido:'Receipt received, awaiting bank verification',pagado:'Payment verified'}:{pendiente_pago:'Pendiente de pago',comprobante_recibido:'Comprobante recibido, pendiente de verificación bancaria',pagado:'Pago verificado'};
  let enviado=false;
- try{await enviarCorreo({destinatario:p.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},accion:{texto:ingles?'View my order':'Ver mi pedido',url:enlace.href},asunto:ingles?`Your SG Solutions order ${numero}`:`Su pedido ${numero} de SG Solutions`,texto:[`${ingles?'Order':'Pedido'}: ${numero}`,`${ingles?'Status':'Estado'}: ${estado[p.estado as keyof typeof estado]}`,`Total: ${colones(Number(p.total_cobrar))}`,`${ingles?'Order details and payment receipt':'Detalle del pedido y comprobante'}: ${enlace.href}`].filter(Boolean).join('\n\n')});enviado=true;await db.from('pedidos_manuales').update({correo_cliente_en:new Date().toISOString(),...(p.estado==='pendiente_pago'?{correo_pago_en:new Date().toISOString()}:{})}).eq('id',id);}catch{/* The order remains intact and can be shared through its private link. */}
+ try{await enviarCorreo({destinatario:p.cliente.correo,idioma:ingles?'en':'es',diseno:{referencia:numero},accion:{texto:ingles?'View my order':'Ver mi pedido',url:enlace.href},asunto:ingles?`Your SG Solutions order ${numero}`:`Su pedido ${numero} de SG Solutions`,texto:[`${ingles?'Order':'Pedido'}: ${numero}`,`${ingles?'Status':'Estado'}: ${estado[p.estado as keyof typeof estado]}`,`Total: ${colones(Number(p.total_cobrar))}`,`${ingles?'Order details and payment receipt':'Detalle del pedido y comprobante'}: ${enlace.href}`,p.cliente?.plazo_entrega_dias_habiles===PLAZO_ENTREGA_DIAS_HABILES?textoPlazoEntrega(ingles):''].filter(Boolean).join('\n\n')});enviado=true;await db.from('pedidos_manuales').update({correo_cliente_en:new Date().toISOString(),...(p.estado==='pendiente_pago'?{correo_pago_en:new Date().toISOString()}:{})}).eq('id',id);}catch{/* The order remains intact and can be shared through its private link. */}
  revalidatePath('/panel/pedidos');redirect(`/panel/pedidos?resultado=${enviado?'guardado':'sin_correo'}&pedido=${id}`);
 }
 

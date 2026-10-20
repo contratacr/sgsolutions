@@ -17,7 +17,7 @@ for(const idioma of ['es','en'])test(`retorno nativo conserva carrito, idioma y 
  await expect(page.locator('[id^=tlpy_],input[autocomplete^="cc-"]')).toHaveCount(0);
  await page.locator('[name=pago][value=tarjeta]').check();
  await page.evaluate(()=>window.dispatchEvent(new Event('sg-app-background')));
- const draft=await page.evaluate(()=>localStorage.getItem('sg-compra-borrador-v1:carrito'));
+ const draft=await page.evaluate(()=>sessionStorage.getItem('sg-compra-borrador-v1:carrito'));
  expect(JSON.parse(draft!).datos.nombre).toBe('Autocompletado nativo');expect(draft).not.toContain('4111111111111111');expect(draft).not.toContain('987');expect(draft).not.toContain('tlpy_');
  await page.reload();await expect(page.locator('[name=nombre]')).toHaveValue('Autocompletado nativo');await expect(page.locator('.carrito-cantidad')).toHaveText('3');await expect(page.locator('html')).toHaveAttribute('lang',idioma);
 });

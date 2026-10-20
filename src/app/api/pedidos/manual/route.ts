@@ -1,3 +1,4 @@
+import {aceptacionPedido,textoPlazoEntrega} from '@/lib/politicas';
 import {modalidadCompraValida} from '@/lib/software';
 import {leerTextoLimitado} from '@/lib/limites-http';
 import {datosClienteCompra} from '@/lib/datos-cliente-compra';
@@ -54,7 +55,7 @@ export async function POST(request: Request) {
   if(!await reservarAprobacion(aprobacion))return Response.json({error:"asesoria_requerida"},{status:403});
   const id = crypto.randomUUID();
   const db = basePedidosManuales(config);
-  const { data:guardado,error } = await db.from('pedidos_manuales').insert({ id, solicitud_asesoria_id:aprobacion.id, estado:'pendiente_pago', metodo: datos.metodo, total_productos: total, costo_envio: envio, total_cobrar: totalConEnvio, cliente: { ...datos.datos, idioma: datos.idioma, envio_cobro_separado:datos.datos.modalidad==='express' }, articulos }).select('referencia_numero').single();
+  const { data:guardado,error } = await db.from('pedidos_manuales').insert({ id, solicitud_asesoria_id:aprobacion.id, estado:'pendiente_pago', metodo: datos.metodo, total_productos: total, costo_envio: envio, total_cobrar: totalConEnvio, cliente: { ...datos.datos, ...aceptacionPedido(), idioma: datos.idioma, envio_cobro_separado:datos.datos.modalidad==='express' }, articulos }).select('referencia_numero').single();
   if (error) {console.error('pedido_manual_fallido',{etapa:'guardar',codigo:/^[A-Z0-9]{1,12}$/.test(error.code??'')?error.code:'no_disponible'});await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
   await cambiarAsesoria(aprobacion.id,'procesando',{estado:'utilizada',pedido_id:id});
   const numero = numeroPedido(id,guardado?.referencia_numero);
@@ -63,15 +64,15 @@ export async function POST(request: Request) {
   const entregaEs=datos.datos.modalidad==='digital'?'Entrega digital por correo · Bajo pedido':datos.datos.modalidad==='express'?'Servicio de Express: se cotiza y paga por separado':`${datos.datos.modalidad==='envio'?'Envío por Correos de Costa Rica':'Retiro en tienda'}: ${colones(envio)}`;
   const entregaEn=datos.datos.modalidad==='digital'?'Digital delivery by email · On order':datos.datos.modalidad==='express'?'Express delivery: quoted and paid separately':`${datos.datos.modalidad==='envio'?'Correos de Costa Rica shipping':'Store pickup'}: ${colones(envio)}`;
   const cliente = enviarCorreo({ destinatario: datos.datos.correo,idioma:ingles?'en':'es',
-    diseno:{titulo:ingles?'Order received':'Pedido recibido',etiqueta:ingles?'YOUR NEXT STEP':'EL SIGUIENTE PASO',referencia:numero,total:{etiqueta:ingles?'Total to pay':'Total por pagar',valor:colones(totalConEnvio)},productos:articulos,detalles:[{etiqueta:ingles?'Payment method':'Forma de pago',valor:datos.metodo==='sinpe'?'SINPE Móvil':ingles?'Bank transfer':'Transferencia bancaria'},{etiqueta:ingles?'Delivery':'Entrega',valor:ingles?entregaEn:entregaEs}]},
+    diseno:{titulo:ingles?'Order received':'Pedido recibido',etiqueta:ingles?'YOUR NEXT STEP':'EL SIGUIENTE PASO',referencia:numero,total:{etiqueta:ingles?'Total to pay':'Total por pagar',valor:colones(totalConEnvio)},productos:articulos,detalles:[{etiqueta:ingles?'Payment method':'Forma de pago',valor:datos.metodo==='sinpe'?'SINPE Móvil':ingles?'Bank transfer':'Transferencia bancaria'},{etiqueta:ingles?'Delivery':'Entrega',valor:ingles?entregaEn:entregaEs},{etiqueta:ingles?'Delivery timeframe':'Plazo de entrega',valor:textoPlazoEntrega(ingles)}]},
     accion: {texto: ingles ? 'View my order' : 'Ver mi pedido', url: enlace},
     asunto: ingles ? `SG Solutions order ${numero} received` : `Recibimos su pedido ${numero} de SG Solutions`,
     texto: ingles
-      ? `Thank you for your order. Open your order to review payment instructions and upload your receipt: ${enlace}\n\nWe will verify the funds in our bank before preparing your order.`
-      : `Gracias por su pedido. Abra el detalle para consultar los datos de pago y adjuntar su comprobante: ${enlace}\n\nVerificaremos el ingreso en el banco antes de preparar su pedido.`,
+      ? `Thank you for your order. Open your order to review payment instructions and upload your receipt: ${enlace}\n\nWe will verify the funds in our bank before preparing your order.\n\n${textoPlazoEntrega(true)}`
+      : `Gracias por su pedido. Abra el detalle para consultar los datos de pago y adjuntar su comprobante: ${enlace}\n\nVerificaremos el ingreso en el banco antes de preparar su pedido.\n\n${textoPlazoEntrega()}`,
   });
   const equipo = enviarCorreo({ destinatario: empresa.correo,diseno:{referencia:numero}, asunto: `Nuevo pedido ${numero} · ${datos.metodo.toUpperCase()}`,
-    texto: `Pedido ${numero}\nCliente: ${datos.datos.nombre} ${datos.datos.apellidos}\nCorreo: ${datos.datos.correo}\nTeléfono: ${datos.datos.telefono}\nProductos: ${articulos.map(x => `${x.cantidad} × ${x.nombre}`).join(', ')}\nSubtotal: ${colones(total)}\n${entregaEs}\nTotal: ${colones(totalConEnvio)}\nVerifique el ingreso bancario antes de preparar la entrega.`,
+    texto: `Pedido ${numero}\nCliente: ${datos.datos.nombre} ${datos.datos.apellidos}\nCorreo: ${datos.datos.correo}\nTeléfono: ${datos.datos.telefono}\nProductos: ${articulos.map(x => `${x.cantidad} × ${x.nombre}`).join(', ')}\nSubtotal: ${colones(total)}\n${entregaEs}\nTotal: ${colones(totalConEnvio)}\nVerifique el ingreso bancario antes de preparar la entrega.\n\n${textoPlazoEntrega()}`,
   });
   const [correoCliente, correoEquipo] = await Promise.allSettled([cliente, equipo]);
   if (correoCliente.status === 'fulfilled' || correoEquipo.status === 'fulfilled') await db.from('pedidos_manuales').update({

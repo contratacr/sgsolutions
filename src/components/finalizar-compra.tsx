@@ -1,4 +1,5 @@
 "use client";
+import {DURACION_BORRADOR_COMPRA,depurarBorradoresCompra,huellaCompra,huellaBorrador} from '@/lib/borrador-compra';
 import {DireccionCompra} from './direccion-compra';
 import {normalizarComprobante} from '@/lib/archivo-comprobante';
 import {CampoIdentificacion} from './campo-identificacion';
@@ -82,8 +83,9 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
     queueMicrotask(()=>{
       if(!activo)return;
       try{
-        const d=JSON.parse(localStorage.getItem(claveBorrador)||'null');
-        if(d&&Number.isFinite(d.fecha)&&Date.now()-d.fecha>=0&&Date.now()-d.fecha<86400000&&d.datos&&typeof d.datos==='object'){
+        depurarBorradoresCompra();
+        const d=JSON.parse(sessionStorage.getItem(claveBorrador)||'null');
+        if(d&&Number.isFinite(d.fecha)&&Date.now()-d.fecha>=0&&Date.now()-d.fecha<DURACION_BORRADOR_COMPRA&&d.datos&&typeof d.datos==='object'){
           borradorModificado.current=true;
           setBorrador(prev=>({...prev,...Object.fromEntries(Object.entries(d.datos).filter((entrada):entrada is [string,string]=>CAMPOS_BORRADOR.includes(entrada[0])&&typeof entrada[1]==='string'))}));
           if(['fisica','juridica','dimex','nite'].includes(d.tipo))setTipoIdentificacion(d.tipo);
@@ -97,13 +99,14 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
     });
     return()=>{activo=false;};
   },[claveBorrador]);
+  useEffect(()=>{const limpiar=()=>{borradorModificado.current=false;compraTerminada.current=true;setBorrador({});setRevision(null);formularioPasos.current?.reset();};window.addEventListener('sg-compra-limpiada',limpiar);return()=>window.removeEventListener('sg-compra-limpiada',limpiar);},[]);
   const guardarBorradorActual=useRef(()=>{});
   useEffect(()=>{
     const guardar=()=>{
       if(!borradorListo||!borradorModificado.current||compraTerminada.current||!formularioPasos.current)return;
       const valores=new FormData(formularioPasos.current);
       const datos=Object.fromEntries(CAMPOS_BORRADOR.flatMap(k=>{const v=valores.get(k);return typeof v==='string'?[[k,v]]:[];}));
-      try{localStorage.setItem(claveBorrador,JSON.stringify({fecha:Date.now(),datos,tipo:tipoIdentificacion,express,entrega,factura,otro,notas:agregarNotas,pago,paso}));}catch{/* No interrumpir la compra. */}
+      try{sessionStorage.setItem(claveBorrador,JSON.stringify({fecha:Date.now(),datos,tipo:tipoIdentificacion,express,entrega,factura,otro,notas:agregarNotas,pago,paso}));}catch{/* No interrumpir la compra. */}
     };
     guardarBorradorActual.current=guardar;guardar();
     window.addEventListener('pagehide',guardar);
@@ -111,7 +114,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
     document.addEventListener('visibilitychange',guardar);
     return()=>{guardar();window.removeEventListener('pagehide',guardar);window.removeEventListener('sg-app-background',guardar);document.removeEventListener('visibilitychange',guardar);};
   },[borradorListo,claveBorrador,tipoIdentificacion,express,entrega,factura,otro,agregarNotas,pago,paso]);
-  function limpiarBorrador(){compraTerminada.current=true;try{localStorage.removeItem(claveBorrador);}catch{}}
+  function limpiarBorrador(){compraTerminada.current=true;try{sessionStorage.removeItem(claveBorrador);}catch{}}
   function cambiarPaso(valor:number){setPaso(valor);setUltimoPaso(actual=>Math.max(actual,valor));setErrorFormulario(false);requestAnimationFrame(()=>{cabeceraPasos.current?.focus({preventScroll:true});cabeceraPasos.current?.scrollIntoView({block:'start',behavior:'instant'});});}
   function validarPaso(form:HTMLFormElement,numero:number){
     const grupo=form.querySelector<HTMLElement>('[data-compra-paso="'+numero+'"]');
@@ -207,10 +210,10 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
     setErrorPago(false);
     try {
       if(simularPedido){await simularPedido(datosCompra,'tarjeta');limpiarBorrador();return;}
-      const huella=JSON.stringify({datosCompra,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))});
+      const huella=await huellaCompra(JSON.stringify({datosCompra,articulos:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))}));
       const clavePendiente='sg-pago-pendiente-v1:'+claveBorrador;
       let anterior=null;
-      try{anterior=JSON.parse(localStorage.getItem(clavePendiente)||'null');}catch{}
+      try{anterior=JSON.parse(sessionStorage.getItem(clavePendiente)||'null');}catch{}
       if(anterior?.huella===huella&&instantePago()-anterior.fecha<86400000&&typeof anterior.url==='string'){
         const url=new URL(anterior.url);
         if(url.protocol==='https:'&&['secure.tilopay.com','securepayment.tilopay.com','app.tilopay.com'].includes(url.hostname)){
@@ -233,7 +236,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
       const destino=new URL(datos.url);
       if(destino.protocol!=='https:'||!['secure.tilopay.com','securepayment.tilopay.com','app.tilopay.com'].includes(destino.hostname))throw new Error('PAGO_NO_DISPONIBLE');
       guardarBorradorActual.current();
-      try{localStorage.setItem(clavePendiente,JSON.stringify({fecha:instantePago(),huella,url:datos.url,pedido:datos.pedido,ruta:location.pathname+location.search,claveBorrador,borrador:localStorage.getItem(claveBorrador),articulos:aprobacion?[]:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))}));}catch{/* La navegación no depende del almacenamiento. */}
+      try{const borrador=await huellaBorrador(sessionStorage.getItem(claveBorrador));sessionStorage.setItem(clavePendiente,JSON.stringify({fecha:instantePago(),huella,url:datos.url,pedido:datos.pedido,ruta:location.pathname+location.search,claveBorrador,borrador,articulos:aprobacion?[]:productos.map(x=>({id:x.p.id,cantidad:x.cantidad}))}));}catch{/* La navegación no depende del almacenamiento. */}
       window.location.assign(datos.url);
     } catch {
       setErrorPago(true);
@@ -385,6 +388,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                   <h2>
                     {t("entregaTitulo")}
                   </h2>
+                  <p className="compra-aviso">{t('plazoEntrega')} {t('plazoEntregaDetalle')}</p>
                   <fieldset className="compra-opciones">
                     <legend>{t("modalidad")}<IndicadorCampo obligatorio/></legend>
                     {(soloDigital?["digital"]:["retiro", "envio", "express"]).map((m, i) => (
@@ -499,9 +503,10 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                     {errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}
                   </div>
                   )}
+                  <p className="compra-aviso">{t('plazoEntrega')}</p>
                   <label className="compra-check">
                     <input type="checkbox" name="consentimiento" required />
-                    <span>{t("consentimiento")}<IndicadorCampo obligatorio/></span>
+                    <span>{t.rich('consentimientoLegal',{terminos:trozos=><Link href="/terminos">{trozos}</Link>,privacidad:trozos=><Link href="/privacidad">{trozos}</Link>})}<IndicadorCampo obligatorio/></span>
                   </label>
                   {errorPago&&<p role="alert">{t('errorPago')}</p>}
                   {errorFormulario && <p role="alert" className="aviso-formulario">{t('validacion')}</p>}
@@ -551,6 +556,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
               <div className="compra-total"><dt>{t('total')}</dt><dd>{pendiente ? t('pendiente') : colones(total)}</dd></div>
             </dl>
             <p>{t("iva")}</p>
+            <p>{t('plazoEntrega')}</p>
             {bloqueado && <p role="alert">{t("carga")}</p>}
           </aside>
         </div>

@@ -1,4 +1,6 @@
 'use server';
+import {VERSION_POLITICAS} from '@/lib/politicas';
+import {marcarLimpiezaCompra} from '@/lib/limpieza-compra-servidor';
 import {conservarExclusionAdministrativa} from '@/lib/exclusion-medicion';
 import {retornoCompra} from '@/lib/retorno-compra';
 import { z } from 'zod';
@@ -41,7 +43,7 @@ export async function accederCliente(_anterior: EstadoAccesoCliente, formulario:
     if (!cliente || !origen) return 'noDisponible';
     const idioma = (await cookies()).get('sg-idioma')?.value === 'en' ? 'en' : 'es';
     await guardarRetorno(formulario.get('retorno'),origen);
-    const {error} = await solicitudCuenta(()=>cliente.auth.signUp({email:validado.data.correo,password:validado.data.clave,options:{emailRedirectTo:`${origen}/cuenta/confirmar`,data:{nombre_completo:validado.data.nombre,idioma,aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:'2026-10-12'}}}));
+    const {error} = await solicitudCuenta(()=>cliente.auth.signUp({email:validado.data.correo,password:validado.data.clave,options:{emailRedirectTo:`${origen}/cuenta/confirmar`,data:{nombre_completo:validado.data.nombre,idioma,aceptacion_terminos_fecha:new Date().toISOString(),aceptacion_terminos_version:VERSION_POLITICAS}}}));
     if (error && !['email_exists','user_already_exists'].includes('code' in error ? String(error.code):'')) return errorCuenta(error);
     return 'registroEnviado';
   }
@@ -81,6 +83,7 @@ export async function actualizarClaveCliente(_anterior: EstadoAccesoCliente, for
   redirect('/cuenta?clave=actualizada');
 }
 export async function cerrarSesionCliente() {
+  await marcarLimpiezaCompra();
   const cliente = await crearClienteCuenta();
   await conservarExclusionAdministrativa(cliente);
   if (cliente) await cliente.auth.signOut();
@@ -89,7 +92,7 @@ export async function cerrarSesionCliente() {
 }
 
 export async function accederCuentaSocial(_anterior:EstadoAccesoCliente,formulario:FormData):Promise<EstadoAccesoCliente> {
-  if(formulario.get('modo')==='registro'&&formulario.get('acepta')!=='si') return 'aceptacionRequerida';
+  if(formulario.get('acepta')!=='si') return 'aceptacionRequerida';
   const proveedor=formulario.get('proveedor');
   if (proveedor!=='google' && proveedor!=='facebook') return 'invalido';
   const habilitados=await proveedoresCuenta();
@@ -102,7 +105,7 @@ export async function accederCuentaSocial(_anterior:EstadoAccesoCliente,formular
   if(respuesta.error) return errorCuenta(respuesta.error);
   const data='data' in respuesta?respuesta.data:null;
   if(!data?.url)return 'error';
-  if(formulario.get('modo')==='registro') (await cookies()).set('sg-aceptacion-oauth',new Date().toISOString(),{httpOnly:true,secure:origen.startsWith('https:'),sameSite:'lax',path:'/cuenta',maxAge:600});
+  (await cookies()).set('sg-aceptacion-oauth',new Date().toISOString(),{httpOnly:true,secure:origen.startsWith('https:'),sameSite:'lax',path:'/cuenta',maxAge:600});
   redirect(data.url);
 }
 

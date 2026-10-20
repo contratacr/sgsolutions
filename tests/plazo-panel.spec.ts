@@ -1,0 +1,21 @@
+import {test,expect} from '@playwright/test';
+import {readFile} from 'node:fs/promises';
+import es from '../messages/es.json';import en from '../messages/en.json';
+for(const idioma of ['es','en'] as const)for(const nuevo of [true,false])test(`correos del panel conservan plazo e históricos ${idioma} ${nuevo?'nuevo':'anterior'}`,async({page,context,request})=>{
+ const fixture='http://127.0.0.1:3135',t=(idioma==='es'?es:en).PedidosAdmin;
+ await request.get(`${fixture}/reset?plazo=${nuevo?'nuevo':'anterior'}&idioma=${idioma}&revision=1`);
+ const {token}=JSON.parse(await readFile('.privado/contenido-pruebas/sesion.json','utf8'));
+ await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
+ await page.goto('/panel/pedidos');const card=page.locator('.pedidos-admin-tarjeta').filter({hasText:'Retiro QA'}).first();
+ await card.locator('.panel-pedido-detalle>summary').click();
+ await card.getByRole('button',{name:t.confirmarYEnviar,exact:true}).click();
+ await expect.poll(async()=>(await (await request.get(fixture+'/correos')).json()).length).toBe(1);
+ if(await card.locator('.panel-pedido-detalle').getAttribute('open')===null)await card.locator('.panel-pedido-detalle>summary').click();
+ await card.getByRole('button',{name:t.reenviarCorreo,exact:true}).click();
+ await expect.poll(async()=>(await (await request.get(fixture+'/correos')).json()).length).toBe(2);
+ if(await card.locator('.panel-pedido-detalle').getAttribute('open')===null)await card.locator('.panel-pedido-detalle>summary').click();
+ await card.getByRole('button',{name:t.marcarPagado,exact:true}).click();
+ await expect.poll(async()=>(await (await request.get(fixture+'/correos')).json()).length).toBe(3);
+ const correos=await (await request.get(fixture+'/correos')).json();
+ for(const c of correos)for(const campo of ['textContent','htmlContent'])expect(c[campo].includes(idioma==='es'?'Entrega en un máximo de 7 días hábiles desde la confirmación del pago.':'Delivery within 7 business days after payment confirmation.')).toBe(nuevo);
+});

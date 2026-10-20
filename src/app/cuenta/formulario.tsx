@@ -72,7 +72,7 @@ export function FormularioCuenta({proveedores={google:false,facebook:false},reto
       <div className="cuenta-divisor"><span>{t('o')}</span></div>
     </div>}
     <AccesoFormulario retorno={retorno} key={modo} modo={modo} cambiar={setModo} aceptado={aceptado} cambiarAceptacion={setAceptado}/>
-    {modo==='login'&&(proveedores.google||proveedores.facebook)&&<><div className="cuenta-divisor"><span>{t('o')}</span></div><AccesoSocial retorno={retorno} key={modo} proveedores={proveedores} registro={false} aceptado={aceptado}/></>}
+    {modo==='login'&&(proveedores.google||proveedores.facebook)&&<><div className="cuenta-divisor"><span>{t('o')}</span></div><AceptacionCuenta aceptado={aceptado} cambiar={setAceptado}/><AccesoSocial retorno={retorno} key={modo} proveedores={proveedores} registro={false} aceptado={aceptado}/></>}
     {modo==='login'&&<p className="cuenta-aviso-legal">{t('continuarAcepta')} <a href="/terminos">{t('terminosCorto')}</a> {t('yLa')} <a href="/privacidad">{t('privacidad')}</a> {t('aceptoFin')}</p>}
     {(modo==='login'||modo==='registro')&&<p className="cuenta-cambio">{t(modo==='login'?'sinCuenta':'conCuenta')} <button type="button" className="cuenta-enlace" onClick={()=>setModo(modo==='login'?'registro':'login')}>{t(modo==='login'?'registrarseEnlace':'iniciarSesion')}</button></p>}
 
