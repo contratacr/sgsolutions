@@ -520,3 +520,5 @@
 
 .shop-subcategorias button{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left}
 .shop-subcategorias button>span{font-size:.75rem;opacity:.75;flex-shrink:0}
+
+.compra-plazo-resumen{font-size:14px;line-height:1.6;color:#496580;margin:16px 0;overflow-wrap:anywhere}

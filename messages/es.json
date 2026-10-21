@@ -1063,6 +1063,8 @@
     "digital": "Entrega digital",
     "digitalDetalle": "Licencia bajo pedido. Coordinaremos su entrega por correo después de confirmar el pago y la disponibilidad. Sin envío físico.",
     "consentimientoLegal": "Acepto los <terminos>Términos y Condiciones</terminos> y autorizo el uso de mis datos para tramitar este pedido según la <privacidad>Política de Privacidad</privacidad>.",
+    "entregaIntroduccion": "En SG Solutions trabajamos para que reciba sus productos de forma segura. El tiempo de entrega dependerá de su ubicación y de la modalidad seleccionada.",
+    "plazoEntregaResumen": "Entrega en un plazo máximo de 7 días hábiles a partir de la confirmación del pago. El plazo efectivo podrá ser menor, según la disponibilidad del producto, la ubicación y la modalidad de entrega seleccionada.",
     "plazoEntrega": "Entrega en un máximo de 7 días hábiles desde la confirmación del pago.",
     "plazoEntregaDetalle": "Incluye la preparación del pedido y, cuando corresponda, el transporte. Aplica también a retiro, Express y licencias digitales."
   },

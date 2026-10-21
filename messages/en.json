@@ -1063,6 +1063,8 @@
     "digital": "Digital delivery",
     "digitalDetalle": "License sourced on order. We will arrange email delivery after payment and availability are confirmed. No physical shipping.",
     "consentimientoLegal": "I accept the <terminos>Terms and Conditions</terminos> and authorize the use of my data to process this order as described in the <privacidad>Privacy Policy</privacidad>.",
+    "entregaIntroduccion": "At SG Solutions, we work to deliver your products safely. Delivery times depend on your location and the delivery method selected.",
+    "plazoEntregaResumen": "Delivery within a maximum of 7 business days from payment confirmation. The actual delivery time may be shorter, depending on product availability, location and the selected delivery method.",
     "plazoEntrega": "Delivery within 7 business days after payment confirmation.",
     "plazoEntregaDetalle": "Includes order preparation and transport where applicable. Also applies to pickup, Express and digital licenses."
   },

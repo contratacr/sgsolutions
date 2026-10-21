@@ -334,6 +334,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                       </div>
                     ))}
                 </dl>
+                <p className="compra-plazo-resumen">{t('plazoEntregaResumen')}</p>
                 {comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}
                 {pago === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas && <p>{t('tarjetaPruebaAviso')}</p>}
                 {pago === 'tarjeta' && tarjetaDisponible && !pendiente && !bloqueado ? (
@@ -388,7 +389,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                   <h2>
                     {t("entregaTitulo")}
                   </h2>
-                  <p className="compra-aviso">{t('plazoEntrega')} {t('plazoEntregaDetalle')}</p>
+                  <p className="compra-aviso">{t('entregaIntroduccion')}</p>
                   <fieldset className="compra-opciones">
                     <legend>{t("modalidad")}<IndicadorCampo obligatorio/></legend>
                     {(soloDigital?["digital"]:["retiro", "envio", "express"]).map((m, i) => (
@@ -503,7 +504,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                     {errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}
                   </div>
                   )}
-                  <p className="compra-aviso">{t('plazoEntrega')}</p>
+                  <p className="compra-plazo-resumen">{t('plazoEntregaResumen')}</p>
                   <label className="compra-check">
                     <input type="checkbox" name="consentimiento" required />
                     <span>{t.rich('consentimientoLegal',{terminos:trozos=><Link href="/terminos">{trozos}</Link>,privacidad:trozos=><Link href="/privacidad">{trozos}</Link>})}<IndicadorCampo obligatorio/></span>
@@ -556,7 +557,6 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
               <div className="compra-total"><dt>{t('total')}</dt><dd>{pendiente ? t('pendiente') : colones(total)}</dd></div>
             </dl>
             <p>{t("iva")}</p>
-            <p>{t('plazoEntrega')}</p>
             {bloqueado && <p role="alert">{t("carga")}</p>}
           </aside>
         </div>
