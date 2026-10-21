@@ -13,13 +13,13 @@ test('GIS rechaza peticiones cruzadas, nonce ausente, token inválido y registro
  await post({accion:'preparar'});
  expect((await (await post({accion:'ingresar',credential:'x'.repeat(200),registro:true})).json()).error).toBe('aceptacionRequerida');
  await post({accion:'preparar'});
- expect((await (await post({accion:'ingresar',credential:'x'.repeat(200),registro:false,aceptado:false})).json()).error).toBe('aceptacionRequerida');
+ expect((await (await post({accion:'ingresar',credential:'x'.repeat(200),registro:false,aceptado:false})).json()).error).not.toBe('aceptacionRequerida');
 });
 test('GIS crea sesión SSR con la identidad existente, restringe retorno y consume nonce',async({request})=>{
  const post=(data:unknown)=>request.post('/cuenta/google',{headers:{origin:origen},data});
  const {nonce}=await (await post({accion:'preparar'})).json();
  const credential='test-google.'+nonce+'.'+'x'.repeat(100);
- const resultado=await post({accion:'ingresar',credential,aceptado:true,retorno:'https://otro.example'});
+ const resultado=await post({accion:'ingresar',credential,registro:true,aceptado:true,retorno:'https://otro.example'});
  expect(resultado.ok()).toBeTruthy();expect((await resultado.json()).destino).toBe('/cuenta');
  const cookie=resultado.headers()['set-cookie'];expect(cookie).toContain('auth-token');
  const estado=await (await request.get(`http://127.0.0.1:${process.env.SG_GOOGLE_FIXTURE_PORT??3121}/__test/estado`)).json();
@@ -41,7 +41,7 @@ for(const idioma of ['es','en'])test(`botón GIS y carrito se conservan al ingre
  await page.locator('.cuenta-cambio button').click();
  await expect(page.locator('.cuenta-acceso-titulo')).toHaveText(idioma==='es'?'Iniciar sesión':'Sign in');
  await page.evaluate(()=>localStorage.setItem('sg-carrito-v1',JSON.stringify([{id:'eurocomp-2a118312d9683064',cantidad:2}])));
- await page.locator('.cuenta-acceso input[name=acepta]').check();
+ await expect(page.locator('.cuenta-acceso input[name=acepta]')).toHaveCount(0);
  await page.getByRole('button',{name:'Google fixture'}).click();
  await expect(page).toHaveURL(/\/pagar/);
  await expect(page.locator('.compra-acceso')).toHaveCount(0);

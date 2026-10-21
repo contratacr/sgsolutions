@@ -92,7 +92,8 @@ export async function cerrarSesionCliente() {
 }
 
 export async function accederCuentaSocial(_anterior:EstadoAccesoCliente,formulario:FormData):Promise<EstadoAccesoCliente> {
-  if(formulario.get('acepta')!=='si') return 'aceptacionRequerida';
+  const registro=formulario.get('modo')==='registro';
+  if(registro&&formulario.get('acepta')!=='si') return 'aceptacionRequerida';
   const proveedor=formulario.get('proveedor');
   if (proveedor!=='google' && proveedor!=='facebook') return 'invalido';
   const habilitados=await proveedoresCuenta();
@@ -105,7 +106,8 @@ export async function accederCuentaSocial(_anterior:EstadoAccesoCliente,formular
   if(respuesta.error) return errorCuenta(respuesta.error);
   const data='data' in respuesta?respuesta.data:null;
   if(!data?.url)return 'error';
-  (await cookies()).set('sg-aceptacion-oauth',new Date().toISOString(),{httpOnly:true,secure:origen.startsWith('https:'),sameSite:'lax',path:'/cuenta',maxAge:600});
+  if(registro)(await cookies()).set('sg-aceptacion-oauth',new Date().toISOString(),{httpOnly:true,secure:origen.startsWith('https:'),sameSite:'lax',path:'/cuenta',maxAge:600});
+  else (await cookies()).delete('sg-aceptacion-oauth');
   redirect(data.url);
 }
 
