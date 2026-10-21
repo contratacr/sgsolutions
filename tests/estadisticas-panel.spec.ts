@@ -11,20 +11,25 @@ for(const idioma of ['es','en'] as const)test('estadísticas, períodos, privaci
  const directo=await context.request.post('/api/estadisticas',{headers:{Origin:'http://127.0.0.1:3122'},data:{tipo:'pagina',ruta:'/tienda',detalle:'',dispositivo:'movil',idioma}});expect(directo.status()).toBe(204);expect((await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).eventos).toBe(antes);
  await page.goto('/panel/estadisticas');
 
+ const campanas=(idioma==='es'?es:en).MedicionCampanas;
+ await expect(page.getByRole('heading',{name:campanas.titulo,exact:true})).toBeVisible();
+ await expect(page.locator('.estadisticas-campanas:visible')).toContainText(campanas.desactivada);
+ await expect(page.locator('.estadisticas-campanas:visible table')).toContainText('campana-qa');
+ await expect(page.locator('.estadisticas-campanas:visible table')).toContainText('inicial-qa');
  const tarjeta=(nombre:string)=>page.locator('main.estadisticas-panel:visible .estadisticas-tarjetas article').filter({has:page.locator('span').filter({hasText:new RegExp('^'+nombre+'$')})});
  await expect(tarjeta(t.pagina).locator('strong')).toHaveText('30');await expect(tarjeta(t.visitantes)).toHaveCount(0);await expect(tarjeta(t.visitas)).toHaveCount(0);await expect(tarjeta(t.registrados).locator('strong')).toHaveText('9');await expect(tarjeta(t.nuevosRegistros).locator('strong')).toHaveText('3');await expect(tarjeta(t.clicsContacto).locator('strong')).toHaveText('6');await expect(tarjeta(t.pedidosPagados).locator('strong')).toHaveText('2');
  for(const texto of [t.ayudaPanel,t.detalleMedicion,t.pixelListo,t.configurar])await expect(page.locator('main.estadisticas-panel:visible')).not.toContainText(texto);
- await expect(page.getByRole('heading',{name:t.masVistos,exact:true})).toBeVisible();await expect(page.locator('.estadisticas-lista').filter({has:page.getByRole('heading',{name:t.masVistos,exact:true})})).toContainText(t.accionesProducto.replace('{total}','3'));
+ await expect(page.getByRole('heading',{name:t.masVistos,exact:true})).toBeVisible();await expect(page.locator('.estadisticas-lista:visible').filter({has:page.getByRole('heading',{name:t.masVistos,exact:true})})).toContainText(t.accionesProducto.replace('{total}','3'));
  await expect(page.getByRole('heading',{name:t.masComprados,exact:true})).toBeVisible();
- await expect(page.getByRole('heading',{name:t.categoriasVistas,exact:true})).toBeVisible();await expect(page.locator('.estadisticas-lista').filter({has:page.getByRole('heading',{name:t.categoriasVistas,exact:true})}).locator('li strong')).toHaveText('8');await expect(page.getByRole('heading',{name:t.subcategoriasVistas,exact:true})).toBeVisible();await expect(page.locator('main.estadisticas-panel')).toContainText(t.alcanceConteos);
- const comprados=page.locator('.estadisticas-lista').filter({has:page.getByRole('heading',{name:t.masComprados,exact:true})});
+ await expect(page.getByRole('heading',{name:t.categoriasVistas,exact:true})).toBeVisible();await expect(page.locator('.estadisticas-lista:visible').filter({has:page.getByRole('heading',{name:t.categoriasVistas,exact:true})}).locator('li strong')).toHaveText('8');await expect(page.getByRole('heading',{name:t.subcategoriasVistas,exact:true})).toBeVisible();await expect(page.locator('main.estadisticas-panel:visible')).toContainText(t.alcanceConteos);
+ const comprados=page.locator('.estadisticas-lista:visible').filter({has:page.getByRole('heading',{name:t.masComprados,exact:true})});
  await expect(comprados.locator('li strong')).toHaveText('5');
- await expect(page.getByRole('img',{name:t.graficoDescripcion.replace('{dias}','30')})).toBeVisible();await page.getByText(t.verDatos,{exact:true}).click();await expect(page.locator('.estadisticas-grafico table tbody tr')).toHaveCount(30);
+ await expect(page.getByRole('img',{name:t.graficoDescripcion.replace('{dias}','30')})).toBeVisible();await page.getByText(t.verDatos,{exact:true}).filter({visible:true}).click();await expect(page.locator('.estadisticas-grafico:visible table tbody tr')).toHaveCount(30);
  await page.getByRole('link',{name:t.periodo7,exact:true}).click();await expect(page).toHaveURL(/dias=7$/);await expect(tarjeta(t.pagina).locator('strong')).toHaveText('30');await expect(tarjeta(t.nuevosRegistros).locator('strong')).toHaveText('1');await expect(comprados.locator('li strong')).toHaveText('1');await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',idioma);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);await page.screenshot({path:'.privado/evidencias/estadisticas-'+idioma+'-'+test.info().project.name+'.png',fullPage:true});
  await request.post('http://127.0.0.1:3123/__test/error',{data:{error:true}});await page.reload();await expect(page.locator('main.estadisticas-panel:visible').getByRole('alert')).toContainText(t.noDisponible);await expect(tarjeta(t.pagina).locator('strong')).toHaveText('—');
  await request.post('http://127.0.0.1:3123/__test/error',{data:{error:false}});await page.getByRole('link',{name:t.reintentar,exact:true}).click();await expect(tarjeta(t.pagina).locator('strong')).toHaveText('30');
- const otro=idioma==='es'?'en':'es';await page.locator('.estadisticas-idioma button[value='+otro+']').click();await expect(page.locator('html')).toHaveAttribute('lang',otro);await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',otro);
+ const otro=idioma==='es'?'en':'es';await page.locator('.estadisticas-idioma:visible button[value='+otro+']').click();await expect(page.locator('html')).toHaveAttribute('lang',otro);await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',otro);
 });
 
 for(const estado of ['inactivo','rol-no-disponible'])test(`no medir administración con estado ${estado}`,async({page,context,request})=>{

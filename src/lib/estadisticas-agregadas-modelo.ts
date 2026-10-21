@@ -2,6 +2,8 @@ import {z} from 'zod';
 import {tiposEvento} from './analitica-modelo';
 const rutas=['/','/tienda','/tienda/producto','/soporte','/empresas','/casos-de-exito','/nosotros','/contacto','/pagar','/finalizar-compra','/terminos','/privacidad'] as const;
 export const conteoAnonimo=z.object({tipo:z.enum(tiposEvento),ruta:z.enum(rutas),detalle:z.string().max(100),dispositivo:z.enum(['movil','escritorio']),idioma:z.enum(['es','en'])}).strict().refine(e=>{
+ if(['formulario_inicio','formulario_error','formulario_abandono'].includes(e.tipo))return ['compra','empresa','asesoria'].includes(e.detalle);
+ if(e.tipo==='filtro')return ['categoria','subcategoria','marca','precio','orden'].includes(e.detalle);
  if(['producto','carrito','busqueda_producto'].includes(e.tipo))return /^[a-z0-9-]{1,100}$/.test(e.detalle);
  if(['plan','plan_revisado'].includes(e.tipo))return ['1','2','3'].includes(e.detalle);
  if(e.tipo==='scroll')return ['25','50','75','100'].includes(e.detalle);

@@ -14,6 +14,7 @@ http.createServer(async(req,res)=>{
  if(u.pathname==='/rest/v1/perfiles'){if(errorPerfil){res.statusCode=503;return send({code:'FIXTURE_ROLE_UNAVAILABLE',message:'No disponible'});}return send(rol==='sin-perfil'?null:{id:sub,rol,activo});}
  if(['/rest/v1/rpc/es_administrador_activo','/rest/v1/rpc/es_administrador_identificado'].includes(u.pathname))return send(Boolean(sub));
  if(u.pathname==='/rest/v1/catalogo_publico')return send(null);
+ if(u.pathname==='/rest/v1/rpc/resumen_campanas_panel')return send({embudo:[{tipo:'solicitud_recibida',cantidad:3},{tipo:'pago_confirmado',cantidad:1}],campanas:[{tipo:'pago_confirmado',cantidad:1,canal:'google',medio:'pago',campana:'campana-qa',primer_canal:'instagram',primera_campana:'inicial-qa'}],meta:[{estado:'aceptado',cantidad:2},{estado:'pendiente',cantidad:1}]});
  if(u.pathname==='/rest/v1/rpc/popularidad_productos_agregada_panel')return send(error?null:{vistas:[{id:'eurocomp-e0eb3b52b9d3ca4a',cantidad:d.dias===7?2:8}],compras:[{id:'eurocomp-e0eb3b52b9d3ca4a',nombre:'Producto comprado',cantidad:d.dias===7?1:5,pedidos:2}]});
  if(u.pathname==='/rest/v1/rpc/resumen_estadisticas_agregadas_panel'){
   if(error){res.statusCode=503;return send({code:'FIXTURE_UNAVAILABLE',message:'No disponible'});}

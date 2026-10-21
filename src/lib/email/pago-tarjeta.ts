@@ -1,3 +1,4 @@
+import {registrarPago} from '../medicion-negocio';
 import 'server-only';
 import {PLAZO_ENTREGA_DIAS_HABILES,textoPlazoEntrega} from '../politicas';
 import type {SupabaseClient} from '@supabase/supabase-js';
@@ -10,6 +11,7 @@ import {colones} from '../catalogo-modelo';
 export async function notificarPagoTarjeta(db:SupabaseClient,id:string){
  const {data:pedido,error}=await db.from('pedidos_tilopay').select('id,referencia_numero,estado,entorno,total,cliente,articulos').eq('id',id).maybeSingle();
  if(error||pedido?.estado!=='pagado')return;
+ await registrarPago('tarjeta',id);
  // Las transacciones ficticias nunca envían correo fuera del laboratorio aislado.
  if(pedido.entorno==='pruebas'&&!(process.env.SG_ENTORNO==='local'&&process.env.SG_QA_LOCAL==='1'))return;
  const numero=numeroPedido(id,pedido.referencia_numero),ingles=pedido.cliente?.idioma==='en';

@@ -9,7 +9,8 @@
     "logs": {"enabled": false, "invocation_logs": false},
     "traces": {"enabled": false}
   },
-  "main": ".open-next/worker.js",
+  "main": "worker.mjs",
+  "triggers": {"crons": ["*/15 * * * *"]},
   "compatibility_date": "2026-09-09",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {"directory": ".open-next/assets", "binding": "ASSETS"},

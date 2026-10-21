@@ -126,12 +126,13 @@ export function Catalogo({inicial,categoriaInicial='todos'}:{inicial:PaginaCatal
   document.addEventListener('visibilitychange',alVolver);window.addEventListener('online',refrescar);
   return()=>{document.removeEventListener('visibilitychange',alVolver);window.removeEventListener('online',refrescar);};
  },[]);
- const consultaInicial=useRef(respuesta.consulta);
+ const consultaInicial=useRef(respuesta.consulta),ultimaBusquedaMedida=useRef(''),filtrosMedidos=useRef<Record<string,string>|null>(null);
+ useEffect(()=>{const actuales={categoria:aplicados.categoria,subcategoria:aplicados.subcategoria,marca:[aplicados.marca,...aplicados.marcasElegidas].join('|'),precio:aplicados.min+'|'+aplicados.max,orden};const anterior=filtrosMedidos.current;filtrosMedidos.current=actuales;if(anterior)for(const k of Object.keys(actuales) as (keyof typeof actuales)[])if(actuales[k]!==anterior[k])medir('filtro',k);},[aplicados.categoria,aplicados.subcategoria,aplicados.marca,aplicados.marcasElegidas,aplicados.min,aplicados.max,orden]);
  useEffect(()=>{
   if(consulta===consultaInicial.current&&intento===0)return;
   consultaInicial.current='';
   const abort=new AbortController();
-  const timer=setTimeout(()=>fetch(`/api/catalogo?${consulta}`,{signal:abort.signal}).then(r=>{if(!r.ok)throw new Error();return r.json();}).then((d:PaginaCatalogo)=>{setRespuesta({consulta,datos:d});if(new URLSearchParams(consulta).get('q'))recordarExploracion(d.productos.slice(0,4).map(p=>p.id));if(new URLSearchParams(consulta).get('q'))d.productos.slice(0,10).forEach(p=>medir('busqueda_producto',p.id));recordar(d.productos);setError('');}).catch(()=>{if(!abort.signal.aborted)setError(consulta);}),aplicados.busqueda||aplicados.min||aplicados.max?180:0);
+  const timer=setTimeout(()=>fetch(`/api/catalogo?${consulta}`,{signal:abort.signal}).then(r=>{if(!r.ok)throw new Error();return r.json();}).then((d:PaginaCatalogo)=>{setRespuesta({consulta,datos:d});const q=new URLSearchParams(consulta).get('q')??'';if(q&&q!==ultimaBusquedaMedida.current){ultimaBusquedaMedida.current=q;medir('busqueda');if(d.total===0)medir('busqueda_vacia');}else if(!q)ultimaBusquedaMedida.current='';if(new URLSearchParams(consulta).get('q'))recordarExploracion(d.productos.slice(0,4).map(p=>p.id));if(new URLSearchParams(consulta).get('q'))d.productos.slice(0,10).forEach(p=>medir('busqueda_producto',p.id));recordar(d.productos);setError('');}).catch(()=>{if(!abort.signal.aborted)setError(consulta);}),aplicados.busqueda||aplicados.min||aplicados.max?180:0);
   return ()=>{clearTimeout(timer);abort.abort();};
  },[consulta,recordar,intento,aplicados.busqueda,aplicados.min,aplicados.max]);
  const cargando=respuesta?.consulta!==consulta;

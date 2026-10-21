@@ -357,7 +357,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                 </button>
               </section>
             ) : (
-              <form key={borradorListo?'restaurado':'inicial'} ref={formularioPasos} onChangeCapture={()=>{borradorModificado.current=true;queueMicrotask(()=>guardarBorradorActual.current());}} noValidate onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
+              <form data-medicion-formulario="compra" key={borradorListo?'restaurado':'inicial'} ref={formularioPasos} onChangeCapture={()=>{borradorModificado.current=true;queueMicrotask(()=>guardarBorradorActual.current());}} noValidate onSubmit={revisar} onInvalidCapture={() => setErrorFormulario(true)}>
 
                 {cuentaDisponible&&<p className="compra-guardar-datos">{dc('guardarAutomatico')}</p>}
                 <div data-compra-paso="0" hidden={paso!==0}><fieldset className="compra-restaurando" disabled={!borradorListo} aria-busy={!borradorListo}><section ref={pasoCompra} tabIndex={-1} className="compra-bloque compra-paso">

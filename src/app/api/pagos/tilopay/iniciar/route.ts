@@ -1,3 +1,4 @@
+import {registrarOperacion} from '@/lib/medicion-negocio';
 import {aceptacionPedido} from '@/lib/politicas';
 import {modalidadCompraValida} from '@/lib/software';
 import {leerTextoLimitado} from '@/lib/limites-http';
@@ -75,6 +76,7 @@ export async function POST(request: Request) {
     articulos,
   });
   if (guardarError) {await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
+  await registrarOperacion('tarjeta',id,entrada.idioma,config.modo);
   try {
     const token = await tokenTilopay(config);
     const url = await iniciarTilopay(config, token, {

@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+import {VERSION_PUBLICIDAD} from '../src/lib/campanas-modelo';
 import {conteoAnonimo} from '../src/lib/estadisticas-agregadas-modelo';
 import es from '../messages/es.json';import en from '../messages/en.json';
 const evento={tipo:'pagina',ruta:'/tienda',detalle:'',dispositivo:'movil',idioma:'es'};
@@ -15,7 +16,7 @@ for(const idioma of ['es','en'] as const)test(`contadores sin cookies, identidad
  expect((await context.cookies()).some(c=>c.name==='sg-analitica')).toBe(false);
  expect(await page.evaluate(()=>[localStorage.getItem('sg-medicion-visitante'),sessionStorage.getItem('sg-medicion-sesion'),sessionStorage.getItem('sg-medicion-actividad')])).toEqual([null,null,null]);
  const antes=eventos.length;await page.goto('/admin');await expect(page.locator('h1')).toBeVisible();expect(eventos.length).toBe(antes);
- await page.goto('/privacidad');await page.locator('.pie-preferencias').click();await page.getByRole('button',{name:(idioma==='es'?es:en).Analitica.rechazar,exact:true}).click();
+ await page.goto('/privacidad');await page.locator('footer .pie-preferencias').click();await page.getByRole('button',{name:(idioma==='es'?es:en).Analitica.rechazar,exact:true}).click();
  const guardados=eventos.filter(e=>e.tipo==='pagina').length;await page.goto('/nosotros');await expect.poll(()=>eventos.filter(e=>e.tipo==='pagina').length).toBe(guardados+1);
 });
 test('endpoint exige mismo origen, cuerpo acotado y rechaza identificadores',async({request,baseURL})=>{
@@ -33,10 +34,11 @@ for(const idioma of ['es','en'] as const)test(`Meta separado y limpieza de ident
  await page.route('**/api/estadisticas',async r=>{eventos.push(r.request().postDataJSON());await r.fulfill({status:204});});
  await page.goto('/privacidad');await expect.poll(()=>eventos.some(e=>e.tipo==='pagina')).toBe(true);expect(cargas).toBe(0);
  expect(await page.evaluate(()=>localStorage.getItem('sg-medicion-visitante'))).toBeNull();expect(await page.evaluate(()=>sessionStorage.getItem('sg-medicion-sesion'))).toBeNull();expect((await context.cookies()).some(c=>c.name==='sg-analitica')).toBe(false);
- await page.locator('.pie-preferencias').click();await page.getByRole('button',{name:t.aceptar,exact:true}).click();await expect.poll(()=>cargas).toBe(1);
- expect(await page.evaluate(()=>window.fbq?.queue.filter(e=>e[0]==='track'&&e[1]==='PageView').length)).toBe(1);
+ await page.locator('footer .pie-preferencias').click();await page.getByRole('button',{name:t.aceptar,exact:true}).click();await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('sg-medicion')??'null')?.publicidad)).toBe(true);expect(cargas).toBe(0);
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('sg-medicion')??'null')?.version)).toBe(VERSION_PUBLICIDAD);
+ expect(await page.evaluate(()=>Boolean(window.fbq))).toBe(false);
  expect(eventos.filter(e=>e.tipo==='pagina')).toHaveLength(1);
- await page.locator('.pie-preferencias').click();await page.getByRole('button',{name:t.rechazar,exact:true}).click();expect(await page.evaluate(()=>window.fbq?.queue.some(e=>e[0]==='consent'&&e[1]==='revoke'))).toBe(true);
+ await page.locator('footer .pie-preferencias').click();await page.getByRole('button',{name:t.rechazar,exact:true}).click();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('sg-medicion')??'null')?.publicidad)).toBe(false);expect(cargas).toBe(0);
  await expect(page.locator('html')).toHaveAttribute('lang',idioma);
  await page.screenshot({path:`.privado/estadisticas-anonimas/privacidad-${test.info().project.name}-${idioma}.png`,fullPage:true});
 });
@@ -59,3 +61,13 @@ test('permiso compartido, sin identificador de navegador y sin consulta de cuent
   expect((await (await request.get('http://127.0.0.1:3123/__test/eventos')).json()).consultasCuenta).toBe(anterior.consultasCuenta);
  }finally{await Promise.all(contextos.map(c=>c.close()));}
 });
+
+ test('publicidad rechaza origen externo, contratos libres y conversiones inventadas',async({request,baseURL})=>{
+ const headers={Origin:baseURL!};
+ expect((await request.post('/api/publicidad/contexto',{headers:{Origin:'https://otro.example'},data:{permitir:false}})).status()).toBe(403);
+ for(const data of [{permitir:true,version:'anterior',adquisicion:{canal:'directo',medio:'directo',campana:''}},{permitir:false,correo:'privado@example.test'}])expect((await request.post('/api/publicidad/contexto',{headers,data})).status()).toBe(400);
+ for(const evento of ['Purchase','Lead'])expect((await request.post('/api/publicidad/evento',{headers,data:{id:crypto.randomUUID(),evento,ruta:'/tienda'}})).status()).toBe(400);
+ expect((await request.post('/api/publicidad/evento',{headers,data:{id:crypto.randomUUID(),evento:'Search',ruta:'/tienda',search_string:'privado'}})).status()).toBe(400);
+ expect((await request.post('/api/publicidad/evento',{headers,data:{id:crypto.randomUUID(),evento:'PageView',ruta:'/tienda'}})).status()).toBe(204);
+ expect((await request.post('/api/interno/medicion/procesar')).status()).toBe(401);
+ });

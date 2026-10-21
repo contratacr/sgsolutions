@@ -1,4 +1,5 @@
 'use server';
+import {registrarCotizacion} from '@/lib/medicion-negocio';
 import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {getLocale} from 'next-intl/server';
 import {redirect} from 'next/navigation';
@@ -22,6 +23,7 @@ async function preparar(form:FormData){
  if(articulos.length!==ids.length||articulos.reduce((s,x)=>s+x.producto.precio*x.cantidad,0)>100000000)return {resultado:'invalido',id};
  if(!solicitud)solicitud=await crearAsesoria(articulos,(await getLocale())==='en'?'en':'es');
  const aprobado=await cambiarAsesoria(solicitud.id,solicitud.estado,{articulos,estado:'aprobada',token:tokenAsesoria(),vence_en:new Date(Date.now()+24*3600000).toISOString()});
+ if(aprobado)await registrarCotizacion(solicitud.id);
  return {resultado:aprobado?'enlace_generado':'error',id:solicitud.id};
 }
 export async function prepararPedidoAsesorado(form:FormData){

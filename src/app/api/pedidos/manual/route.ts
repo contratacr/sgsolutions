@@ -1,3 +1,4 @@
+import {registrarOperacion} from '@/lib/medicion-negocio';
 import {aceptacionPedido,textoPlazoEntrega} from '@/lib/politicas';
 import {modalidadCompraValida} from '@/lib/software';
 import {leerTextoLimitado} from '@/lib/limites-http';
@@ -55,8 +56,9 @@ export async function POST(request: Request) {
   if(!await reservarAprobacion(aprobacion))return Response.json({error:"asesoria_requerida"},{status:403});
   const id = crypto.randomUUID();
   const db = basePedidosManuales(config);
-  const { data:guardado,error } = await db.from('pedidos_manuales').insert({ id, solicitud_asesoria_id:aprobacion.id, estado:'pendiente_pago', metodo: datos.metodo, total_productos: total, costo_envio: envio, total_cobrar: totalConEnvio, cliente: { ...datos.datos, ...aceptacionPedido(), idioma: datos.idioma, envio_cobro_separado:datos.datos.modalidad==='express' }, articulos }).select('referencia_numero').single();
+  const { data:guardado,error } = await db.from('pedidos_manuales').insert({ id, entorno:process.env.SG_ENTORNO==='produccion'?'produccion':'pruebas', solicitud_asesoria_id:aprobacion.id, estado:'pendiente_pago', metodo: datos.metodo, total_productos: total, costo_envio: envio, total_cobrar: totalConEnvio, cliente: { ...datos.datos, ...aceptacionPedido(), idioma: datos.idioma, envio_cobro_separado:datos.datos.modalidad==='express' }, articulos }).select('referencia_numero').single();
   if (error) {console.error('pedido_manual_fallido',{etapa:'guardar',codigo:/^[A-Z0-9]{1,12}$/.test(error.code??'')?error.code:'no_disponible'});await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
+  await registrarOperacion('manual',id,datos.idioma);
   await cambiarAsesoria(aprobacion.id,'procesando',{estado:'utilizada',pedido_id:id});
   const numero = numeroPedido(id,guardado?.referencia_numero);
   const enlace = enlacePedido(config, id, config.origen);

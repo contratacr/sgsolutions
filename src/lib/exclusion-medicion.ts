@@ -7,6 +7,7 @@ export async function navegadorAdministrativoGuardado(){return (await cookies())
 export async function guardarNavegadorAdministrativo(){
  // Same constant for every administrative browser: no account, device or visitor ID.
  (await cookies()).set(cookie,'1',{httpOnly:true,secure:process.env.NODE_ENV==='production',sameSite:'lax',path:'/',maxAge:60*60*24*365});
+ try{const {actualizarContexto}=await import('./publicidad-servidor');await actualizarContexto({permitir:false});}catch{console.error('PUBLICIDAD_REVOCACION_PENDIENTE');}
 }
 /** Preserve the exclusion before sign-out removes the authenticated role. */
 export async function conservarExclusionAdministrativa(cliente:Awaited<ReturnType<typeof crearClienteCuenta>>){

@@ -1,4 +1,5 @@
 'use server';
+import {registrarPago} from '@/lib/medicion-negocio';
 import {PLAZO_ENTREGA_DIAS_HABILES,textoPlazoEntrega} from '@/lib/politicas';
 import {exigirAdminMfa} from '@/lib/acceso-panel';
 import {archivarAsesoriaPanel} from '@/lib/asesorias';
@@ -49,6 +50,7 @@ export async function actualizarPedidoManual(form: FormData) {
   if (nuevo === 'pagado') cambios.verificado_en = new Date().toISOString();
   const { data, error } = await db.from('pedidos_manuales').update(cambios).eq('id', id).eq('estado', pedido.estado).select('id').maybeSingle();
   if (error || !data) redirect('/panel/pedidos?resultado=error');
+  if(nuevo==='pagado')await registrarPago('manual',id);
   const ingles = pedido.cliente?.idioma === 'en';
   let correoEnviado = false;
   const numero = numeroPedido(id,pedido.referencia_numero);
