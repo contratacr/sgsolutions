@@ -1,5 +1,5 @@
 import 'server-only';
-import {construirEventoMeta} from './meta-contrato';
+import {construirSolicitudMeta} from './meta-contrato';
 import {createHmac,timingSafeEqual,randomUUID} from 'node:crypto';
 import {cookies} from 'next/headers';
 import {contextoPublicidad,adquisicion,type ContextoPublicidad,type Adquisicion,type EventoPublicidad} from './campanas-modelo';
@@ -53,8 +53,8 @@ export async function procesarPublicidad(){
   try{
    const permiso=await db.from('publicidad_revocaciones').select('id').eq('id',fila.contexto).maybeSingle();
    if(permiso.error)throw new Error('permiso');if(permiso.data){await db.rpc('terminar_publicidad',{clave:fila.id,reserva:fila.reserva,resultado:'suprimido',codigo:'revocado'});continue;}
-   const payload=construirEventoMeta(fila);
-   const r=await fetch(`https://graph.facebook.com/${config.version}/${config.dataset}/events`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${config.token}`},body:JSON.stringify({data:[payload]}),signal:AbortSignal.timeout(10000)});
+   const payload=construirSolicitudMeta(fila,process.env.SG_META_PRUEBA_COLA);
+   const r=await fetch(`https://graph.facebook.com/${config.version}/${config.dataset}/events`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${config.token}`},body:JSON.stringify(payload),signal:AbortSignal.timeout(10000)});
    const cuerpo=await r.json();codigo=String(r.status);if(r.ok&&cuerpo.events_received===1)resultado='aceptado';else if(r.status>=400&&r.status<500&&r.status!==429)resultado='expirado';
   }catch{/* Never log payloads, tokens, provider messages or request headers. */}
   await db.rpc('terminar_publicidad',{clave:fila.id,reserva:fila.reserva,resultado,codigo});

@@ -86,3 +86,7 @@ Pendiente de autorización de publicación: aplicar la migración en Supabase, p
 ## Publicacion autorizada el 21 de octubre de 2026
 
 La transaccion de la migracion termino con Success en SG Solutions Produccion. El usuario autorizo push, despliegue y activacion de Meta. Los secretos ya estan guardados; SG_META_ACTIVO se habilitara despues de los checks y del despliegue. No se autorizaron pruebas nuevas ni eventos de prueba.
+
+## Diagnóstico dirigido de la cola
+
+`SG_META_PRUEBA_COLA` es una configuración exclusiva del servidor, vacía por defecto. Su JSON admite solo `id` (43 caracteres del evento sintético), `codigo` (`TEST` seguido de dígitos de Meta) y `vence` (milisegundos, dentro de la siguiente hora). Solo el `PageView` de `/` con ese identificador recibe `test_event_code`; ningún otro evento se convierte en prueba. No se aceptan estos controles desde el navegador ni se modifica el esquema SQL. Después de la comprobación autorizada, retirar la configuración. Encolar únicamente datos sintéticos, comprobar el resultado persistido y la recepción del mismo ID en Meta; una respuesta HTTP del procesador por sí sola no demuestra entrega.
