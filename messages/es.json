@@ -2016,6 +2016,8 @@
     "numero": "Número de teléfono"
   },
   "EntregaAdmin": {
+    "intentoCompra": "Intento de compra",
+    "sinConfirmacion": "Sin pago confirmado",
     "pago": "Pago",
     "pedido": "Pedido",
     "pago_revision": "Pendiente de revisión",
@@ -2068,6 +2070,7 @@
     "estadoArchivado": "Archivado"
   },
   "PropuestaPedidos": {
+    "intentos": "Intentos de compra",
     "metaTitulo": "Vista previa de pedidos",
     "logo": "SG Solutions",
     "administracion": "Administración",
@@ -2381,6 +2384,7 @@
     "logo": "SG Solutions"
   },
   "PedidosReales": {
+    "avisoIntentoIncierto": "El envío del aviso interno requiere revisión. Compruebe los registros de correo antes de reenviarlo para evitar duplicados.",
     "crear": "Crear pedido",
     "enlace": "Enlace de compra"
   },

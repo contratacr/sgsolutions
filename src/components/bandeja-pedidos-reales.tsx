@@ -4,11 +4,11 @@ import {useTranslations} from 'next-intl';
 import {Search,X,Plus} from 'lucide-react';
 import {SelectorMenu} from './selector-menu';
 export type ItemPedidoReal={id:string;tipo:string;estado:string;archivado?:boolean;pago?:string;metodo:string;modalidad:string;fecha:string;busqueda:string;contenido:ReactNode};
-export function etapaPedido(p:Pick<ItemPedidoReal,'estado'|'archivado'>){return p.archivado?'archivados':['preparando','listo_retiro'].includes(p.estado)?'preparacion':['enviado','entregado','cancelado','utilizada','cancelada'].includes(p.estado)?'finalizados':'por_atender';}
+export function etapaPedido(p:Pick<ItemPedidoReal,'estado'|'archivado'> & Partial<Pick<ItemPedidoReal,'tipo'|'pago'>>){return p.archivado?'archivados':p.tipo==='tarjeta'&&p.pago!=='pagado'?'intentos':['preparando','listo_retiro'].includes(p.estado)?'preparacion':['enviado','entregado','cancelado','utilizada','cancelada'].includes(p.estado)?'finalizados':'por_atender';}
 const suscribir=()=>()=>{};
 const listoCliente=()=>true;
 const listoServidor=()=>false;
-const etapas=['por_atender','preparacion','finalizados','archivados'];
+const etapas=['por_atender','preparacion','finalizados','intentos','archivados'];
 const normalizar=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
 export function BandejaPedidosReales({items,crear,destacado}:{items:ItemPedidoReal[];crear:ReactNode;destacado?:string}){
  const t=useTranslations('PropuestaPedidos'),r=useTranslations('PedidosReales'),l=useTranslations('PanelLista');
@@ -18,6 +18,7 @@ export function BandejaPedidosReales({items,crear,destacado}:{items:ItemPedidoRe
  const [buscar,setBuscar]=useState(''),[metodo,setMetodo]=useState('todos'),[entrega,setEntrega]=useState('todos'),[pago,setPago]=useState('todos');
  const [ordenes,setOrdenes]=useState<Record<string,string>>({}),[limite,setLimite]=useState(destacado?items.length:20);
  const raiz=useRef<HTMLDivElement>(null),nuevo=useRef<HTMLDetailsElement>(null);
+ useEffect(()=>{const barra=raiz.current?.querySelector<HTMLElement>('.pedidos-reales-vistas');if(barra&&barra.scrollWidth>barra.clientWidth)barra.querySelector<HTMLElement>('[aria-pressed=true]')?.scrollIntoView({block:'nearest',inline:'center'});},[vista]);
  const orden=ordenes[vista]??(['finalizados','archivados'].includes(vista)?'recientes':'antiguos');
  const filtrados=items.filter(p=>etapaPedido(p)===vista&&(metodo==='todos'||p.metodo===metodo)&&(entrega==='todos'||p.modalidad===entrega)&&(pago==='todos'||(pago==='confirmado'?p.pago==='pagado':p.pago!=='pagado'))&&normalizar(p.busqueda).includes(normalizar(buscar.trim()))).sort((a,b)=>(orden==='antiguos'?1:-1)*(Date.parse(a.fecha)-Date.parse(b.fecha))||a.id.localeCompare(b.id));
  useEffect(()=>{

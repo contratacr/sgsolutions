@@ -2016,6 +2016,8 @@
     "numero": "Phone number"
   },
   "EntregaAdmin": {
+    "intentoCompra": "Checkout attempt",
+    "sinConfirmacion": "No confirmed payment",
     "pago": "Payment",
     "pedido": "Order",
     "pago_revision": "Awaiting review",
@@ -2068,6 +2070,7 @@
     "estadoArchivado": "Archived"
   },
   "PropuestaPedidos": {
+    "intentos": "Checkout attempts",
     "metaTitulo": "Order preview",
     "logo": "SG Solutions",
     "administracion": "Administration",
@@ -2381,6 +2384,7 @@
     "logo": "SG Solutions"
   },
   "PedidosReales": {
+    "avisoIntentoIncierto": "The internal notification needs review. Check the email logs before resending to avoid duplicates.",
     "crear": "Create order",
     "enlace": "Purchase link"
   },

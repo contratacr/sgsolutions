@@ -29,7 +29,7 @@ type Pedido = {
   archivado_en: string|null;archivado_motivo?:string|null;
   estado: 'iniciado' | 'pendiente' | 'pagado' | 'rechazado' | 'error';
   entorno: 'pruebas' | 'produccion';
-  resultado_tilopay: string|null;
+  resultado_tilopay: string|null;aviso_intento_estado?:string;
   total: number;
   cliente: { nombre?: string; apellidos?: string; correo?: string; telefono?:string; direccion?:string; modalidad?:string };
   articulos: { nombre?: string; cantidad?: number }[];
@@ -69,7 +69,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
   const idioma = await getLocale();
   const db = basePedidosAdministracion();
   const { data, error } = db
-    ? await db.from('pedidos_tilopay').select('id,referencia_numero,creado_en,estado,estado_entrega,archivado_en,archivado_motivo,entorno,total,cliente,articulos,resultado_tilopay').order('creado_en', { ascending: false }).limit(50)
+    ? await db.from('pedidos_tilopay').select('id,referencia_numero,creado_en,estado,estado_entrega,archivado_en,archivado_motivo,entorno,total,cliente,articulos,resultado_tilopay,aviso_intento_estado').order('creado_en', { ascending: false }).limit(50)
     : { data: null, error: null };
   const pedidos = (data ?? []) as Pedido[];
   const configManual = configuracionPedidosManuales();
@@ -127,6 +127,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
           </div>
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))} · {t(pedido.entorno)}</p>
           </div><div className="pedido-real-acciones">{(pedido.archivado_en||puedeArchivar('tarjeta',pedido))&&<ArchivoPanel id={pedido.id} tipo="tarjeta" referencia={numeroPedido(pedido.id,pedido.referencia_numero)} archivado={Boolean(pedido.archivado_en)} motivo={pedido.archivado_motivo}/>}
+          {pedido.aviso_intento_estado==='incierto'&&<p role="status">{t('avisoIntentoIncierto')}</p>}
           {pedido.estado==='rechazado'&&<p><strong>{t('motivoTilopay')}:</strong> {pedido.resultado_tilopay?.trim()||t('motivoNoInformado')}</p>}
           <GestionEntregaPedido key="gestion" id={pedido.id} tipo="tarjeta" pago={pedido.estado} entrega={pedido.estado_entrega} modalidad={pedido.cliente?.modalidad}/>
           {pedido.cliente?.modalidad==='express'&&<p>{t('expressSeparado')}</p>}</div><div className="pedido-real-contacto"><ContactoPedidoAdmin key="contacto" cliente={pedido.cliente} pagoPendiente={['iniciado','pendiente','rechazado','error'].includes(pedido.estado)} referencia={numeroPedido(pedido.id,pedido.referencia_numero)}/></div><div className="pedido-real-productos"><h3>{propuesta('productos')}</h3>
