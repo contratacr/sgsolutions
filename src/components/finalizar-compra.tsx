@@ -307,7 +307,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
           </Link>
         </div>
       ) : (
-        <div className="compra-grid">
+        <div className="compra-grid" data-resumen-final={paso===2||Boolean(revision)}>
           <div>
       {!enlaceInvalido&&!errorAutorizacion&&lineas.length>0&&!revision&&<nav ref={cabeceraPasos} tabIndex={-1} className="compra-pasos" aria-label={t('pasosCompra')}>{['pasoInformacion','pasoAdicional','pasoPago'].map((clave,i)=><button key={clave} type="button" aria-current={paso===i?'step':undefined} disabled={!borradorListo||i>ultimoPaso||procesando} onClick={()=>{if(i<=paso)cambiarPaso(i);else if(formularioPasos.current&&validarPaso(formularioPasos.current,paso))cambiarPaso(i);}}><span>{String(i+1).padStart(2,'0')}.</span><strong>{t(clave)}</strong></button>)}</nav>}
             {!simularPedido&&!cuentaDisponible&&!revision&&<AccesoCompra google={googleDisponible} retorno={aprobacion?'/pagar?'+new URLSearchParams({asesoria:aprobacion.id,acceso:aprobacion.token}) :'/pagar'}/>}
@@ -334,7 +334,6 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                       </div>
                     ))}
                 </dl>
-                <p className="compra-plazo-resumen">{t('plazoEntregaResumen')}</p>
                 {comprobante&&<p>{t('comprobanteSeleccionado',{nombre:comprobante.name})}</p>}
                 {pago === 'tarjeta' && tarjetaDisponible && tarjetaEnPruebas && <p>{t('tarjetaPruebaAviso')}</p>}
                 {pago === 'tarjeta' && tarjetaDisponible && !pendiente && !bloqueado ? (
@@ -504,7 +503,6 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                     {errorComprobante&&<p role="alert">{pm('archivoInvalido')}</p>}
                   </div>
                   )}
-                  <p className="compra-plazo-resumen">{t('plazoEntregaResumen')}</p>
                   <label className="compra-check">
                     <input type="checkbox" name="consentimiento" required />
                     <span>{t.rich('consentimientoLegal',{terminos:trozos=><Link href="/terminos">{trozos}</Link>,privacidad:trozos=><Link href="/privacidad">{trozos}</Link>})}<IndicadorCampo obligatorio/></span>
@@ -557,6 +555,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
               <div className="compra-total"><dt>{t('total')}</dt><dd>{pendiente ? t('pendiente') : colones(total)}</dd></div>
             </dl>
             <p>{t("iva")}</p>
+            <p className="compra-plazo-resumen">{t('plazoEntregaResumen')}</p>
             {bloqueado && <p role="alert">{t("carga")}</p>}
           </aside>
         </div>
