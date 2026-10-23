@@ -1,5 +1,5 @@
 import {readFile} from 'node:fs/promises';import assert from 'node:assert/strict';
-const {PGlite}=await import(process.env.SG_PGLITE_MODULE);const db=new PGlite();
+const {PGlite}=await import(process.env.SG_PGLITE_MODULE??'@electric-sql/pglite');const db=new PGlite();
 await db.exec(`create role anon;create role authenticated;create schema auth;grant usage on schema auth to authenticated;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;`);
 await db.exec(await readFile('supabase/migrations/20261012000300_perfiles_compra_clientes.sql','utf8'));
 const a='00000000-0000-4000-8000-000000000001',b='00000000-0000-4000-8000-000000000002';await db.query('insert into auth.users values($1),($2)',[a,b]);

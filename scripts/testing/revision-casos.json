@@ -1,0 +1,333 @@
+{
+  "nota": "Clasificación inicial por inspección; no son fallos de producto ni resultados aprobados. Ver inventario actualizado para bloques agregados posteriormente.",
+  "casos": [
+    {
+      "archivo": "tests/admin-altas.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/admin-imagenes.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/admin-local.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/admin-publicacion.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/asesoria-aprobacion.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/asesoria-manual.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/cambios-panel.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/cargas-esqueleto.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/casos-visibles.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/checkout-registro.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/compra-fichas.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/compra-guardado-real.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/cuenta-bloqueada.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/cuenta-errores.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/cuenta-navbar.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/cuenta-seguridad.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/despliegue-smoke.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/errores-idiomas.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/estados.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/eurocomp-panel.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/filtros-precio.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/flujo-asesoria-datos.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/foco-pasos-compra.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/fotos.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/identificacion-compra.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/lazos.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/menu-lateral.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/mfa-admin.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "workflow_independiente",
+      "accion": "mfa-admin.yml con Auth/PostgreSQL exclusivos."
+    },
+    {
+      "archivo": "tests/movimiento.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/navegacion-compacta.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/navegacion-contenido.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/panel-completo.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/panel-foco-carga.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/panel-produccion-smoke.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_build",
+      "accion": "Requiere build servido localmente; no ejecutar contra producción."
+    },
+    {
+      "archivo": "tests/pedidos-contacto-eliminar.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/pedidos-manuales.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/perfil-compra.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/revision-contenido.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/rutas-soluciones.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/sitio.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/tienda-responsive.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/tienda-sin-parpadeo.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/tilopay-preparacion.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/usuarios-panel.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "laboratorio_especifico",
+      "accion": "Adaptar a fixture exclusivo antes de incorporar. No usar archivos o usuarios de una sesión local compartida."
+    },
+    {
+      "archivo": "tests/validacion-campos.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": false,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    },
+    {
+      "archivo": "tests/webkit-compatibilidad.spec.ts",
+      "bloques": [],
+      "requiereRevisarOmisiones": true,
+      "clasificacion": "candidato_consolidacion",
+      "accion": "Contrastar sus aserciones con bloques actuales; no contar como ejecutado ni borrar sin reemplazo."
+    }
+  ],
+  "resumen": {
+    "activos": 138,
+    "con_bloque": 92,
+    "fuera_regresion_general": 46,
+    "retirados_documentados": 4
+  }
+}

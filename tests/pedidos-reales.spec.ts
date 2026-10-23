@@ -10,7 +10,8 @@ for(const idioma of ['es','en'] as const)test(`bandeja real unificada, filtros y
  await page.goto('/panel/pedidos');
  const bandeja=page.locator('.pedidos-reales-bandeja:visible'),rows=bandeja.locator('.pedidos-admin-tarjeta');
  await expect(bandeja.getByLabel(t.buscar,{exact:true})).toBeEnabled();
- await expect(rows).toHaveCount(3);
+ await expect(rows).toHaveCount(2);
+ await expect(bandeja.locator('.pedidos-admin-lista')).not.toContainText('Rechazado QA');
  const resumen=rows.first().locator('.panel-pedido-detalle>summary');
  await expect.poll(()=>resumen.evaluate(el=>{const estilo=getComputedStyle(el,'::after'),r=el.getBoundingClientRect();return estilo.content===String.fromCharCode(34)+'+'+String.fromCharCode(34)&&r.right<=innerWidth;})).toBe(true);
  const estadoPago=(idioma==='es'?es:en).PanelLista.estadoPago;
@@ -25,7 +26,7 @@ for(const idioma of ['es','en'] as const)test(`bandeja real unificada, filtros y
  }
  const etapas=bandeja.locator('.pedidos-reales-vistas');const contadores=await etapas.textContent();
  await bandeja.getByLabel(t.buscar,{exact:true}).fill('envio QA');await expect(rows).toHaveCount(1);await expect(rows).toContainText('Envío QA');expect(await etapas.textContent()).toBe(contadores);
- await bandeja.getByRole('button',{name:t.limpiar,exact:true}).click();await expect(rows).toHaveCount(3);
+ await bandeja.getByRole('button',{name:t.limpiar,exact:true}).click();await expect(rows).toHaveCount(2);
  await bandeja.getByLabel(t.formaPago,{exact:true}).click();await page.locator('[data-valor=sinpe]').click();await expect(rows).toHaveCount(1);await expect(rows).toContainText('Retiro QA');
  await bandeja.getByRole('button',{name:t.limpiar,exact:true}).click();
  await bandeja.getByLabel(t.entrega,{exact:true}).click();await page.locator('[data-valor=envio]').click();await expect(rows).toHaveCount(1);await expect(rows).toContainText('Envío QA');

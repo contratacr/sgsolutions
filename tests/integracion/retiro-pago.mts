@@ -34,15 +34,31 @@ try{
  const {POST}=await import('../../src/app/api/pagos/tilopay/iniciar/route');
  const {GET}=await import('../../src/app/api/pagos/tilopay/resultado/route');
  const {notificarPagoTarjeta}=await import('../../src/lib/email/pago-tarjeta');
+ for(const idioma of ['es','en'])for(const modalidad of ['retiro','envio','express']){
+ pagoConfirmado=false;correos.length=0;
  const id=crypto.randomUUID(),token='a'.repeat(32),producto={id:'qa-fisico',nombre:{es:'Producto QA',en:'QA product'},precio:500,codigoFabricante:'QA',disponibilidad:'disponible'};
  tablas={solicitudes_asesoria:[{id,token,estado:'aprobada',vence_en:new Date(Date.now()+3600000).toISOString(),articulos:[{producto,cantidad:1}]}],pedidos_tilopay:[],correos_pago_tarjeta:[]};
- const datos={nombre:'Ana',apellidos:'QA',correo:'qa@example.test',telefono:'88888888',modalidad:'retiro',factura:'tiquete',consentimiento:'on'};
- const r=await POST(new Request(origen+'/api/pagos/tilopay/iniciar',{method:'POST',headers:{origin:origen,host:new URL(origen).host,'content-type':'application/json'},body:JSON.stringify({asesoria:id,acceso:token,idioma:'es',...datos,datos,consentimiento:true,articulos:[{id:producto.id,cantidad:1}]})}));
- assert.equal(r.status,200,await r.text());const p=tablas.pedidos_tilopay[0];assert.equal(p.estado,'pendiente');assert.equal(correos.length,0);
+ const datos={nombre:'Ana',apellidos:'QA',correo:'qa@example.test',telefono:'88888888',modalidad,provincia:'Alajuela',canton:'Atenas',distrito:'Atenas',direccion:'Dirección QA',factura:'tiquete',consentimiento:'on'};
+ const r=await POST(new Request(origen+'/api/pagos/tilopay/iniciar',{method:'POST',headers:{origin:origen,host:new URL(origen).host,'content-type':'application/json'},body:JSON.stringify({asesoria:id,acceso:token,idioma,...datos,datos,consentimiento:true,articulos:[{id:producto.id,cantidad:1}]})}));
+ assert.equal(r.status,200,await r.text());const p=tablas.pedidos_tilopay[0];assert.equal(p.estado,'pendiente');assert.equal(p.total,modalidad==='envio'?4500:500);assert.equal(correos.length,0);
  const db=createClient(origen,'fixture-only',{auth:{persistSession:false}});await notificarPagoTarjeta(db,p.id as string);assert.equal(correos.length,0);
  const callback=()=>GET(new Request(origen+'/api/pagos/tilopay/resultado?returnData='+encodeURIComponent(btoa(p.id as string))));
  await callback();assert.equal(p.estado,'pendiente');assert.equal(correos.length,0);
- console.log('PASS: retiro sin pagar y retorno sin transacción permanecen pendientes, sin avisos de pago.');
+ console.log(`PASS: ${idioma}/${modalidad} sin pagar permanece pendiente sin avisos de pago.`);
  pagoConfirmado=true;await callback();assert.equal(p.estado,'pagado');assert.equal(correos.length,2);assert.ok(correos.some(c=>String(c.subject).includes('Pago con tarjeta confirmado')));
  await callback();assert.equal(correos.length,2);console.log('PASS: pago verificado genera avisos al cliente y SG; retorno repetido no duplica avisos. Cero cobros y correos reales.');
-}finally{globalThis.fetch=original;servidor.close();}
+ for(const metodo of ['sinpe','transferencia']){
+  const {POST:manual}=await import('../../src/app/api/pedidos/manual/route');
+  tablas.solicitudes_asesoria[0].estado='aprobada';tablas.pedidos_manuales=[];correos.length=0;
+  const solicitar=()=>manual(new Request(origen+'/api/pedidos/manual',{method:'POST',headers:{origin:origen,host:new URL(origen).host,'content-type':'application/json'},body:JSON.stringify({asesoria:id,acceso:token,idioma,datos,metodo,total:1,articulos:[{id:producto.id,cantidad:1,precio:1}]})}));
+  const respuesta=await solicitar();assert.equal(respuesta.status,201,await respuesta.text());
+  const m=tablas.pedidos_manuales[0];assert.equal(m.estado,'pendiente_pago');assert.equal(m.total_cobrar,modalidad==='envio'?4500:500);assert.equal(m.entorno,'pruebas');assert.equal(correos.length,2);
+  assert.equal((await solicitar()).status,403);assert.equal(tablas.pedidos_manuales.length,1);assert.equal(correos.length,2);
+  for(const cambio of [{datos:{...datos,consentimiento:''}},{articulos:[{id:producto.id,cantidad:0}]},{articulos:[{id:producto.id,cantidad:100}]},{articulos:[{id:producto.id,cantidad:1},{id:producto.id,cantidad:1}]}]){
+   const invalido=await manual(new Request(origen+'/api/pedidos/manual',{method:'POST',headers:{origin:origen,host:new URL(origen).host,'content-type':'application/json'},body:JSON.stringify({asesoria:id,acceso:token,idioma,datos,metodo,articulos:[{id:producto.id,cantidad:1}],...cambio})}));
+   assert.equal(invalido.status,400);assert.equal(tablas.pedidos_manuales.length,1);assert.equal(correos.length,2);
+  }
+  console.log(`PASS: ${idioma}/${modalidad}/${metodo}: total del servidor, pendiente bancario, dos avisos, reutilización y datos inválidos bloqueados.`);
+ }
+ }
+}finally{globalThis.fetch=original;servidor.close();tablas={};correos.length=0;}

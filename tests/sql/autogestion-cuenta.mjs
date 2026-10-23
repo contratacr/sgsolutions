@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
-const {PGlite}=await import(process.env.SG_PGLITE_MODULE);const db=new PGlite();
+const {PGlite}=await import(process.env.SG_PGLITE_MODULE??'@electric-sql/pglite');const db=new PGlite();
 await db.exec(`create role anon;create role authenticated;create schema auth;grant usage on schema auth to authenticated;
 create table auth.users(id uuid primary key,email text,raw_user_meta_data jsonb default '{}'::jsonb,created_at timestamptz default now(),last_sign_in_at timestamptz,email_confirmed_at timestamptz default now(),banned_until timestamptz,deleted_at timestamptz);
 create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;`);

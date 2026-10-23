@@ -10,7 +10,19 @@ for(const idioma of ['es','en'])test(`catálogo inmediato y skeleton recuperable
  expect(peticiones).toBe(0);
  let liberar!:()=>void;const espera=new Promise<void>(r=>{liberar=r;});
  await page.route('**/api/catalogo?**',async r=>{await espera;await r.continue();});
- await page.getByRole('searchbox').fill('Lenovo');
+ await page.locator('#buscar-equipo').fill('Lenovo');
+ await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','true');
+ await expect(page.locator('.shop-producto')).toHaveCount(24);
+ await expect(page.locator('.carga-esqueleto')).toHaveCount(0);
+ liberar();
+ await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
+ await expect(page.locator('.shop-producto').first()).toContainText(/lenovo/i);
+ await page.unroute('**/api/catalogo?**');
+ await page.locator('#buscar-equipo').fill('zzsinresultadosqa999');
+ await expect(page.locator('.shop-producto')).toHaveCount(0);
+ let terminar!:()=>void;const pendiente=new Promise<void>(r=>{terminar=r;});
+ await page.route('**/api/catalogo?**',async r=>{await pendiente;await r.continue();});
+ await page.locator('#buscar-equipo').fill('Lenovo');
  await expect(page.locator('.carga-esqueleto[role=status]')).toBeVisible();
  await expect(page.locator('.esqueleto-producto')).toHaveCount(6);
  await expect(page.locator('.estado-carga')).toHaveCount(0);
@@ -19,9 +31,9 @@ for(const idioma of ['es','en'])test(`catálogo inmediato y skeleton recuperable
  await expect(page.locator('.esqueleto').first()).toHaveCSS('animation-name','none');
  await page.locator('.carga-esqueleto').scrollIntoViewIfNeeded();
  await page.screenshot({path:`/tmp/sg-skeleton-${idioma}-${test.info().project.name}.png`});
- liberar();await expect(page.locator('.carga-esqueleto')).toHaveCount(0);
+ terminar();await expect(page.locator('.carga-esqueleto')).toHaveCount(0);
  await expect(page.locator('.shop-producto').first()).toContainText(/lenovo/i);
- await page.getByRole('searchbox').fill('');
+ await page.locator('#buscar-equipo').fill('');
  await expect(page.locator('.shop-producto')).toHaveCount(24);
 });
 

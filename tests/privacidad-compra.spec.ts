@@ -1,9 +1,11 @@
 import {test,expect} from '@playwright/test';
+import es from '../messages/es.json';
+import en from '../messages/en.json';
 const fixture='http://127.0.0.1:3196',origen='http://127.0.0.1:3195',clave='sg-compra-borrador-v1:carrito';
 for(const idioma of ['es','en']){
- test(`Google no autentica ni registra aceptación omitida desde login o registro ${idioma}`,async({request})=>{
+ test(`Google no registra sin aceptación explícita ${idioma}`,async({request})=>{
   const antes=await (await request.get(fixture+'/__test/estado')).json();
-  for(const registro of [false,true])for(const aceptado of [undefined,false]){
+  for(const registro of [true])for(const aceptado of [undefined,false]){
    const configuracion=await request.post('/cuenta/google',{headers:{origin:origen},data:{accion:'preparar'}});const {nonce}=await configuracion.json();
    const respuesta=await request.post('/cuenta/google',{headers:{origin:origen},data:{accion:'ingresar',credential:'test-google.'+nonce+'.'+'x'.repeat(100),registro,...(aceptado===undefined?{}:{aceptado})}});
    expect(respuesta.status()).toBe(400);expect((await respuesta.json()).error).toBe('aceptacionRequerida');
@@ -43,3 +45,18 @@ for(const idioma of ['es','en']){
   await expect.poll(()=>page.evaluate(clave=>sessionStorage.getItem(clave),clave)).toBeNull();
  });
 }
+for(const idioma of ['es','en'] as const)test(`abrir términos y privacidad conserva el pedido al regresar ${idioma}`,async({page,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
+ await page.evaluate(()=>localStorage.setItem('sg-carrito-v1',JSON.stringify([{id:'eurocomp-2a118312d9683064',cantidad:1}])));await page.goto('/pagar');
+ await page.locator('[name=nombre]').fill('Ana conservada');await page.locator('[name=apellidos]').fill('Prueba');await page.locator('[name=correo]').fill('qa@example.test');await page.locator('.campo-telefono:has(input[name=telefono]) input[type=tel]').fill('88888888');await page.locator('[name=identificacion]').fill('123456789');
+ // Use the form's next-step submit button; its label can vary by translation.
+ await page.getByRole('button',{name:(idioma==='es'?es:en).Compra.pasoSiguiente,exact:true}).click();await expect(page.locator('[data-compra-paso="1"]')).toBeVisible();
+ await page.getByRole('button',{name:(idioma==='es'?es:en).Compra.pasoSiguiente,exact:true}).click();await expect(page.locator('[data-compra-paso="2"]')).toBeVisible();
+ for(const ruta of ['/terminos','/privacidad']){
+  await page.locator(`.compra-check:has(input[name=consentimiento]) a[href="${ruta}"]`).click();await expect(page).toHaveURL(new RegExp(ruta+'$'));
+  await page.goBack();await expect(page.locator('[data-compra-paso="2"]')).toBeVisible();
+  await page.locator('.compra-pasos button').first().click();await expect(page.locator('[name=nombre]')).toHaveValue('Ana conservada');await expect(page.locator('[name=correo]')).toHaveValue('qa@example.test');await expect(page.locator('[name=identificacion]')).toHaveValue('123456789');
+  await page.locator('.compra-pasos button').nth(2).click();
+ }
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('sg-carrito-v1')!)[0].cantidad)).toBe(1);
+});

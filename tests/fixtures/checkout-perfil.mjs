@@ -17,6 +17,7 @@ http.createServer(async(req,res)=>{
   if(req.method==='POST'){profile=JSON.parse(body).datos;return res.end('{}');}
   return res.end(JSON.stringify(profile?[{datos:profile}]:[]));
  }
+ if(url.pathname==='/__test/reset'){profile=null;return res.end('{}');}
  if(url.pathname==='/__test/profile')return res.end(JSON.stringify(profile));
  res.statusCode=404;res.end('{}');
 }).listen(3126,'127.0.0.1');

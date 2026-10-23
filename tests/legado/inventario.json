@@ -1,0 +1,31 @@
+{
+  "cuenta-social.spec.ts": {
+    "motivo": "Esperaba botones Google/Facebook y redirección PKCE; el login actual usa Google Identity Services.",
+    "reemplazos": [
+      "tests/google-identidad.spec.ts",
+      "tests/mfa-clientes.spec.ts"
+    ]
+  },
+  "checkout-google.spec.ts": {
+    "motivo": "Esperaba servidor PKCE en puertos fijos y ruta retirada; el contrato GIS actual prueba retorno y carrito.",
+    "reemplazos": [
+      "tests/google-identidad.spec.ts",
+      "tests/privacidad-compra.spec.ts"
+    ]
+  },
+  "analitica-panel.spec.ts": {
+    "motivo": "Envía cookie sg-analitica al endpoint agregado y espera persistencia; el contrato actual descarta peticiones con cookies para no asociarlas a usuarios.",
+    "reemplazos": [
+      "tests/analitica.spec.ts",
+      "tests/estadisticas-exclusion.spec.ts",
+      "tests/sql/estadisticas-panel.mjs"
+    ]
+  },
+  "subcategorias.spec.ts": {
+    "motivo": "Usa NEXT_LOCALE y Escape para aplicar filtros móviles; Escape ahora descarta cambios.",
+    "reemplazos": [
+      "tests/filtros-jerarquia.spec.ts",
+      "tests/filtros-confirmacion.spec.ts"
+    ]
+  }
+}

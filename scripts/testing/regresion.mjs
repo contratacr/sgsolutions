@@ -1,26 +1,25 @@
 import {spawn,execFileSync} from 'node:child_process';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
-const bloques=[
- ['verificar',['npm','run','verificar']],
- ['build',['npm','run','build']],
- ...['cuenta-panel','eurocomp','disponibilidad','fondos','inicio-movil','modales','pedidos-propuesta','checkout-pasos','correos-diseno','mobile-preview','regresion','comprobantes','catalogo','tilopay-hosted','empresas-correo','entrega','confirmaciones','contenido','google','codigo','estadisticas','eurocomp-manual','soporte'].map(nombre=>[nombre,['npx','playwright','test','--reporter=list,json,html',`--config=playwright.${nombre}.config.ts`]]),
-];
+import {bloques} from './bloques.mjs';
+import {entornoAislado} from './entorno-aislado.mjs';
 const seleccion=process.argv.slice(2);
+if(seleccion.includes('--list')){console.log(JSON.stringify(bloques.map(([nombre,comando])=>({nombre,comando})),null,2));process.exit(0);}
 if(seleccion.some(n=>!bloques.some(([nombre])=>nombre===n))){console.error('Bloques disponibles:',bloques.map(([n])=>n).join(', '));process.exit(2);}
 // Fresh CI checkouts do not contain the ignored local catalogue snapshot.
 execFileSync(process.execPath,['scripts/preparar-catalogo.mjs'],{stdio:'inherit'});
 const carpeta=resolve('.privado/regresion',new Date().toISOString().replaceAll(':','-'));
 await mkdir(carpeta,{recursive:true});
 const resultados=[];
-const previo=await readFile('next-env.d.ts','utf8');
+const usaNext=bloques.some(([n,[bin]])=>(!seleccion.length||seleccion.includes(n))&&(bin==='npx'||n==='build'));
+const previo=usaNext?await readFile('next-env.d.ts','utf8'):null;
 try{
  for(const [nombre,[bin,...args]] of bloques.filter(([n])=>!seleccion.length||seleccion.includes(n))){
   console.log(`\nRegresión: ${nombre}`);
   const inicio=Date.now();let log='';
   const codigo=await new Promise((done)=>{
    const argumentos=bin==='npx'?[...args,'--output',resolve('test-results',nombre)]:args;
-   const hijo=spawn(bin,argumentos,{stdio:['ignore','pipe','pipe'],env:{...process.env,
+   const hijo=spawn(bin,argumentos,{stdio:['ignore','pipe','pipe'],env:{...process.env,...entornoAislado,
     PLAYWRIGHT_HTML_OUTPUT_DIR:resolve(carpeta,nombre+'-html'),
     PLAYWRIGHT_JSON_OUTPUT_NAME:resolve(carpeta,nombre+'.json'),
     ...(bin==='npx'?{PLAYWRIGHT_HTML_OPEN:'never'}:{}),
@@ -34,6 +33,6 @@ try{
   resultados.push({bloque:nombre,codigo,segundos:Math.round((Date.now()-inicio)/1000),...(pruebas?{aprobadas:pruebas.expected,fallidas:pruebas.unexpected,omitidas:pruebas.skipped,inestables:pruebas.flaky}:{})});
   await writeFile(resolve(carpeta,'resumen.json'),JSON.stringify(resultados,null,2));
  }
-}finally{await writeFile('next-env.d.ts',previo);}
+}finally{if(previo!==null)await writeFile('next-env.d.ts',previo);}
 console.table(resultados);console.log('Reportes:',carpeta);
 process.exitCode=resultados.some(r=>r.codigo!==0)?1:0;

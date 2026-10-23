@@ -44,3 +44,16 @@ test('un fallo al consultar el rol no habilita la medición',async({page,context
  await sesion(context);await request.post('http://127.0.0.1:3173/__test/perfil',{data:{error:true}});const antes=(await (await request.get('http://127.0.0.1:3173/__test/eventos')).json()).eventos;
  try{await page.goto('/nosotros');await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');expect(await page.evaluate(()=>document.body.dataset.permisoConteo)).toBeUndefined();expect((await (await request.get('http://127.0.0.1:3173/__test/eventos')).json()).eventos).toBe(antes);}finally{await request.post('http://127.0.0.1:3173/__test/perfil',{data:{error:false,rol:'administrador',activo:true}});}
 });
+
+for(const idioma of ['es','en'])test(`exclusión persistente bloquea contexto y eventos de Meta después de logout ${idioma}`,async({context,baseURL})=>{
+ await context.addCookies([{name:'sg-excluir-medicion',value:'1',url:baseURL!},{name:'sg-idioma',value:idioma,url:baseURL!}]);
+ const headers={Origin:baseURL!};
+ const contexto=await context.request.post('/api/publicidad/contexto',{headers,data:{permitir:true,version:'2026-10-20-campanas-v1',adquisicion:{canal:'facebook',medio:'pago',campana:'qa'}}});
+ expect(contexto.status()).toBe(200);expect(await contexto.json()).toEqual({activo:false});
+ expect((await context.cookies()).some(c=>c.name==='sg-publicidad'&&c.value)).toBe(false);
+ const evento=await context.request.post('/api/publicidad/evento',{headers,data:{id:crypto.randomUUID(),evento:'PageView',ruta:'/tienda'}});
+ expect(evento.status()).toBe(204);
+ // Ni un cliente ni un administrador puede declarar una venta desde el navegador.
+ const venta=await context.request.post('/api/publicidad/evento',{headers,data:{id:crypto.randomUUID(),evento:'Purchase',ruta:'/pagar'}});
+ expect(venta.status()).toBe(400);
+});

@@ -87,8 +87,16 @@ jobs:
             bloques: cuenta-panel google codigo estadisticas eurocomp-manual
           - grupo: soporte
             bloques: soporte
+          - grupo: privacidad-acceso
+            bloques: privacidad exclusion-admin mfa-clientes
+          - grupo: pagos-recientes
+            bloques: conciliacion software referencias plazo-panel compras-matriz
+          - grupo: contratos-y-colas
+            bloques: inventario integracion-campanas-contrato integracion-campanas-transporte integracion-conciliacion-tarjeta integracion-plazo-correos integracion-retiro-pago sql-conciliacion-tarjeta sql-campanas-conversiones
+          - grupo: permisos-adicionales
+            bloques: sql-archivo-panel sql-autogestion-cuenta sql-estado-entrega sql-eurocomp-manual sql-favoritos sql-perfiles-compra sql-popularidad-catalogo sql-popularidad-productos sql-seguridad-archivo sql-usuarios-panel
           - grupo: contenido
-            bloques: contenido
+            bloques: contenido publicas frontend integracion-catalogo-red
           - grupo: compras-correos
             bloques: tilopay-hosted comprobantes confirmaciones entrega empresas-correo
           - grupo: integraciones-locales
@@ -138,6 +146,10 @@ jobs:
           npx supabase start > "$RUNNER_TEMP/supabase-inicio.log" 2>&1
           npx supabase status --output json > "$RUNNER_TEMP/sg-base-local.json"
           chmod 600 "$RUNNER_TEMP/sg-base-local.json"
+      - name: Probar ingreso real y limpieza de usuarios contra Auth local
+        run: npx playwright test --config playwright.auth-real.config.ts
+        env:
+          TEST_SUPABASE_CONFIG: ${{ runner.temp }}/sg-base-local.json
       - name: Probar Worker local, pagos simulados y archivos públicos
         run: npm run test:compras
         env:

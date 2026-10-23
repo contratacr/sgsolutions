@@ -1,8 +1,8 @@
-import {probarSoporteWorker} from './soporte-worker.mjs';
 import {datosEnlacePedido} from '../../src/lib/enlace-pedido.ts';
 // Exercises a production Worker build against LOCAL Supabase. No production credentials.
 import { createServer } from "node:http";
 import { spawn, execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import { mkdtemp, readFile, writeFile, cp, rm, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
@@ -26,9 +26,8 @@ const config = JSON.parse(
     "utf8",
   ),
 );
-assert.equal(
-  config.API_URL,
-  "http://127.0.0.1:54321",
+assert.ok(
+  ["http://127.0.0.1:54321","http://127.0.0.1:55321"].includes(config.API_URL),
   "Only local Supabase is permitted.",
 );
 assert.ok(
@@ -38,6 +37,7 @@ assert.ok(
 const db = createClient(config.API_URL, config.SERVICE_ROLE_KEY, {
   auth: { persistSession: false },
 });
+const productoPrueba = `eurocomp-qa-compra-worker-${randomBytes(8).toString("hex")}`;
 const original = {};
 for (const tabla of ["catalogo_privado", "catalogo_publico"]) {
   const r = await db.from(tabla).select("*").eq("id", 1).maybeSingle();
@@ -54,7 +54,7 @@ const catalog = esquemaCatalogo.parse({
   productos: [
     {
       ...initial.productos[0],
-      id: "eurocomp-qa-compra-worker",
+      id: productoPrueba,
       codigoFabricante: "QA-ONLY",
       codigoEurocomp: "QA-ONLY",
       eurocomp: {
@@ -145,7 +145,7 @@ let worker, build, browser;
 const env = Object.fromEntries(
   Object.entries(process.env).filter(
     ([k]) =>
-      !/^(SUPABASE|NEXT_PUBLIC_SUPABASE|CUENTAS_|EUROCOMP_|BREVO_|TILOPAY_|PEDIDOS_|SG_|CLOUDFLARE_|CF_)/.test(
+      !/^(SUPABASE|NEXT_PUBLIC_SUPABASE|CUENTAS_|EUROCOMP_|BREVO_|TILOPAY_|PEDIDOS_|SG_|META_|CLOUDFLARE_|CF_)/.test(
         k,
       ),
   ),
@@ -153,6 +153,7 @@ const env = Object.fromEntries(
 const claveLocal = config.SERVICE_ROLE_KEY;
 const vars = {
   SG_ENTORNO: "local",
+  SG_META_ACTIVO: "0",
   SG_PRUEBAS_INTEGRACION: "1",
   SG_ADMIN_LOCAL: "0",
   SG_QA_LOCAL: "0",
@@ -201,7 +202,6 @@ const run = (args) =>
           ),
     );
   });
-let soporteVerificado;
 let ipSequence = 0;
 const post = (route, body) =>
   fetch(base + route, {
@@ -216,7 +216,7 @@ const post = (route, body) =>
 const verify = async (expectedPrice=price) => {
   const r = await post("/api/compra/verificar", {
     idioma: "es",
-    articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1, precio: expectedPrice }],
+    articulos: [{ id: productoPrueba, cantidad: 1, precio: expectedPrice }],
   });
   const body = await r.json();
   if (body.id) checks.push(body.id);
@@ -227,7 +227,7 @@ const payload = (v, method = "sinpe") => ({
   acceso: v.token,
   idioma: "es",
   metodo: method,
-  articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1 }],
+  articulos: [{ id: productoPrueba, cantidad: 1 }],
   datos: {
     nombre: "QA",
     apellidos: "Worker",
@@ -258,7 +258,7 @@ try {
     .toString()
     .split("\0")
     .filter(Boolean)) {
-    if (name.startsWith(".privado/")) continue;
+    if (name.startsWith(".privado/") || !existsSync(path.join(root,name))) continue;
     await cp(path.join(root, name), path.join(work, name), { recursive: true });
   }
   await cp(path.join(root, "node_modules"), path.join(work, "node_modules"), {
@@ -327,7 +327,6 @@ try {
     await new Promise((r) => setTimeout(r, 500));
   }
   assert.ok(ready, "Compiled Worker did not start.");
-  soporteVerificado=await probarSoporteWorker({db,config,base});
   console.log(
     "Testing stock, prices, real database writes, duplicate submits and receipt storage.",
   );
@@ -348,7 +347,7 @@ try {
   const offerId=datosEnlacePedido(new URL(offerManual.d.url,base)).pedido;
   const offerSaved=await db.from("pedidos_manuales").select("total_cobrar,articulos").eq("id",offerId).single();assert.ifError(offerSaved.error);assert.equal(Number(offerSaved.data.total_cobrar),offerPrice);assert.equal(offerSaved.data.articulos[0].precio,offerPrice);
   const offerCardVerification=await verify(offerPrice),offerData=payload(offerCardVerification.body).datos;
-  const offerCard=await post("/api/pagos/tilopay/iniciar",{asesoria:offerCardVerification.body.id,acceso:offerCardVerification.body.token,idioma:"es",articulos:[{id:"eurocomp-qa-compra-worker",cantidad:1}],...offerData,consentimiento:true,datos:offerData});assert.equal(offerCard.status,200);
+  const offerCard=await post("/api/pagos/tilopay/iniciar",{asesoria:offerCardVerification.body.id,acceso:offerCardVerification.body.token,idioma:"es",articulos:[{id:productoPrueba,cantidad:1}],...offerData,consentimiento:true,datos:offerData});assert.equal(offerCard.status,200);
   const offerCardSaved=await db.from("pedidos_tilopay").select("id,total,articulos").eq("cliente->>correo","qa-worker@example.invalid");assert.ifError(offerCardSaved.error);cards.push(...offerCardSaved.data.map(x=>x.id));assert.equal(Number(offerCardSaved.data[0].total),offerPrice);assert.equal(offerCardSaved.data[0].articulos[0].precio,offerPrice);
   // Clean this separate case before existing approval/idempotency scenarios.
   await db.from("pedidos_tilopay").delete().in("id",cards);cards.length=0;
@@ -411,7 +410,7 @@ try {
     asesoria: vc.id,
     acceso: vc.token,
     idioma: "es",
-    articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1 }],
+    articulos: [{ id: productoPrueba, cantidad: 1 }],
     ...data,
     consentimiento: true,
     datos: data,
@@ -455,7 +454,7 @@ try {
     asesoria: declinedVerification.id,
     acceso: declinedVerification.token,
     idioma: "es",
-    articulos: [{ id: "eurocomp-qa-compra-worker", cantidad: 1 }],
+    articulos: [{ id: productoPrueba, cantidad: 1 }],
     ...data,
     consentimiento: true,
     datos: data,
@@ -550,7 +549,6 @@ try {
   await writeFile(
     ".privado/evidencias/compras-worker.json",
     JSON.stringify({
-      soporte:soporteVerificado,
       workerCompilado: true,
       baseLocal: true,
       pedidos: orders.length,
@@ -568,24 +566,24 @@ try {
   worker?.kill("SIGTERM");
   build?.kill("SIGTERM");
   await new Promise((r) => services.close(r));
-  if (objects.length)
-    await db.storage.from("comprobantes-pedidos").remove(objects);
-  if (orders.length)
-    await db.from("pedidos_manuales").delete().in("id", orders);
-  if (cards.length) await db.from("pedidos_tilopay").delete().in("id", cards);
-  if (checks.length)
-    await db.from("solicitudes_asesoria").delete().in("id", checks);
-  // Browser-created verifications are also tagged through this unique QA product.
+  const erroresLimpieza=[];
+  async function limpiar(operacion){
+    try{const resultado=await operacion;if(resultado?.error)erroresLimpieza.push(resultado.error.code||'LIMPIEZA_FALLIDA');}
+    catch{erroresLimpieza.push('LIMPIEZA_SIN_RESPUESTA');}
+  }
+  if (objects.length) await limpiar(db.storage.from("comprobantes-pedidos").remove(objects));
+  if (orders.length) await limpiar(db.from("pedidos_manuales").delete().in("id", orders));
+  if (cards.length) await limpiar(db.from("pedidos_tilopay").delete().in("id", cards));
+  if (checks.length) await limpiar(db.from("solicitudes_asesoria").delete().in("id", checks));
+  // Browser-created verifications carry this unique QA product, never real products.
   const own = await db.from("solicitudes_asesoria").select("id,articulos");
-  const ids = (own.data ?? [])
-    .filter((x) =>
-      x.articulos.some((a) => a.producto?.id === "eurocomp-qa-compra-worker"),
-    )
-    .map((x) => x.id);
-  if (ids.length) await db.from("solicitudes_asesoria").delete().in("id", ids);
+  if(own.error)erroresLimpieza.push('LECTURA_LIMPIEZA_FALLIDA');
+  const ids = (own.data ?? []).filter(x => x.articulos.some(a => a.producto?.id === productoPrueba)).map(x => x.id);
+  if (ids.length) await limpiar(db.from("solicitudes_asesoria").delete().in("id", ids));
   for (const tabla of Object.keys(original)) {
-    if (original[tabla]) await db.from(tabla).upsert(original[tabla]);
-    else await db.from(tabla).delete().eq("id", 1);
+    if (original[tabla]) await limpiar(db.from(tabla).upsert(original[tabla]));
+    else await limpiar(db.from(tabla).delete().eq("id", 1));
   }
   await rm(work, { recursive: true, force: true });
+  assert.deepEqual(erroresLimpieza,[],"La limpieza local debe completarse sin errores.");
 }

@@ -64,12 +64,46 @@
       "Rechazo de contenido inválido y tamaño excesivo",
       "Obligatoriedad, conservación al revisar y recuperación de errores de red",
       "Chrome, Safari móvil y Safari escritorio"
+    ],
+    "conciliacion": [
+      "Confirmación sin retorno, avisos pendientes y estados del panel"
+    ],
+    "privacidad": [
+      "Aceptación solo en registro, caducidad y limpieza, navegación legal y plazo de entrega"
+    ],
+    "exclusion-admin": [
+      "PC/móvil, exclusión antes y después de cerrar sesión"
+    ],
+    "mfa-clientes": [
+      "Correo y Google sin MFA para clientes; MFA obligatorio para administradores"
+    ],
+    "software": [
+      "Compra bajo pedido, fuente y archivo/envío de pedidos"
+    ],
+    "referencias": [
+      "Referencias estables de pedidos"
+    ],
+    "plazo-panel": [
+      "Plazo en panel y correos"
+    ],
+    "contratos-y-colas": [
+      "Integraciones aisladas de campañas, transporte, pagos, correos y retiro"
+    ],
+    "sql": [
+      "18 verificaciones PostgreSQL efímero: permisos, migraciones, colas y concurrencia"
+    ],
+    "publicas": [
+      "Activación vencida, enlaces manipulados, cuenta sin proveedor, ES/EN de páginas legales y públicas, protocolo Eurocomp seguro y mensajes WhatsApp"
+    ],
+    "inventario": [
+      "Comandos existentes, bloques críticos conectados al workflow manual, exclusión de diagnósticos reales y reemplazos de pruebas retiradas"
     ]
   },
   "limites": [
     "No realiza cobros, envíos de correo reales ni despliegues.",
     "No certifica 3D Secure, cargos reales ni entrega del proveedor de correo: requiere entorno de pruebas autorizado del proveedor.",
     "Crear cuenta desde compra actualmente abre registro; no existe creación automática posterior a la compra.",
-    "La suite no ejecuta los smoke tests de producción ni las pruebas que requieren Supabase/Auth y buzón locales independientes."
+    "La suite no ejecuta los smoke tests de producción ni las pruebas que requieren Supabase/Auth y buzón locales independientes.",
+    "meta-prueba-cola.mts es diagnóstico de proveedor, excluido de la regresión aislada. MFA nativo y Worker requieren servicios independientes en sus workflows manuales."
   ]
 }

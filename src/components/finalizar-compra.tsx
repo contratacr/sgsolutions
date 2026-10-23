@@ -166,7 +166,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
     (!aprobacion && c.errorCarrito) ||
     productos.length !== lineas.length ||
     productos.some((x) => x.p.disponibilidad === "agotado");
-  const pendiente = productos.some((x) => x.p.precio === null),
+  const pendiente = productos.length !== lineas.length || productos.some((x) => x.p.precio === null),
     subtotal = productos.reduce((s, x) => s + (x.p.precio ?? 0) * x.cantidad, 0),
     envio = costoEntrega(soloDigital?'digital':express?'express':entrega?'envio':'retiro'),
     total = subtotal + envio;
@@ -505,7 +505,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                   )}
                   <label className="compra-check">
                     <input type="checkbox" name="consentimiento" required />
-                    <span>{t.rich('consentimientoLegal',{terminos:trozos=><Link href="/terminos">{trozos}</Link>,privacidad:trozos=><Link href="/privacidad">{trozos}</Link>})}<IndicadorCampo obligatorio/></span>
+                    <span>{t.rich('consentimientoLegal',{terminos:trozos=><Link href="/terminos" onNavigate={()=>guardarBorradorActual.current()}>{trozos}</Link>,privacidad:trozos=><Link href="/privacidad" onNavigate={()=>guardarBorradorActual.current()}>{trozos}</Link>})}<IndicadorCampo obligatorio/></span>
                   </label>
                   {errorPago&&<p role="alert">{t('errorPago')}</p>}
                   {errorFormulario && <p role="alert" className="aviso-formulario">{t('validacion')}</p>}
@@ -516,7 +516,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
                     type="submit"
                     disabled={bloqueado||procesando||guardandoCompra||(pago==='tarjeta'&&(!tarjetaDisponible||pendiente))}
                   >
-                    {procesando||guardandoCompra?t('procesandoPago'):t(pago==='tarjeta'?'pagarTotal':'revisarTotal',{total:colones(total)})}
+                    {procesando||guardandoCompra?t('procesandoPago'):t(pago==='tarjeta'?'pagarTotal':'revisarTotal',{total:pendiente?t('pendiente'):colones(total)})}
                     <ClipboardCheck size={19} aria-hidden="true" />
                   </button>
                   </div>
