@@ -26,7 +26,7 @@ for(const idioma of ['es','en'] as const)for(const cuenta of [false,true])for(co
   });
   await page.route('**/api/pedidos/manual',async r=>{creaciones++;const b=r.request().postDataJSON();expect(b.metodo).toBe(pago);expect(b.datos.modalidad).toBe(modalidad);await r.fulfill({json:{urlCorta:pedido}});});
   await page.route('**/api/pedidos/manual/comprobante',async r=>{adjuntos++;expect(r.request().postDataBuffer()?.length).toBeGreaterThan(200);await r.fulfill({json:{ok:true}});});
-  await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();
+  await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await page.locator('#buscar-equipo').press('Enter');await expect(page.locator('.shop-orden-trigger')).toBeEnabled();
   await expect(page.locator('.producto-agregar').first()).toBeVisible();await page.locator('.shop-producto').first().hover();await page.locator('.producto-agregar').first().click();
   await expect(page.locator('.carrito-cantidad')).toHaveText('1');await page.goto('/pagar');
   if(cuenta)await expect(page.locator('.compra-acceso')).toHaveCount(0);else await expect(page.locator('.compra-acceso')).toBeVisible();

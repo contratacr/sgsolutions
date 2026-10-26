@@ -90,7 +90,7 @@ jobs:
           - grupo: privacidad-acceso
             bloques: privacidad exclusion-admin mfa-clientes
           - grupo: pagos-recientes
-            bloques: conciliacion software referencias plazo-panel compras-matriz
+            bloques: conciliacion software referencias plazo-panel compras-matriz revision-tienda
           - grupo: contratos-y-colas
             bloques: inventario integracion-campanas-contrato integracion-campanas-transporte integracion-conciliacion-tarjeta integracion-plazo-correos integracion-retiro-pago sql-conciliacion-tarjeta sql-campanas-conversiones
           - grupo: permisos-adicionales

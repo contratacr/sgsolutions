@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 for(const idioma of ['es','en'])test('favoritos sin ingreso, vista previa y carrito '+idioma,async({page,context,baseURL})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
- await page.goto('/tienda');await page.locator('#buscar-equipo').fill('FXXDCFH1001C');
+ await page.goto('/tienda');await page.locator('#buscar-equipo').fill('FXXDCFH1001C');await page.locator('#buscar-equipo').press('Enter');
  const tarjeta=page.locator('.shop-producto').filter({hasText:'FXXDCFH1001C'});
  await expect(tarjeta).toBeVisible();await expect(tarjeta.locator('button.producto-agregar')).toBeEnabled();
  await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await tarjeta.hover();

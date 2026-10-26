@@ -9,10 +9,10 @@ for(const idioma of ['es','en']){
   await expect(opciones.first().locator('img')).toBeVisible();await expect(opciones.first()).toContainText(datos.productos[0].nombre[idioma]);
   await campo.blur();await expect(page.getByRole('listbox')).toBeVisible();
   // Reduce el viewport para verificar el espacio disponible; no emula un teclado físico de iOS.
-  if(info.project.name==='iphone-webkit')await page.setViewportSize({width:390,height:500});
+  if(/mobile|iphone/.test(info.project.name))await page.setViewportSize({width:390,height:500});
   const panel=page.locator('.shop-sugerencias-panel');await panel.scrollIntoViewIfNeeded();
   await page.getByRole('button',{name:idioma==='es'?/Ver todos los resultados/:/View all results/}).scrollIntoViewIfNeeded();
-  const medidas=await panel.evaluate(el=>({client:el.clientHeight,scroll:el.scrollHeight,top:el.getBoundingClientRect().top,bottom:el.getBoundingClientRect().bottom}));expect(medidas.client).toBeGreaterThan(0);expect(medidas.scroll).toBeGreaterThanOrEqual(medidas.client);expect(medidas.bottom).toBeLessThanOrEqual(501+ (info.project.name==='pc'?1000:0));
+  const medidas=await panel.evaluate(el=>({client:el.clientHeight,scroll:el.scrollHeight,top:el.getBoundingClientRect().top,bottom:el.getBoundingClientRect().bottom}));expect(medidas.client).toBeGreaterThan(0);expect(medidas.scroll).toBeGreaterThanOrEqual(medidas.client);expect(medidas.bottom).toBeLessThanOrEqual((page.viewportSize()?.height??0)+1);
   await page.screenshot({path:`/tmp/sg-sugerencias-${info.project.name}-${idioma}.png`});
   await page.getByRole('button',{name:idioma==='es'?/Ver todos los resultados/:/View all results/}).click();await expect(page.getByRole('listbox')).toHaveCount(0);await expect(page.locator('.shop-termino-buscado')).toContainText('Dell');
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');

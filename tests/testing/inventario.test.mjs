@@ -14,7 +14,7 @@ test('cada bloque tiene un ejecutable existente y un nombre único',async()=>{
 });
 test('las regresiones críticas recientes están conectadas al workflow manual',async()=>{
  const workflow=await readFile('.github/workflows/pruebas-compras.yml','utf8');
- for(const nombre of ['conciliacion','privacidad','exclusion-admin','mfa-clientes','software','referencias','plazo-panel','integracion-campanas-contrato','integracion-campanas-transporte','integracion-conciliacion-tarjeta','integracion-plazo-correos','integracion-retiro-pago','sql-conciliacion-tarjeta','sql-campanas-conversiones']){
+ for(const nombre of ['revision-tienda','conciliacion','privacidad','exclusion-admin','mfa-clientes','software','referencias','plazo-panel','integracion-campanas-contrato','integracion-campanas-transporte','integracion-conciliacion-tarjeta','integracion-plazo-correos','integracion-retiro-pago','sql-conciliacion-tarjeta','sql-campanas-conversiones']){
   assert.ok(bloques.some(([n])=>n===nombre),nombre+' no registrado');
   assert.ok(workflow.includes(nombre),nombre+' ausente de CI manual');
  }

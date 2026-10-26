@@ -97,6 +97,12 @@
     ],
     "inventario": [
       "Comandos existentes, bloques críticos conectados al workflow manual, exclusión de diagnósticos reales y reemplazos de pruebas retiradas"
+    ],
+    "revision-tienda": [
+      "Contactos WhatsApp, Outlook, redes, mapas y teléfono: destino y nueva pestaña traducida sin envíos reales",
+      "Validación: un error por intento, ningún pago por formulario incompleto",
+      "Pasarela no disponible: conserva datos y carrito, permite reintento y evita doble envío",
+      "Regreso de Tilopay, persistencia del carrito, pasos de compra y filtros móviles en ES/EN, Chromium y WebKit"
     ]
   },
   "limites": [

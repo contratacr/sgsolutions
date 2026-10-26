@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 for(const idioma of ['es','en'])test(`carrito conserva cantidades al recargar y recuperar la pestaña ${idioma}`,async({page,context,baseURL})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
- await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await page.locator('.shop-producto button.producto-agregar').first().click();
+ await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await page.locator('#buscar-equipo').press('Enter');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await page.locator('.shop-producto button.producto-agregar').first().click();
  await expect(page.locator('.carrito-cantidad')).toHaveText('1');
  const guardado=await page.evaluate(()=>localStorage.getItem('sg-carrito-v1'));
  await page.reload();await expect(page.locator('.carrito-cantidad')).toHaveText('1');
