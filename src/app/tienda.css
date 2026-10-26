@@ -563,3 +563,11 @@
 
 .tienda-compacta .shop-resultados .shop-termino-buscado{gap:6px;margin-bottom:12px}
 .tienda-compacta .shop-resultados .shop-termino-buscado h2{font-size:.85rem;line-height:1.45;font-weight:400;letter-spacing:normal}
+
+.catalogo-vacio .catalogo-vacio-acciones{display:flex;justify-content:center;align-items:stretch;flex-wrap:wrap;gap:12px;margin-top:24px}
+.catalogo-vacio .catalogo-vacio-acciones>.boton{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin:0;padding:12px 20px;font-size:.9rem;line-height:1.4}
+.ficha-pagina .ficha-precio-acciones{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:18px 0}
+.ficha-pagina .ficha-precio-acciones>.shop-asesoria-inline{justify-self:end}
+.ficha-pagina .ficha-precio-acciones .ficha-precio{flex-wrap:wrap}
+.ficha-pagina .ficha-descripcion-completa{font-size:.9rem;line-height:1.7;margin:24px 0 0}
+@media(max-width:480px){.catalogo-vacio .catalogo-vacio-acciones{display:grid;grid-template-columns:minmax(0,1fr);width:100%;max-width:340px;margin-inline:auto}}

@@ -1,4 +1,5 @@
 "use client";
+import {clasificacionesDeProducto} from '@/lib/soluciones-empresariales';
 import {limiteCantidadProducto} from '@/lib/software';
 import {PrecioProducto,EtiquetaDescuento} from './precio-producto';
 import Link from "next/link";
@@ -32,6 +33,24 @@ export function FichaProducto({
     n = useTranslations("Navegacion"),
     l = useLocale(),
     datos = useCatalogo();
+  const general=clasificacionesDeProducto(p).find(x=>x.categoria!=='soluciones-empresariales');
+  const categoriaVisible=datos.categorias.find(x=>x.id===general?.categoria)?.nombre??categoria;
+  let descripcion=descripcionUtil(p,l);
+  // El importador puede repetir el título y las mismas especificaciones como párrafo.
+  let sinRepeticiones=descripcion;
+  for(const e of p.especificaciones){
+   const nombre=traducir(e.nombre,l).replace(' > ',' — ');
+   sinRepeticiones=sinRepeticiones.replace(`${nombre}: ${traducir(e.valor,l)}.`, '');
+  }
+  if(sinRepeticiones!==descripcion){
+   const prefijo=traducir(p.nombre,l)+'.';
+   if(sinRepeticiones.startsWith(prefijo))sinRepeticiones=sinRepeticiones.slice(prefijo.length);
+   descripcion=sinRepeticiones.replace(/\s+/g,' ').trim();
+  }
+  const etiquetaTecnica=(texto:string)=>{
+   const etiquetas:Record<string,string>=l==='en'?{'Processor > Processor Number':'Processor model','Processor > Type':'Processor','RAM > Installed Size':'Memory (RAM)','System > Hard Drive Capacity':'Storage','Display > Diagonal Size':'Screen size'}:{'Procesador > Número de procesador':'Modelo de procesador','Procesador > Tipo':'Procesador','Memoria RAM > Tamaño instalado':'Memoria RAM','Sistema > Capacidad del disco duro':'Almacenamiento','Pantalla > Tamaño en diagonal':'Pantalla'};
+   return etiquetas[texto]??texto.replace(/\s*>\s*/g,': ');
+  };
   const [cantidad,setCantidad]=useState(1);
   const [foto, setFoto] = useState(0);
   const fotos = [...new Set([p.imagen, ...(p.imagenes ?? [])])];
@@ -65,10 +84,10 @@ export function FichaProducto({
           <h1>{traducir(p.nombre, l)}</h1>
           <dl className="ficha-identidad">
             <div><dt>{t("codigo")}:</dt><dd>{p.codigoFabricante || t("pendiente")}</dd></div>
-            <div><dt>{t("categoria")}:</dt><dd>{traducir(categoria,l)}</dd></div>
+            <div><dt>{t("categoria")}:</dt><dd>{traducir(categoriaVisible,l)}</dd></div>
+            {p.coleccion==='empresas'&&<div><dt>{t("coleccion")}:</dt><dd>{traducir(categoria,l)}</dd></div>}
             <div><dt>{t("marca")}:</dt><dd>{p.marca || t("pendiente")}</dd></div>
           </dl>
-          {descripcionUtil(p,l)&&<p>{descripcionUtil(p,l)}</p>}
           <div className="ficha-precio-acciones"><div className="ficha-precio">
             <PrecioProducto producto={p} pendiente={s("precioPendiente")}/>
             {p.precio !== null && <small>{a("precioConIva")}</small>}
@@ -89,6 +108,7 @@ export function FichaProducto({
           </button>}</div>
 
 
+      {descripcion&&<p className="ficha-descripcion-completa">{descripcion}</p>}
       {(p.especificaciones.length>0||p.fichaTecnica)&&<section className="ficha-detalles">
         <div className="ficha-detalles-cabecera">
           <h2>{t("especificaciones")}</h2>
@@ -98,7 +118,7 @@ export function FichaProducto({
           <dl>
             {(p.especificaciones ?? []).map((e, i) => (
               <div key={i}>
-                <dt>{traducir(e.nombre, l)}</dt>
+                <dt>{etiquetaTecnica(traducir(e.nombre, l))}</dt>
                 <dd>{traducir(e.valor, l)}</dd>
               </div>
             ))}

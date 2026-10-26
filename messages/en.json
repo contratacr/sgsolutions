@@ -891,7 +891,8 @@
     "documento": "View technical datasheet",
     "cantidad": "Quantity",
     "existenciasProveedor": "Available from supplier: {cantidad}",
-    "disponibles": "{cantidad} available"
+    "disponibles": "{cantidad} available",
+    "coleccion": "Collection"
   },
   "MensajePedido": {
     "titulo": "Order request · SG Solutions",
@@ -1686,7 +1687,8 @@
     "dimex": "DIMEX",
     "nite": "NITE",
     "mensajeDisponibilidadInicio": "Hello, SG Solutions. I would like to check availability for the following:",
-    "mensajeDisponibilidadCierre": "Could you confirm whether this product is available, the delivery timeframe and how I can purchase it?"
+    "mensajeDisponibilidadCierre": "Could you confirm whether this product is available, the delivery timeframe and how I can purchase it?",
+    "consultarOpciones": "Ask about options"
   },
   "AsesoriaAdmin": {
     "titulo": "Advice requests",
@@ -2398,8 +2400,8 @@
     "porNecesidad": "Solutions by need",
     "verEquipos": "View equipment ({cantidad})",
     "consultarSolucion": "Ask about this solution",
-    "sinEquipos": "Let’s plan a solution for your business",
-    "asesoriaVacio": "No published equipment matches this selection. Contact us to review options and availability for your project.",
+    "sinEquipos": "No products match these filters",
+    "asesoriaVacio": "Try different filters or contact us to check options and availability.",
     "mensajeProyecto": "I am interested in: {solucion}. Brand: {marca}.",
     "marcaPorDefinir": "to be chosen with your advice",
     "consultaEmpresa": "I would like advice on a technology solution for my business."

@@ -891,7 +891,8 @@
     "documento": "Consultar ficha técnica",
     "cantidad": "Cantidad",
     "existenciasProveedor": "Disponibles en proveedor: {cantidad}",
-    "disponibles": "{cantidad} disponibles"
+    "disponibles": "{cantidad} disponibles",
+    "coleccion": "Colección"
   },
   "MensajePedido": {
     "titulo": "Solicitud de pedido · SG Solutions",
@@ -1686,7 +1687,8 @@
     "dimex": "DIMEX",
     "nite": "NITE",
     "mensajeDisponibilidadInicio": "Hola, SG Solutions. Quisiera consultar la disponibilidad de lo siguiente:",
-    "mensajeDisponibilidadCierre": "¿Me confirman si tienen disponible este producto, el plazo de entrega y cómo puedo realizar la compra?"
+    "mensajeDisponibilidadCierre": "¿Me confirman si tienen disponible este producto, el plazo de entrega y cómo puedo realizar la compra?",
+    "consultarOpciones": "Consultar opciones"
   },
   "AsesoriaAdmin": {
     "titulo": "Solicitudes de asesoría",
@@ -2398,8 +2400,8 @@
     "porNecesidad": "Soluciones por necesidad",
     "verEquipos": "Ver equipos ({cantidad})",
     "consultarSolucion": "Consultar esta solución",
-    "sinEquipos": "Preparemos una solución para su empresa",
-    "asesoriaVacio": "No hay equipos publicados que coincidan con esta selección. Consúltenos para revisar opciones y disponibilidad según su proyecto.",
+    "sinEquipos": "No encontramos productos con estos filtros",
+    "asesoriaVacio": "Pruebe otros filtros o consúltenos para revisar opciones y disponibilidad.",
     "mensajeProyecto": "Me interesa: {solucion}. Marca: {marca}.",
     "marcaPorDefinir": "por definir con su asesoría",
     "consultaEmpresa": "Quisiera recibir asesoría sobre una solución tecnológica para mi empresa."
