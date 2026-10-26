@@ -527,3 +527,6 @@
 .compra-pagina .compra-check a:hover{color:#18344c;text-decoration-thickness:2px}
 .compra-pagina .compra-check a:focus-visible{outline:2px solid #315a78;outline-offset:3px;border-radius:2px}
 @media(max-width:900px){.compra-pagina .compra-grid[data-resumen-final=true]>.compra-resumen{order:-1}}
+
+/* El término más reciente debe caber también en pantallas pequeñas. */
+.shop-filtros-activos .shop-filtro-busqueda{min-width:0;max-width:100%;overflow-wrap:anywhere;text-align:left}.shop-filtro-busqueda svg{flex-shrink:0}
