@@ -2603,7 +2603,7 @@
     "marca": "Marca",
     "categoria": "Categoría",
     "producto": "Producto",
-    "resultadosPara": "Resultados para «{busqueda}»",
+    "resultadosPara": "Resultados de búsqueda para “{busqueda}”",
     "verTodos": "Ver todos los resultados ({cantidad})",
     "precioPendiente": "Consultar precio"
   }

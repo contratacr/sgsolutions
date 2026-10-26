@@ -2603,7 +2603,7 @@
     "marca": "Brand",
     "categoria": "Category",
     "producto": "Product",
-    "resultadosPara": "Results for “{busqueda}”",
+    "resultadosPara": "Search results for “{busqueda}”",
     "verTodos": "View all results ({cantidad})",
     "precioPendiente": "Ask for price"
   }

@@ -560,3 +560,6 @@
 .shop-termino-buscado h2{margin:0;font-size:1.05rem;overflow-wrap:anywhere}
 .shop-termino-buscado button{display:grid;place-items:center;flex-shrink:0;min-width:44px;min-height:44px;border:0;background:transparent;color:#315a78;cursor:pointer}
 @media(max-width:650px){.shop-sugerencias [role=option]{gap:8px;padding:10px 8px;font-size:.8rem}.shop-sugerencia-foto{width:44px;height:44px}.shop-sugerencia-precio{font-size:.75rem}.shop-termino-buscado h2{font-size:.95rem}}
+
+.tienda-compacta .shop-resultados .shop-termino-buscado{gap:6px;margin-bottom:12px}
+.tienda-compacta .shop-resultados .shop-termino-buscado h2{font-size:.85rem;line-height:1.45;font-weight:400;letter-spacing:normal}
