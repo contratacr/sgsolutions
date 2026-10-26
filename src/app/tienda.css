@@ -537,3 +537,8 @@
 .shop-sugerencias [role=option]>span{min-width:0;overflow-wrap:anywhere}
 .shop-sugerencias small{flex-shrink:0;color:#52677a;font-size:.75rem}
 .shop-sugerencias [role=option]:hover,.shop-sugerencias [aria-selected=true]{background:#edf3f7}
+
+/* Las sugerencias comienzan después del campo y su margen. */
+.shop-autocompletar .shop-buscador{margin-bottom:0}
+.shop-autocompletar{margin-bottom:28px}
+.shop-sugerencias{top:calc(100% + 6px)}

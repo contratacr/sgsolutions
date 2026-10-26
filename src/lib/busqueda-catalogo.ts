@@ -27,7 +27,7 @@ export function coincidenciaBusqueda(p:Producto,busqueda:ReturnType<typeof prepa
  const compacto=texto.replaceAll(' ','');
  const coincide=(palabra:string)=>{
   const grupo=familias.find(g=>g.includes(palabra));
-  return grupo?grupo.some(t=>palabrasTexto.has(t)):palabrasTexto.has(palabra)||(palabra.length>=3&&/\d/.test(palabra)&&compacto.includes(palabra));
+  return grupo?grupo.some(t=>palabrasTexto.has(t)):palabrasTexto.has(palabra)||(palabra.length>=2&&palabra===busqueda.palabras.at(-1)&&[...palabrasTexto].some(t=>t.startsWith(palabra)))||(palabra.length>=3&&/\d/.test(palabra)&&compacto.includes(palabra));
  };
  if(!busqueda.palabras.every(coincide))return 0;
  const codigo=normalizarBusqueda(p.codigoFabricante??'').replaceAll(' ','');

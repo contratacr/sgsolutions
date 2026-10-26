@@ -53,8 +53,17 @@ for(const idioma of ['es','en'])test(`marca reemplaza búsqueda y sugerencias ac
  await expect(campo).toHaveAttribute('aria-expanded','true');
  await expect(page.getByRole('option').filter({hasText:/Kingston/i})).toBeVisible();
  await campo.press('ArrowDown');await campo.press('Enter');
- await expect(campo).toHaveValue('');
+ await expect(campo).toHaveValue('Kingston');
  await expect(page.locator('.shop-filtros-activos button')).toHaveCount(1);
  await expect(page.locator('.shop-filtros-activos button')).toContainText(/Kingston/i);
  await expect(campo).toHaveAttribute('aria-expanded','false');
+});
+
+for(const idioma of ['es','en'])test(`ace completa ACER y no superpone el campo ${idioma}`,async({page,context,baseURL})=>{
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
+ const campo=page.locator('#buscar-equipo');await expect(campo).toBeEnabled();await campo.fill('ace');
+ const opcion=page.getByRole('option').filter({hasText:/^ACER/});await expect(opcion).toBeVisible();
+ const entrada=await campo.boundingBox(),lista=await page.getByRole('listbox').boundingBox();expect(lista!.y).toBeGreaterThan(entrada!.y+entrada!.height);
+ await opcion.click();await expect(campo).toHaveValue('ACER');await expect(page.locator('.shop-filtros-activos button')).toHaveCount(1);await expect(page.locator('.shop-filtros-activos button')).toHaveText('ACER');
+ await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');await expect(page.locator('.shop-grid h3').first()).toContainText(/ACER/i);
 });
