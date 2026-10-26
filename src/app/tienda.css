@@ -571,3 +571,6 @@
 .ficha-pagina .ficha-precio-acciones .ficha-precio{flex-wrap:wrap}
 .ficha-pagina .ficha-descripcion-completa{font-size:.9rem;line-height:1.7;margin:24px 0 0}
 @media(max-width:480px){.catalogo-vacio .catalogo-vacio-acciones{display:grid;grid-template-columns:minmax(0,1fr);width:100%;max-width:340px;margin-inline:auto}}
+
+/* Safari iOS amplía campos con texto menor de 16px al enfocarlos. */
+@media(max-width:900px),(pointer:coarse){.tienda-compacta .shop-autocompletar .shop-buscador input{font-size:max(16px,1rem)}}
