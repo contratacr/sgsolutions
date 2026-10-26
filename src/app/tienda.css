@@ -546,3 +546,17 @@
 .shop-autocompletar .shop-buscador input{text-overflow:ellipsis;white-space:nowrap}
 .shop-autocompletar .shop-buscador input:focus{text-overflow:clip}
 .shop-sugerencias [role=option]:focus-visible{outline:2px solid #315a78;outline-offset:-2px}
+
+.shop-sugerencias-panel{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:30;background:#fff;border:1px solid #cbd7e1;border-radius:12px;box-shadow:0 12px 28px #142c431a;max-height:min(520px,55dvh);overflow:auto;overscroll-behavior:contain}
+.shop-sugerencias-panel .shop-sugerencias{position:static;border:0;box-shadow:none;max-height:none;overflow:visible}
+.shop-sugerencia-foto{width:56px;height:52px;flex-shrink:0;position:relative}
+.shop-sugerencia-foto img{width:100%;height:100%;object-fit:contain}
+.shop-sugerencia-foto .shop-imagen-pendiente{display:none}
+.shop-sugerencia-texto{flex:1;min-width:0;line-height:1.4}
+.shop-sugerencia-texto small{display:block;margin-top:3px}
+.shop-sugerencia-precio{flex-shrink:0;font-size:.85rem;color:#a83c20;white-space:nowrap}
+.shop-sugerencias-todos{display:block;width:100%;padding:14px;border:0;border-top:1px solid #e1e7ec;background:#fff;color:#315a78;font-weight:600;cursor:pointer;border-radius:0 0 12px 12px}
+.shop-termino-buscado{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.shop-termino-buscado h2{margin:0;font-size:1.05rem;overflow-wrap:anywhere}
+.shop-termino-buscado button{display:grid;place-items:center;flex-shrink:0;min-width:44px;min-height:44px;border:0;background:transparent;color:#315a78;cursor:pointer}
+@media(max-width:650px){.shop-sugerencias [role=option]{gap:8px;padding:10px 8px;font-size:.8rem}.shop-sugerencia-foto{width:44px;height:44px}.shop-sugerencia-precio{font-size:.75rem}.shop-termino-buscado h2{font-size:.95rem}}

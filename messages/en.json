@@ -2602,6 +2602,9 @@
     "sugerencias": "Search suggestions",
     "marca": "Brand",
     "categoria": "Category",
-    "producto": "Product"
+    "producto": "Product",
+    "resultadosPara": "Results for “{busqueda}”",
+    "verTodos": "View all results ({cantidad})",
+    "precioPendiente": "Ask for price"
   }
 }

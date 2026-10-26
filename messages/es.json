@@ -2602,6 +2602,9 @@
     "sugerencias": "Sugerencias de búsqueda",
     "marca": "Marca",
     "categoria": "Categoría",
-    "producto": "Producto"
+    "producto": "Producto",
+    "resultadosPara": "Resultados para «{busqueda}»",
+    "verTodos": "Ver todos los resultados ({cantidad})",
+    "precioPendiente": "Consultar precio"
   }
 }
