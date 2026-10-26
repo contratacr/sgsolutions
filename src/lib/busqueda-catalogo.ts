@@ -19,6 +19,8 @@ export function coincidenciaBusqueda(p:Producto,busqueda:ReturnType<typeof prepa
  if(!busqueda.palabras.length)return 1;
  // Supplier titles mix product identity and ports/features. Read identity first.
  const nombre=normalizarBusqueda(p.nombre.es),tokens=nombre.split(' ');
+ const consultaCompleta=busqueda.palabras.join(' ');
+ if([p.nombre.es,p.nombre.en].some(t=>normalizarBusqueda(t).split(' ').filter(p=>p&&!omitir.has(p)).join(' ')===consultaCompleta))return 150;
  const tipo=familia(tokens.slice(0,8));
  if(busqueda.familia>=0&&tipo!==busqueda.familia)return 0;
  const titulo=normalizarBusqueda(`${p.nombre.es} ${p.nombre.en} ${p.marca} ${p.codigoFabricante??''}`);

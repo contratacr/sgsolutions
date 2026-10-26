@@ -7,7 +7,6 @@ import {TarjetaProducto} from './tarjeta-producto';
 import {leerHistorial,recordarExploracion} from '@/lib/historial-tienda';
 
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
 import {nombreMarca} from '@/lib/marcas-nombres';
 import {medir} from '@/lib/analitica-cliente';
 import {EsqueletoCatalogo} from './esqueletos';
@@ -27,7 +26,6 @@ import {FiltroPrecio} from './filtro-precio';
 import {ListaFiltros} from './lista-filtros';
 import {desplazarContenido} from '@/lib/desplazar-contenido';
 export function Catalogo({inicial,categoriaInicial='todos'}:{inicial:PaginaCatalogo;categoriaInicial?:string}){
- const router=useRouter();
  const se=useTranslations('SolucionesEmpresariales');
  const almacenamiento='sg-tienda-preferencias';
  const sidebar=useRef<HTMLElement>(null);
@@ -174,8 +172,7 @@ export function Catalogo({inicial,categoriaInicial='todos'}:{inicial:PaginaCatal
   ...(new URLSearchParams(respuesta.consulta).get('q')===aplicados.busqueda&&!cargando?respuesta.datos.productos.slice(0,3).map(p=>({id:p.slug||p.id,texto:traducir(p.nombre,idioma),tipo:'producto' as const})):[])
  ].slice(0,6);
  function elegirSugerencia(opcion:SugerenciaCatalogo){
-  if(opcion.tipo==='producto'){router.push(`/tienda/${encodeURIComponent(opcion.id)}`);return;}
-  cambiarBusqueda(opcion.tipo==='marca'?opcion.texto:'');
+  cambiarBusqueda(opcion.texto);
   if(opcion.tipo==='marca')setMarca(opcion.id);
   if(opcion.tipo==='categoria')setCategoria(opcion.id);
  }

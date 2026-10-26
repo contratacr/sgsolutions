@@ -542,3 +542,7 @@
 .shop-autocompletar .shop-buscador{margin-bottom:0}
 .shop-autocompletar{margin-bottom:28px}
 .shop-sugerencias{top:calc(100% + 6px)}
+
+.shop-autocompletar .shop-buscador input{text-overflow:ellipsis;white-space:nowrap}
+.shop-autocompletar .shop-buscador input:focus{text-overflow:clip}
+.shop-sugerencias [role=option]:focus-visible{outline:2px solid #315a78;outline-offset:-2px}
