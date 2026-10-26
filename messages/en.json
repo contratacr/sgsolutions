@@ -2595,5 +2595,13 @@
     "google": "Google",
     "whatsapp": "WhatsApp",
     "tiktok": "TikTok"
+  },
+  "BusquedaCatalogo": {
+    "buscar": "Search products, brands or codes",
+    "limpiar": "Clear search",
+    "sugerencias": "Search suggestions",
+    "marca": "Brand",
+    "categoria": "Category",
+    "producto": "Product"
   }
 }

@@ -530,3 +530,10 @@
 
 /* El término más reciente debe caber también en pantallas pequeñas. */
 .shop-filtros-activos .shop-filtro-busqueda{min-width:0;max-width:100%;overflow-wrap:anywhere;text-align:left}.shop-filtro-busqueda svg{flex-shrink:0}
+
+.shop-autocompletar{position:relative;min-width:0;width:100%}
+.shop-sugerencias{position:absolute;top:calc(100% - 20px);left:0;right:0;z-index:30;list-style:none;margin:0;padding:6px;background:#fff;border:1px solid #cbd7e1;border-radius:12px;box-shadow:0 12px 28px #142c431a;max-height:min(360px,45dvh);overflow:auto;overscroll-behavior:contain}
+.shop-sugerencias [role=option]{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;min-height:44px;border-radius:7px;cursor:pointer;font-size:.9rem;color:#17364e}
+.shop-sugerencias [role=option]>span{min-width:0;overflow-wrap:anywhere}
+.shop-sugerencias small{flex-shrink:0;color:#52677a;font-size:.75rem}
+.shop-sugerencias [role=option]:hover,.shop-sugerencias [aria-selected=true]{background:#edf3f7}

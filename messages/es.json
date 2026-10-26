@@ -2595,5 +2595,13 @@
     "whatsapp": "WhatsApp",
     "tiktok": "TikTok",
     "pendienteMigracion": "La medición ampliada requiere aplicar su migración. Todavía no hay resultados disponibles."
+  },
+  "BusquedaCatalogo": {
+    "buscar": "Buscar productos, marcas o códigos",
+    "limpiar": "Limpiar búsqueda",
+    "sugerencias": "Sugerencias de búsqueda",
+    "marca": "Marca",
+    "categoria": "Categoría",
+    "producto": "Producto"
   }
 }
