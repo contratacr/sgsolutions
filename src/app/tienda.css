@@ -574,3 +574,6 @@
 
 /* Safari iOS amplía campos con texto menor de 16px al enfocarlos. */
 @media(max-width:900px),(pointer:coarse){.tienda-compacta .shop-autocompletar .shop-buscador input{font-size:max(16px,1rem)}}
+
+.shop-sugerencias-panel{max-height:var(--sugerencias-altura,min(520px,55dvh));-webkit-overflow-scrolling:touch;scroll-padding-bottom:12px}
+@media(max-width:650px){.shop-sugerencias-panel{position:relative;top:auto;left:auto;right:auto;margin-top:6px;overscroll-behavior-y:auto}.shop-autocompletar:has(.shop-sugerencias-panel){scroll-margin-bottom:16px}}

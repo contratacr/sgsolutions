@@ -15,6 +15,19 @@ export function BuscadorCatalogo({valor,listo,sugerencias,cambiar,limpiar,elegir
   return()=>document.removeEventListener('pointerdown',cerrarFuera);
  },[abierto]);
  const visible=abierto&&valor.trim().length>=2&&sugerencias.length>0;
+ useEffect(()=>{
+  if(!visible)return;
+  const viewport=window.visualViewport;
+  let frame=0;
+  const medir=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{
+   const campo=contenedor.current?.querySelector('.shop-buscador');
+   if(!campo)return;
+   const limite=(viewport?.offsetTop??0)+(viewport?.height??window.innerHeight);
+   contenedor.current?.style.setProperty('--sugerencias-altura',`${Math.max(100,Math.min(520,limite-campo.getBoundingClientRect().bottom-16))}px`);
+  });};
+  medir();viewport?.addEventListener('resize',medir);viewport?.addEventListener('scroll',medir);window.addEventListener('resize',medir);window.addEventListener('scroll',medir,{passive:true});
+  return()=>{cancelAnimationFrame(frame);viewport?.removeEventListener('resize',medir);viewport?.removeEventListener('scroll',medir);window.removeEventListener('resize',medir);window.removeEventListener('scroll',medir);};
+ },[visible]);
  const activo=visible&&indice>=0&&indice<sugerencias.length?indice:-1;
  function mostrarTodos(){setAbierto(false);setIndice(-1);verResultados();}
  function seleccionar(opcion:SugerenciaCatalogo){elegir(opcion);setAbierto(false);setIndice(-1);}

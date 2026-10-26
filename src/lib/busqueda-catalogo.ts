@@ -34,5 +34,5 @@ export function coincidenciaBusqueda(p:Producto,busqueda:ReturnType<typeof prepa
  if(!busqueda.palabras.every(coincide))return 0;
  const codigo=normalizarBusqueda(p.codigoFabricante??'').replaceAll(' ','');
  const consulta=busqueda.palabras.join('');
- return (codigo&&codigo===consulta?100:0)+(busqueda.palabras.every(palabra=>titulo.includes(palabra))?20:0)+(nombre.startsWith(busqueda.palabras[0])?10:0)+1;
+ return (codigo&&codigo===consulta?100:0)+(busqueda.palabras.every(palabra=>new Set(titulo.split(' ')).has(palabra))?60:0)+(codigo&&codigo.startsWith(consulta)?40:0)+(busqueda.palabras.every(palabra=>titulo.includes(palabra))?20:0)+(nombre.startsWith(busqueda.palabras[0])?10:0)+1;
 }
