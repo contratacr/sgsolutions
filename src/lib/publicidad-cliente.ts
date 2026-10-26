@@ -5,12 +5,13 @@ let version=0;
 let primera:ReturnType<typeof origenCampana>|undefined,clicInicial:string|undefined;
 export function sincronizarPublicidad(permitir:boolean){
  const actual=++version;
+ if(!permitir){primera=undefined;clicInicial=undefined;}
  sincronizacion=(async()=>{
   try{
    const q=new URLSearchParams(location.search),ref=document.referrer;
    // An internal page is not a new acquisition source. Never transmit the URL/referrer.
    let externa=ref;try{if(new URL(ref).origin===location.origin)externa='';}catch{}
-   const clic=q.get('fbclid'),origen=origenCampana(location.search,externa);primera??=origen;if(clic&&/^[A-Za-z0-9_-]{1,300}$/.test(clic))clicInicial=clic;
+   const clic=permitir?q.get('fbclid'):null,origen=origenCampana(permitir?location.search:'',permitir?externa:'');if(permitir){primera??=origen;if(clic&&/^[A-Za-z0-9_-]{1,300}$/.test(clic))clicInicial=clic;}
    const r=await fetch('/api/publicidad/contexto',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(permitir?{permitir:true,version:VERSION_PUBLICIDAD,primera,adquisicion:origen.canal==='directo'&&primera?primera:origen,...(clicInicial?{fbclid:clicInicial}:{})}:{permitir:false}),credentials:'same-origin',referrerPolicy:'no-referrer',cache:'no-store'});
    return actual===version&&r.ok&&(await r.json()).activo===true;
   }catch{return false;}

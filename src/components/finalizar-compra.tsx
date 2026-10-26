@@ -119,7 +119,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
   function validarPaso(form:HTMLFormElement,numero:number){
     const grupo=form.querySelector<HTMLElement>('[data-compra-paso="'+numero+'"]');
     const campos=Array.from(grupo?.querySelectorAll<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>('input,select,textarea')??[]);
-    const invalidos=campos.filter(c=>!c.checkValidity()).map(c=>c.name);
+    const invalidos=campos.filter(c=>c.willValidate&&!c.validity.valid).map(c=>c.name);
     const datos=Object.fromEntries(new FormData(form).entries());
     const validacion=datosClienteCompra.safeParse({...datos,...(numero<2?{consentimiento:'on'}:{})});
     if(!validacion.success)for(const issue of validacion.error.issues){const nombre=String(issue.path[0]);if(campos.some(c=>c.name===nombre))invalidos.push(nombre);}

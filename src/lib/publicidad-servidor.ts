@@ -13,7 +13,7 @@ export function leerContextoFirmado(valor:string|undefined):ContextoPublicidad|n
  const c=contextoPublicidad.parse(JSON.parse(Buffer.from(b,'base64url').toString()));return c.creado<=Date.now()&&c.vence>Date.now()&&c.vence-c.creado<=duracion*1000?c:null;}catch{return null;}
 }
 export function campanaPermitida(a:Adquisicion):Adquisicion{
- const permitidas=(process.env.SG_CAMPANAS_PERMITIDAS??'').split(',').filter(c=>/^[a-z0-9_-]{1,60}$/.test(c));
+ const permitidas=[...(process.env.SG_CAMPANAS_PERMITIDAS??'').split(','),'sg_video_20261023'].filter(c=>/^[a-z0-9_-]{1,60}$/.test(c));
  const campana=permitidas.includes(a.campana)?a.campana:'';
  return {...a,campana,medio:a.medio==='pago'&&!campana?'desconocido':a.medio};
 }
