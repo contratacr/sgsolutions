@@ -1,0 +1,6 @@
+/* iOS Safari may zoom into small editable controls on focus. Keep manual zoom available. */
+@media (max-width: 900px), (hover: none) and (pointer: coarse) {
+  html body :is(input:not([type="hidden"],[type="checkbox"],[type="radio"],[type="range"],[type="file"],[type="button"],[type="submit"],[type="reset"],[type="image"],[type="color"]), textarea, select, [contenteditable="true"]) {
+    font-size: max(16px, 1em) !important;
+  }
+}

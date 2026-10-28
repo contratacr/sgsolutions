@@ -36,6 +36,7 @@ import './panel/pedidos/pedidos.css';
 import './panel/usuarios/usuarios.css';
 import './panel/soporte/soporte.css';
 import './panel/estadisticas/estadisticas.css';
+import './campos-moviles.css';
 import {RevelarScroll} from '@/components/revelar-scroll';
 import {ValidacionNativa} from '@/components/validacion-nativa';
 
