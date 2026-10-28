@@ -6,12 +6,17 @@ export function construirEventoMeta(entrada:unknown){
  const e=fila.parse(entrada);if(e.evento==='Purchase'&&e.valor===null)throw new Error('IMPORTE_REQUERIDO');
  return {event_name:e.evento,event_time:Math.floor(Date.parse(e.creado_en)/1000),event_id:e.id,action_source:'website',event_source_url:'https://sgsolutionscr.com'+(e.ruta==='/tienda/producto'?'/tienda':e.ruta),user_data:{fbp:e.fbp,...(e.fbc?{fbc:e.fbc}:{})},...(e.producto||e.evento==='Purchase'?{custom_data:{...(e.producto?{content_ids:[e.producto],content_type:'product'}:{}),...(e.evento==='Purchase'?{currency:'CRC',value:e.valor}:{})}}:{})};
 }
-/** Server-only diagnostic: one PageView, exact ID, expiring configuration. */
+/** Server-only diagnostics: exact IDs, synthetic purchase and expiring configuration. */
 export function construirSolicitudMeta(entrada:unknown,prueba?:string,ahora=Date.now()){
  const evento=construirEventoMeta(entrada);
+ // Reserved diagnostic ID cannot be sent as a real conversion, even if the
+ // temporary server configuration is missing, invalid or expired.
+ const compraPrueba='T'.repeat(43),esCompraPrueba=evento.event_id===compraPrueba;
  if(prueba)try{
   const c=z.object({id:z.string().regex(/^[A-Za-z0-9_-]{43}$/),codigo:z.string().regex(/^TEST[0-9]{1,20}$/),vence:z.number().int()}).strict().parse(JSON.parse(prueba));
   if(c.id===evento.event_id&&evento.event_name==='PageView'&&evento.event_source_url==='https://sgsolutionscr.com/'&&c.vence>ahora&&c.vence<=ahora+3600000)return {data:[evento],test_event_code:c.codigo};
+  if(c.id===compraPrueba&&esCompraPrueba&&evento.event_name==='Purchase'&&evento.event_source_url==='https://sgsolutionscr.com/finalizar-compra'&&evento.custom_data?.currency==='CRC'&&evento.custom_data.value===100&&evento.user_data.fbp==='fb.1.1000000000.1'&&!evento.user_data.fbc&&c.vence>ahora&&c.vence<=ahora+3600000)return {data:[evento],test_event_code:c.codigo};
  }catch{/* Invalid diagnostic settings never change normal delivery. */}
+ if(esCompraPrueba)throw new Error('DIAGNOSTICO_COMPRA_NO_AUTORIZADO');
  return {data:[evento]};
 }

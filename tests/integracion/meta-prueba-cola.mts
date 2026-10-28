@@ -16,3 +16,10 @@ test('diagnóstico de cola limitado a un PageView concreto y una hora',()=>{
  assert.deepEqual(Object.keys(cuerpo().data[0].user_data),['fbp']);
  assert.deepEqual(construirSolicitudMeta(fila),{data:cuerpo().data});
 });
+test('compra sintética nunca se envía como conversión real',()=>{
+ const ahora=Date.now(),id='T'.repeat(43),fila={id,evento:'Purchase',creado_en:new Date(ahora).toISOString(),ruta:'/finalizar-compra',producto:null,valor:100,fbp:'fb.1.1000000000.1',fbc:null};
+ const config={id,codigo:'TEST12345',vence:ahora+60000};
+ assert.equal(construirSolicitudMeta(fila,JSON.stringify(config),ahora).test_event_code,'TEST12345');
+ for(const invalido of [undefined,'{}',JSON.stringify({...config,vence:ahora-1}),JSON.stringify({...config,id:'s'.repeat(43)})])assert.throws(()=>construirSolicitudMeta(fila,invalido,ahora));
+ for(const invalida of [{...fila,valor:101},{...fila,ruta:'/tienda'},{...fila,fbp:'fb.1.1000000001.1'},{...fila,fbc:'fb.1.1000000000.test'},{...fila,evento:'PageView',valor:null}])assert.throws(()=>construirSolicitudMeta(invalida,JSON.stringify(config),ahora));
+});
