@@ -529,3 +529,5 @@ body:has(.portal) .portal{box-shadow:none}
 
 @keyframes whatsapp-entrada{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:no-preference){.whatsapp-flotante{animation:whatsapp-entrada .45s ease-out both}}
+
+.empresa-portada-acciones{display:flex;flex-wrap:wrap;align-items:center;gap:12px}.empresas-editorial .empresa-portada .empresa-boton-planes{color:#fff;border-color:#b7cada;background:#10283d99}.empresas-editorial .empresa-portada .empresa-boton-planes:hover{background:#173b55;border-color:#fff}@media(max-width:480px){.empresa-portada-acciones .boton{width:100%;justify-content:center}}

@@ -54,5 +54,22 @@ try{
  await db.query("insert into public.pedidos_manuales(id,estado,cliente,total_cobrar,entorno) values($1,'pagado','{\"correo\":\"cliente@example.test\"}',42000,'produccion'),($2,'pagado','{\"correo\":\"admin@example.test\"}',999,'produccion'),($3,'pagado','{\"correo\":\"cliente@example.test\"}',999,'pruebas')",[id(30),id(31),id(32)]);
  await rol('service_role');assert.equal((await db.query("select public.medicion_operacion_elegible('manual',$1) as ok",[id(30)])).rows[0].ok,true);
  for(const n of [31,32])assert.equal((await db.query("select public.medicion_operacion_elegible('manual',$1) as ok",[id(n)])).rows[0].ok,false);
+ // Los totales y el ranking excluyen correo administrador y operaciones marcadas,
+ // incluso cuando el pedido contiene el correo de un cliente distinto.
+ await db.exec('reset role');
+ await db.query("insert into public.pedidos_manuales(id,estado,cliente,total_cobrar,entorno) values($1,'pagado',$3,9000,'produccion'),($2,'pagado',$4,7000,'produccion')",[id(33),id(34),JSON.stringify({correo:'cliente@example.test'}),JSON.stringify({correo:'cliente@example.test',excluir_medicion:true})]);
+ await db.query("insert into public.pedidos_tilopay(id,estado,cliente,total,entorno) values($1,'pagado',$3,8000,'produccion'),($2,'pagado',$4,6000,'produccion')",[id(40),id(41),JSON.stringify({correo:'cliente@example.test'}),JSON.stringify({correo:'ADMIN@example.test'})]);
+ await db.query("insert into public.medicion_operaciones(clave,tipo,operacion,excluir,idioma) values($1,'manual',$2,true,'es')",['q'.repeat(43),id(33)]);
+ const articulos=JSON.stringify([{id:'qa-producto',nombre:'Producto QA',cantidad:1}]);
+ await db.query('update public.pedidos_manuales set articulos=$1::jsonb',[articulos]);
+ await db.query('update public.pedidos_tilopay set articulos=$1::jsonb',[articulos]);
+ await db.exec(await readFile('supabase/migrations/20261028000100_estadisticas_excluir_pedidos_admin.sql','utf8'));
+ await rol('authenticated',id(1),'aal2');
+ const resumen=(await db.query('select public.resumen_estadisticas_agregadas_panel(7) as r')).rows[0].r;
+ assert.deepEqual(resumen.compras,{total:2,pagados:2,pendientes:0,ingresos:50000,promedio:25000});
+ const ranking=(await db.query('select public.popularidad_productos_agregada_panel(7) as r')).rows[0].r;
+ assert.equal(ranking.compras[0].id,'qa-producto');assert.equal(Number(ranking.compras[0].cantidad),2);assert.equal(Number(ranking.compras[0].pedidos),2);
+ assert.ok(!JSON.stringify(resumen).includes('example.test'));
+ await rol('authenticated',id(2),'aal2');await assert.rejects(()=>db.query('select public.resumen_estadisticas_agregadas_panel(7)'),/forbidden/);
  console.log('Campañas SQL: aislamiento, MFA, deduplicación, reservas, recepción, revocación y exclusión de pruebas/admin aprobados.');
 }finally{await db.close();}

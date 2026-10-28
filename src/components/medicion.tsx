@@ -3,7 +3,7 @@ import {useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
 import {useTranslations} from 'next-intl';
-import {medir,borrarIdentificadoresMedicion,preferenciasMedicion,comprobarPermisoMedicion,excluirNavegadorAdministrativo} from '@/lib/analitica-cliente';
+import {medir,borrarIdentificadoresMedicion,preferenciasMedicion,comprobarPermisoMedicion,excluirNavegadorAdministrativo,navegadorAdministrativo} from '@/lib/analitica-cliente';
 import {abrirPreferenciasMedicion,cerrarPreferenciasMedicion,preferenciasMedicionAbiertas,preferenciasMedicionServidor,suscribirPreferenciasMedicion} from '@/lib/preferencias-medicion';
 import {VERSION_PUBLICIDAD} from '@/lib/campanas-modelo';
 import {sincronizarPublicidad} from '@/lib/publicidad-cliente';
@@ -15,6 +15,8 @@ export function Medicion(){
  useEffect(()=>{
   if(document.body.dataset.administracionMedicion==='1')excluirNavegadorAdministrativo();
   if(!rutaPublica(ruta)){ultimaRuta.current=ruta;if(ruta.startsWith('/panel')&&document.body.dataset.excluirMedicion==='1')excluirNavegadorAdministrativo();return;}
+  // Mostrar una elección equilibrada solo si aún no hay preferencia y el navegador es elegible.
+  if(!preferenciasMedicion()&&!navegadorAdministrativo()&&document.body.dataset.excluirMedicion!=='1'&&document.body.dataset.administracionMedicion!=='1')abrirPreferenciasMedicion();
   let control:AbortController|undefined;
   const comprobar=async()=>{
    control?.abort();const actual=new AbortController();control=actual;
@@ -24,7 +26,7 @@ export function Medicion(){
    publicidadAnterior.current=publicidad;
   };
   const volver=()=>{if(document.visibilityState==='visible')void comprobar();};
-  const almacenamiento=(e:StorageEvent)=>{if(e.key==='sg-excluir-medicion')void comprobar();};
+  const almacenamiento=(e:StorageEvent)=>{if(e.key==='sg-medicion'&&preferenciasMedicion())cerrarPreferenciasMedicion();if(e.key==='sg-excluir-medicion'||e.key==='sg-medicion')void comprobar();};
   void comprobar();window.addEventListener('focus',volver);window.addEventListener('pageshow',volver);window.addEventListener('storage',almacenamiento);document.addEventListener('visibilitychange',volver);
   const clic=(e:MouseEvent)=>{const el=e.target instanceof Element?e.target:null;const enlace=el?.closest<HTMLAnchorElement>('a[href]');if(enlace){const url=new URL(enlace.href,location.href);if(url.hostname==='wa.me')medir('whatsapp',enlace.closest('footer')?'footer':enlace.classList.contains('whatsapp-flotante')?'flotante':'contenido');else if(url.protocol==='mailto:'||url.hostname==='outlook.office.com')medir('correo');else if(url.protocol==='tel:')medir('telefono');else if(['www.google.com','www.waze.com'].includes(url.hostname))medir('mapa');else if(['www.instagram.com','www.facebook.com'].includes(url.hostname))medir('red_social',url.hostname);}
    if(el?.closest('.caso-galeria button'))medir('galeria');

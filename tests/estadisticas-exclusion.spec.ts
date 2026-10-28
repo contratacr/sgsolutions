@@ -8,7 +8,7 @@ for(const idioma of ['es','en'])test(`administrador en Mi cuenta y cierre real d
  await page.locator('.cuenta-salir').click();await expect(page.locator('.cuenta-acceso')).toBeVisible();expect((await context.cookies()).some(c=>/^sb-.*auth-token/.test(c.name))).toBe(false);
  expect((await context.cookies()).find(c=>c.name==='sg-excluir-medicion')?.value).toBe('1');
  await page.evaluate(()=>localStorage.removeItem('sg-excluir-medicion'));
- for(const ruta of ['/nosotros','/tienda','/privacidad']){await page.goto(ruta);await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');await expect.poll(()=>page.evaluate(()=>localStorage.getItem('sg-excluir-medicion'))).toBe('1');await page.evaluate(()=>window.dispatchEvent(new Event('focus')));expect(await total()).toBe(antes);}
+ for(const ruta of ['/nosotros','/tienda','/privacidad']){await page.goto(ruta);await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');await expect(page.locator('.medicion-aviso')).toHaveCount(0);await expect.poll(()=>page.evaluate(()=>localStorage.getItem('sg-excluir-medicion'))).toBe('1');await page.evaluate(()=>window.dispatchEvent(new Event('focus')));expect(await total()).toBe(antes);}
  await page.reload();await expect(page.locator('body')).toHaveAttribute('data-excluir-medicion','1');expect(await total()).toBe(antes);expect(enviados).toEqual([]);
 });
 

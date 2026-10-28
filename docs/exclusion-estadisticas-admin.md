@@ -9,3 +9,7 @@ Los eventos siguen enviándose sin cookies, credenciales ni referencia. No se co
 Al borrar **todos** los datos del sitio o usar otro navegador/incógnito sin iniciar sesión, la visita es anónima y no puede reconocerse como administrativa. Los contadores históricos, al ser agregados sin identidad, no permiten identificar y retirar visitas anteriores de una persona.
 
 Validación dirigida: `npx playwright test -c playwright.exclusion-admin.config.ts`. Usa únicamente Next local y un servicio ficticio que simula Auth y RPC en loopback; no afirma validar el proveedor real ni consulta producción. Cubre PC y Safari móvil, ambos idiomas en el recorrido principal, cierre real y cierre directo del servidor, almacenamiento local vacío, pestaña pública previa al acceso, fallo de consulta del rol y clientes que sí deben contar. Ejecutar solo con autorización explícita del usuario.
+
+## Ajuste preparado el 28 de octubre de 2026
+
+La migración `20261028000100_estadisticas_excluir_pedidos_admin.sql` prepara la exclusión en totales y productos comprados para pedidos de producción cuyo correo corresponda a un administrador, cuyo cliente tenga la marca de exclusión o cuya operación de medición esté excluida. No modifica ni elimina pedidos. Los registros históricos sin cuenta identificable ni marca no pueden clasificarse con certeza. Este ajuste debe validarse en PostgreSQL aislado y aplicarse a la base antes de mostrarlo como activo.
