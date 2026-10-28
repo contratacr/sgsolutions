@@ -4,6 +4,7 @@ import {useSesionCuenta} from './sesion-cuenta';
 import {useFavoritos} from '@/lib/favoritos';
 import {useCatalogo} from './datos-catalogo';
 import {TarjetaProducto} from './tarjeta-producto';
+import {EsqueletoCatalogo} from './esqueletos';
 import {useLocale,useTranslations} from 'next-intl';
 import {traducir,type CatalogoPublico} from '@/lib/catalogo-modelo';
 import Link from 'next/link';
@@ -22,14 +23,18 @@ export function FavoritosCuenta({pagina=false}:{pagina?:boolean}){
    .catch(()=>{if(!abort.signal.aborted)setError(ids);});
   return()=>abort.abort();
  },[ids,recordar,intento]);
- const disponibles=respuesta.clave===ids?respuesta.productos:catalogo.productos;
- const productos=favoritos.ids.flatMap(id=>{const p=disponibles.find(p=>p.id===id);return p?[p]:[];});
- const cargando=!favoritos.listo||Boolean(ids&&respuesta.clave!==ids&&productos.length===0&&error!==ids);
+ const enCache=favoritos.ids.flatMap(id=>{const p=catalogo.productos.find(p=>p.id===id);return p?[p]:[];});
+ const cacheCompleta=enCache.length===favoritos.ids.length;
+ // Never reveal an incomplete cache while the complete favorites response is pending.
+ const productos=respuesta.clave===ids
+  ?favoritos.ids.flatMap(id=>{const p=respuesta.productos.find(p=>p.id===id);return p?[p]:[];})
+  :cacheCompleta?enCache:[];
+ const cargando=!favoritos.listo||Boolean(ids&&respuesta.clave!==ids&&!cacheCompleta&&error!==ids);
  return <section className="tienda-compacta favoritos-seccion"><Titulo>{t('favoritos')}</Titulo>
-  {!iniciada&&favoritos.listo&&productos.length>0&&<p className="favoritos-invitado">{t('invitado')} <Link href="/cuenta">{t('ingresar')}</Link></p>}
+  {!iniciada&&!cargando&&productos.length>0&&<p className="favoritos-invitado">{t('invitado')} <Link href="/cuenta">{t('ingresar')}</Link></p>}
   {favoritos.error&&<p role="status">{t('sinSincronizar')}</p>}
   {error===ids&&ids&&<p role="alert">{tienda('errorCarga')} <button type="button" onClick={()=>setIntento(i=>i+1)}>{tienda('reintentar')}</button></p>}
-  {cargando?<p role="status">{t('cargando')}</p>:productos.length===0?(!error||error!==ids)&&<div className="favoritos-vacio"><span className="favoritos-vacio-icono"><Heart size={34} strokeWidth={1.5} aria-hidden="true"/></span><p className="favoritos-vacio-titulo">{t('sinFavoritos')}</p><p>{t('comoGuardar')}</p><Link className="boton boton-azul" href="/tienda">{t('explorarTienda')}</Link></div>:<div className="shop-grid favoritos-grid">{productos.map(p=><TarjetaProducto key={p.id} producto={p} favorito cambiarFavorito={()=>favoritos.cambiar(p.id)} listo={favoritos.listo} categoria={traducir(catalogo.categorias.find(c=>c.id===p.categoria)?.nombre??{es:'',en:''},idioma)}/>)}</div>}
-  {productos.length>0&&<Link className="favoritos-volver" href="/tienda">{t('verTienda')}</Link>}
+  {cargando?<EsqueletoCatalogo texto={t('cargando')} cantidad={Math.min(favoritos.ids.length||2,6)}/>:productos.length===0?(!error||error!==ids)&&<div className="favoritos-vacio"><span className="favoritos-vacio-icono"><Heart size={34} strokeWidth={1.5} aria-hidden="true"/></span><p className="favoritos-vacio-titulo">{t('sinFavoritos')}</p><p>{t('comoGuardar')}</p><Link className="boton boton-azul" href="/tienda">{t('explorarTienda')}</Link></div>:<div className="shop-grid favoritos-grid">{productos.map(p=><TarjetaProducto key={p.id} producto={p} favorito cambiarFavorito={()=>favoritos.cambiar(p.id)} listo={favoritos.listo} categoria={traducir(catalogo.categorias.find(c=>c.id===p.categoria)?.nombre??{es:'',en:''},idioma)}/>)}</div>}
+  {!cargando&&productos.length>0&&<Link className="favoritos-volver" href="/tienda">{t('verTienda')}</Link>}
  </section>;
 }
