@@ -31,7 +31,7 @@ export async function registrarPago(tipo:'manual'|'tarjeta',operacion:string){
   if(error||p?.estado!=='pagado'||p.entorno!=='produccion')return;
   const elegible=await db.rpc('medicion_operacion_elegible',{tipo_operacion:tipo,id_operacion:operacion});if(elegible.error||elegible.data!==true)return;
   const {data:m}=await db.from('medicion_operaciones').select('excluir,contexto,idioma').eq('tipo',tipo).eq('operacion',operacion).maybeSingle();
-  // Missing pre-release consent/context is never reconstructed from customer data.
+  // Missing pre-release context is never reconstructed from customer data.
   if(!m||m.excluir)return;
   const c=m.contexto as ContextoPublicidad|null;
   await hitoNegocio('pago_confirmado',`${tipo}:${operacion}`,m.idioma,c);
@@ -45,7 +45,7 @@ export async function registrarCotizacion(id:string){
 
 export async function reconciliarPagosMedicion(){const db=baseMedicion();if(!db)return;const {data}=await db.rpc('medicion_pagos_pendientes');for(const m of data??[])await registrarPago(m.tipo,m.operacion);}
 
-/** Retry only the original capture; never reconstruct consent from customer data. */
+/** Retry only the original capture; never reconstruct context from customer data. */
 export async function reconciliarSolicitudesMedicion(){
  const db=baseMedicion();if(!db||process.env.SG_ENTORNO!=='produccion')return;
  const {data,error}=await db.from('medicion_operaciones').select('tipo,operacion,idioma,contexto,excluir').in('tipo',['asesoria','empresa']).eq('conversion_registrada',false).eq('excluir',false).gt('creado_en',new Date(Date.now()-30*86400000).toISOString()).order('creado_en').limit(8);

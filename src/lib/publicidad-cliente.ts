@@ -1,5 +1,6 @@
 'use client';
 import {VERSION_PUBLICIDAD,origenCampana,eventoPublicidadNavegador,type EventoPublicidad} from './campanas-modelo';
+import {publicidadHabilitada} from './preferencias-medicion';
 let sincronizacion:Promise<boolean>|undefined;
 let version=0;
 let primera:ReturnType<typeof origenCampana>|undefined,clicInicial:string|undefined;
@@ -22,7 +23,7 @@ export function enviarPublicidad(evento:EventoPublicidad,ruta:string,producto?:s
  if(!datos.success)return;
  void (async()=>{
   if(!sincronizacion||!await sincronizacion)return;
-  try{const p=JSON.parse(localStorage.getItem('sg-medicion')??'null');if(p?.publicidad!==true||p.version!==VERSION_PUBLICIDAD||localStorage.getItem('sg-excluir-medicion')==='1'||document.body.dataset.excluirMedicion==='1')return;}catch{return;}
+  try{if(!publicidadHabilitada()||localStorage.getItem('sg-excluir-medicion')==='1'||document.body.dataset.excluirMedicion==='1')return;}catch{return;}
   await fetch('/api/publicidad/evento',{method:'POST',headers:{'Content-Type':'application/json','X-SG-Idioma':document.documentElement.lang==='en'?'en':'es'},body:JSON.stringify(datos.data),credentials:'same-origin',referrerPolicy:'no-referrer',cache:'no-store',keepalive:true}).catch(()=>{});
  })();
 }

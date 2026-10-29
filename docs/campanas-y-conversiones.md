@@ -1,20 +1,20 @@
 # Campañas y conversiones de SG Solutions
 
-Implementación local validada mediante pruebas aisladas autorizadas, pendiente de migración y publicación. No interpretar la presencia de código como recepción de Meta ni como atribución a anuncios.
+Este documento describe la medición y su historial. Los cambios de activación automática descritos aquí están preparados localmente y no han sido probados ni publicados. No interpretar la presencia de código como recepción de Meta ni como atribución a anuncios.
 
 ## Dos alcances
 
 - Contadores propios: totales diarios de páginas, productos, clics, búsquedas sin texto, búsquedas sin resultados, cambios del tipo de filtro y formularios. No incluyen identificadores de personas, cuentas, sesiones, IP, mensajes ni historial individual. La cantidad de cierres de formularios es aproximada: se observa que el formulario se retire sin envío mientras la página sigue activa; no reconstruye abandonos fuera de línea.
-- Atribución publicitaria: únicamente tras una elección actual de publicidad. `sg-publicidad` es HttpOnly, firmada, SameSite=Lax y Secure en producción. Caduca a los 30 días del primer permiso, sin extenderse en cada visita. Contiene un ID técnico, fbp, fbc cuando existe clic de Meta, primer origen y reciente. Es seudónima, no anónima. No se vincula a la cuenta. Un navegador compartido puede compartir esta atribución.
-- La preferencia antigua del Pixel no se eleva automáticamente al permiso nuevo `2026-10-20-campanas-v1`. Las negativas siguen siendo negativas. La elección se presenta en la primera visita pública cuando no existe una preferencia, con opciones para permitir publicidad o continuar sin ella; puede modificarse en el pie. Este cambio está preparado localmente y debe validarse antes de publicarse.
+- Atribución publicitaria: activa por defecto cuando no existe una negativa guardada y disponible para desactivación en el pie. `sg-publicidad` es HttpOnly, firmada, SameSite=Lax y Secure en producción. Caduca a los 30 días del primer permiso, sin extenderse en cada visita. Contiene un ID técnico, fbp, fbc cuando existe clic de Meta, primer origen y reciente. Es seudónima, no anónima. No se vincula a la cuenta. Un navegador compartido puede compartir esta atribución.
+- La medición publicitaria se inicia por defecto sin registrar una aceptación inexistente. Las negativas guardadas siguen siendo negativas. El control no se presenta automáticamente: está disponible en el pie. La medición interna agregada funciona por separado. La adecuación legal de esta decisión debe revisarse antes de publicar.
 - Los códigos `utm_campaign` se aceptan solo si están en `SG_CAMPANAS_PERMITIDAS`. Fuente/medio usan listas cerradas. Facebook/Instagram de referencia no significan anuncios pagados. UTM desconocida no se publica como campaña pagada verificada; los valores declarados no demuestran por sí mismos un clic pagado real.
 - La atribución permite contar conversiones por campaña, no calcular ROAS ni costo de adquisición sin importar gasto real de anuncios. No se atribuyen conversiones históricas sin contexto permitido.
 
 ## Hechos y eventos
 
-| Hecho | Interno | Meta con permiso y configuración |
+| Hecho | Interno | Meta con medición activa y configuración |
 | --- | --- | --- |
-| Vista pública | Página agregada; origen con permiso | PageView |
+| Vista pública | Página agregada; origen con medición activa | PageView |
 | Ficha / carrito | Producto validado | ViewContent / AddToCart |
 | Búsqueda | Cantidad y resultado vacío, sin término | Search, sin texto |
 | WhatsApp | Clic, no conversación | WhatsAppClick, evento personalizado |

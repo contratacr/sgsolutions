@@ -3,8 +3,8 @@ import {useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
 import {useTranslations} from 'next-intl';
-import {medir,borrarIdentificadoresMedicion,preferenciasMedicion,comprobarPermisoMedicion,excluirNavegadorAdministrativo,navegadorAdministrativo} from '@/lib/analitica-cliente';
-import {abrirPreferenciasMedicion,cerrarPreferenciasMedicion,preferenciasMedicionAbiertas,preferenciasMedicionServidor,suscribirPreferenciasMedicion} from '@/lib/preferencias-medicion';
+import {medir,borrarIdentificadoresMedicion,preferenciasMedicion,comprobarPermisoMedicion,excluirNavegadorAdministrativo} from '@/lib/analitica-cliente';
+import {abrirPreferenciasMedicion,cerrarPreferenciasMedicion,preferenciasMedicionAbiertas,preferenciasMedicionServidor,suscribirPreferenciasMedicion,publicidadHabilitada} from '@/lib/preferencias-medicion';
 import {VERSION_PUBLICIDAD} from '@/lib/campanas-modelo';
 import {sincronizarPublicidad} from '@/lib/publicidad-cliente';
 import {rutaPublica} from '@/lib/analitica-modelo';
@@ -15,13 +15,11 @@ export function Medicion(){
  useEffect(()=>{
   if(document.body.dataset.administracionMedicion==='1')excluirNavegadorAdministrativo();
   if(!rutaPublica(ruta)){ultimaRuta.current=ruta;if(ruta.startsWith('/panel')&&document.body.dataset.excluirMedicion==='1')excluirNavegadorAdministrativo();return;}
-  // Mostrar una elección equilibrada solo si aún no hay preferencia y el navegador es elegible.
-  if(!preferenciasMedicion()&&!navegadorAdministrativo()&&document.body.dataset.excluirMedicion!=='1'&&document.body.dataset.administracionMedicion!=='1')abrirPreferenciasMedicion();
   let control:AbortController|undefined;
   const comprobar=async()=>{
    control?.abort();const actual=new AbortController();control=actual;
    if(!await comprobarPermisoMedicion(actual.signal)||actual.signal.aborted)return;
-   const publicidad=preferenciasMedicion()?.publicidad===true;
+   const publicidad=publicidadHabilitada();
    void sincronizarPublicidad(publicidad);if(actual.signal.aborted)return;if(ultimaRuta.current!==ruta){ultimaRuta.current=ruta;medir('pagina');if(ruta.startsWith('/tienda/'))medir('producto',ruta.split('/')[2]);}else if(publicidad&&!publicidadAnterior.current)medir('pagina');
    publicidadAnterior.current=publicidad;
   };
