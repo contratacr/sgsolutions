@@ -1,12 +1,11 @@
 'use client';
-import {VERSION_PUBLICIDAD} from './campanas-modelo';
-import {publicidadHabilitada} from './preferencias-medicion';
+import {analiticaHabilitada,publicidadHabilitada,leerPreferenciasMedicion} from './preferencias-medicion';
 import {enviarPublicidad,sincronizarPublicidad} from './publicidad-cliente';
 import {conteoAnonimo} from './estadisticas-agregadas-modelo';
 import {rutaPublica,type EventoAnalitica} from './analitica-modelo';
 type Pixel=((...args:unknown[])=>void)&{queue:unknown[][];loaded:boolean;version:string;callMethod?:(...args:unknown[])=>void};
 declare global {interface Window {fbq?:Pixel;_fbq?:Pixel;}}
-export function preferenciasMedicion(){try{const p=JSON.parse(localStorage.getItem('sg-medicion')||'null');return typeof p?.publicidad==='boolean'?{publicidad:p.publicidad&&p.version===VERSION_PUBLICIDAD}:null;}catch{return null;}}
+export function preferenciasMedicion(){const p=leerPreferenciasMedicion();return p?{publicidad:p.publicidad,analitica:p.analitica}:null;}
 export function borrarIdentificadoresMedicion(){
  try{sessionStorage.removeItem('sg-medicion-sesion');sessionStorage.removeItem('sg-medicion-actividad');localStorage.removeItem('sg-medicion-visitante');}catch{}
  document.cookie=`sg-analitica=; Path=/; Max-Age=0; SameSite=Lax${location.protocol==='https:'?'; Secure':''}`;
@@ -31,14 +30,14 @@ export async function comprobarPermisoMedicion(signal:AbortSignal){
  }catch{if(!signal.aborted)document.body.dataset.excluirMedicion='1';return false;}
  finally{if(!signal.aborted)permisoEnRevision=false;}
 }
-export function medir(tipo:EventoAnalitica['tipo'],detalle=''){
+export function medir(tipo:EventoAnalitica['tipo'],detalle='',canales={analitica:true,publicidad:true}){
  if(permisoEnRevision||navegadorAdministrativo()||document.body.dataset.excluirMedicion==='1')return;
  if(!rutaPublica(location.pathname))return;
  const datos=conteoAnonimo.safeParse({tipo,ruta:location.pathname.startsWith('/tienda/')?'/tienda/producto':location.pathname,detalle,dispositivo:innerWidth<=760?'movil':'escritorio',idioma:document.documentElement.lang==='en'?'en':'es'});
  if(!datos.success)return;
  const permiso=document.body.dataset.permisoConteo;
- if(datos.success&&permiso)void fetch('/api/estadisticas',{method:'POST',headers:{'Content-Type':'application/json','X-SG-Conteo':permiso},body:JSON.stringify(datos.data),credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',keepalive:true}).catch(()=>{});
- if(publicidadHabilitada()){const nombres:Partial<Record<EventoAnalitica['tipo'],import('./campanas-modelo').EventoPublicidad>>={pagina:'PageView',producto:'ViewContent',carrito:'AddToCart',busqueda:'Search',whatsapp:'WhatsAppClick',correo:'ContactClick',telefono:'ContactClick',pedido_revisado:'InitiateCheckout'};const evento=nombres[tipo];if(evento)enviarPublicidad(evento,location.pathname.startsWith('/tienda/')?'/tienda/producto':location.pathname,['producto','carrito'].includes(tipo)?detalle:undefined);}
+ if(datos.success&&permiso&&canales.analitica&&analiticaHabilitada())void fetch('/api/estadisticas',{method:'POST',headers:{'Content-Type':'application/json','X-SG-Conteo':permiso},body:JSON.stringify(datos.data),credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',keepalive:true}).catch(()=>{});
+ if(canales.publicidad&&publicidadHabilitada()){const nombres:Partial<Record<EventoAnalitica['tipo'],import('./campanas-modelo').EventoPublicidad>>={pagina:'PageView',producto:'ViewContent',carrito:'AddToCart',busqueda:'Search',whatsapp:'WhatsAppClick',correo:'ContactClick',telefono:'ContactClick',pedido_revisado:'InitiateCheckout'};const evento=nombres[tipo];if(evento)enviarPublicidad(evento,location.pathname.startsWith('/tienda/')?'/tienda/producto':location.pathname,['producto','carrito'].includes(tipo)?detalle:undefined);}
 }
 /** Kept for older imports; advertising uses only the server transport. */
 export function iniciarPixel(_id:string){void _id;}
