@@ -1620,9 +1620,9 @@
     "analiticaDetalle": "Nos ayudan a entender páginas, búsquedas y acciones mediante totales agregados, sin conservar un historial individual.",
     "publicidad": "Publicidad y Meta",
     "publicidadDetalle": "Miden el rendimiento de campañas con atribución técnica y eventos limitados enviados a Meta. No enviamos nombres, correos, mensajes ni búsquedas.",
-    "aceptarTodo": "Aceptar todo",
-    "soloNecesarias": "Solo lo necesario",
-    "ajustesCookies": "Configurar cookies",
+    "aceptarTodo": "Aceptar todas",
+    "soloNecesarias": "Solo necesarias",
+    "ajustesCookies": "Configurar preferencias",
     "guardar": "Guardar mi selección",
     "volver": "Volver",
     "cerrar": "Cerrar sin cambios"
