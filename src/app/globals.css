@@ -496,3 +496,24 @@ svg { flex-shrink: 0; }
 .medicion-aviso h2{letter-spacing:-.025em;font-weight:700}.medicion-aviso h2:focus{outline:none}.medicion-aviso>a{font-size:.82rem}.medicion-acciones button{background:#102b3b;border-color:#102b3b;color:#fff}.medicion-acciones button:hover{background:#294c70;border-color:#294c70}.medicion-aviso .medicion-volver{width:100%;margin-top:8px;border-color:transparent;text-decoration:underline;text-underline-offset:3px}.medicion-aviso{scrollbar-width:thin}
 
 .medicion-enlaces{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 18px;margin-top:14px}.medicion-enlaces a,.medicion-enlaces button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 0;border:0;border-radius:4px;background:transparent;color:#294c70;font:inherit;font-size:.82rem;font-weight:600;text-decoration:underline;text-underline-offset:3px}.medicion-enlaces button:hover,.medicion-enlaces a:hover{background:transparent;color:#173149}.medicion-enlaces a:focus-visible{outline:3px solid #ed5938;outline-offset:2px}
+
+
+/* Compact privacy views; scrolling remains available for enlarged text or short viewports. */
+.medicion-aviso--ajustes{padding:20px}
+.medicion-aviso--ajustes h2{margin-bottom:8px}
+.medicion-aviso--ajustes>p{margin-bottom:10px}
+.medicion-aviso--ajustes .medicion-categorias{margin-top:0;gap:7px}
+.medicion-aviso--ajustes .medicion-categorias>p,.medicion-aviso--ajustes .medicion-categorias>label{padding:10px}
+.medicion-aviso--ajustes .medicion-categorias>p{gap:4px 8px}
+.medicion-aviso--ajustes .medicion-categorias>p span{grid-column:1/-1;grid-row:2}
+.medicion-aviso--ajustes .medicion-categorias>p b{grid-row:1;align-self:center}
+.medicion-guardar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.medicion-guardar button{min-width:0}
+.medicion-aviso--ajustes .medicion-enlaces{margin-top:6px}
+@media(max-width:650px){
+ .medicion-aviso--ajustes{padding:18px 18px calc(12px + env(safe-area-inset-bottom));max-height:calc(100dvh - 16px)}
+}
+@media(max-width:350px){
+ .medicion-aviso--ajustes{padding-inline:14px}
+ .medicion-guardar{grid-template-columns:1fr}
+}

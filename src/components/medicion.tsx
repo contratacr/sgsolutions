@@ -45,5 +45,32 @@ export function Medicion(){
  function elegir(permitirAnalitica:boolean,permitirPublicidad:boolean){const preferencia={analitica:permitirAnalitica,publicidad:permitirPublicidad,version:VERSION_PREFERENCIAS_MEDICION,fecha:new Date().toISOString()};guardarPreferenciasMedicion(preferencia);void sincronizarPublicidad(permitirPublicidad);if(!permitirPublicidad){window.fbq?.('consent','revoke');for(const nombre of ['_fbp','_fbc'])document.cookie=`${nombre}=; Max-Age=0; Path=/`; }borrarIdentificadoresMedicion();cerrarPreferenciasMedicion();setAjustes(false);setVersion(v=>v+1);}
  if(ruta.startsWith('/admin')||ruta.startsWith('/panel'))return null;
  const guardadas=leerPreferenciasMedicion(),mostrarAjustes=ajustes||Boolean(guardadas);
- return abierto&&<section className="medicion-aviso" role="dialog" aria-modal="false" aria-labelledby="medicion-titulo"><h2 id="medicion-titulo" ref={tituloRef} tabIndex={-1}>{t('titulo')}</h2><p>{t(mostrarAjustes?'detalleAjustes':'consentimiento')}</p>{mostrarAjustes&&<Link href="/privacidad">{t('privacidad')}</Link>}{mostrarAjustes?<div className="medicion-categorias"><p><strong>{t('necesarias')}</strong><span>{t('necesariasDetalle')}</span><b>{t('siempre')}</b></p><label><input type="checkbox" checked={analitica} onChange={e=>setAnalitica(e.target.checked)}/><span><strong>{t('analitica')}</strong><small>{t('analiticaDetalle')}</small></span></label><label><input type="checkbox" checked={publicidad} onChange={e=>setPublicidad(e.target.checked)}/><span><strong>{t('publicidad')}</strong><small>{t('publicidadDetalle')}</small></span></label><button onClick={()=>elegir(analitica,publicidad)}>{t('guardar')}</button><button onClick={()=>elegir(true,false)}>{t('soloNecesarias')}</button></div>:<><div className="medicion-acciones"><button onClick={()=>elegir(true,true)}>{t('aceptarTodo')}</button><button onClick={()=>elegir(true,false)}>{t('soloNecesarias')}</button></div><div className="medicion-enlaces"><button type="button" onClick={()=>{setAnalitica(true);setPublicidad(false);setAjustes(true);requestAnimationFrame(()=>tituloRef.current?.focus());}}>{t('ajustesCookies')}</button><Link href="/privacidad">{t('privacidad')}</Link></div></>}{mostrarAjustes&&<button className="medicion-volver" onClick={()=>{if(guardadas)cerrarPreferenciasMedicion();else setAjustes(false);}}>{t(guardadas?'cerrar':'volver')}</button>}</section>;
+ return abierto&&<section className={`medicion-aviso${mostrarAjustes?' medicion-aviso--ajustes':''}`} role="dialog" aria-modal="false" aria-labelledby="medicion-titulo">
+  <h2 id="medicion-titulo" ref={tituloRef} tabIndex={-1}>{t('titulo')}</h2>
+  <p>{t(mostrarAjustes?'detalleAjustes':'consentimiento')}</p>
+  {mostrarAjustes?<>
+   <div className="medicion-categorias">
+    <p><strong>{t('necesarias')}</strong><span>{t('necesariasDetalle')}</span><b>{t('siempre')}</b></p>
+    <label><input type="checkbox" checked={analitica} onChange={e=>setAnalitica(e.target.checked)}/><span><strong>{t('analitica')}</strong><small>{t('analiticaDetalle')}</small></span></label>
+    <label><input type="checkbox" checked={publicidad} onChange={e=>setPublicidad(e.target.checked)}/><span><strong>{t('publicidad')}</strong><small>{t('publicidadDetalle')}</small></span></label>
+   </div>
+   <div className="medicion-guardar">
+    <button onClick={()=>elegir(analitica,publicidad)}>{t('guardar')}</button>
+    <button onClick={()=>elegir(true,false)}>{t('soloNecesarias')}</button>
+   </div>
+   <div className="medicion-enlaces">
+    <button type="button" onClick={()=>{if(guardadas)cerrarPreferenciasMedicion();else setAjustes(false);}}>{t(guardadas?'cerrar':'volver')}</button>
+    <Link href="/privacidad">{t('privacidad')}</Link>
+   </div>
+  </>:<>
+   <div className="medicion-acciones">
+    <button onClick={()=>elegir(true,true)}>{t('aceptarTodo')}</button>
+    <button onClick={()=>elegir(true,false)}>{t('soloNecesarias')}</button>
+   </div>
+   <div className="medicion-enlaces">
+    <button type="button" onClick={()=>{setAnalitica(true);setPublicidad(false);setAjustes(true);requestAnimationFrame(()=>tituloRef.current?.focus());}}>{t('ajustesCookies')}</button>
+    <Link href="/privacidad">{t('privacidad')}</Link>
+   </div>
+  </>}
+ </section>;
 }
