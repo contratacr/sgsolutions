@@ -8,7 +8,7 @@ import {leerHistorial,recordarExploracion} from '@/lib/historial-tienda';
 
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import {nombreMarca} from '@/lib/marcas-nombres';
+import {leerUrlTienda,parametrosApiTienda,parametrosUrlTienda,urlConSeleccionTienda,type EstadoUrlTienda} from '@/lib/url-tienda';
 import {medir} from '@/lib/analitica-cliente';
 import {EsqueletoCatalogo} from './esqueletos';
 import {AsesoriaWhatsApp} from './asesoria-whatsapp';
@@ -26,11 +26,11 @@ import {OrdenCatalogo} from './orden-catalogo';
 import {FiltroPrecio} from './filtro-precio';
 import {ListaFiltros} from './lista-filtros';
 import {desplazarContenido} from '@/lib/desplazar-contenido';
-export function Catalogo({inicial,categoriaInicial='todos'}:{inicial:PaginaCatalogo;categoriaInicial?:string}){
+export function Catalogo({inicial,estadoInicial}:{inicial:PaginaCatalogo;estadoInicial:EstadoUrlTienda}){
  const router=useRouter();
  const bs=useTranslations('BusquedaCatalogo');
  const se=useTranslations('SolucionesEmpresariales');
- const almacenamiento='sg-tienda-preferencias';
+
  const sidebar=useRef<HTMLElement>(null);
  useEffect(()=>{
   const restablecer=()=>{const panel=sidebar.current;
@@ -54,10 +54,10 @@ export function Catalogo({inicial,categoriaInicial='todos'}:{inicial:PaginaCatal
  const e=useTranslations('Error');
  const t=useTranslations('Tienda'),s=useTranslations('Comercio'),idioma=useLocale(),compartidos=useCatalogo();
  const datos=compartidos;
- const [categoria,setCategoria]=useState(categoriaInicial),[busqueda,setBusqueda]=useState(''),[orden,setOrden]=useState('recomendados'),[marca,setMarca]=useState(''),[subcategoria,setSubcategoria]=useState('');
- const [categoriaExpandida,setCategoriaExpandida]=useState(categoriaInicial==='todos'?'':categoriaInicial);
+ const [categoria,setCategoria]=useState(estadoInicial.categoria),[busqueda,setBusqueda]=useState(estadoInicial.busqueda),[orden,setOrden]=useState(estadoInicial.orden),[marca,setMarca]=useState(estadoInicial.marca),[subcategoria,setSubcategoria]=useState(estadoInicial.subcategoria);
+ const [categoriaExpandida,setCategoriaExpandida]=useState(estadoInicial.categoria==='todos'?'':estadoInicial.categoria);
  const [buscarMarca,setBuscarMarca]=useState(''),[buscarCategoria,setBuscarCategoria]=useState('');
- const [marcasElegidas,setMarcasElegidas]=useState<string[]>([]),[min,setMin]=useState(''),[max,setMax]=useState('');
+ const [marcasElegidas,setMarcasElegidas]=useState<string[]>(estadoInicial.marcasElegidas),[min,setMin]=useState(estadoInicial.min),[max,setMax]=useState(estadoInicial.max);
  const panelFiltros=useRef<HTMLDialogElement>(null);
  const [filtrosPendientes,setFiltrosPendientes]=useState<null|{categoria:string;marca:string;subcategoria:string;marcasElegidas:string[];min:string;max:string;busqueda:string}>(null);
  // While the modal edits local controls, every background surface uses this snapshot.
@@ -81,21 +81,29 @@ export function Catalogo({inicial,categoriaInicial='todos'}:{inicial:PaginaCatal
   };
  },[filtrosAbiertos]);
 
+ // The URL is the source of truth. A bare /tienda must not restore hidden filters.
  const [preferenciasListas,setPreferenciasListas]=useState(false);
- const idiomaAnterior=useRef(idioma);
+ const [paginacion,setPaginacion]=useState({clave:parametrosUrlTienda({...estadoInicial,pagina:1}).toString(),pagina:estadoInicial.pagina});
+ const ultimaSeleccionUrl=useRef(estadoInicial);
+ const ultimaEdicionUrl=useRef<string|null>(null);
  useEffect(()=>{
-  const frame=requestAnimationFrame(()=>{
-   try{const p=JSON.parse(sessionStorage.getItem(almacenamiento)??'null');if(p){if(p.idioma===document.documentElement.lang){if(categoriaInicial==='todos'&&typeof p.categoria==='string'){setCategoria(p.categoria);setCategoriaExpandida(p.categoria==='todos'?'':p.categoria);}if(typeof p.busqueda==='string')setBusqueda(p.busqueda.slice(0,150));if(typeof p.marca==='string')setMarca(nombreMarca(p.marca));if(categoriaInicial==='todos'&&typeof p.subcategoria==='string')setSubcategoria(p.subcategoria);if(Array.isArray(p.marcasElegidas))setMarcasElegidas(p.marcasElegidas.filter((x:unknown)=>typeof x==='string').map(nombreMarca));if(typeof p.min==='string')setMin(p.min);if(typeof p.max==='string')setMax(p.max);if(['recomendados','menor','mayor'].includes(p.orden))setOrden(p.orden);}}}catch{}
+  try{sessionStorage.removeItem('sg-tienda-preferencias');}catch{}
+  const restaurar=()=>{
+   const estado=leerUrlTienda(new URLSearchParams(location.search));
+   ultimaSeleccionUrl.current=estado;ultimaEdicionUrl.current=null;
+   setCategoria(estado.categoria);setSubcategoria(estado.subcategoria);
+   setMarca(estado.marca);setMarcasElegidas(estado.marcasElegidas);
+   setBusqueda(estado.busqueda);setMin(estado.min);setMax(estado.max);setOrden(estado.orden);
+   setCategoriaExpandida(estado.categoria==='todos'?'':estado.categoria);
+   setBuscarCategoria('');setBuscarMarca('');setFiltrosPendientes(null);
+   panelFiltros.current?.close();
+   setPaginacion({clave:parametrosUrlTienda({...estado,pagina:1}).toString(),pagina:estado.pagina});
    setPreferenciasListas(true);
-  });return ()=>cancelAnimationFrame(frame);
- },[almacenamiento,categoriaInicial]);
- useEffect(()=>{if(preferenciasListas&&!filtrosPendientes)try{sessionStorage.setItem(almacenamiento,JSON.stringify({idioma,categoria,busqueda,orden,marca,subcategoria,marcasElegidas,min,max}));}catch{}},[idioma,categoria,busqueda,orden,marca,subcategoria,marcasElegidas,min,max,preferenciasListas,filtrosPendientes,almacenamiento]);
- useEffect(()=>{
-  if(idiomaAnterior.current===idioma)return;
-  idiomaAnterior.current=idioma;
-  setCategoria('todos');setSubcategoria('');setBusqueda('');setOrden('recomendados');setMarca('');
- },[idioma]);
- const [paginacion,setPaginacion]=useState({clave:'',pagina:1});
+  };
+  const frame=requestAnimationFrame(restaurar);
+  window.addEventListener('popstate',restaurar);
+  return()=>{cancelAnimationFrame(frame);window.removeEventListener('popstate',restaurar);};
+ },[]);
  const resultados=useRef<HTMLParagraphElement>(null);
  const cuadricula=useRef<HTMLDivElement>(null);
  const desplazarResultados=useRef(false);
@@ -104,14 +112,32 @@ export function Catalogo({inicial,categoriaInicial='todos'}:{inicial:PaginaCatal
  const nombreCategoria=(id:string)=>{const c=datos.categorias.find(x=>x.id===id);return c?traducir(c.nombre,idioma):'';};
  const parametros=new URLSearchParams({categoria:aplicados.categoria,marca:aplicados.marca,subcategoria:aplicados.subcategoria,min:aplicados.min,max:aplicados.max,q:aplicados.busqueda,orden,idioma});for(const m of aplicados.marcasElegidas)parametros.append('marcas',m);
  if(orden==='recomendados'&&!aplicados.busqueda&&(historial.ids.length||(sesionIniciada&&favoritos.ids.length)))parametros.set('explorados',[...new Set([...historial.ids,...(sesionIniciada?favoritos.ids:[])])].slice(0,20).join(','));
- // Reset pagination only when the actual query changes. Search results update
- // exploration history themselves; including that unused history here makes
- // page 2 reset to page 1, which restores the old history and requests page 2 again.
- const clave=parametros.toString();
+ // Personal recommendations are never part of the shared filter selection.
+ const firmaSeleccion=parametrosUrlTienda({...aplicados,orden,pagina:1}).toString();
+ const clave=firmaSeleccion;
+ // Adjust pagination together with a changed selection, rather than after painting
+ // the new filters with a page number from a previous search.
+ if(paginacion.clave!==clave)setPaginacion({clave,pagina:1});
  const solicitada=paginacion.clave===clave?paginacion.pagina:1;
+ useEffect(()=>{
+  if(!preferenciasListas)return;
+  const estado={...leerUrlTienda(new URLSearchParams(firmaSeleccion)),pagina:solicitada};
+  const url=new URL(location.href),destino=urlConSeleccionTienda(url,estado);
+  const anterior=ultimaSeleccionUrl.current;
+  const mismaSeleccion=parametrosUrlTienda(anterior).toString()===parametrosUrlTienda(estado).toString();
+  if(destino!==url.pathname+url.search+url.hash){
+   const soloEscritura=anterior.busqueda!==estado.busqueda&&Boolean(anterior.busqueda)&&Boolean(estado.busqueda)&&parametrosUrlTienda({...anterior,busqueda:'',pagina:1}).toString()===parametrosUrlTienda({...estado,busqueda:'',pagina:1}).toString();
+   const soloPrecio=(anterior.min!==estado.min||anterior.max!==estado.max)&&parametrosUrlTienda({...anterior,min:'',max:'',pagina:1}).toString()===parametrosUrlTienda({...estado,min:'',max:'',pagina:1}).toString();
+   if(mismaSeleccion||soloEscritura||(soloPrecio&&ultimaEdicionUrl.current==='precio'))history.replaceState(null,'',destino);
+   else history.pushState(null,'',destino);
+   ultimaEdicionUrl.current=soloPrecio?'precio':soloEscritura?'busqueda':null;
+  }
+  ultimaSeleccionUrl.current=estado;
+ },[firmaSeleccion,solicitada,preferenciasListas]);
+
  parametros.set('pagina',String(solicitada));
  const consulta=parametros.toString();
- const [respuesta,setRespuesta]=useState<{consulta:string;datos:PaginaCatalogo}>({consulta:new URLSearchParams({categoria:categoriaInicial,marca:'',subcategoria:'',min:'',max:'',q:'',orden:'recomendados',idioma,pagina:'1'}).toString(),datos:inicial}),[error,setError]=useState('');
+ const [respuesta,setRespuesta]=useState<{consulta:string;datos:PaginaCatalogo}>({consulta:parametrosApiTienda(estadoInicial,idioma).toString(),datos:inicial}),[error,setError]=useState('');
  const [intento,setIntento]=useState(0);
  const contextoRango=new URLSearchParams({categoria,subcategoria,marca,q:busqueda,orden:'menor'});for(const m of marcasElegidas)contextoRango.append('marcas',m);
  const claveRango=contextoRango.toString();
