@@ -10,6 +10,7 @@ test('origen orgánico no se transforma automáticamente en anuncio',()=>{
  assert.equal(origenCampana('','https://l.instagram.com/').canal,'instagram');
  assert.equal(origenCampana('?utm_source=google&utm_medium=organic','').medio,'organico');
  assert.equal(origenCampana('','').canal,'directo');
+ assert.deepEqual(origenCampana('?utm_source=ubicacion_no_reconocida&utm_medium=paid_social&utm_campaign=sg_ventas_tienda_20261028',''),{canal:'externo',medio:'pago',campana:'sg_ventas_tienda_20261028'});
  assert.equal(origenCampana('?utm_source=facebook&utm_campaign=nombre%40example.com','').campana,'');
  const anterior=process.env.SG_CAMPANAS_PERMITIDAS;process.env.SG_CAMPANAS_PERMITIDAS='redes-octubre';
  assert.equal(campanaPermitida({canal:'facebook',medio:'pago',campana:'desconocida'}).medio,'desconocido');

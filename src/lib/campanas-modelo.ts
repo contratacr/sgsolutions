@@ -7,7 +7,7 @@ export function origenCampana(busqueda:string,referencia:string):Adquisicion{
  const q=new URLSearchParams(busqueda),fuente=(q.get('utm_source')??'').toLowerCase();
  const conocidas:Record<string,Adquisicion['canal']>={facebook:'facebook',fb:'facebook',instagram:'instagram',ig:'instagram',google:'google',whatsapp:'whatsapp',tiktok:'tiktok'};
  let canal=conocidas[fuente];
- if(!canal)try{const h=new URL(referencia).hostname;canal=/(^|\.)facebook\.com$|(^|\.)fb\.com$/.test(h)?'facebook':/(^|\.)instagram\.com$/.test(h)?'instagram':/(^|\.)google\.[a-z.]+$/.test(h)?'google':h==='wa.me'||h==='api.whatsapp.com'?'whatsapp':/(^|\.)tiktok\.com$/.test(h)?'tiktok':'externo';}catch{canal='directo';}
+ if(!canal)try{const h=new URL(referencia).hostname;canal=/(^|\.)facebook\.com$|(^|\.)fb\.com$/.test(h)?'facebook':/(^|\.)instagram\.com$/.test(h)?'instagram':/(^|\.)google\.[a-z.]+$/.test(h)?'google':h==='wa.me'||h==='api.whatsapp.com'?'whatsapp':/(^|\.)tiktok\.com$/.test(h)?'tiktok':'externo';}catch{canal=fuente?'externo':'directo';}
  const m=(q.get('utm_medium')??'').toLowerCase(),c=(q.get('utm_campaign')??'').toLowerCase();
  return {canal,medio:canal==='directo'?'directo':['cpc','ppc','paid','paid_social','paid_search'].includes(m)?'pago':m==='organic'?'organico':'referido',campana:/^[a-z0-9_-]{1,60}$/.test(c)?c:''};
 }
