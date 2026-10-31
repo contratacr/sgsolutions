@@ -5,7 +5,7 @@ import Link from 'next/link';
 import {useTranslations} from 'next-intl';
 import {medir,borrarIdentificadoresMedicion,preferenciasMedicion,comprobarPermisoMedicion,excluirNavegadorAdministrativo} from '@/lib/analitica-cliente';
 import {abrirPreferenciasMedicion,cerrarPreferenciasMedicion,preferenciasMedicionAbiertas,preferenciasMedicionServidor,suscribirPreferenciasMedicion,publicidadHabilitada,leerPreferenciasMedicion,VERSION_PREFERENCIAS_MEDICION,guardarPreferenciasMedicion} from '@/lib/preferencias-medicion';
-import {sincronizarPublicidad} from '@/lib/publicidad-cliente';
+import {sincronizarPublicidad,leerAdquisicionPublicidad} from '@/lib/publicidad-cliente';
 import {rutaPublica} from '@/lib/analitica-modelo';
 export function Medicion(){
  const tituloRef=useRef<HTMLHeadingElement>(null);
@@ -17,10 +17,11 @@ export function Medicion(){
   if(!rutaPublica(ruta)){ultimaRuta.current=ruta;if(ruta.startsWith('/panel')&&document.body.dataset.excluirMedicion==='1')excluirNavegadorAdministrativo();return;}
   let control:AbortController|undefined;
   const comprobar=async()=>{
+   const adquisicion=leerAdquisicionPublicidad();
    control?.abort();const actual=new AbortController();control=actual;
    if(!await comprobarPermisoMedicion(actual.signal)||actual.signal.aborted)return;
    const publicidad=publicidadHabilitada(),analitica=Boolean(leerPreferenciasMedicion()?.analitica);
-   void sincronizarPublicidad(publicidad);if(actual.signal.aborted)return;if(ultimaRuta.current!==ruta){ultimaRuta.current=ruta;if(analitica||publicidad)medir('pagina');if(ruta.startsWith('/tienda/')&&(analitica||publicidad))medir('producto',ruta.split('/')[2]);}else if((publicidad&&!publicidadAnterior.current)||(analitica&&!analiticaAnterior.current)){const canales={analitica:analitica&&!analiticaAnterior.current,publicidad:publicidad&&!publicidadAnterior.current};medir('pagina','',canales);if(ruta.startsWith('/tienda/'))medir('producto',ruta.split('/')[2],canales);}
+   void sincronizarPublicidad(publicidad,adquisicion);if(actual.signal.aborted)return;if(ultimaRuta.current!==ruta){ultimaRuta.current=ruta;if(analitica||publicidad)medir('pagina');if(ruta.startsWith('/tienda/')&&(analitica||publicidad))medir('producto',ruta.split('/')[2]);}else if((publicidad&&!publicidadAnterior.current)||(analitica&&!analiticaAnterior.current)){const canales={analitica:analitica&&!analiticaAnterior.current,publicidad:publicidad&&!publicidadAnterior.current};medir('pagina','',canales);if(ruta.startsWith('/tienda/'))medir('producto',ruta.split('/')[2],canales);}
    publicidadAnterior.current=publicidad;analiticaAnterior.current=analitica;
   };
   const volver=()=>{if(document.visibilityState==='visible')void comprobar();};

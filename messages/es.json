@@ -2612,7 +2612,14 @@
     "google": "Google",
     "whatsapp": "WhatsApp",
     "tiktok": "TikTok",
-    "pendienteMigracion": "La medición ampliada requiere aplicar su migración. Todavía no hay resultados disponibles."
+    "pendienteMigracion": "La medición ampliada requiere aplicar su migración. Todavía no hay resultados disponibles.",
+    "recorrido": "Recorrido en el sitio",
+    "recorridoDetalle": "Acciones registradas con permiso publicitario desde la actualización de medición del 31 de octubre de 2026. No son visitantes únicos. El contexto de clic de Meta puede corresponder a una visita anterior; no confirma atribución de Meta. Un clic en WhatsApp no confirma un mensaje. Consulte la tabla para separar campañas.",
+    "tienda_vista": "Vistas de la tienda",
+    "tienda_vista_clic_meta": "Vistas de tienda con contexto de clic Meta",
+    "campana_carrito": "Acciones de agregar al carrito",
+    "campana_checkout": "Inicios de compra",
+    "campana_whatsapp": "Clics en WhatsApp"
   },
   "BusquedaCatalogo": {
     "buscar": "Buscar productos, marcas o códigos",

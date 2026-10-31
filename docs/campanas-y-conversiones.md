@@ -1,12 +1,12 @@
 # Campañas y conversiones de SG Solutions
 
-Este documento describe la medición y su historial. Los cambios de activación automática descritos aquí están preparados localmente y no han sido probados ni publicados. No interpretar la presencia de código como recepción de Meta ni como atribución a anuncios.
+Este documento describe la medición y su historial. El código revisado el 31 de octubre de 2026 requiere una preferencia de publicidad afirmativa; las notas históricas de activación automática no describen el comportamiento actual. No interpretar la presencia de código como recepción de Meta ni como atribución a anuncios. Las correcciones locales del 31 de octubre pasaron las pruebas aisladas autorizadas descritas al final; siguen pendientes de publicación y comprobación de producción.
 
 ## Dos alcances
 
 - Contadores propios: totales diarios de páginas, productos, clics, búsquedas sin texto, búsquedas sin resultados, cambios del tipo de filtro y formularios. No incluyen identificadores de personas, cuentas, sesiones, IP, mensajes ni historial individual. La cantidad de cierres de formularios es aproximada: se observa que el formulario se retire sin envío mientras la página sigue activa; no reconstruye abandonos fuera de línea.
-- Atribución publicitaria: activa por defecto cuando no existe una negativa guardada y disponible para desactivación en el pie. `sg-publicidad` es HttpOnly, firmada, SameSite=Lax y Secure en producción. Caduca a los 30 días del primer permiso, sin extenderse en cada visita. Contiene un ID técnico, fbp, fbc cuando existe clic de Meta, primer origen y reciente. Es seudónima, no anónima. No se vincula a la cuenta. Un navegador compartido puede compartir esta atribución.
-- La medición publicitaria se inicia por defecto sin registrar una aceptación inexistente. Las negativas guardadas siguen siendo negativas. El control no se presenta automáticamente: está disponible en el pie. La medición interna agregada funciona por separado. La adecuación legal de esta decisión debe revisarse antes de publicar.
+- Atribución publicitaria: requiere `publicidad === true` en las preferencias reconocidas. `sg-publicidad` es HttpOnly, firmada, SameSite=Lax y Secure en producción. Caduca a los 30 días del primer permiso, sin extenderse en cada visita. Contiene un ID técnico, fbp, fbc cuando existe clic de Meta, primer origen y reciente. Es seudónima, no anónima. No se vincula a la cuenta. Un navegador compartido puede compartir esta atribución.
+- Sin preferencia guardada se muestra el aviso. Rechazar publicidad impide el envío publicitario; no aceptar tampoco habilita Meta. La medición agregada del navegador requiere por separado `analitica === true`. Los hitos operativos del servidor tienen su propia elegibilidad. Ninguna de estas métricas representa todos los visitantes necesariamente.
 - Los códigos `utm_campaign` se aceptan solo si están en `SG_CAMPANAS_PERMITIDAS`. Fuente/medio usan listas cerradas. Facebook/Instagram de referencia no significan anuncios pagados. UTM desconocida no se publica como campaña pagada verificada; los valores declarados no demuestran por sí mismos un clic pagado real.
 - La atribución permite contar conversiones por campaña, no calcular ROAS ni costo de adquisición sin importar gasto real de anuncios. No se atribuyen conversiones históricas sin contexto permitido.
 
@@ -90,3 +90,87 @@ La transaccion de la migracion termino con Success en SG Solutions Produccion. E
 ## Diagnóstico dirigido de la cola
 
 `SG_META_PRUEBA_COLA` es una configuración exclusiva del servidor, vacía por defecto. Su JSON admite solo `id` (43 caracteres del evento sintético), `codigo` (`TEST` seguido de dígitos de Meta) y `vence` (milisegundos, dentro de la siguiente hora). Solo el `PageView` de `/` con ese identificador recibe `test_event_code`; ningún otro evento se convierte en prueba. No se aceptan estos controles desde el navegador ni se modifica el esquema SQL. Después de la comprobación autorizada, retirar la configuración. Encolar únicamente datos sintéticos, comprobar el resultado persistido y la recepción del mismo ID en Meta; una respuesta HTTP del procesador por sí sola no demuestra entrega.
+
+## Investigación de atribución del 31 de octubre de 2026
+
+### Evidencia y alcance
+
+Revisión del árbol `2f59c0b`, historial Git, rutas, consentimiento, exclusión administrativa, contratos HTTP, cola SQL y transporte CAPI. Lectura de Meta en Edge, sin publicar cambios ni enviar eventos. Las cifras históricas no se vuelven actuales por conservarse en este registro.
+
+- El anuncio `120252177653460371` de la campaña `120252177653470371` usa una publicación existente de Instagram de 52 segundos. La vista previa dice «Tienda | SG Solutions» / «Más información», URL de origen `https://sgsolutionscr.com/tienda`, optimización automática de destino desmarcada, dataset `1837501974261618`.
+- Parámetros observados en el anuncio: `utm_source={{site_source_name}}&utm_medium=paid_social&utm_campaign=sg_video_20261023`. La etiqueta es compartida con la campaña anterior: no permite separar su histórico con certeza. No se modificó durante esta revisión.
+- Meta mostraba la campaña de Ventas activa y las dos anteriores desactivadas. No se cambió presupuesto, objetivo, entrega, Reel ni dataset.
+- En PageView, intervalo mostrado 3–30 octubre, Meta presenta calidad de coincidencia 2,5/10, cobertura fbp 100% y aviso de que el servidor no está enviando fbc. Diagnóstico general muestra «No hay errores en este momento». Son indicadores distintos: recepción sin errores no demuestra atribución.
+- El conjunto de datos incluye `127.0.0.1` entre sus orígenes históricos. Esto exige distinguir datos históricos de desarrollo y datos actuales antes de usar el total como tráfico comercial. No se eliminó historia ni se concluyó que la aplicación actual envíe eventos desde desarrollo.
+
+### Hallazgos del código
+
+1. **Recepción y atribución se verificaron por separado de forma insuficiente.** El diagnóstico Purchase prueba el envío de un evento sintético a Probar eventos, no una compra pagada, una llegada desde el anuncio ni su atribución. `aceptado` en la cola significa una respuesta técnica de Meta, no una venta ni una coincidencia con un usuario del anuncio.
+2. **No hay Pixel del navegador en el código actual.** `iniciarPixel` no hace nada; los eventos salen por servidor. La integración «Múltiple» de Meta contiene historia y no prueba la presencia actual de ambas vías. No se ha demostrado que este transporte alimente la columna exacta de visitas a destino en esta cuenta.
+3. **Captura tardía del clic.** `sincronizarPublicidad` leía `location.search` después de esperar otra solicitud; además, la comprobación del rol era anterior. Una navegación durante la espera puede cambiar el origen leído. Esto es un defecto detectable por revisión, no una estimación del número de visitas perdidas.
+4. **Eventos descartados al sustituir una sincronización.** Cada actualización de foco/página incrementaba la versión. La promesa anterior podía resolver `false` y el PageView que la esperaba se abandonaba, aunque la siguiente sincronización tuviera permiso. La ruta ya se marcaba como vista. Reproducido en copia temporal de HEAD: se enviaban cero eventos en lugar de uno. La corrección pasa el mismo caso aislado; no cuantifica el impacto histórico.
+5. **Revocación y aceptación consecutivas.** Una petición más reciente podía omitir una revocación todavía en espera. La corrección preparada conserva esa revocación y evita reactivar eventos pendientes del permiso anterior.
+6. **Consentimiento real distinto de documentación anterior.** Desde los cambios del 29 de octubre, publicidad y analítica del navegador requieren la preferencia correspondiente. Las personas que no aceptan publicidad no generan PageView para Meta; ese comportamiento se conserva. Si aceptan después de abandonar la URL inicial, no se recupera un clic que nunca se capturó con permiso.
+7. **Identificadores limitados por diseño.** El servidor crea fbp en su contexto firmado y agrega fbc solo si recibe un fbclid válido. No reutiliza las cookies heredadas `_fbp`/`_fbc` ni recoge IP, agente de usuario, correo o teléfono. Un fbp presente no demuestra coincidencia; tampoco debe calificarse automáticamente de inválido por ser generado en servidor. No se amplía el contrato de datos en esta corrección.
+8. **Filtros de tienda.** `urlConSeleccionTienda` conserva los parámetros ajenos a los filtros, incluidos los de adquisición. No se encontró allí una eliminación explícita de fbclid en la versión revisada. No equivale a comprobar redirecciones y navegadores integrados en producción.
+9. **Métrica interna insuficiente para entradas.** `campana_visita` se registra por cada PageView y el agregado no guarda ruta. No significa visitante único ni llegada inicial a `/tienda`; su cantidad no debe compararse directamente con clics salientes ni etiquetarse como visitas a destino de Meta.
+10. **Privacidad y administración.** Se revisan permisos en navegador y servidor, se conserva exclusión al cerrar sesión y se suprimen eventos revocados. Un administrador en un navegador anónimo nuevo no se puede reconocer automáticamente. Esto no se debe confundir con poder excluir sus clics en los informes publicitarios de Meta.
+
+### Correcciones preparadas localmente
+
+- Captura de origen/clic solo con consentimiento, antes de esperas asíncronas.
+- Los eventos esperan la sincronización vigente cuando otra la sustituye; una revocación invalida los pendientes incluso si después se vuelve a aceptar.
+- Las revocaciones encoladas no se omiten por una aceptación posterior.
+- Lista permitida ampliada con `sg_ventas_tienda_20261028`, conservando `sg_video_20261023` y su historia. No cambiar aún el anuncio: publicar primero el soporte web tras validar y registrar la hora del cambio para separar únicamente las visitas futuras.
+- Documentación actualizada sobre consentimiento y límites de las métricas.
+- `tests/integracion/publicidad-cliente.mts`, ejecutado con autorización explícita, usa red totalmente interceptada: sustitución de sincronizaciones, conservación de clic, revocación seguida de aceptación, falta de permiso y exclusión administrativa.
+
+### Validación local autorizada
+
+El usuario autorizó «Sí, pruebas locales aisladas». Se ejecutaron `publicidad-cliente.mts`, `campanas-contrato.mts`, `campanas-transporte.mts` y `meta-prueba-cola.mts` con `node --conditions=react-server --import tsx --test`: **12 pruebas/subpruebas, 12 aprobadas, 0 fallos** (incluye la prueba contenedora). El transporte interceptado comprueba fbc exacto cuando está presente, su ausencia cuando no existe, respuestas fallidas, revocación y ausencia de los campos personales prohibidos. El contrato conserva ambas etiquetas de campaña.
+
+Se ejecutaron además los dos escenarios de concurrencia contra una copia temporal del cliente de HEAD, sin modificar el worktree: ambos fallaron por aserción, demostrando la pérdida de PageView y la omisión de la solicitud `permitir:false`. La copia temporal se eliminó al terminar. No se hicieron conexiones a Meta ni a una base de datos, pedidos, cambios de campaña o escrituras de producción.
+
+`npm run verificar` pasó después de ampliar las aserciones: tipos, lint, 2450 claves ES/EN y revisión heurística de secretos. `git diff --check` pasó. No se ejecutaron build, regresión completa, pruebas visuales ni smoke de producción en esta validación.
+
+### Comprobaciones pendientes y criterio de cierre
+
+1. Completado: pruebas aisladas de concurrencia, contrato y transporte, incluyendo fbc presente/ausente y campos prohibidos. No se usaron eventos reales para probar carreras de concurrencia.
+2. Después de validar y obtener autorización de publicación: desplegar, comprobar checks y ejecutar solo el smoke autorizado. Actualizar la UTM del anuncio existente sin duplicar campaña ni cambiar el presupuesto.
+3. Comprobar una llegada controlada a `/tienda` con consentimiento: captura del clic, cookie firmada, PageView en cola y recepción del mismo evento con fbc en Probar eventos. Requiere autorización específica de producción; no hacer clic en anuncios pagados propios para fabricar métricas.
+4. Para demostrar llegadas a tienda independientemente del informe de Meta, preparar un agregado diferenciado por ruta y señal de campaña/clic, sin almacenar los valores de identificadores ni llamarlo visitantes únicos. El esquema actual no permite reconstruir esos datos pasados. Esta ampliación no está implementada en este bloque.
+5. Revisar clics **salientes**, visitas atribuidas, ubicaciones y fechas iguales después del cambio. Confirmar con evidencia el funcionamiento de la columna de Meta; si CAPI no basta, evaluar Pixel de navegador consentido con contrato de privacidad y deduplicación antes de introducirlo. No activar automáticamente capturas de datos personales para subir la puntuación.
+
+No se considera resuelto el incidente solo porque pase TypeScript, Meta acepte un evento o mejore la puntuación. Falta comprobar una llegada completa y distinguir la medición propia de la atribución reportada por Meta. Los datos históricos no permiten cuantificar hoy todos los clics que llegaron ni recuperar eventos no medidos.
+
+### Fuentes primarias consultadas
+
+- [Meta: Parameter Builder para Node.js](https://github.com/meta/capi-param-builder/blob/main/nodejs/README.md): persistencia consistente de fbc/fbp y envío en `user_data`. No se instaló el paquete.
+- [Meta: Parameter Builder del navegador](https://github.com/meta/capi-param-builder/blob/main/client_js/README.md): captura asíncrona y mecanismos adicionales en navegadores integrados. No se incorporaron IP, cookies ni datos personales adicionales.
+- [SDK oficial de Meta, UserData](https://github.com/facebook/facebook-python-business-sdk/blob/main/facebook_business/adobjects/serverside/user_data.py): fbc a partir de cookie o fbclid.
+- Las páginas de developers.facebook.com devolvieron 429 y la ayuda de visitas a destino remitió a login; no se usan como evidencia de que CAPI por sí sola alimente esa columna.
+
+## Bloque integral autorizado: medición de campañas, 31 de octubre
+
+El usuario autorizó investigar, aplicar todos los cambios necesarios, probar y publicar este bloque. La entrega conserva el objetivo Ventas, el Reel existente, el dataset y el límite vigente; no autoriza ampliar el gasto ni crear compras/mensajes reales.
+
+### Implementación adicional
+
+- Reutilización en el servidor de `_fbp` y `_fbc` heredados válidos, únicamente después de comprobar permiso publicitario y elegibilidad administrativa. Formato estricto y antigüedad menor a 30 días; el clic explícito de la URL tiene prioridad. Una cookie heredada antigua no reemplaza un clic más reciente. No se añade Pixel de navegador, IP, correo ni teléfono.
+- Nuevos agregados: `tienda_vista`, `tienda_vista_clic_meta`, `campana_carrito`, `campana_checkout`, `campana_whatsapp`. Cada evento mantiene su clave de deduplicación, origen y campaña; no se guarda el valor del clic en la tabla agregada. `tienda_vista` cuenta PageView de `/tienda`, no sesiones ni exclusivamente anuncios. `tienda_vista_clic_meta` cuenta presencia de contexto fbc, que puede proceder de una visita anterior; no certifica atribución Meta.
+- Panel bilingüe con tarjetas de recorrido y explicación de estos límites. La tabla por campaña separa señales de las etiquetas antigua y nueva. WhatsAppClick sigue significando clic, no mensaje o cliente confirmado. Purchase continúa limitado a pago confirmado por servidor.
+- Migración `20261031000100_recorrido_campanas.sql` aplicada en el proyecto `xkfiawkixcyzpfdwccxz`. Antes de modificar, se comprobó el hash de la función anterior; la migración aborta ante cambios desconocidos. Hash posterior `f45bcb89a6d9523202c1bd965450d451`, escritura anon/authenticated deshabilitada y service_role habilitada, verificados en Supabase. No se eliminaron ni reclasificaron registros.
+- `glob` fijado en 14.0.3 para resolver los avisos en dependencias de compilación; se retiró el override anterior 10.5.0. Auditoría `npm audit --omit=dev --audit-level=low`: cero vulnerabilidades. Permanece un aviso moderado de minimatch en herramientas de desarrollo; no se fuerza una sustitución global incompatible de su API.
+- Pruebas registradas en `scripts/testing/bloques.mjs` para repetición manual: `campanas`, `integracion-publicidad-cliente`, `integracion-recorrido-campanas`. No se activa una regresión completa automática.
+
+### Evidencia local y criterios operativos
+
+Pruebas de contrato, concurrencia, identificadores y transporte: 14 pruebas/subpruebas aprobadas. PostgreSQL efímero: migración, agregados, deduplicación, roles, revocación y exclusión administrativa aprobados. Navegadores: llegada consentida y sin permiso en ES/EN y escritorio/Safari móvil; panel, períodos, cambio/persistencia de idioma y anchura aprobados (12 casos). La prueba adicional de endpoints reales contra la base simulada pasó en ambos proyectos de navegador (2 casos) y cubre contexto firmado HttpOnly, conservación de fbclid, registro de vistas, rechazo de Purchase desde navegador y revocación. Todas las conexiones de esos ejercicios son locales o interceptadas, con Meta desactivado.
+
+El build OpenNext/Cloudflare pasó tras actualizar dependencias, junto con tipos, lint, 2457 claves bilingües y auditoría de 626 archivos públicos. Los avisos de datos no disponibles del panel fueron respuestas intencionales de las pruebas de fallo.
+
+Antes del cambio de UTM, publicar el código y verificar el commit en CI y el smoke de producción. La etiqueta futura es `utm_source={{site_source_name}}&utm_medium=paid_social&utm_campaign=sg_ventas_tienda_20261028`. Mantener el identificador del anuncio y registrar la hora del cambio; las series anteriores siguen bajo `sg_video_20261023`. Una edición del anuncio puede provocar revisión de Meta; no declarar que se evita o que se conserva exactamente su fase de aprendizaje.
+
+Para evaluar captación, comparar períodos iguales: gasto y clics salientes de Meta, vistas de tienda por campaña, carrito, inicio de compra, contactos y pagos. No convertir clics WhatsApp en leads confirmados. Con el presupuesto actual, no dividir en múltiples conjuntos ni prometer un volumen de compras o salida de aprendizaje. El nuevo panel da evidencia para decidir después, sin atribuir falsamente tráfico histórico.
+
+[Meta Blueprint: Optimize Meta Conversions API](https://www.facebookblueprint.com/student/activity/609643-optimize-meta-conversions-api) distingue coincidencia, cobertura, calidad, deduplicación y actualidad de eventos, y recomienda verificar el recorrido completo. Se mantiene la integración de servidor y el contrato de privacidad existente: añadir Pixel de navegador requiere revisar el envío automático de URL/metadatos, consentimiento y deduplicación; no se instala solo para hacer desaparecer un guion en una columna. La columna nativa «Visitas a la página de destino» sigue pendiente de evidencia de atribución real: las nuevas métricas propias no se presentan como equivalentes.

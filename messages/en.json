@@ -2612,7 +2612,14 @@
     "instagram": "Instagram",
     "google": "Google",
     "whatsapp": "WhatsApp",
-    "tiktok": "TikTok"
+    "tiktok": "TikTok",
+    "recorrido": "Website journey",
+    "recorridoDetalle": "Actions recorded with advertising permission since the October 31, 2026 measurement update. These are not unique visitors. Meta click context may come from an earlier visit; it does not confirm Meta attribution. A WhatsApp click does not confirm a message. Use the table to distinguish campaigns.",
+    "tienda_vista": "Store page views",
+    "tienda_vista_clic_meta": "Store views with Meta click context",
+    "campana_carrito": "Add-to-cart actions",
+    "campana_checkout": "Checkout starts",
+    "campana_whatsapp": "WhatsApp clicks"
   },
   "BusquedaCatalogo": {
     "buscar": "Search products, brands or codes",

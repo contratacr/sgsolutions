@@ -14,6 +14,7 @@ try{
  for(const f of ['20260909000100_perfiles.sql','20261013000300_estadisticas_panel.sql','20261013000600_popularidad_productos.sql','20261017000200_estadisticas_agregadas.sql'])await db.exec(await readFile('supabase/migrations/'+f,'utf8'));
  await db.exec(`create or replace function public.es_administrador_activo() returns boolean language sql stable security definer set search_path='' as $$select exists(select 1 from public.perfiles where id=auth.uid() and activo and rol='administrador') and current_setting('request.jwt.claim.aal',true)='aal2'$$;`);
  await db.exec(await readFile('supabase/migrations/20261020000100_campanas_conversiones_privadas.sql','utf8'));
+ await db.exec(await readFile('supabase/migrations/20261031000100_recorrido_campanas.sql','utf8'));
  await db.query("insert into auth.users(id,email) values($1,'admin@example.test'),($2,'cliente@example.test')",[id(1),id(2)]);
  await db.query("insert into public.perfiles(id,nombre,rol,activo) values($1,'Admin QA','administrador',true),($2,'Cliente QA','comercial',true)",[id(1),id(2)]);
  async function rol(r,usuario='',aal='aal1'){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false),set_config('request.jwt.claim.aal',$2,false)",[usuario,aal]);await db.exec('set role '+r);}
@@ -26,6 +27,14 @@ try{
  await db.query('select public.registrar_hito_negocio($1)',[JSON.stringify(hito)]);await db.query('select public.registrar_hito_negocio($1)',[JSON.stringify(hito)]);
  await db.query('select public.registrar_hito_negocio($1)',[JSON.stringify({...hito,clave:'b'.repeat(43),excluir:true})]);
  assert.equal(Number((await db.query('select sum(cantidad) n from public.estadisticas_embudo')).rows[0].n),1);
+ for(const [i,tipo] of ['tienda_vista','tienda_vista_clic_meta','campana_carrito','campana_checkout','campana_whatsapp'].entries()){
+  const registro={...hito,tipo,clave:String(i+1).repeat(43)};
+  for(let n=0;n<2;n++)await db.query('select public.registrar_hito_negocio($1)',[JSON.stringify(registro)]);
+  assert.equal(Number((await db.query('select cantidad from public.estadisticas_embudo where tipo=$1',[tipo])).rows[0].cantidad),1);
+  await db.query('select public.registrar_hito_negocio($1)',[JSON.stringify({...registro,clave:String.fromCharCode(75+i).repeat(43),excluir:true})]);
+  assert.equal(Number((await db.query('select cantidad from public.estadisticas_embudo where tipo=$1',[tipo])).rows[0].cantidad),1);
+ }
+ await assert.rejects(()=>db.query('select public.registrar_hito_negocio($1)',[JSON.stringify({...hito,tipo:'mensaje_whatsapp_confirmado'})]),/invalid_event/);
  const evento={id:'c'.repeat(43),contexto:contexto.id,evento:'Lead',ruta:'/empresas',producto:null,valor:null,fbp:'fb.1.1792531717000.1234',fbc:null,vence_contexto:new Date(contexto.vence).toISOString()};
  await db.query('select public.encolar_publicidad($1)',[JSON.stringify(evento)]);await db.query('select public.encolar_publicidad($1)',[JSON.stringify(evento)]);
  const lote=(await db.query('select * from public.reservar_publicidad(8)')).rows;assert.equal(lote.length,1);assert.equal(lote[0].intentos,1);assert.equal((await db.query('select * from public.reservar_publicidad(8)')).rows.length,0);

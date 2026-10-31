@@ -4,6 +4,7 @@ import {createHmac,timingSafeEqual,randomUUID} from 'node:crypto';
 import {cookies} from 'next/headers';
 import {contextoPublicidad,adquisicion,type ContextoPublicidad,type Adquisicion,type EventoPublicidad} from './campanas-modelo';
 import {baseMedicion,permiteMedicionServidor} from './medicion-servidor';
+import {identificadorMetaVigente,conservarClicMeta} from './identificadores-meta';
 const nombre='sg-publicidad',duracion=30*86400;
 function clave(){return process.env.SUPABASE_SERVICE_ROLE_KEY;}
 export function idMedicion(texto:string){const k=clave();if(!k)throw new Error('MEDICION_SIN_CONFIGURACION');return createHmac('sha256',k).update('sg:publicidad:v1:'+texto).digest('base64url');}
@@ -13,7 +14,7 @@ export function leerContextoFirmado(valor:string|undefined):ContextoPublicidad|n
  const c=contextoPublicidad.parse(JSON.parse(Buffer.from(b,'base64url').toString()));return c.creado<=Date.now()&&c.vence>Date.now()&&c.vence-c.creado<=duracion*1000?c:null;}catch{return null;}
 }
 export function campanaPermitida(a:Adquisicion):Adquisicion{
- const permitidas=[...(process.env.SG_CAMPANAS_PERMITIDAS??'').split(','),'sg_video_20261023'].filter(c=>/^[a-z0-9_-]{1,60}$/.test(c));
+ const permitidas=[...(process.env.SG_CAMPANAS_PERMITIDAS??'').split(','),'sg_video_20261023','sg_ventas_tienda_20261028'].filter(c=>/^[a-z0-9_-]{1,60}$/.test(c));
  const campana=permitidas.includes(a.campana)?a.campana:'';
  return {...a,campana,medio:a.medio==='pago'&&!campana?'desconocido':a.medio};
 }
@@ -26,11 +27,13 @@ export async function actualizarContexto(entrada:{permitir:boolean;adquisicion?:
  }
  if(!db||!clave())return false;
  const origen=campanaPermitida(adquisicion.parse(entrada.adquisicion)),ahora=Date.now();
- const c:ContextoPublicidad=anterior??{id:randomUUID(),creado:ahora,vence:ahora+duracion*1000,primero:campanaPermitida(entrada.primera??origen),reciente:origen,fbp:`fb.1.${ahora}.${BigInt('0x'+randomUUID().replaceAll('-','').slice(0,14)).toString()}`};
+ const c:ContextoPublicidad=anterior??{id:randomUUID(),creado:ahora,vence:ahora+duracion*1000,primero:campanaPermitida(entrada.primera??origen),reciente:origen,fbp:identificadorMetaVigente(a.get('_fbp')?.value,'fbp',ahora)??`fb.1.${ahora}.${BigInt('0x'+randomUUID().replaceAll('-','').slice(0,14)).toString()}`};
  const revocada=await db.from('publicidad_revocaciones').select('id').eq('id',c.id).maybeSingle();if(revocada.error||revocada.data)return false;
  // Direct/internal navigation does not overwrite the latest meaningful campaign.
  if(origen.canal!=='directo'&&(origen.campana||origen.canal!==c.reciente.canal||!anterior))c.reciente=origen;
- if(entrada.fbclid&&/^[A-Za-z0-9_-]{1,300}$/.test(entrada.fbclid)&&!c.fbc?.endsWith('.'+entrada.fbclid))c.fbc=`fb.1.${ahora}.${entrada.fbclid}`;
+ if(entrada.fbclid&&/^[A-Za-z0-9_-]{1,300}$/.test(entrada.fbclid)){
+  if(!c.fbc?.endsWith('.'+entrada.fbclid))c.fbc=`fb.1.${ahora}.${entrada.fbclid}`;
+ }else c.fbc=conservarClicMeta(c.fbc,a.get('_fbc')?.value,ahora);
  a.set(nombre,firmar(c),{httpOnly:true,secure:process.env.NODE_ENV==='production',sameSite:'lax',path:'/',maxAge:Math.max(0,Math.floor((c.vence-ahora)/1000))});return true;
 }
 export function configuracionMeta(){

@@ -18,3 +18,13 @@ export const contextoPublicidad=z.object({id:z.uuid(),creado:z.number().int(),ve
 export type ContextoPublicidad=z.infer<typeof contextoPublicidad>;
 export const hitosNegocio=['solicitud_recibida','pedido_creado','pago_confirmado','cotizacion_preparada'] as const;
 export type HitoNegocio=typeof hitosNegocio[number];
+export const hitosNavegacion=['campana_visita','tienda_vista','tienda_vista_clic_meta','campana_carrito','campana_checkout','campana_whatsapp'] as const;
+export type HitoNavegacion=typeof hitosNavegacion[number];
+/** Counts actions, not unique visitors, messages or purchases. */
+export function hitosDeNavegacion(evento:EventoPublicidad,ruta:string,conClicMeta:boolean):HitoNavegacion[]{
+ if(evento==='PageView')return ['campana_visita',...(ruta==='/tienda'?['tienda_vista' as const,...(conClicMeta?['tienda_vista_clic_meta' as const]:[])]:[])];
+ if(evento==='AddToCart')return ['campana_carrito'];
+ if(evento==='InitiateCheckout')return ['campana_checkout'];
+ if(evento==='WhatsAppClick')return ['campana_whatsapp'];
+ return [];
+}

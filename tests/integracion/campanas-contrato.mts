@@ -14,6 +14,7 @@ test('origen orgánico no se transforma automáticamente en anuncio',()=>{
  const anterior=process.env.SG_CAMPANAS_PERMITIDAS;process.env.SG_CAMPANAS_PERMITIDAS='redes-octubre';
  assert.equal(campanaPermitida({canal:'facebook',medio:'pago',campana:'desconocida'}).medio,'desconocido');
  assert.equal(campanaPermitida({canal:'facebook',medio:'pago',campana:'redes-octubre'}).campana,'redes-octubre');
+ for(const campana of ['sg_video_20261023','sg_ventas_tienda_20261028'])assert.deepEqual(campanaPermitida({canal:'instagram',medio:'pago',campana}),{canal:'instagram',medio:'pago',campana});
  if(anterior===undefined)delete process.env.SG_CAMPANAS_PERMITIDAS;else process.env.SG_CAMPANAS_PERMITIDAS=anterior;
 });
 test('el navegador no puede declarar ventas, leads ni añadir datos libres',()=>{

@@ -1,9 +1,9 @@
 import 'server-only';
 import {baseMedicion,permiteMedicionServidor} from './medicion-servidor';
 import {contextoActual,idMedicion,encolarPublicidad} from './publicidad-servidor';
-import type {ContextoPublicidad,HitoNegocio} from './campanas-modelo';
+import type {ContextoPublicidad,HitoNegocio,HitoNavegacion} from './campanas-modelo';
 export type OperacionMedicion='asesoria'|'empresa'|'manual'|'tarjeta';
-export async function hitoNegocio(tipo:HitoNegocio|'campana_visita',operacion:string,idioma:'es'|'en',contexto:ContextoPublicidad|null,excluir=false){
+export async function hitoNegocio(tipo:HitoNegocio|HitoNavegacion,operacion:string,idioma:'es'|'en',contexto:ContextoPublicidad|null,excluir=false){
  const db=baseMedicion();if(!db)return;
  const r=await db.rpc('registrar_hito_negocio',{entrada:{clave:idMedicion(`${tipo}:${operacion}`),tipo,idioma,contexto,excluir}});if(r.error)throw new Error('MEDICION_HITO_PENDIENTE');
 }

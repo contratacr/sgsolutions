@@ -1,8 +1,11 @@
 import http from 'node:http';
 let error=false,eventos=0,activo=true,errorPerfil=false,consultasCuenta=0,transporte=null,rol='administrador';
+const hitosPublicidad=[];
 http.createServer(async(req,res)=>{
  const u=new URL(req.url,'http://127.0.0.1:3123');let s='';for await(const c of req)s+=c;const d=s?JSON.parse(s):{};
  const send=x=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(x));};
+ if(u.pathname==='/__test/publicidad')return send(hitosPublicidad);
+ if(u.pathname==='/rest/v1/rpc/registrar_hito_negocio'){hitosPublicidad.push(d.entrada);return send(true);}
  if(u.pathname==='/__test/perfil'){activo=d.activo!==false;errorPerfil=d.error===true;rol=d.rol??'administrador';return send({});}
  if(u.pathname==='/__test/eventos')return send({eventos,consultasCuenta,transporte});
  if(u.pathname==='/rest/v1/rpc/registrar_conteo_anonimo'){eventos++;transporte={cookie:Boolean(req.headers.cookie),referer:Boolean(req.headers.referer),ipVisitante:Boolean(req.headers['x-forwarded-for']||req.headers['cf-connecting-ip']||req.headers['x-real-ip']),soloServicio:req.headers.authorization==='Bearer fixture-only'};return send(null);}
