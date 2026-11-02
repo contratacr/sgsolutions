@@ -51,3 +51,8 @@ export function enviarPublicidad(evento:EventoPublicidad,ruta:string,producto?:s
   await fetch('/api/publicidad/evento',{method:'POST',headers:{'Content-Type':'application/json','X-SG-Idioma':document.documentElement.lang==='en'?'en':'es'},body:JSON.stringify(datos.data),credentials:'same-origin',referrerPolicy:'no-referrer',cache:'no-store',keepalive:true}).catch(()=>{});
  })();
 }
+
+/** A campaign label only; never expose fbc/fbp, signed context or identity to WhatsApp. */
+export function campanaConsultaActual(){
+ try{if(!publicidadHabilitada()||localStorage.getItem('sg-excluir-medicion')==='1'||document.body.dataset.excluirMedicion!=='0')return '';return leerAdquisicionPublicidad()?.origen.campana||primera?.campana||'';}catch{return '';}
+}

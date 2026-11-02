@@ -1,6 +1,6 @@
 // Registro de pruebas aisladas. Diagnósticos reales de Meta y producción quedan fuera.
 const sql=['conciliacion-tarjeta','campanas-conversiones','mfa-administradores','estadisticas-panel','favoritos-empresariales','referencias-pedidos','pedidos-archivo-express','archivo-panel','autogestion-cuenta','estado-entrega','eurocomp-manual','favoritos','perfiles-compra','popularidad-catalogo','popularidad-productos','seguridad-archivo','soporte-panel','usuarios-panel'];
-const integraciones=['campanas-contrato','campanas-transporte','publicidad-cliente','recorrido-campanas','conciliacion-tarjeta','plazo-correos','retiro-pago','catalogo-red'];
+const integraciones=['campanas-contrato','campanas-transporte','publicidad-cliente','recorrido-campanas','contactos-comerciales','conciliacion-tarjeta','plazo-correos','retiro-pago','catalogo-red'];
 export const bloques=[
  ['verificar',['npm','run','verificar']],
  ['inventario',['node','--test','tests/testing/inventario.test.mjs']],

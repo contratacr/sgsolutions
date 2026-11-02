@@ -1,4 +1,6 @@
 'use client';
+import {agregarReferenciaWhatsApp} from '@/lib/contactos-comerciales-modelo';
+import {campanaConsultaActual} from '@/lib/publicidad-cliente';
 import {useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
@@ -27,7 +29,7 @@ export function Medicion(){
   const volver=()=>{if(document.visibilityState==='visible')void comprobar();};
   const almacenamiento=(e:StorageEvent)=>{if(e.key==='sg-medicion'||e.key===null){if(preferenciasMedicion())cerrarPreferenciasMedicion();else abrirPreferenciasMedicion();}if(e.key==='sg-excluir-medicion'||e.key==='sg-medicion'||e.key===null)void comprobar();};
   void comprobar();window.addEventListener('focus',volver);window.addEventListener('pageshow',volver);window.addEventListener('storage',almacenamiento);document.addEventListener('visibilitychange',volver);
-  const clic=(e:MouseEvent)=>{const el=e.target instanceof Element?e.target:null;const enlace=el?.closest<HTMLAnchorElement>('a[href]');if(enlace){const url=new URL(enlace.href,location.href);if(url.hostname==='wa.me')medir('whatsapp',enlace.closest('footer')?'footer':enlace.classList.contains('whatsapp-flotante')?'flotante':'contenido');else if(url.protocol==='mailto:'||url.hostname==='outlook.office.com')medir('correo');else if(url.protocol==='tel:')medir('telefono');else if(['www.google.com','www.waze.com'].includes(url.hostname))medir('mapa');else if(['www.instagram.com','www.facebook.com'].includes(url.hostname))medir('red_social',url.hostname);}
+  const clic=(e:MouseEvent)=>{const el=e.target instanceof Element?e.target:null;const enlace=el?.closest<HTMLAnchorElement>('a[href]');if(enlace){const url=new URL(enlace.href,location.href);if(url.hostname==='wa.me'){if(rutaPublica(location.pathname))enlace.href=agregarReferenciaWhatsApp(enlace.href,location.pathname,campanaConsultaActual(),document.documentElement.lang);medir('whatsapp',enlace.closest('footer')?'footer':enlace.classList.contains('whatsapp-flotante')?'flotante':'contenido');}else if(url.protocol==='mailto:'||url.hostname==='outlook.office.com')medir('correo');else if(url.protocol==='tel:')medir('telefono');else if(['www.google.com','www.waze.com'].includes(url.hostname))medir('mapa');else if(['www.instagram.com','www.facebook.com'].includes(url.hostname))medir('red_social',url.hostname);}
    if(el?.closest('.caso-galeria button'))medir('galeria');
   };
   const formularios=new Map<HTMLFormElement,{tipo:string;enviando:boolean;completo:boolean;ultimoError:number}>();
@@ -57,7 +59,7 @@ export function Medicion(){
    </div>
    <div className="medicion-guardar">
     <button onClick={()=>elegir(analitica,publicidad)}>{t('guardar')}</button>
-    <button onClick={()=>elegir(true,false)}>{t('soloNecesarias')}</button>
+    <button onClick={()=>elegir(false,false)}>{t('soloNecesarias')}</button>
    </div>
    <div className="medicion-enlaces">
     <button type="button" onClick={()=>{if(guardadas)cerrarPreferenciasMedicion();else setAjustes(false);}}>{t(guardadas?'cerrar':'volver')}</button>
@@ -66,10 +68,11 @@ export function Medicion(){
   </>:<>
    <div className="medicion-acciones">
     <button onClick={()=>elegir(true,true)}>{t('aceptarTodo')}</button>
-    <button onClick={()=>elegir(true,false)}>{t('soloNecesarias')}</button>
+    <button onClick={()=>elegir(true,false)}>{t('soloAnalitica')}</button>
+    <button onClick={()=>elegir(false,false)}>{t('soloNecesarias')}</button>
    </div>
    <div className="medicion-enlaces">
-    <button type="button" onClick={()=>{setAnalitica(true);setPublicidad(false);setAjustes(true);requestAnimationFrame(()=>tituloRef.current?.focus());}}>{t('ajustesCookies')}</button>
+    <button type="button" onClick={()=>{setAnalitica(false);setPublicidad(false);setAjustes(true);requestAnimationFrame(()=>tituloRef.current?.focus());}}>{t('ajustesCookies')}</button>
     <Link href="/privacidad">{t('privacidad')}</Link>
    </div>
   </>}

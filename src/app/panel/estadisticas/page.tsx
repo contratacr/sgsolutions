@@ -1,3 +1,4 @@
+import {ContactosComerciales} from '@/components/contactos-comerciales';
 import {EstadisticasCampanas} from '@/components/estadisticas-campanas';
 import {exigirAdminMfa} from '@/lib/acceso-panel';
 import Link from 'next/link';
@@ -61,7 +62,7 @@ export default async function Estadisticas({searchParams}:{searchParams:Promise<
   </div>{resumen?.compras&&<p className="estadisticas-pendientes"><Link href="/panel/pedidos">{t('pendientesPago',{total:numero(resumen.compras.pendientes)})}</Link></p>}</section>
   <p className="estadisticas-nota">{t('exclusionAdministrativa')} {t('alcanceConteos')}</p>
   {resumen&&<div className="estadisticas-detalles">{categorias()}{categorias(true)}{popularidad?<>{ranking('vistas')}{ranking('compras')}</>:lista('producto')}{['pagina','carrito','busqueda_producto','plan','busqueda','busqueda_vacia','filtro','formulario_inicio','formulario_error','formulario_abandono'].filter(tipo=>(total(tipo)??0)>0).map(lista)}{Boolean(clics)&&<section className="estadisticas-lista"><h2>{t('contactos')}</h2><ol>{contactos.map(tipo=><li key={tipo}><span>{t(tipo)}</span><strong>{numero(total(tipo))}</strong></li>)}</ol></section>}{(['dispositivos','idiomas'] as const).filter(tipo=>Boolean(resumen[tipo]?.length)).map(tipo=><section className="estadisticas-lista" key={tipo}><h2>{t(tipo)}</h2>{resumen[tipo]?.length?<ol>{resumen[tipo]!.map(f=><li key={f.detalle}><span>{t(f.detalle==='es'?'espanol':f.detalle==='en'?'ingles':f.detalle==='movil'?'movil':'escritorio')}</span><strong>{numero(f.cantidad)}</strong></li>)}</ol>:<p>{t('sinDatos')}</p>}</section>)}</div>}
-  <EstadisticasCampanas dias={dias}/>
+  <EstadisticasCampanas dias={dias}/><ContactosComerciales dias={dias}/>
   <form action={cambiarIdioma} className="estadisticas-idioma" aria-label={nav('seleccionarIdioma')}>{(['es','en'] as const).map(opcion=><button key={opcion} name="idioma" value={opcion} lang={opcion} aria-pressed={idioma===opcion} aria-label={nav(opcion==='es'?'espanol':'ingles')}>{opcion.toUpperCase()}</button>)}</form>
  </main>;
 }
