@@ -1,4 +1,4 @@
-export const VERSION_PREFERENCIAS_MEDICION='2026-11-02-v3';
+export const VERSION_PREFERENCIAS_MEDICION='2026-11-03-v1';
 export type PreferenciasMedicion={analitica:boolean;publicidad:boolean;version:string;fecha:string};
 let abierto=false;
 let preferenciaTemporal:PreferenciasMedicion|null=null;
@@ -12,7 +12,7 @@ export function cerrarPreferenciasMedicion(){abierto=false;oyentes.forEach(oyent
 
 export function leerPreferenciasMedicion():PreferenciasMedicion|null{
  if(preferenciaTemporal)return preferenciaTemporal;
- try{const p=JSON.parse(localStorage.getItem('sg-medicion')||'null');if(p?.version===VERSION_PREFERENCIAS_MEDICION&&typeof p.analitica==='boolean'&&typeof p.publicidad==='boolean')return p;if(p?.publicidad===false&&p?.analitica!==true)return {analitica:false,publicidad:false,version:VERSION_PREFERENCIAS_MEDICION,fecha:''};return null;}catch{return null;}
+ try{const p=JSON.parse(localStorage.getItem('sg-medicion')||'null');if([VERSION_PREFERENCIAS_MEDICION,'2026-11-02-v3'].includes(p?.version)&&typeof p.analitica==='boolean'&&typeof p.publicidad==='boolean')return p;if(p?.publicidad===false&&p?.analitica!==true)return {analitica:false,publicidad:false,version:VERSION_PREFERENCIAS_MEDICION,fecha:''};return null;}catch{return null;}
 }
 export function publicidadHabilitada(){return leerPreferenciasMedicion()?.publicidad===true;}
 export function analiticaHabilitada(){return leerPreferenciasMedicion()?.analitica===true;}

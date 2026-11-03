@@ -49,17 +49,27 @@ export function Medicion(){
  if(ruta.startsWith('/admin')||ruta.startsWith('/panel'))return null;
  const guardadas=leerPreferenciasMedicion(),mostrarAjustes=ajustes||Boolean(guardadas);
  return abierto&&<section className={`medicion-aviso${mostrarAjustes?' medicion-aviso--ajustes':''}`} role="dialog" aria-modal="false" aria-labelledby="medicion-titulo">
-  <h2 id="medicion-titulo" ref={tituloRef} tabIndex={-1}>{t('titulo')}</h2>
+  <h2 id="medicion-titulo" ref={tituloRef} tabIndex={-1}>{t(mostrarAjustes?'tituloAjustes':'titulo')}</h2>
   <p>{t(mostrarAjustes?'detalleAjustes':'consentimiento')}</p>
   {mostrarAjustes?<>
    <div className="medicion-categorias">
-    <p><strong>{t('necesarias')}</strong><span>{t('necesariasDetalle')}</span><b>{t('siempre')}</b></p>
-    <label><input type="checkbox" checked={analitica} onChange={e=>setAnalitica(e.target.checked)}/><span><strong>{t('analitica')}</strong><small>{t('analiticaDetalle')}</small></span></label>
-    <label><input type="checkbox" checked={publicidad} onChange={e=>setPublicidad(e.target.checked)}/><span><strong>{t('publicidad')}</strong><small>{t('publicidadDetalle')}</small></span></label>
+    <div className="medicion-categoria">
+     <div className="medicion-categoria-fija"><strong>{t('necesarias')}</strong><b>{t('siempre')}</b></div>
+     <p>{t('necesariasDetalle')}</p>
+     <details><summary>{t('masInformacion')}<span className="sr-only">: {t('necesarias')}</span></summary><p>{t('necesariasInformacion')}</p></details>
+    </div>
+    <div className="medicion-categoria">
+     <label><input type="checkbox" checked={analitica} onChange={e=>setAnalitica(e.target.checked)}/><span><strong>{t('analitica')}</strong><small>{t('analiticaDetalle')}</small></span></label>
+     <details><summary>{t('masInformacion')}<span className="sr-only">: {t('analitica')}</span></summary><p>{t('analiticaInformacion')}</p></details>
+    </div>
+    <div className="medicion-categoria">
+     <label><input type="checkbox" checked={publicidad} onChange={e=>setPublicidad(e.target.checked)}/><span><strong>{t('publicidad')}</strong><small>{t('publicidadDetalle')}</small></span></label>
+     <details><summary>{t('masInformacion')}<span className="sr-only">: {t('publicidad')}</span></summary><p>{t('publicidadInformacion')}</p></details>
+    </div>
    </div>
    <div className="medicion-guardar">
+    <button onClick={()=>elegir(true,true)}>{t('aceptarTodo')}</button>
     <button onClick={()=>elegir(analitica,publicidad)}>{t('guardar')}</button>
-    <button onClick={()=>elegir(false,false)}>{t('soloNecesarias')}</button>
    </div>
    <div className="medicion-enlaces">
     <button type="button" onClick={()=>{if(guardadas)cerrarPreferenciasMedicion();else setAjustes(false);}}>{t(guardadas?'cerrar':'volver')}</button>
@@ -67,12 +77,10 @@ export function Medicion(){
    </div>
   </>:<>
    <div className="medicion-acciones">
-    <button onClick={()=>elegir(true,true)}>{t('aceptarTodo')}</button>
-    <button onClick={()=>elegir(true,false)}>{t('soloAnalitica')}</button>
-    <button onClick={()=>elegir(false,false)}>{t('soloNecesarias')}</button>
+    <button type="button" onClick={()=>{setAnalitica(false);setPublicidad(false);setAjustes(true);requestAnimationFrame(()=>tituloRef.current?.focus());}}>{t('configuracion')}</button>
+    <button onClick={()=>elegir(true,true)}>{t('deAcuerdo')}</button>
    </div>
    <div className="medicion-enlaces">
-    <button type="button" onClick={()=>{setAnalitica(false);setPublicidad(false);setAjustes(true);requestAnimationFrame(()=>tituloRef.current?.focus());}}>{t('ajustesCookies')}</button>
     <Link href="/privacidad">{t('privacidad')}</Link>
    </div>
   </>}

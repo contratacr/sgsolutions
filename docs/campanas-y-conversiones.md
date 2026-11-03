@@ -186,3 +186,11 @@ Solicitud: aplicar recomendaciones y hacer push/despliegue. La autorización de 
 - Privacidad: se corrige la discrepancia anterior: `Solo necesarias` activaba analítica. Ahora desactiva ambas categorías. Se ofrece `Solo estadísticas anónimas` explícitamente, además de aceptar todas y configurar. La versión v3 solicita nueva elección para preferencias antiguas ambiguas y respeta negativas. Puede reducir más los registros consentidos; no se presenta como una técnica para inflarlos.
 - Contraste independiente: Cloudflare Dashboard pidió iniciar sesión; no se activó Web Analytics ni se insertó un beacon. La sesión OAuth de despliegue no se usa para extraer credenciales del navegador. La consulta de métricas de Cloudflare queda pendiente de acceso. Solicitudes de infraestructura no equivalen a visitantes humanos.
 - Uso: al recibir una consulta, crear una referencia propia (por ejemplo CONSULTA-001), confirmar fuente solo con evidencia, actualizar la misma fila al calificar/cotizar. Revisar pagos en Pedidos. Comparar gasto y contactos de la misma campaña y período; los resultados comerciales requieren registro del equipo.
+
+## Aviso y configuración — 3 de noviembre de 2026
+
+- El primer aviso ofrece Configuración y De acuerdo. El texto explica antes del clic que De acuerdo activa analítica y publicidad; navegar o abrir Configuración no equivale a aceptar.
+- Configuración mantiene solo las categorías existentes: necesarias, estadísticas y marketing con Meta. Las dos categorías opcionales parten desmarcadas si todavía no hay una elección; cada una tiene información desplegable. Guardar aplica exactamente sus estados y Aceptar todas habilita ambas.
+- Se conserva el diseño de SG Solutions y la traducción español/inglés. No se agrega una categoría ficticia de contenidos externos o confort.
+- La versión 2026-11-03-v1 reconoce las decisiones explícitas de 2026-11-02-v3 y mantiene las negativas históricas. No recupera permisos antiguos que la versión anterior había invalidado.
+- En este bloque se ejecutan solo controles estáticos y compilación. No se ejecutan pruebas funcionales, visuales ni smoke sin autorización adicional.

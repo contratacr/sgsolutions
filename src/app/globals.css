@@ -517,3 +517,14 @@ svg { flex-shrink: 0; }
  .medicion-aviso--ajustes{padding-inline:14px}
  .medicion-guardar{grid-template-columns:1fr}
 }
+
+.medicion-categoria{padding:10px;border:1px solid #dbe4eb;border-radius:10px;min-width:0}
+.medicion-categoria-fija{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.medicion-categoria-fija strong{font-size:.88rem}
+.medicion-categoria-fija b{font-size:.74rem;color:#496b84;white-space:nowrap}
+.medicion-categoria>p{margin:4px 0 0;font-size:.8rem;line-height:1.4;color:#536b80}
+.medicion-categoria>label{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.medicion-categoria details{margin-top:3px;font-size:.8rem}
+.medicion-categoria summary{display:list-item;cursor:pointer;color:#294c70;text-decoration:underline;text-underline-offset:3px;line-height:1.4;padding:8px 0}
+.medicion-categoria summary:focus-visible{outline:3px solid #ed5938;outline-offset:2px}
+.medicion-categoria details p{margin:4px 0 0;font-size:.8rem;line-height:1.5;color:#536b80}
