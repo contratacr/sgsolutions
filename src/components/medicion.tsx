@@ -12,8 +12,8 @@ import {rutaPublica} from '@/lib/analitica-modelo';
 export function Medicion(){
  const tituloRef=useRef<HTMLHeadingElement>(null);
  const ultimaRuta=useRef<string|null>(null),publicidadAnterior=useRef(false),analiticaAnterior=useRef(false);
- const ruta=usePathname(),t=useTranslations('Analitica');const abierto=useSyncExternalStore(suscribirPreferenciasMedicion,preferenciasMedicionAbiertas,preferenciasMedicionServidor),[version,setVersion]=useState(0),[ajustes,setAjustes]=useState(false),[analitica,setAnalitica]=useState(false),[publicidad,setPublicidad]=useState(false);
- useEffect(()=>{borrarIdentificadoresMedicion();const abrir=()=>{const p=leerPreferenciasMedicion();if(p){setAnalitica(p.analitica);setPublicidad(p.publicidad);setAjustes(true);}abrirPreferenciasMedicion();};window.addEventListener('sg-abrir-preferencias',abrir);if(!leerPreferenciasMedicion())abrirPreferenciasMedicion();return()=>window.removeEventListener('sg-abrir-preferencias',abrir);},[]);
+ const ruta=usePathname(),t=useTranslations('Analitica');const abierto=useSyncExternalStore(suscribirPreferenciasMedicion,preferenciasMedicionAbiertas,preferenciasMedicionServidor),[version,setVersion]=useState(0),[ajustes,setAjustes]=useState(false),[analitica,setAnalitica]=useState(true),[publicidad,setPublicidad]=useState(true);
+ useEffect(()=>{borrarIdentificadoresMedicion();const abrir=()=>{const p=leerPreferenciasMedicion();setAnalitica(p?.analitica??true);setPublicidad(p?.publicidad??true);setAjustes(true);abrirPreferenciasMedicion();};window.addEventListener('sg-abrir-preferencias',abrir);if(!leerPreferenciasMedicion())abrirPreferenciasMedicion();return()=>window.removeEventListener('sg-abrir-preferencias',abrir);},[]);
  useEffect(()=>{
   if(document.body.dataset.administracionMedicion==='1')excluirNavegadorAdministrativo();
   if(!rutaPublica(ruta)){ultimaRuta.current=ruta;if(ruta.startsWith('/panel')&&document.body.dataset.excluirMedicion==='1')excluirNavegadorAdministrativo();return;}
@@ -77,7 +77,7 @@ export function Medicion(){
    </div>
   </>:<>
    <div className="medicion-acciones">
-    <button type="button" onClick={()=>{setAnalitica(false);setPublicidad(false);setAjustes(true);requestAnimationFrame(()=>tituloRef.current?.focus());}}>{t('configuracion')}</button>
+    <button type="button" onClick={()=>{setAnalitica(true);setPublicidad(true);setAjustes(true);requestAnimationFrame(()=>tituloRef.current?.focus());}}>{t('configuracion')}</button>
     <button onClick={()=>elegir(true,true)}>{t('deAcuerdo')}</button>
    </div>
    <div className="medicion-enlaces">
