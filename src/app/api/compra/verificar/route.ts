@@ -1,4 +1,5 @@
 import {leerTextoLimitado} from '@/lib/limites-http';
+import {esProductoManual} from '@/lib/catalogo-fuente';
 import {esProductoSoftware,limiteCantidadProducto} from '@/lib/software';
 import {z} from 'zod';
 import {origenPermitido} from '@/lib/origen-permitido';
@@ -15,7 +16,7 @@ export async function POST(request:Request){
  if(new Set(entrada.articulos.map(a=>a.id)).size!==entrada.articulos.length)return Response.json({error:'datos_invalidos'},{status:400});
  let etapa='catalogo';
  try{
-  const c=await leerCatalogoPublico();const articulos=entrada.articulos.flatMap(a=>{const producto=c.productos.find(p=>p.coleccion!=='empresas'&&p.id===a.id&&p.precio===a.precio&&p.disponibilidad!=='agotado'&&(p.codigoEurocomp||esProductoSoftware(p))&&a.cantidad<=limiteCantidadProducto(p.id));return producto?[{producto,cantidad:a.cantidad}]:[];});
+  const c=await leerCatalogoPublico();const articulos=entrada.articulos.flatMap(a=>{const producto=c.productos.find(p=>p.coleccion!=='empresas'&&p.id===a.id&&p.precio===a.precio&&p.disponibilidad!=='agotado'&&(p.codigoEurocomp||esProductoSoftware(p)||esProductoManual(p))&&a.cantidad<=limiteCantidadProducto(p.id));return producto?[{producto,cantidad:a.cantidad}]:[];});
   if(articulos.length!==entrada.articulos.length)return Response.json({error:'catalogo_actualizado'},{status:409});
   etapa='proveedor';
   await verificarCompraEurocomp(articulos);

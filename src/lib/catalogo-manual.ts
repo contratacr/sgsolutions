@@ -1,6 +1,6 @@
 import {esProductoSoftware} from './software';
 import {resolverImagenProducto,tieneImagenProducto} from './imagenes-productos';
-import {esProductoEurocomp,esProductoEmpresarial,esDuplicadoEmpresarial} from './catalogo-fuente';
+import {esProductoManual,esProductoEurocomp,esProductoEmpresarial,esDuplicadoEmpresarial} from './catalogo-fuente';
 import {asignarRutasProductos} from './rutas-productos';
 import {type CatalogoAdmin, type CatalogoPublico} from './catalogo-modelo';
 
@@ -12,11 +12,11 @@ const textos={
 
 // Preserve Eurocomp products and the explicitly curated business selection.
 export function catalogoPublicoManual(c:CatalogoPublico):CatalogoPublico{
- return actualizarPromesa({...c,gestion:'manual',productos:asignarRutasProductos(c.productos.map(resolverImagenProducto).filter(tieneImagenProducto).filter(p=>(esProductoEurocomp(p)||esProductoEmpresarial(p)||esProductoSoftware(p))&&!esDuplicadoEmpresarial(p)))});
+ return actualizarPromesa({...c,gestion:'manual',productos:asignarRutasProductos(c.productos.map(resolverImagenProducto).filter(tieneImagenProducto).filter(p=>(esProductoManual(p)||esProductoEurocomp(p)||esProductoEmpresarial(p)||esProductoSoftware(p))&&!esDuplicadoEmpresarial(p)))});
 }
 export function migrarCatalogoManual(c:CatalogoAdmin):CatalogoAdmin{
- const siguiente={...c,gestion:'manual' as const,productos:c.productos.filter(p=>esProductoEurocomp(p)||esProductoEmpresarial(p)||esProductoSoftware(p)).map(resolverImagenProducto).map(p=>{
-  if(esProductoSoftware(p))return p;
+ const siguiente={...c,gestion:'manual' as const,productos:c.productos.filter(p=>esProductoManual(p)||esProductoEurocomp(p)||esProductoEmpresarial(p)||esProductoSoftware(p)).map(resolverImagenProducto).map(p=>{
+  if(esProductoManual(p)||esProductoSoftware(p))return p;
   if(esProductoEmpresarial(p))return {...p,disponibilidadReferencia:'consultar' as const};
   const limpio={...p};delete limpio.proveedor;delete limpio.codigoIntcomex;delete limpio.estadoIntcomex;return limpio;
  })};

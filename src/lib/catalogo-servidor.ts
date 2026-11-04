@@ -5,7 +5,7 @@ import {completarExistencias} from './existencias-catalogo';
 import {cache} from 'react';
 import {migrarCatalogoManual,catalogoPublicoManual} from './catalogo-manual';
 import inicial from './catalogo-inicial.json';
-import {esquemaCatalogo,publicarCatalogo,type CatalogoAdmin,type CatalogoPublico} from './catalogo-modelo';
+import {esquemaCatalogo,publicarCatalogo,actualizarOfertasPublicas,type CatalogoAdmin,type CatalogoPublico} from './catalogo-modelo';
 import {crearClienteServidor} from './supabase/servidor';
 import {leerLocal} from './admin-local';
 let inicialValidado:CatalogoAdmin|undefined;
@@ -18,7 +18,7 @@ export const leerCatalogoPublico=cache(async():Promise<CatalogoPublico>=>{
   if(!cliente) return publicarCatalogo(obtenerCatalogoInicial());
   const {data,error}=await cliente.from('catalogo_publico').select('contenido').eq('id',1).maybeSingle();
   if(error) console.error('CATALOGO_LECTURA_NO_DISPONIBLE',error.code);
-  const c=completarSoftwarePublico(data?.contenido?await completarExistencias(catalogoPublicoManual(data.contenido)):publicarCatalogo(obtenerCatalogoInicial()),obtenerCatalogoInicial());
+  const c=actualizarOfertasPublicas(completarSoftwarePublico(data?.contenido?await completarExistencias(catalogoPublicoManual(data.contenido)):publicarCatalogo(obtenerCatalogoInicial()),obtenerCatalogoInicial()));
   if(c.versionEmpresarial===1)return c;
   const empresas=publicarCatalogo(obtenerCatalogoInicial()).productos.filter(p=>p.coleccion==='empresas');
   const ids=new Set(c.productos.map(p=>p.id));

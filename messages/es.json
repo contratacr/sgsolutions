@@ -653,7 +653,7 @@
     "sinPrecio": "Por confirmar",
     "quitar": "Quitar del catálogo",
     "categoriaNota": "Para quitar una categoría, primero mueva sus productos a otra.",
-    "manualNota": "Ingrese el precio final en colones. Deje vacío para mostrar «Precio por confirmar».",
+    "manualNota": "Ingrese el precio final en colones. Deje vacío para mostrar “Precio por confirmar”.",
     "tituloTienda": "Título de la tienda",
     "aviso": "Aviso al cliente",
     "guardar": "Guardar cambios",
@@ -681,7 +681,13 @@
     "disponibilidadManual": "Disponibilidad",
     "disponibilidadConsultar": "Confirmar durante la asesoría",
     "disponibilidadPedido": "Bajo pedido",
-    "disponibilidadAgotado": "Temporalmente no disponible"
+    "disponibilidadAgotado": "Temporalmente no disponible",
+    "agregarProducto": "Agregar producto",
+    "ofertaInicio": "Inicio de la oferta",
+    "ofertaFin": "Fin de la oferta",
+    "ofertaFechasNota": "Hora de Costa Rica (UTC−6). Sin inicio: aplica de inmediato. Sin fin: continúa hasta que usted la quite. Al finalizar, vuelve el precio normal.",
+    "protegerPrecio": "Conservar este precio normal al sincronizar el proveedor",
+    "destacadoNota": "Da visibilidad en Recomendados. No cambia el precio ni exige una oferta."
   },
   "ServiciosSoporte": {
     "etiqueta": "NUESTROS SERVICIOS",
@@ -1303,7 +1309,7 @@
         },
         "1": {
           "titulo": "Catálogo, precios y disponibilidad",
-          "texto": "Los precios de los productos se expresan en colones costarricenses e incluyen IVA. El costo de envío se muestra por separado y se incorpora al total antes de completar el pedido. El catálogo se actualiza con información del proveedor; la existencia se verifica nuevamente al tramitar la compra y no se reserva por agregar un artículo al carrito. El producto entregado debe corresponder al modelo y las características ofrecidas. Si una fotografía o ficha presenta una discrepancia, solicite su aclaración; no sustituiremos el modelo sin su autorización. Si se detecta un error o una diferencia, le informaremos y solicitaremos su aceptación antes de cambiar el producto o el importe; si no acepta y ya pagó, gestionaremos la devolución correspondiente.\n\nLos artículos que indican «Consultar existencia» requieren confirmar disponibilidad y condiciones con SG Solutions; una consulta por WhatsApp no efectúa un cobro. Las licencias digitales bajo pedido no constituyen existencias físicas en tienda."
+          "texto": "Los precios de los productos se expresan en colones costarricenses e incluyen IVA. El costo de envío se muestra por separado y se incorpora al total antes de completar el pedido. El catálogo se actualiza con información del proveedor; la existencia se verifica nuevamente al tramitar la compra y no se reserva por agregar un artículo al carrito. El producto entregado debe corresponder al modelo y las características ofrecidas. Si una fotografía o ficha presenta una discrepancia, solicite su aclaración; no sustituiremos el modelo sin su autorización. Si se detecta un error o una diferencia, le informaremos y solicitaremos su aceptación antes de cambiar el producto o el importe; si no acepta y ya pagó, gestionaremos la devolución correspondiente.\n\nLos artículos que indican “Consultar existencia” requieren confirmar disponibilidad y condiciones con SG Solutions; una consulta por WhatsApp no efectúa un cobro. Las licencias digitales bajo pedido no constituyen existencias físicas en tienda."
         },
         "2": {
           "titulo": "Solicitudes y confirmación de pedidos",
@@ -1471,7 +1477,10 @@
     "mapa": "Mapa",
     "waze": "Waze",
     "instagram": "Instagram",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "ofertaInicio": "Inicio de la oferta",
+    "ofertaFin": "Fin de la oferta",
+    "origen": "Origen del producto"
   },
   "AdminUX": {
     "cerrarEditor": "Cerrar edición",
@@ -1519,7 +1528,7 @@
     "unidadesPagadas": "Unidades con pago confirmado",
     "tituloPanel": "Estadísticas",
     "titulo": "Cookies y privacidad",
-    "consentimiento": "Usamos cookies necesarias para que SG Solutions funcione de forma segura. Al pulsar «De acuerdo», permite las estadísticas de uso y la medición de anuncios con Meta. En «Configuración» puede activar o desactivar cada categoría y guardar su selección. Puede cambiarla después desde el pie de página.",
+    "consentimiento": "Usamos cookies necesarias para que SG Solutions funcione de forma segura. Al pulsar “De acuerdo”, permite las estadísticas de uso y la medición de anuncios con Meta. En “Configuración” puede activar o desactivar cada categoría y guardar su selección. Puede cambiarla después desde el pie de página.",
     "preferencias": "Preferencias de cookies y privacidad",
     "privacidad": "Política de Privacidad",
     "rechazar": "Solo lo necesario",

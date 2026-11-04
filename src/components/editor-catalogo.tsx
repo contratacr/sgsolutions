@@ -1,5 +1,7 @@
 'use client';
 
+import {fechaOfertaLocal,fechaOfertaUtc} from '@/lib/ofertas-fechas';
+import {esProductoEurocomp} from '@/lib/catalogo-fuente';
 import Image from 'next/image';
 import {tieneImagenProducto} from '@/lib/imagenes-productos';
 import { useEffect, useRef, useState, useTransition, useSyncExternalStore } from 'react';
@@ -59,8 +61,12 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
       <div className="admin-producto-seccion-cabecera"><span>02</span><div><h3>{u('precios')}</h3><p>{u('preciosAyuda')}</p></div></div>
       <div className="admin-precio-resumen"><span>{t('precioFinal')}</span><strong>{precio === null ? t('sinPrecio') : colones(precio)}</strong></div>
       <div className="admin-fields">
-        <label>{t('precioManual')}<input type="number" step="1" min="1" value={p.precioManual ?? ''} onChange={e => cambiar(i, { precioManual: e.target.value === '' ? null : Number(e.target.value),precioReferencia:null,costoUsd:null,costoCrc:null })} /><small>{t('manualNota')}</small></label>
-        <label>{t('precioDescuento')}<input type="number" step="1" min="1" max={p.precioManual!==null?p.precioManual-1:undefined} value={p.precioDescuento??''} onChange={e=>cambiar(i,{precioDescuento:e.target.value===''?null:Number(e.target.value)})}/><small>{t('descuentoNota')}</small>{p.precioDescuento!=null&&preciosProducto(p,datos.ajustes).precioOriginal===null&&<small role="alert">{t('descuentoInvalido')}</small>}</label>
+        <label>{t('precioManual')}<input type="number" step="1" min="1" value={p.precioManual ?? ''} onChange={e => cambiar(i, { precioManual: e.target.value === '' ? null : Number(e.target.value),precioFijado:e.target.value!=='',precioReferencia:null,costoUsd:null,costoCrc:null })} /><small>{t('manualNota')}</small></label>
+        <label>{t('precioDescuento')}<input type="number" step="1" min="1" max={p.precioManual!==null?p.precioManual-1:undefined} value={p.precioDescuento??''} onChange={e=>cambiar(i,{precioDescuento:e.target.value===''?null:Number(e.target.value),...(e.target.value===''?{ofertaInicio:null,ofertaFin:null}:{})})}/><small>{t('descuentoNota')}</small>{p.precioDescuento!=null&&preciosProducto({...p,ofertaInicio:null,ofertaFin:null},datos.ajustes).precioOriginal===null&&<small role="alert">{t('descuentoInvalido')}</small>}</label>
+        {esProductoEurocomp(p)&&<label className="admin-check"><input type="checkbox" checked={p.precioFijado??false} onChange={e=>cambiar(i,{precioFijado:e.target.checked})}/>{t('protegerPrecio')}</label>}
+        <label>{t('ofertaInicio')}<input type="datetime-local" disabled={p.precioDescuento==null} value={fechaOfertaLocal(p.ofertaInicio)} onChange={e=>cambiar(i,{ofertaInicio:fechaOfertaUtc(e.target.value)})}/></label>
+        <label>{t('ofertaFin')}<input type="datetime-local" disabled={p.precioDescuento==null} value={fechaOfertaLocal(p.ofertaFin)} onChange={e=>cambiar(i,{ofertaFin:fechaOfertaUtc(e.target.value)})}/></label>
+        <small>{t('ofertaFechasNota')}</small>
         <label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>
         <label>{t('codigoFabricante')}<input value={p.codigoFabricante} maxLength={100} onChange={e => cambiar(i, { codigoFabricante: e.target.value })} /></label>
       </div>
@@ -82,7 +88,7 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
     <section className="admin-producto-seccion" id={seccion('publicacion')}>
       <div className="admin-producto-seccion-cabecera"><span>05</span><div><h3>{u('publicacion')}</h3><p>{u('publicacionAyuda')}</p></div></div>
       <label className="admin-check admin-opcion"><input type="checkbox" checked={p.publicado} onChange={e => cambiar(i, { publicado: e.target.checked })} />{t('publicado')}</label>
-      <label className="admin-check admin-opcion"><input type="checkbox" checked={p.destacado} onChange={e => cambiar(i, { destacado: e.target.checked })} />{t('destacado')}</label>
+      <label className="admin-check admin-opcion"><input type="checkbox" checked={p.destacado} onChange={e => cambiar(i, { destacado: e.target.checked })} />{t('destacado')}</label><small>{t('destacadoNota')}</small>
     </section>
     <details className="admin-producto-eliminar"><summary>{u('opcionesAvanzadas')}</summary><p>{u('eliminarAyuda')}</p>
       <button className="boton boton-contorno" type="button" onClick={() => { if (window.confirm(u('confirmarEliminar'))) eliminar(i); }}>{t('quitar')}</button>
@@ -186,6 +192,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
         <EditorProducto p={datos.productos[productoAbierto]} i={productoAbierto} datos={datos} idioma={idioma} cambiar={cambiarProducto} onBusy={setCargandoImagenes} cerrar={cerrarProducto} eliminar={indice => { setDatos(d => ({ ...d, productos: d.productos.filter((_, j) => indice !== j) })); cerrarProducto(); }} />
       </div> : tab === 'productos' && <>
         <div className="admin-lista-cabecera" ref={listaRef}>
+          <button type="button" className="boton boton-azul" disabled={datos.productos.length>=20000} onClick={()=>{const id=`manual-${crypto.randomUUID()}`;const producto:Producto={id,origen:'manual',categoria:datos.categorias[0].id,nombre:{es:'',en:''},descripcion:{es:'',en:''},imagen:'/imagenes/producto-sin-imagen.svg',imagenes:[],especificaciones:[],marca:'',codigoFabricante:'',inventarioPropio:false,costoUsd:null,costoCrc:null,precioReferencia:null,precioManual:null,precioDescuento:null,disponibilidadReferencia:'consultar',revisionPrecio:false,publicado:false,destacado:false};setDatos(d=>({...d,productos:[producto,...d.productos]}));setFiltroEstado('todos');setCategoriaFiltro('todos');setBuscar('');setPaginaAdmin(1);setEditorId(id);setEstado('');}}>{t('agregarProducto')}</button>
           <div><h2>{t('productos')}</h2><p>{u('resultados', { cantidad: seleccion.length })} · {u('mostrando', { inicio: seleccion.length ? (paginaVisible - 1) * POR_PAGINA + 1 : 0, fin: Math.min(paginaVisible * POR_PAGINA, seleccion.length) })}</p></div>
         </div>
         <div className="admin-lista-filtros">

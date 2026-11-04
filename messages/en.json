@@ -681,7 +681,13 @@
     "disponibilidadManual": "Availability",
     "disponibilidadConsultar": "Confirm during consultation",
     "disponibilidadPedido": "On request",
-    "disponibilidadAgotado": "Temporarily unavailable"
+    "disponibilidadAgotado": "Temporarily unavailable",
+    "agregarProducto": "Add product",
+    "ofertaInicio": "Sale starts",
+    "ofertaFin": "Sale ends",
+    "ofertaFechasNota": "Costa Rica time (UTC−6). No start: applies immediately. No end: continues until you remove it. When it ends, the regular price returns.",
+    "protegerPrecio": "Keep this regular price when syncing the supplier",
+    "destacadoNota": "Gives visibility in Recommended. Does not change the price or require a sale."
   },
   "ServiciosSoporte": {
     "etiqueta": "OUR SERVICES",
@@ -1471,7 +1477,10 @@
     "mapa": "Map",
     "waze": "Waze",
     "instagram": "Instagram",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "ofertaInicio": "Sale starts",
+    "ofertaFin": "Sale ends",
+    "origen": "Product source"
   },
   "AdminUX": {
     "cerrarEditor": "Close editor",

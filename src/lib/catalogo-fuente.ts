@@ -16,3 +16,8 @@ const modelosEmpresariales=new Set(modelos);
 export function esDuplicadoEmpresarial(p:{coleccion?:string;marca:string;codigoFabricante?:string}){
  return p.coleccion!=='empresas'&&modelosEmpresariales.has(p.marca.trim().toUpperCase()+'|'+(p.codigoFabricante??'').toUpperCase().replace(/\s+/g,''));
 }
+
+/** Explicit origin prevents legacy imports from being republished as manual items. */
+export function esProductoManual(p:{id:string;origen?:string}){
+ return p.origen==='manual'&&/^manual-[a-z0-9-]{1,52}$/.test(p.id);
+}

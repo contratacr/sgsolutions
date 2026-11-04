@@ -4,6 +4,10 @@ import http from 'node:http';
 import {readFileSync} from 'node:fs';
 import {createClient} from '@supabase/supabase-js';
 const catalogo=JSON.parse(readFileSync('src/lib/catalogo-base.json','utf8'));
+if(process.env.SG_TEST_PRODUCTO_MANUAL==='1'){
+ const base=catalogo.productos.find((p:{publicado:boolean})=>p.publicado);
+ catalogo.productos.push({...base,id:'manual-qa-compra',origen:'manual',slug:undefined,codigoEurocomp:undefined,eurocomp:undefined,codigoIntcomex:undefined,proveedor:undefined,coleccion:undefined,precioManual:1000,precioDescuento:500,ofertaInicio:'2020-01-01T00:00:00Z',ofertaFin:'2099-01-01T00:00:00Z',revisionPrecio:false,disponibilidadReferencia:'proveedor',publicado:true});
+}
 type Fila=Record<string,unknown>;
 let pagoConfirmado=false;let tablas:Record<string,Fila[]>={};const correos:Record<string,unknown>[]=[];
 const servidor=http.createServer(async(req,res)=>{
@@ -36,7 +40,7 @@ try{
  const {notificarPagoTarjeta}=await import('../../src/lib/email/pago-tarjeta');
  for(const idioma of ['es','en'])for(const modalidad of ['retiro','envio','express']){
  pagoConfirmado=false;correos.length=0;
- const id=crypto.randomUUID(),token='a'.repeat(32),producto={id:'qa-fisico',nombre:{es:'Producto QA',en:'QA product'},precio:500,codigoFabricante:'QA',disponibilidad:'disponible'};
+ const id=crypto.randomUUID(),token='a'.repeat(32),producto={...(process.env.SG_TEST_PRODUCTO_MANUAL==='1'?{origen:'manual'}:{}),id:process.env.SG_TEST_PRODUCTO_MANUAL==='1'?'manual-qa-compra':'qa-fisico',nombre:{es:'Producto QA',en:'QA product'},precio:500,codigoFabricante:'QA',disponibilidad:'disponible'};
  tablas={solicitudes_asesoria:[{id,token,estado:'aprobada',vence_en:new Date(Date.now()+3600000).toISOString(),articulos:[{producto,cantidad:1}]}],pedidos_tilopay:[],correos_pago_tarjeta:[]};
  const datos={nombre:'Ana',apellidos:'QA',correo:'qa@example.test',telefono:'88888888',modalidad,provincia:'Alajuela',canton:'Atenas',distrito:'Atenas',direccion:'Dirección QA',factura:'tiquete',consentimiento:'on'};
  const r=await POST(new Request(origen+'/api/pagos/tilopay/iniciar',{method:'POST',headers:{origin:origen,host:new URL(origen).host,'content-type':'application/json'},body:JSON.stringify({asesoria:id,acceso:token,idioma,...datos,datos,consentimiento:true,articulos:[{id:producto.id,cantidad:1}]})}));

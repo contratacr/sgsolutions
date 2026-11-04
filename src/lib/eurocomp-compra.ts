@@ -1,6 +1,7 @@
 import 'server-only';
 import {incorporarSoftware} from './incorporar-software';
 import {esProductoSoftware,limiteCantidadProducto} from './software';
+import {esProductoManual} from './catalogo-fuente';
 import {preciosProducto} from './catalogo-modelo';
 import {servicioPruebas} from './servicio-pruebas';
 import {consultarEurocomp,ErrorEurocomp} from './eurocomp-protocolo';
@@ -8,7 +9,7 @@ import {precioVentaEurocomp,stockVendibleEurocomp} from './eurocomp-politica';
 import inicial from './catalogo-inicial.json';
 import {leerLocal} from './admin-local';
 import {createClient} from '@supabase/supabase-js';
-import {esquemaCatalogo,aplicarDescuento} from './catalogo-modelo';
+import {esquemaCatalogo,aplicarOferta} from './catalogo-modelo';
 import type {CatalogoPublico} from './catalogo-modelo';
 
 // Serialize calls: SiReTT warns against simultaneous supplier requests.
@@ -38,16 +39,18 @@ export async function verificarCompraEurocomp(articulos:{producto:CatalogoPublic
  privado=incorporarSoftware(privado??esquemaCatalogo.parse(inicial));
  const {cambio,utilidad,iva,adicional}=ajustes;const vence=Date.now()+20_000;
  for(const {producto,cantidad} of articulos){
-  if(esProductoSoftware(producto)){
-   const actual=privado.productos.find(p=>p.id===producto.id&&esProductoSoftware(p));
+  if(esProductoSoftware(producto)||esProductoManual(producto)){
+   const actual=privado.productos.find(p=>p.id===producto.id&&(esProductoSoftware(p)||esProductoManual(p)));
    if(!actual?.publicado||actual.disponibilidadReferencia==='agotado'||cantidad<1||!Number.isInteger(cantidad)||cantidad>limiteCantidadProducto(producto.id)||preciosProducto(actual,ajustes).precio!==producto.precio)throw new ErrorEurocomp('catalogo_actualizado');
    continue;
   }
   if(!producto.codigoEurocomp)continue;
+  const configuracion=privado.productos.find(p=>p.id===producto.id);
+  if(!configuracion?.publicado)throw new ErrorEurocomp('catalogo_actualizado');
   const actual=await consultar(producto.codigoEurocomp,vence);
-  if(!actual||!stockVendibleEurocomp(actual.stock,cantidad)||actual.precio===null||precioVentaEurocomp(actual.precio,actual.moneda,cambio,utilidad,iva,adicional)!==(producto.precioOriginal??producto.precio))throw new ErrorEurocomp('catalogo_actualizado');
-  const base=precioVentaEurocomp(actual.precio,actual.moneda,cambio,utilidad,iva,adicional);
-  const esperado=aplicarDescuento(base,privado.productos.find(p=>p.id===producto.id)?.precioDescuento);
+  if(!actual||!stockVendibleEurocomp(actual.stock,cantidad)||actual.precio===null||(!configuracion.precioFijado&&precioVentaEurocomp(actual.precio,actual.moneda,cambio,utilidad,iva,adicional)!==(producto.precioOriginal??producto.precio)))throw new ErrorEurocomp('catalogo_actualizado');
+  const base=configuracion.precioFijado?configuracion.precioManual:precioVentaEurocomp(actual.precio,actual.moneda,cambio,utilidad,iva,adicional);
+  const esperado=aplicarOferta(base,privado.productos.find(p=>p.id===producto.id)??{});
   if(esperado.precio!==producto.precio)throw new ErrorEurocomp('catalogo_actualizado');
  }
 }

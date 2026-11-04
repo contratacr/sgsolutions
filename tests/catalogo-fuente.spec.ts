@@ -4,7 +4,7 @@ import {esquemaCatalogo,publicarCatalogo} from '../src/lib/catalogo-modelo';
 import {migrarCatalogoManual,catalogoPublicoManual} from '../src/lib/catalogo-manual';
 import {reconciliarEurocomp} from '../src/lib/eurocomp-catalogo';
 import inicial from '../src/lib/catalogo-base.json';
-test('solo Eurocomp: elimina manuales e Intcomex de la tienda, panel y sincronizaciones',()=>{
+test('fuentes heredadas: excluye manuales sin origen explícito e Intcomex ajeno a la selección',()=>{
  const base=esquemaCatalogo.parse(inicial),api=base.productos.find(p=>p.codigoEurocomp&&p.publicado)!;
  api.eurocomp={codigo:api.codigoEurocomp!,stock:15,costo:100,moneda:'USD',actualizado:'2026-10-13T00:00:00Z'};
  expect(esProductoEurocomp({...api,id:'manual-con-codigo'})).toBe(false);

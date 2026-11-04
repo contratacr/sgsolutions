@@ -12,7 +12,7 @@ for(const idioma of ['es','en'])test(`panel y tienda excluyen fuentes antiguas y
  await writeFile(archivo,JSON.stringify({contenido:{...inicial,productos:[api,manual,ic]},revision:1}),{mode:0o600});
  const {token}=JSON.parse(await readFile('.privado/contenido-pruebas/sesion.json','utf8'));
  await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
- await page.goto('/panel/catalogo');await page.locator('main:visible input[type=search]').first().fill(api.codigoFabricante);await expect(page.locator('main:visible .admin-producto-fila')).toHaveCount(1);await expect(page.locator('main:visible .admin-lista-cabecera button')).toHaveCount(0);
+ await page.goto('/panel/catalogo');await page.locator('main:visible input[type=search]').first().fill(api.codigoFabricante);await expect(page.locator('main:visible .admin-producto-fila')).toHaveCount(1);await expect(page.locator('main:visible .admin-lista-cabecera button')).toHaveCount(1);
  await expect(page.locator('main:visible')).not.toContainText(/Manual prohibido|Forbidden manual|Intcomex antiguo|Legacy Intcomex/);
  await page.goto('/tienda');const r=await page.request.get('/api/catalogo?ids='+[api.id,manual.id,ic.id].join(','));expect((await r.json()).productos.map((p:{id:string})=>p.id)).toEqual([api.id]);await expect(page.locator('.shop-producto').filter({hasText:api.codigoFabricante})).toHaveCount(1);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',idioma);

@@ -362,7 +362,8 @@ body:has(.inicio-triptico) .barra-local .contenedor{min-height:32px}
 .shop-producto .shop-precio{align-items:baseline;flex-wrap:nowrap}
 .shop-producto .shop-precio>small{padding:0;line-height:inherit;align-self:baseline}
 .shop-producto .shop-precio .precio-producto{display:inline-flex;align-items:baseline;flex-wrap:nowrap;position:relative}
-.shop-producto .shop-precio:has(.precio-producto-oferta){padding-top:24px}
+/* Reserve the previous-price slot in every card so payable prices share a baseline. */
+.shop-producto .shop-precio{padding-top:24px}
 .shop-producto .shop-precio .precio-producto-oferta del{position:absolute;bottom:100%;left:0;margin-bottom:3px;white-space:nowrap}
 .ficha-pagina .ficha-precio{display:flex;align-items:baseline;gap:8px;flex-wrap:nowrap}
 .ficha-pagina .ficha-precio .precio-producto{display:inline-flex;align-items:baseline;gap:8px}
