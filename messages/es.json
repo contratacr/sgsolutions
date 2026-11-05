@@ -457,7 +457,8 @@
     "maximo": "Use como máximo {cantidad} caracteres.",
     "numero": "Escriba un número válido dentro del rango permitido.",
     "invalido": "Revise este campo para continuar.",
-    "telefonoLongitud": "Use {cantidad} dígitos para el país seleccionado."
+    "telefonoLongitud": "Use {cantidad} dígitos para el país seleccionado.",
+    "fecha": "Complete una fecha y hora válidas."
   },
   "Entrada": {
     "tripticoTitulo": "¿Qué necesita hoy?",
@@ -683,13 +684,12 @@
     "disponibilidadPedido": "Bajo pedido",
     "disponibilidadAgotado": "Temporalmente no disponible",
     "agregarProducto": "Agregar producto",
-    "ofertaInicio": "Inicio de la oferta",
-    "ofertaFin": "Fin de la oferta",
-    "ofertaFechasNota": "Hora de Costa Rica (UTC−6). Sin inicio: aplica de inmediato. Sin fin: continúa hasta que usted la quite. Al finalizar, vuelve el precio normal.",
+    "ofertaInicio": "Inicio de la oferta (opcional)",
+    "ofertaFin": "Fin de la oferta (opcional)",
+    "ofertaFechasNota": "Sin inicio: comienza ahora. Sin fin: continúa hasta que usted la quite. Hora de Costa Rica (UTC−6).",
     "protegerPrecio": "Conservar este precio normal al sincronizar el proveedor",
     "destacadoNota": "Da visibilidad en Recomendados. No cambia el precio ni exige una oferta.",
-    "ofertaPrioritaria": "Priorizar esta oferta en Recomendados",
-    "ofertaPrioritariaNota": "Aparece antes de otros productos mientras la oferta esté vigente y disponible. Respeta las búsquedas, los filtros y el orden por precio."
+    "ofertaAutomatica": "Las ofertas vigentes aparecen primero en Recomendados."
   },
   "ServiciosSoporte": {
     "etiqueta": "NUESTROS SERVICIOS",
@@ -1483,7 +1483,7 @@
     "ofertaInicio": "Inicio de la oferta",
     "ofertaFin": "Fin de la oferta",
     "origen": "Origen del producto",
-    "ofertaPrioritaria": "Prioridad de la oferta"
+    "precioDescuento": "Precio de oferta"
   },
   "AdminUX": {
     "cerrarEditor": "Cerrar edición",

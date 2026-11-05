@@ -18,7 +18,6 @@ export const esquemaCatalogo = z.object({
 }).superRefine((c,ctx)=>{
   for(const [i,p] of c.productos.entries()){
     if(p.origen==='manual'&&(!esProductoManual(p)||p.codigoEurocomp||p.eurocomp||p.codigoIntcomex||p.proveedor||p.coleccion))ctx.addIssue({code:'custom',message:'Origen manual incompatible',path:['productos',i,'origen']});
-    if(p.ofertaPrioritaria&&p.precioDescuento==null)ctx.addIssue({code:'custom',message:'Prioridad sin oferta',path:['productos',i,'ofertaPrioritaria']});
     if((p.ofertaInicio||p.ofertaFin)&&p.precioDescuento==null)ctx.addIssue({code:'custom',message:'Fechas sin oferta',path:['productos',i,'precioDescuento']});
     if(p.ofertaInicio&&p.ofertaFin&&Date.parse(p.ofertaFin)<=Date.parse(p.ofertaInicio))ctx.addIssue({code:'custom',message:'Fin anterior al inicio',path:['productos',i,'ofertaFin']});
   }
@@ -85,5 +84,5 @@ export function actualizarOfertasPublicas(c:CatalogoPublico,ahora=Date.now()):Ca
 
 /** A commercial promotion may lead Recommended only while valid and available. */
 export function esOfertaPrioritaria(p:{ofertaPrioritaria?:boolean;precio:number|null;precioOriginal?:number|null;disponibilidad:string;promocion?:{inicio:string|null;fin:string|null}},ahora=Date.now()){
- return p.ofertaPrioritaria===true&&p.precio!==null&&p.precioOriginal!=null&&p.precio>0&&p.precio<p.precioOriginal&&p.disponibilidad!=='agotado'&&(!p.promocion||ofertaVigente({ofertaInicio:p.promocion.inicio,ofertaFin:p.promocion.fin},ahora));
+ return p.precio!==null&&p.precioOriginal!=null&&p.precio>0&&p.precio<p.precioOriginal&&p.disponibilidad!=='agotado'&&(!p.promocion||ofertaVigente({ofertaInicio:p.promocion.inicio,ofertaFin:p.promocion.fin},ahora));
 }

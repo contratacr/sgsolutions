@@ -36,7 +36,9 @@ Cobertura dirigida: creación y persistencia desde el panel en ES/EN y PC/móvil
 
 ## Prioridad comercial y estabilidad del listado
 
-La casilla **Priorizar esta oferta en Recomendados** es independiente de Destacado. Solo da prioridad cuando existe un descuento válido y vigente, y el producto no está agotado. Al vencer o retirar el descuento deja de priorizarse. En búsqueda se conserva primero la relevancia; las restricciones de categoría, marca y precio siguen aplicándose. Menor/mayor precio conserva su criterio explícito. Los bloques empresariales no desplazan una oferta prioritaria al encabezado del catálogo.
+Toda oferta válida y vigente tiene prioridad automática en Recomendados, sin una casilla adicional. Al vencer o retirar el descuento deja de priorizarse. En búsqueda se conserva primero la relevancia; las restricciones de categoría, marca y precio siguen aplicándose. Menor/mayor precio conserva su criterio explícito. Los bloques empresariales no desplazan las ofertas al encabezado del catálogo. El campo histórico `ofertaPrioritaria` se tolera por compatibilidad, pero ya no controla el orden.
+
+Las fechas se pueden editar antes de indicar el precio de oferta. El editor nativo conserva en el navegador sus segmentos incompletos, sin borrarlos al escribir; solo comunica fechas completas al modelo. Guardar comprueba su validez nativa antes de persistir para evitar guardar silenciosamente el valor anterior. Si se introducen fechas, al guardar debe existir un precio de oferta válido.
 
 El listado principal ya no incorpora historial ni favoritos al hidratarse: el orden del servidor y del navegador es el mismo. La personalización se mantiene en los bloques separados. Las fichas conservan los productos similares calculados para esa ficha, sin sustituirlos después de cargar el historial. Al navegar a otra ficha se adopta su nueva selección antes de pintar las tarjetas anteriores.
 

@@ -51,11 +51,11 @@ test('horarios administrativos usan Costa Rica aunque PC esté en otra zona',()=
  assert.equal(fechaOfertaUtc(''),null);assert.equal(fechaOfertaLocal(null),'');
 });
 
-test('ofertas prioritarias lideran Recomendados; no alteran precio, relevancia ni filtros',async()=>{
+test('ofertas vigentes lideran Recomendados automáticamente; no alteran precio, relevancia ni filtros',async()=>{
  const {consultarCatalogo}=await import('../../src/lib/catalogo-consulta');
  const {recomendaciones}=await import('../../src/lib/recomendaciones');
  const c=catalogo(),p=c.productos[0];p.ofertaInicio='2020-01-01T00:00:00Z';p.ofertaFin='2099-01-01T00:00:00Z';
- const prioritario={...p,ofertaPrioritaria:true,destacado:false};
+ const prioritario={...p,ofertaPrioritaria:false,destacado:false};
  const normal={...p,id:'manual-normal',slug:undefined,precioDescuento:null,ofertaInicio:null,ofertaFin:null,precioManual:1000,marca:'Otra',destacado:true};
  c.productos=[normal,prioritario];const visible=publicarCatalogo(c);
  const consulta=(params:Record<string,string>)=>consultarCatalogo(visible,new URLSearchParams(params),{[normal.id]:10000000});
@@ -81,5 +81,5 @@ test('la mezcla empresarial no desplaza ni duplica una oferta prioritaria',async
  c.productos.push(empresarial);
  const pagina=consultarCatalogo(publicarCatalogo(c),new URLSearchParams({orden:'recomendados'}));
  assert.equal(pagina.productos.length,2);assert.equal(new Set(pagina.productos.map(p=>p.id)).size,2);
- assert.ok(pagina.productos.every(p=>p.ofertaPrioritaria));
+ assert.ok(pagina.productos.every(p=>p.precioOriginal!==null));
 });

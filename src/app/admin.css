@@ -144,8 +144,6 @@ body select:not([multiple]):not([size]){appearance:none!important;padding-right:
 .mfa-admin h1{font-size:clamp(1rem,4.4vw,1.8rem);line-height:1.25;white-space:nowrap;letter-spacing:-.04em}.mfa-admin .etiqueta{font-size:.7rem;letter-spacing:.1em}.mfa-admin>p:not(.etiqueta){line-height:1.6}.mfa-acciones{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch;gap:12px;margin-top:24px}.mfa-admin .mfa-acciones form{margin:0;min-width:0}.mfa-acciones .boton{height:100%;padding-inline:10px;font-size:.875rem;white-space:nowrap}.mfa-admin .mfa-recuperacion{font-size:.8125rem;line-height:1.5;margin:18px 0 0}.mfa-pasos:empty{display:none}.mfa-admin .mfa-pasos .formulario{margin-top:0}
 
 /* Commercial offer controls retain readable labels and paired date fields. */
-.admin-fields>.admin-oferta-prioridad,.admin-fields>.admin-oferta-ancho{grid-column:1/-1;min-width:0}
-.admin-oferta-prioridad{padding:12px 14px;border:1px solid var(--borde);border-radius:10px}
-.admin-oferta-prioridad .admin-check{gap:10px;line-height:1.5}
-.admin-oferta-prioridad input{flex:none}
-.admin-oferta-prioridad>small{display:block;margin-top:6px;color:var(--suave);font-size:.75rem;line-height:1.6}
+.admin-fields>.admin-oferta-ancho{grid-column:1/-1;min-width:0}
+
+.admin-oferta-automatica{margin:0;color:var(--suave);font-size:.8rem;line-height:1.6}

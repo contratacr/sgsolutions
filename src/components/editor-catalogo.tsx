@@ -1,6 +1,6 @@
 'use client';
 
-import {fechaOfertaLocal,fechaOfertaUtc} from '@/lib/ofertas-fechas';
+import {CampoFechaOferta} from './campo-fecha-oferta';
 import {esProductoEurocomp} from '@/lib/catalogo-fuente';
 import Image from 'next/image';
 import {tieneImagenProducto} from '@/lib/imagenes-productos';
@@ -64,9 +64,9 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
         <label>{t('precioManual')}<input type="number" step="1" min="1" value={p.precioManual ?? ''} onChange={e => cambiar(i, { precioManual: e.target.value === '' ? null : Number(e.target.value),precioFijado:e.target.value!=='',precioReferencia:null,costoUsd:null,costoCrc:null })} /><small>{t('manualNota')}</small></label>
         <label>{t('precioDescuento')}<input type="number" step="1" min="1" max={p.precioManual!==null?p.precioManual-1:undefined} value={p.precioDescuento??''} onChange={e=>cambiar(i,{precioDescuento:e.target.value===''?null:Number(e.target.value),...(e.target.value===''?{ofertaInicio:null,ofertaFin:null,ofertaPrioritaria:false}:{})})}/><small>{t('descuentoNota')}</small>{p.precioDescuento!=null&&preciosProducto({...p,ofertaInicio:null,ofertaFin:null},datos.ajustes).precioOriginal===null&&<small role="alert">{t('descuentoInvalido')}</small>}</label>
         {esProductoEurocomp(p)&&<label className="admin-check admin-oferta-ancho"><input type="checkbox" checked={p.precioFijado??false} onChange={e=>cambiar(i,{precioFijado:e.target.checked})}/>{t('protegerPrecio')}</label>}
-        <div className="admin-oferta-prioridad"><label className="admin-check"><input type="checkbox" aria-describedby={seccion('prioridad-nota')} checked={p.ofertaPrioritaria??false} disabled={p.precioDescuento==null} onChange={e=>cambiar(i,{ofertaPrioritaria:e.target.checked})}/>{t('ofertaPrioritaria')}</label><small id={seccion('prioridad-nota')}>{t('ofertaPrioritariaNota')}</small></div>
-        <label>{t('ofertaInicio')}<input type="datetime-local" disabled={p.precioDescuento==null} value={fechaOfertaLocal(p.ofertaInicio)} onChange={e=>cambiar(i,{ofertaInicio:fechaOfertaUtc(e.target.value)})}/></label>
-        <label>{t('ofertaFin')}<input type="datetime-local" disabled={p.precioDescuento==null} value={fechaOfertaLocal(p.ofertaFin)} onChange={e=>cambiar(i,{ofertaFin:fechaOfertaUtc(e.target.value)})}/></label>
+        <p className="admin-oferta-ancho admin-oferta-automatica">{t('ofertaAutomatica')}</p>
+        <label>{t('ofertaInicio')}<CampoFechaOferta valor={p.ofertaInicio} cambiar={ofertaInicio=>cambiar(i,{ofertaInicio})}/></label>
+        <label>{t('ofertaFin')}<CampoFechaOferta valor={p.ofertaFin} cambiar={ofertaFin=>cambiar(i,{ofertaFin})}/></label>
         <small className="admin-oferta-ancho">{t('ofertaFechasNota')}</small>
         <label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>
         <label>{t('codigoFabricante')}<input value={p.codigoFabricante} maxLength={100} onChange={e => cambiar(i, { codigoFabricante: e.target.value })} /></label>
@@ -162,6 +162,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
   }
 
   function guardar() {
+    for(const fecha of document.querySelectorAll<HTMLInputElement>('.admin-producto-editor input[type="datetime-local"]'))if(!fecha.reportValidity())return;
     const validado = esquemaCatalogo.safeParse(datos);
     if (!validado.success) { setCampos(validado.error.issues.map(x => x.path.map(k => typeof k === 'number' ? k : String(k)))); setEstado('validacion'); return; }
     const ofertasInvalidas=descuentosInvalidos(validado.data);

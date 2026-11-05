@@ -50,6 +50,7 @@ export function ValidacionNativa(){
    else if(error.typeMismatch)mensaje=campo instanceof HTMLInputElement&&campo.type==='email'?t('correo'):t('formato');
    else if(error.tooShort&&!(campo instanceof HTMLSelectElement))mensaje=t('minimo',{cantidad:campo.minLength});
    else if(error.tooLong&&!(campo instanceof HTMLSelectElement))mensaje=t('maximo',{cantidad:campo.maxLength});
+   else if(error.badInput&&campo instanceof HTMLInputElement&&['date','datetime-local','time','month','week'].includes(campo.type))mensaje=t('fecha');
    else if(error.rangeUnderflow||error.rangeOverflow||error.stepMismatch||error.badInput)mensaje=t('numero');
    else if(error.patternMismatch)mensaje=campo instanceof HTMLInputElement&&campo.dataset.longitudesTelefono?t('telefonoLongitud',{cantidad:campo.dataset.longitudesTelefono}):t('formato');
    if(campo instanceof HTMLInputElement&&campo.type==='email'&&!error.valueMissing&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(campo.value.trim()))mensaje=t('correo');
