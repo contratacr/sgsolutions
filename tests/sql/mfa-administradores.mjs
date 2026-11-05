@@ -13,6 +13,15 @@ await sesion('authenticated',admin,'aal2');assert.equal((await db.query('select 
 await db.exec('reset role');await db.query("insert into auth.mfa_factors values($1,$2,'totp','unverified')",[factor,admin]);await sesion('authenticated',admin,'aal2');assert.equal((await db.query('select public.es_administrador_activo() as ok')).rows[0].ok,false);
 await db.exec("reset role;update auth.mfa_factors set status='verified'");await db.query("insert into auth.sessions values($1,$2,$3,'aal2',null)",[sesionId,admin,factor]);await sesion('authenticated',admin);assert.equal((await db.query('select public.es_administrador_activo() as ok')).rows[0].ok,false);
 await sesion('authenticated',admin,'aal2');assert.equal((await db.query('select public.es_administrador_activo() as ok')).rows[0].ok,true);assert.equal((await db.query('select * from public.catalogo_privado')).rows.length,1);const estado=(await db.query('select public.estado_mfa_administradores() as e')).rows[0].e;assert.deepEqual(estado,{[admin]:true});assert.ok(!JSON.stringify(estado).includes(factor));
+// A confirmed save must persist the new product in both snapshots atomically.
+const nuevo={id:'manual-qa-persistencia',origen:'manual',nombre:{es:'Producto nuevo QA',en:'New QA product'},publicado:true};
+const privado={productos:[nuevo]},visible={productos:[{...nuevo,precio:25000}]};
+const revisionGuardada=(await db.query('select public.guardar_catalogo($1,$2,1) as revision',[privado,visible])).rows[0].revision;
+assert.equal(revisionGuardada,2);
+assert.deepEqual((await db.query('select contenido from public.catalogo_privado where id=1')).rows[0].contenido,privado);
+assert.deepEqual((await db.query('select contenido from public.catalogo_publico where id=1')).rows[0].contenido,visible);
+await assert.rejects(()=>db.query('select public.guardar_catalogo($1,$2,1)',[{productos:[]},{productos:[]}]),/CONFLICTO/);
+assert.deepEqual((await db.query('select contenido from public.catalogo_privado where id=1')).rows[0].contenido,privado);
 await sesion('authenticated',cliente,'aal2');assert.equal((await db.query('select public.es_administrador_activo() as ok')).rows[0].ok,false);
 await db.exec('reset role');await db.query("insert into public.estado_cuentas_usuario values($1,'bloqueado')",[admin]);await sesion('authenticated',admin,'aal2');assert.equal((await db.query('select public.es_administrador_activo() as ok')).rows[0].ok,false);
 await db.exec("reset role;update public.estado_cuentas_usuario set estado='activo';delete from auth.mfa_factors");await sesion('authenticated',admin,'aal2');assert.equal((await db.query('select public.es_administrador_activo() as ok')).rows[0].ok,false);

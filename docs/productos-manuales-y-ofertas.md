@@ -45,3 +45,11 @@ El listado principal ya no incorpora historial ni favoritos al hidratarse: el or
 Al cambiar realmente de búsqueda, filtro, orden o página se muestra un skeleton hasta recibir el resultado completo, en lugar de pintar tarjetas de la selección anterior. Las solicitudes obsoletas se cancelan y no reemplazan resultados más recientes. Las actualizaciones del snapshot del servidor se incorporan antes de pintar la lista anterior. Volver a una pestaña mantiene la actualización del catálogo y cambia el conjunto de datos de manera atómica.
 
 Pruebas dirigidas en `playwright.catalogo-estable.config.ts`: prioridad, primera carga y regreso desde ficha, solicitudes demoradas y respuestas fuera de orden, paginación, filtros, menús de orden, controles de tarjetas y carga conjunta de favoritos. Se ejecutan en escritorio y WebKit móvil, español e inglés, con servicios aislados. Este bloque se añade únicamente al workflow manual.
+
+## Guardado y publicación — 5 de noviembre de 2026
+
+El panel abre en Todos, incluidos los borradores. Guardar un borrador conserva el producto pero no lo publica; la confirmación lo indica explícitamente. La fila muestra Borrador incluso si además falta una imagen. La publicación manual se rechaza antes de guardar si el producto quedaría excluido del catálogo público por imagen pendiente o duplicación de un modelo empresarial. Esta validación existe también en el servidor.
+
+El editor conserva el snapshot normalizado que aceptó el servidor, incluidas sus rutas estables. Cambiar el nombre después del primer guardado ya no reasigna inadvertidamente la URL. Solo se confirma el éxito al recibir la revisión esperada; los conflictos mantienen la edición sin sobrescribir el catálogo.
+
+Verificación: ocho recorridos de navegador (productos nuevos, borrador, foto subida, recarga, publicación, búsqueda, ficha, segundo guardado, conflicto y carrito; PC/WebKit móvil, ES/EN), ocho casos del modelo manual y prueba SQL aislada de persistencia privada/pública, revisión y conflicto con MFA. Todos aprobados. La inspección de producción fue de solo lectura: se encontraron dos registros manuales Lenovo como borradores. No se publicaron, eliminaron ni crearon productos de prueba en producción.

@@ -1,12 +1,22 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import base from '../../src/lib/catalogo-base.json';
-import {esquemaCatalogo,publicarCatalogo,preciosProducto,actualizarOfertasPublicas,descuentosInvalidos} from '../../src/lib/catalogo-modelo';
+import {esquemaCatalogo,publicarCatalogo,preciosProducto,actualizarOfertasPublicas,descuentosInvalidos,publicacionesManualesInvalidas} from '../../src/lib/catalogo-modelo';
 import {reconciliarEurocomp} from '../../src/lib/eurocomp-catalogo';
 import {migrarCatalogoManual,catalogoPublicoManual} from '../../src/lib/catalogo-manual';
 import {patronIdFavorito} from '../../src/lib/favoritos-identidad';
 import {fechaOfertaLocal,fechaOfertaUtc} from '../../src/lib/ofertas-fechas';
 const catalogo=()=>{const c=esquemaCatalogo.parse(base);const ejemplo=c.productos.find(p=>p.codigoEurocomp&&p.publicado)!;const p={...ejemplo,id:'manual-prueba',origen:'manual' as const,slug:undefined,codigoEurocomp:undefined,eurocomp:undefined,codigoIntcomex:undefined,proveedor:undefined,coleccion:undefined,costoUsd:null,costoCrc:null,precioReferencia:null,precioManual:25000,precioDescuento:20000,ofertaInicio:'2026-11-10T15:00:00Z',ofertaFin:'2026-11-11T15:00:00Z',destacado:true,revisionPrecio:false};return {...c,gestion:'manual' as const,productos:[p]};};
+test('solo se confirma publicación manual cuando la proyección pública incluye el producto',async()=>{
+ const c=catalogo(),p=c.productos[0];assert.deepEqual(publicacionesManualesInvalidas(c),[]);
+ const sinFoto={...p,imagen:'/imagenes/producto-sin-imagen.svg',imagenes:[]};
+ assert.deepEqual(publicacionesManualesInvalidas({...c,productos:[sinFoto]}),[0]);
+ assert.deepEqual(publicacionesManualesInvalidas({...c,productos:[{...sinFoto,publicado:false}]}),[]);
+ const {esDuplicadoEmpresarial}=await import('../../src/lib/catalogo-fuente');
+ const {default:empresas}=await import('../../src/lib/catalogo-empresarial.json');
+ const existente=empresas.find(x=>esDuplicadoEmpresarial({...x,coleccion:undefined}))!;assert.ok(existente);
+ assert.deepEqual(publicacionesManualesInvalidas({...c,productos:[{...p,marca:existente.marca,codigoFabricante:existente.codigoFabricante}]}),[0]);
+});
 test('manual explícito persiste en panel, publicación, migración y sincronización; antiguo no reaparece',()=>{
  const c=esquemaCatalogo.parse(catalogo()),p=c.productos[0];
  const sync=reconciliarEurocomp(c,{fecha:new Date().toISOString(),bodega:0,articulos:[]});

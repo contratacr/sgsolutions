@@ -6,7 +6,7 @@ import Image from 'next/image';
 import {tieneImagenProducto} from '@/lib/imagenes-productos';
 import { useEffect, useRef, useState, useTransition, useSyncExternalStore } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { colones, preciosProducto,descuentosInvalidos,esquemaCatalogo, traducir, type CatalogoAdmin, type Texto } from '@/lib/catalogo-modelo';
+import { colones, preciosProducto,descuentosInvalidos,publicacionesManualesInvalidas,esquemaCatalogo, traducir, type CatalogoAdmin, type Texto } from '@/lib/catalogo-modelo';
 import { useCambiosAdmin } from '@/components/use-cambios-admin';
 import { GestorImagenes } from '@/components/gestor-imagenes';
 import { guardarCatalogo } from '@/app/panel/catalogo/acciones';
@@ -108,7 +108,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
   const [ultimoGuardado, setUltimoGuardado] = useState(inicial);
   const [revision, setRevision] = useState(revisionInicial);
   const [tab, setTab] = useState('productos');
-  const [filtroEstado, setFiltroEstado] = useState('publicados');
+  const [filtroEstado, setFiltroEstado] = useState('todos');
   const [categoriaFiltro,setCategoriaFiltro]=useState('todos');
   const [buscar, setBuscar] = useState('');
   const [paginaAdmin, setPaginaAdmin] = useState(1);
@@ -167,12 +167,15 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
     if (!validado.success) { setCampos(validado.error.issues.map(x => x.path.map(k => typeof k === 'number' ? k : String(k)))); setEstado('validacion'); return; }
     const ofertasInvalidas=descuentosInvalidos(validado.data);
     if(ofertasInvalidas.length){setCampos(ofertasInvalidas.map(i=>['productos',i,'precioDescuento']));setEstado('validacion');return;}
+    const publicacionesInvalidas=publicacionesManualesInvalidas(validado.data);
+    if(publicacionesInvalidas.length){setCampos(publicacionesInvalidas.map(i=>['productos',i,'publicado']));setEstado('publicacionInvalida');return;}
     setCampos([]);
     iniciar(async () => {
       try {
         const respuesta = await guardarCatalogo(validado.data, revision);
         if (respuesta.error) setEstado(respuesta.error);
-        else { confirmarGuardado(); setUltimoGuardado(datos); setRevision(respuesta.revision!); setEstado('guardado'); }
+        else if(!Number.isInteger(respuesta.revision)||respuesta.revision!==revision+1)setEstado('error');
+        else { setDatos(validado.data); confirmarGuardado(validado.data); setUltimoGuardado(validado.data); setRevision(respuesta.revision!); setEstado('guardado'); }
       } catch { setEstado('error'); }
     });
   }
@@ -207,7 +210,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
           return <div className="admin-producto-contenedor" key={p.id}><div className="admin-producto-fila">
             <div className="admin-producto-foto"><Image src={p.imagen} alt="" width={64} height={64} unoptimized /></div>
             <div className="admin-producto-datos"><strong>{traducir(p.nombre, idioma) || t('nuevoProducto')}</strong><span>{p.marca || u('sinMarca')} · {p.codigoFabricante || u('sinCodigo')}</span></div>
-            <div className="admin-producto-estado"><span>{!tieneImagenProducto(p)?u('imagenPendienteCorta'):p.publicado ? t('publicado') : t('borrador')}</span><strong>{precio === null ? t('sinPrecio') : colones(precio)}</strong></div>
+            <div className="admin-producto-estado"><span>{p.publicado ? t('publicado') : t('borrador')}</span>{!tieneImagenProducto(p)&&<small>{u('imagenPendienteCorta')}</small>}<strong>{precio === null ? t('sinPrecio') : colones(precio)}</strong></div>
             <button type="button" className="boton boton-contorno" onClick={() => abrirProducto(p.id)}>{u('editar')}</button>
           </div></div>;
         })}</div>{paginacion()}</> : <p className="admin-lista-vacia">{u('vacio')}</p>}
@@ -217,5 +220,6 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
     </fieldset>
     <ErroresAdmin campos={campos} abrir={abrirCampo} />
     <div className="admin-actions"><button type="button" className="boton boton-azul" disabled={ocupado || cargandoImagenes} onClick={guardar}>{t(ocupado ? 'guardando' : 'guardar')}</button><button type="button" className="boton boton-contorno" disabled={ocupado || cargandoImagenes} onClick={() => { if (window.confirm(u('descartar'))) { setDatos(ultimoGuardado); setCampos([]); setEstado(''); setEditorId(null); } }}>{t('restablecer')}</button><span role="status">{estado && estado !== 'guardado' ? t(estado) : pendientes ? m('pendientes') : estado ? t(estado) : t('notaGuardar')}</span></div>
+    {estado==='guardado'&&!pendientes&&editorId&&<p className="admin-publicacion-nota" aria-live="polite">{t(ultimoGuardado.productos.find(p=>p.id===editorId)?.publicado?'guardadoPublicado':'guardadoBorrador')}</p>}
   </div>;
 }
