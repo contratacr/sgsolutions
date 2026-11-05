@@ -687,7 +687,9 @@
     "ofertaFin": "Sale ends",
     "ofertaFechasNota": "Costa Rica time (UTC−6). No start: applies immediately. No end: continues until you remove it. When it ends, the regular price returns.",
     "protegerPrecio": "Keep this regular price when syncing the supplier",
-    "destacadoNota": "Gives visibility in Recommended. Does not change the price or require a sale."
+    "destacadoNota": "Gives visibility in Recommended. Does not change the price or require a sale.",
+    "ofertaPrioritaria": "Prioritize this sale in Recommended",
+    "ofertaPrioritariaNota": "Appears before other products while the sale is active and available. Respects searches, filters and price sorting."
   },
   "ServiciosSoporte": {
     "etiqueta": "OUR SERVICES",
@@ -1480,7 +1482,8 @@
     "facebook": "Facebook",
     "ofertaInicio": "Sale starts",
     "ofertaFin": "Sale ends",
-    "origen": "Product source"
+    "origen": "Product source",
+    "ofertaPrioritaria": "Sale priority"
   },
   "AdminUX": {
     "cerrarEditor": "Close editor",

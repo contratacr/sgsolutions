@@ -27,12 +27,13 @@ for(const idioma of ['es','en'] as const)test('creación manual, destacado, cale
  await editor.getByLabel(t.ofertaFin,{exact:true}).fill('2099-01-01T09:00');
  await editor.getByRole('combobox',{name:t.disponibilidadManual,exact:true}).selectOption('proveedor');
  await editor.locator('.gestor-url summary').click();await editor.getByLabel(m.url,{exact:true}).fill(ejemplo.imagen);await editor.getByRole('button',{name:m.agregarUrl,exact:true}).click();
+ await editor.getByLabel(t.ofertaPrioritaria,{exact:false}).check();
  await editor.getByLabel(t.destacado,{exact:true}).check();await editor.getByLabel(t.publicado,{exact:true}).check();
  await editor.screenshot({path:info.outputPath('editor-manual-'+idioma+'.png')});
  await page.locator('.admin-actions button').first().click();
  await expect.poll(async()=>JSON.parse(await readFile(archivo,'utf8')).revision).toBe(2);
  const guardado=JSON.parse(await readFile(archivo,'utf8')).contenido.productos.find((p:{origen?:string})=>p.origen==='manual');
- expect(guardado).toMatchObject({publicado:true,destacado:true,precioManual:25000,precioDescuento:20000,ofertaInicio:'2020-01-01T15:00:00.000Z',ofertaFin:'2099-01-01T15:00:00.000Z'});
+ expect(guardado).toMatchObject({publicado:true,destacado:true,ofertaPrioritaria:true,precioManual:25000,precioDescuento:20000,ofertaInicio:'2020-01-01T15:00:00.000Z',ofertaFin:'2099-01-01T15:00:00.000Z'});
  await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',idioma);
  await page.goto('/tienda?q='+encodeURIComponent(ejemplo.codigoFabricante));
  const tarjeta=page.locator('.shop-producto').filter({has:page.locator(`h3 a[href*="${guardado.slug}"]`)});

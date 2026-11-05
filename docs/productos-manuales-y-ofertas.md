@@ -33,3 +33,13 @@ Se conservan los controles de sesión administrativa, MFA y revisión esperada a
 La migración `20261104000100_favoritos_manuales.sql` admite identificadores manuales en favoritos, sin cambiar las políticas RLS existentes. Debe aplicarse junto con este bloque antes de publicarlo.
 
 Cobertura dirigida: creación y persistencia desde el panel en ES/EN y PC/móvil, precio en ficha/carrito, calendario en sus límites, snapshots, sincronización, validación de compra contra manipulación/agotado/despublicación, y favoritos con aislamiento entre cuentas. Las compras de prueba no usan servicios externos ni crean pedidos reales.
+
+## Prioridad comercial y estabilidad del listado
+
+La casilla **Priorizar esta oferta en Recomendados** es independiente de Destacado. Solo da prioridad cuando existe un descuento válido y vigente, y el producto no está agotado. Al vencer o retirar el descuento deja de priorizarse. En búsqueda se conserva primero la relevancia; las restricciones de categoría, marca y precio siguen aplicándose. Menor/mayor precio conserva su criterio explícito. Los bloques empresariales no desplazan una oferta prioritaria al encabezado del catálogo.
+
+El listado principal ya no incorpora historial ni favoritos al hidratarse: el orden del servidor y del navegador es el mismo. La personalización se mantiene en los bloques separados. Las fichas conservan los productos similares calculados para esa ficha, sin sustituirlos después de cargar el historial. Al navegar a otra ficha se adopta su nueva selección antes de pintar las tarjetas anteriores.
+
+Al cambiar realmente de búsqueda, filtro, orden o página se muestra un skeleton hasta recibir el resultado completo, en lugar de pintar tarjetas de la selección anterior. Las solicitudes obsoletas se cancelan y no reemplazan resultados más recientes. Las actualizaciones del snapshot del servidor se incorporan antes de pintar la lista anterior. Volver a una pestaña mantiene la actualización del catálogo y cambia el conjunto de datos de manera atómica.
+
+Pruebas dirigidas en `playwright.catalogo-estable.config.ts`: prioridad, primera carga y regreso desde ficha, solicitudes demoradas y respuestas fuera de orden, paginación, filtros, menús de orden, controles de tarjetas y carga conjunta de favoritos. Se ejecutan en escritorio y WebKit móvil, español e inglés, con servicios aislados. Este bloque se añade únicamente al workflow manual.

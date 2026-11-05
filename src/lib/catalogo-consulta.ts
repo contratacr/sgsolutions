@@ -1,7 +1,7 @@
 import {nombreMarca} from './marcas-nombres';
 import {catalogoTienda,clasificacionesDeProducto,solucionesEmpresariales,seleccionInicioEmpresarial} from './soluciones-empresariales';
 import {prepararBusqueda,coincidenciaBusqueda} from './busqueda-catalogo';
-import {traducir,type CatalogoPublico} from './catalogo-modelo';
+import {esOfertaPrioritaria,traducir,type CatalogoPublico} from './catalogo-modelo';
 export function resumenCatalogo(c:CatalogoPublico){
  c=catalogoTienda(c);
  // One pass over products; the previous nested filters scanned the complete
@@ -35,10 +35,9 @@ export function consultarCatalogo(c:CatalogoPublico,params:URLSearchParams,popul
  const candidatos=c.productos.filter(p=>clasificacionesDeProducto(p).some(x=>(categoria==='todos'||x.categoria===categoria)&&(!subcategoria||x.subcategoria?.es===subcategoria))&&(!marcas.length||marcas.includes(p.marca))&&(!q||(relevancia.get(p.id)??0)>0));
  const visibles=candidatos.filter(p=>(min===null||(p.precio!==null&&p.precio>=min))&&(max===null||(p.precio!==null&&p.precio<=max)));
 
- const ids=(params.get('explorados')??'').split(',').filter(id=>/^[a-z0-9][a-z0-9-]{0,59}$/.test(id)).slice(0,20);
- const contexto=ids.flatMap(id=>{const p=c.productos.find(x=>x.id===id);return p?[p]:[];});
- const puntuacion=(p:CatalogoPublico['productos'][number])=>Number(p.destacado)+contexto.reduce((n,x,i)=>n+((x.categoria===p.categoria?3:0)+(x.marca&&x.marca===p.marca?1:0))/(i+1),0);
- visibles.sort((a,b)=>orden==='menor'?(a.precio??Infinity)-(b.precio??Infinity):orden==='mayor'?(b.precio??-Infinity)-(a.precio??-Infinity):orden==='nombre'?traducir(a.nombre,idioma).localeCompare(traducir(b.nombre,idioma)):(q?(relevancia.get(b.id)??0)-(relevancia.get(a.id)??0):0)||puntuacion(b)-puntuacion(a)||(popularidad[b.id]??0)-(popularidad[a.id]??0)||a.id.localeCompare(b.id));
+ // The main catalogue has one server/client order; browsing history belongs to separate recommendation rows.
+ const puntuacion=(p:CatalogoPublico['productos'][number])=>Number(p.destacado);
+ visibles.sort((a,b)=>orden==='menor'?(a.precio??Infinity)-(b.precio??Infinity):orden==='mayor'?(b.precio??-Infinity)-(a.precio??-Infinity):orden==='nombre'?traducir(a.nombre,idioma).localeCompare(traducir(b.nombre,idioma)):(q?(relevancia.get(b.id)??0)-(relevancia.get(a.id)??0):0)||Number(esOfertaPrioritaria(b))-Number(esOfertaPrioritaria(a))||puntuacion(b)-puntuacion(a)||(popularidad[b.id]??0)-(popularidad[a.id]??0)||a.id.localeCompare(b.id));
  // Lead with immediate purchases and distribute four business solutions through page one.
  let ordenados=visibles;
  if(orden==='recomendados'&&categoria==='todos'&&!subcategoria&&!marcas.length&&!q){
@@ -54,7 +53,8 @@ export function consultarCatalogo(c:CatalogoPublico,params:URLSearchParams,popul
   const mezcla=[...directos];
   // One-based positions 2, 4, 7 and 10: spread visibility across the opening rows.
   destacados.forEach((p,i)=>mezcla.splice(Math.min([1,3,6,9][i],mezcla.length),0,p));
-  ordenados=[...mezcla,...empresariales.filter(p=>!idsDestacados.has(p.id)),...pendientes];
+  const ofertas=visibles.filter(p=>esOfertaPrioritaria(p)),idsOfertas=new Set(ofertas.map(p=>p.id));
+  ordenados=[...ofertas,...mezcla.filter(p=>!idsOfertas.has(p.id)),...empresariales.filter(p=>!idsDestacados.has(p.id)&&!idsOfertas.has(p.id)),...pendientes];
  }
  const paginas=Math.max(1,Math.ceil(visibles.length/24)),solicitada=Number(params.get('pagina')??1),pagina=Math.min(paginas,Math.max(1,Number.isSafeInteger(solicitada)?solicitada:1));
  const precios=candidatos.flatMap(p=>p.precio!==null&&Number.isFinite(p.precio)?[p.precio]:[]);

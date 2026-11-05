@@ -4,7 +4,7 @@ import {consultarJsonCatalogo} from '@/lib/consulta-catalogo';
 import {IndicadorCantidad} from './indicador-cantidad';
 import {TarjetaProducto} from './tarjeta-producto';
 
-import {leerHistorial,recordarExploracion} from '@/lib/historial-tienda';
+import {recordarExploracion} from '@/lib/historial-tienda';
 
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
@@ -21,7 +21,6 @@ import {useCatalogo} from './datos-catalogo';
 import {traducir} from '@/lib/catalogo-modelo';
 import type {PaginaCatalogo} from '@/lib/catalogo-consulta';
 import {useFavoritos} from '@/lib/favoritos';
-import {useSesionCuenta} from './sesion-cuenta';
 import {OrdenCatalogo} from './orden-catalogo';
 import {FiltroPrecio} from './filtro-precio';
 import {ListaFiltros} from './lista-filtros';
@@ -46,11 +45,9 @@ export function Catalogo({inicial,estadoInicial}:{inicial:PaginaCatalogo;estadoI
   restablecer();
   return()=>{window.removeEventListener('scroll',restablecer);window.removeEventListener('resize',restablecer);};
  },[]);
- const favoritos=useFavoritos(),sesionIniciada=useSesionCuenta();
+ const favoritos=useFavoritos();
  const f=useTranslations('AccionesProducto');
  const n=useTranslations('Navegacion');
- const [historial,setHistorial]=useState({activo:false,ids:[] as string[],vistas:[] as string[]});
- useEffect(()=>{const leer=()=>setHistorial(leerHistorial());leer();window.addEventListener('sg-historial',leer);window.addEventListener('storage',leer);return()=>{window.removeEventListener('sg-historial',leer);window.removeEventListener('storage',leer);};},[]);
  const e=useTranslations('Error');
  const t=useTranslations('Tienda'),s=useTranslations('Comercio'),idioma=useLocale(),compartidos=useCatalogo();
  const datos=compartidos;
@@ -111,8 +108,6 @@ export function Catalogo({inicial,estadoInicial}:{inicial:PaginaCatalogo;estadoI
 
  const nombreCategoria=(id:string)=>{const c=datos.categorias.find(x=>x.id===id);return c?traducir(c.nombre,idioma):'';};
  const parametros=new URLSearchParams({categoria:aplicados.categoria,marca:aplicados.marca,subcategoria:aplicados.subcategoria,min:aplicados.min,max:aplicados.max,q:aplicados.busqueda,orden,idioma});for(const m of aplicados.marcasElegidas)parametros.append('marcas',m);
- if(orden==='recomendados'&&!aplicados.busqueda&&(historial.ids.length||(sesionIniciada&&favoritos.ids.length)))parametros.set('explorados',[...new Set([...historial.ids,...(sesionIniciada?favoritos.ids:[])])].slice(0,20).join(','));
- // Personal recommendations are never part of the shared filter selection.
  const firmaSeleccion=parametrosUrlTienda({...aplicados,orden,pagina:1}).toString();
  const clave=firmaSeleccion;
  // Adjust pagination together with a changed selection, rather than after painting
@@ -138,6 +133,8 @@ export function Catalogo({inicial,estadoInicial}:{inicial:PaginaCatalogo;estadoI
  parametros.set('pagina',String(solicitada));
  const consulta=parametros.toString();
  const [respuesta,setRespuesta]=useState<{consulta:string;datos:PaginaCatalogo}>({consulta:parametrosApiTienda(estadoInicial,idioma).toString(),datos:inicial}),[error,setError]=useState('');
+ const [snapshotServidor,setSnapshotServidor]=useState(inicial);
+ if(snapshotServidor!==inicial){setSnapshotServidor(inicial);setRespuesta({consulta:parametrosApiTienda(estadoInicial,idioma).toString(),datos:inicial});}
  const [intento,setIntento]=useState(0);
  const contextoRango=new URLSearchParams({categoria,subcategoria,marca,q:busqueda,orden:'menor'});for(const m of marcasElegidas)contextoRango.append('marcas',m);
  const claveRango=contextoRango.toString();
@@ -236,7 +233,7 @@ export function Catalogo({inicial,estadoInicial}:{inicial:PaginaCatalogo;estadoI
   <section className="shop-resultados" aria-busy={cargando&&error!==consulta}>{aplicados.busqueda.trim()&&<div className="shop-termino-buscado"><h2>{bs('resultadosPara',{busqueda:aplicados.busqueda})}</h2><button type="button" onClick={quitarBusqueda} aria-label={t('limpiarBusqueda')}><X size={17} aria-hidden="true"/></button></div>}<div className="shop-resultados-cabecera shop-controles-tienda" role="group" aria-label={s('controlesCatalogo')}><button className="boton boton-contorno shop-abrir-filtros" onClick={abrirFiltros}><SlidersHorizontal size={18}/>{s('filtros')}</button><div className="shop-conteo-ayuda"><div className="shop-filtros-activos">{[...(aplicados.categoria!=='todos'&&!aplicados.subcategoria?[{texto:nombreCategoria(aplicados.categoria),quitar:()=>{setMin('');setMax('');setCategoria('todos');setSubcategoria('');}}]:[]),...(aplicados.subcategoria?[{texto:traducir(datos.subcategorias.find(x=>x.nombre.es===aplicados.subcategoria)?.nombre??{es:aplicados.subcategoria,en:aplicados.subcategoria},idioma),quitar:()=>{setMin('');setMax('');setSubcategoria('');}}]:[]),...[...new Set([...aplicados.marcasElegidas,...(aplicados.marca?[aplicados.marca]:[])])].map(m=>({texto:m,quitar:()=>{setMin('');setMax('');if(marca===m)setMarca('');setMarcasElegidas(prev=>prev.filter(x=>x!==m));}}))].map(x=><button key={x.texto} onClick={x.quitar}>{x.texto}<X size={14}/></button>)}</div><p ref={resultados} tabIndex={-1} className="conteo" aria-live="polite"><span className="shop-conteo-completo">{cargando?t('cargando'):total===1?t('resultados',{cantidad:total}):s('productosEncontrados',{cantidad:new Intl.NumberFormat(idioma==='es'?'de-DE':'en-US').format(total)})}</span><span className="shop-conteo-corto" aria-hidden="true">{cargando?t('cargando'):s('conteoCompacto',{cantidad:total})}</span></p></div><OrdenCatalogo valor={orden} cambiar={setOrden} disabled={!preferenciasListas}/><AsesoriaWhatsApp etiqueta="asesorar" detalle={aplicados.categoria==='soluciones-empresariales'?se('consultaEmpresa'):undefined} className="shop-asesoria-inline"/><Link data-vacio={favoritos.ids.length===0} aria-hidden={favoritos.ids.length===0} tabIndex={favoritos.ids.length?undefined:-1} className="shop-favoritos-enlace" href="/favoritos" aria-label={`${f('favoritos')} (${favoritos.ids.length})`}><Heart className="shop-favoritos-icono" size={17} aria-hidden="true"/><IndicadorCantidad cantidad={favoritos.ids.length} clase="shop-favoritos-contador"/></Link></div>
 
   {error===consulta?<div className="estado-inline" role="alert"><p>{t('errorCarga')}</p><button className="boton boton-azul" onClick={()=>{setError('');setIntento(i=>i+1);}}>{e('reintentar')}</button></div>:null}
-  {error===consulta&&!productosPagina.length?null:cargando&&(!productosPagina.length||!total)?<EsqueletoCatalogo texto={t('cargando')}/>:!total?<div className="catalogo-vacio"><Search size={30}/><h3>{aplicados.categoria==='soluciones-empresariales'?se('sinEquipos'):t('sinResultados')}</h3><p>{aplicados.categoria==='soluciones-empresariales'?se('asesoriaVacio'):t('intentarBusqueda')}</p><div className="catalogo-vacio-acciones">{aplicados.categoria==='soluciones-empresariales'&&<AsesoriaWhatsApp etiqueta="consultarOpciones" detalle={se('mensajeProyecto',{solucion:nombreCategoria(aplicados.categoria)||se('titulo'),marca:[...new Set([...aplicados.marcasElegidas,...(aplicados.marca?[aplicados.marca]:[])])].join(', ')||se('marcaPorDefinir')})}/>}<button className="boton boton-contorno" onClick={limpiarFiltros}>{t('restablecer')}</button></div></div>:<div className="shop-grid" ref={cuadricula}>{productosPagina.map(p=><TarjetaProducto key={p.id} producto={p} favorito={favoritos.ids.includes(p.id)} cambiarFavorito={()=>favoritos.cambiar(p.id)} listo={favoritos.listo} bloqueado={cargando} categoria={nombreCategoria(p.categoria)}/>)}</div>}
+  {error===consulta?null:cargando?<EsqueletoCatalogo texto={t('cargando')}/>:!total?<div className="catalogo-vacio"><Search size={30}/><h3>{aplicados.categoria==='soluciones-empresariales'?se('sinEquipos'):t('sinResultados')}</h3><p>{aplicados.categoria==='soluciones-empresariales'?se('asesoriaVacio'):t('intentarBusqueda')}</p><div className="catalogo-vacio-acciones">{aplicados.categoria==='soluciones-empresariales'&&<AsesoriaWhatsApp etiqueta="consultarOpciones" detalle={se('mensajeProyecto',{solucion:nombreCategoria(aplicados.categoria)||se('titulo'),marca:[...new Set([...aplicados.marcasElegidas,...(aplicados.marca?[aplicados.marca]:[])])].join(', ')||se('marcaPorDefinir')})}/>}<button className="boton boton-contorno" onClick={limpiarFiltros}>{t('restablecer')}</button></div></div>:<div className="shop-grid" ref={cuadricula}>{productosPagina.map(p=><TarjetaProducto key={p.id} producto={p} favorito={favoritos.ids.includes(p.id)} cambiarFavorito={()=>favoritos.cambiar(p.id)} listo={favoritos.listo} bloqueado={cargando} categoria={nombreCategoria(p.categoria)}/>)}</div>}
   {!cargando&&paginas>1&&<nav className="shop-paginacion" aria-label={t('paginacion')}><button type="button" disabled={pagina===1} onClick={()=>cambiarPagina(pagina-1)}>{t('anterior')}</button><span role="status">{t('pagina',{pagina,total:paginas})}</span><button type="button" disabled={pagina===paginas} onClick={()=>cambiarPagina(pagina+1)}>{t('siguiente')}</button></nav>}
   </section></div>
  </>;

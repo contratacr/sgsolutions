@@ -96,7 +96,7 @@ jobs:
           - grupo: permisos-adicionales
             bloques: sql-archivo-panel sql-autogestion-cuenta sql-estado-entrega sql-eurocomp-manual sql-favoritos sql-perfiles-compra sql-popularidad-catalogo sql-popularidad-productos sql-seguridad-archivo sql-usuarios-panel
           - grupo: contenido
-            bloques: contenido publicas frontend integracion-catalogo-red integracion-productos-manuales integracion-ofertas-compra integracion-compras-manuales sql-favoritos-manuales
+            bloques: catalogo-estable contenido publicas frontend integracion-catalogo-red integracion-productos-manuales integracion-ofertas-compra integracion-compras-manuales sql-favoritos-manuales
           - grupo: compras-correos
             bloques: tilopay-hosted comprobantes confirmaciones entrega empresas-correo
           - grupo: integraciones-locales

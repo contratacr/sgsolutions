@@ -37,11 +37,11 @@ test('valida fechas, descuentos, origen y vínculos de proveedor en el servidor'
 });
 test('sincronización conserva promociones y precio fijado; actualiza existencias y costo',()=>{
  const c=esquemaCatalogo.parse(base),p=c.productos.find(p=>p.codigoEurocomp&&p.publicado)!;
- p.precioManual=25000;p.precioFijado=true;p.precioDescuento=20000;p.ofertaInicio='2026-11-01T00:00:00Z';p.ofertaFin='2026-12-01T00:00:00Z';p.destacado=true;
+ p.precioManual=25000;p.precioFijado=true;p.precioDescuento=20000;p.ofertaInicio='2026-11-01T00:00:00Z';p.ofertaFin='2026-12-01T00:00:00Z';p.destacado=true;p.ofertaPrioritaria=true;
  c.productos=[p];
  const copia={fecha:'2026-11-04T12:00:00Z',bodega:0,articulos:[{codigo:p.codigoEurocomp!,nombre:'Proveedor cambió nombre',marca:p.marca,parte:p.codigoFabricante,familia:'TARJETAS DE RED',familiaPadre:'COMPONENTES DE PC',precio:123,moneda:'USD',stock:50,imagen:p.imagen}]};
  const actualizado=reconciliarEurocomp(c,copia).productos[0];
- for(const k of ['precioManual','precioDescuento','ofertaInicio','ofertaFin','destacado','nombre','publicado'] as const)assert.deepEqual(actualizado[k],p[k]);
+ for(const k of ['precioManual','precioDescuento','ofertaInicio','ofertaFin','ofertaPrioritaria','destacado','nombre','publicado'] as const)assert.deepEqual(actualizado[k],p[k]);
  assert.equal(actualizado.eurocomp?.stock,50);assert.equal(actualizado.eurocomp?.costo,123);
  p.precioFijado=false;assert.notEqual(reconciliarEurocomp(c,copia).productos[0].precioManual,25000);
 });
@@ -49,4 +49,37 @@ test('horarios administrativos usan Costa Rica aunque PC esté en otra zona',()=
  assert.equal(fechaOfertaUtc('2026-11-10T09:00'),'2026-11-10T15:00:00.000Z');
  assert.equal(fechaOfertaLocal('2026-11-10T15:00:00Z'),'2026-11-10T09:00');
  assert.equal(fechaOfertaUtc(''),null);assert.equal(fechaOfertaLocal(null),'');
+});
+
+test('ofertas prioritarias lideran Recomendados; no alteran precio, relevancia ni filtros',async()=>{
+ const {consultarCatalogo}=await import('../../src/lib/catalogo-consulta');
+ const {recomendaciones}=await import('../../src/lib/recomendaciones');
+ const c=catalogo(),p=c.productos[0];p.ofertaInicio='2020-01-01T00:00:00Z';p.ofertaFin='2099-01-01T00:00:00Z';
+ const prioritario={...p,ofertaPrioritaria:true,destacado:false};
+ const normal={...p,id:'manual-normal',slug:undefined,precioDescuento:null,ofertaInicio:null,ofertaFin:null,precioManual:1000,marca:'Otra',destacado:true};
+ c.productos=[normal,prioritario];const visible=publicarCatalogo(c);
+ const consulta=(params:Record<string,string>)=>consultarCatalogo(visible,new URLSearchParams(params),{[normal.id]:10000000});
+ assert.equal(consulta({orden:'recomendados',explorados:normal.id}).productos[0].id,p.id);
+ assert.equal(consulta({orden:'menor'}).productos[0].id,normal.id);
+ assert.equal(consulta({orden:'mayor'}).productos[0].id,p.id);
+ assert.equal(consulta({orden:'recomendados',marca:'Otra'}).productos.length,1);
+ assert.equal(consulta({orden:'recomendados',max:'1000'}).productos[0].id,normal.id);
+ assert.equal(recomendaciones(visible.productos).destacados[0].id,p.id);
+ assert.equal(new Set(consulta({orden:'recomendados'}).productos.map(x=>x.id)).size,2);
+ for(const cambio of [{ofertaFin:'2021-01-01T00:00:00Z'},{ofertaInicio:'2090-01-01T00:00:00Z'},{disponibilidadReferencia:'agotado' as const},{precioDescuento:null,ofertaInicio:null,ofertaFin:null}]){
+  const actualizado=publicarCatalogo({...c,productos:[normal,{...prioritario,...cambio}]});
+  assert.equal(consultarCatalogo(actualizado,new URLSearchParams({orden:'recomendados'})).productos[0].id,normal.id);
+ }
+});
+
+test('la mezcla empresarial no desplaza ni duplica una oferta prioritaria',async()=>{
+ const {consultarCatalogo}=await import('../../src/lib/catalogo-consulta');
+ const {default:empresas}=await import('../../src/lib/catalogo-empresarial.json');
+ const c=catalogo();c.productos[0].ofertaInicio='2020-01-01T00:00:00Z';c.productos[0].ofertaFin='2099-01-01T00:00:00Z';
+ c.productos[0].ofertaPrioritaria=true;
+ const empresarial={...esquemaCatalogo.parse({...c,productos:[empresas[0]]}).productos[0],precioManual:30000,precioDescuento:22000,ofertaPrioritaria:true};
+ c.productos.push(empresarial);
+ const pagina=consultarCatalogo(publicarCatalogo(c),new URLSearchParams({orden:'recomendados'}));
+ assert.equal(pagina.productos.length,2);assert.equal(new Set(pagina.productos.map(p=>p.id)).size,2);
+ assert.ok(pagina.productos.every(p=>p.ofertaPrioritaria));
 });

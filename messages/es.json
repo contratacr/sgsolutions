@@ -687,7 +687,9 @@
     "ofertaFin": "Fin de la oferta",
     "ofertaFechasNota": "Hora de Costa Rica (UTC−6). Sin inicio: aplica de inmediato. Sin fin: continúa hasta que usted la quite. Al finalizar, vuelve el precio normal.",
     "protegerPrecio": "Conservar este precio normal al sincronizar el proveedor",
-    "destacadoNota": "Da visibilidad en Recomendados. No cambia el precio ni exige una oferta."
+    "destacadoNota": "Da visibilidad en Recomendados. No cambia el precio ni exige una oferta.",
+    "ofertaPrioritaria": "Priorizar esta oferta en Recomendados",
+    "ofertaPrioritariaNota": "Aparece antes de otros productos mientras la oferta esté vigente y disponible. Respeta las búsquedas, los filtros y el orden por precio."
   },
   "ServiciosSoporte": {
     "etiqueta": "NUESTROS SERVICIOS",
@@ -1480,7 +1482,8 @@
     "facebook": "Facebook",
     "ofertaInicio": "Inicio de la oferta",
     "ofertaFin": "Fin de la oferta",
-    "origen": "Origen del producto"
+    "origen": "Origen del producto",
+    "ofertaPrioritaria": "Prioridad de la oferta"
   },
   "AdminUX": {
     "cerrarEditor": "Cerrar edición",

@@ -9,7 +9,7 @@ for(const idioma of ['es','en'])test(`buscar y paginar no alterna productos al a
  const paginas:number[]=[];
  await page.route('**/api/catalogo?**',async route=>{
   const params=new URL(route.request().url()).searchParams;
-  if(params.get('q')!=='camara'){await route.continue();return;}
+  if(params.get('q')!=='camara'||params.get('sugerencias')==='1'){await route.continue();return;}
   const pagina=Number(params.get('pagina')||1);paginas.push(pagina);
   const productos=Array.from({length:24},(_,i)=>({...base,id:`qa-camara-${pagina}-${i}`,slug:`qa-camara-${pagina}-${i}`,nombre:{es:`Cámara ${pagina} ${i}`,en:`Camera ${pagina} ${i}`}}));
   await route.fulfill({json:{productos,total:48,pagina,paginas:2}});
@@ -18,7 +18,7 @@ for(const idioma of ['es','en'])test(`buscar y paginar no alterna productos al a
  await page.locator('#buscar-equipo').fill('camara');
  const primero=page.locator('.shop-grid .shop-producto h3').first();
  const prefijo=idioma==='es'?'Cámara':'Camera';
- await expect(primero).toHaveText(`${prefijo} 1 0`);
+ await expect(primero).toHaveText(`${prefijo} 1 0`);await page.locator('#buscar-equipo').press('Escape');
  const siguiente=page.locator('.shop-paginacion button').last(),anterior=page.locator('.shop-paginacion button').first();
  await siguiente.click();
  await expect(primero).toHaveText(`${prefijo} 2 0`);
@@ -59,7 +59,7 @@ for(const idioma of ['es','en'])for(const conBusqueda of [false,true])test(`cate
   await route.fulfill({json:{productos,total:72,pagina,paginas:3}});
  });
  await page.goto('/tienda');await expect(page.locator('#buscar-equipo')).toBeEnabled();
- if(conBusqueda){await page.locator('#buscar-equipo').fill('camara');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');}
+ if(conBusqueda){await page.locator('#buscar-equipo').fill('camara');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');await page.locator('#buscar-equipo').press('Escape');}
  const abrir=page.locator('.shop-abrir-filtros');
  if(await abrir.isVisible()){
   await abrir.click();await page.locator('dialog .shop-categoria-rama > button').first().click();
