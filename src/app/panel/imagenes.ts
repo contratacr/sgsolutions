@@ -5,6 +5,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {sesionLocal} from '@/lib/admin-local';
 import {crearClienteServidor} from '@/lib/supabase/servidor';
+import {imageSize} from 'image-size';
 
 export async function subirImagen(datos:FormData):Promise<{src?:string;error?:string}>{
  await exigirAdminMfa();
@@ -20,8 +21,10 @@ export async function subirImagen(datos:FormData):Promise<{src?:string;error?:st
  const archivo=datos.get('archivo');
  if(!(archivo instanceof File)||archivo.size===0||archivo.size>8*1024*1024)return {error:'archivoInvalido'};
  const bytes=Buffer.from(await archivo.arrayBuffer());
- const extension=bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))?'png':bytes[0]===255&&bytes[1]===216&&bytes[2]===255?'jpg':bytes.toString('ascii',0,4)==='RIFF'&&bytes.toString('ascii',8,12)==='WEBP'?'webp':null;
+ let imagen;try{imagen=imageSize(bytes);}catch{return {error:'archivoInvalido'};}
+ const extension=['png','jpg','webp'].includes(imagen.type??'')?imagen.type:null;
  if(!extension)return {error:'archivoInvalido'};
+ if(!imagen.width||!imagen.height||imagen.width*imagen.height>30000000)return {error:'archivoInvalido'};
  const nombre=`${randomUUID()}.${extension}`;
  try{
   if(local){
@@ -31,7 +34,7 @@ export async function subirImagen(datos:FormData):Promise<{src?:string;error?:st
    return {src:`/imagenes/${directorio}/${nombre}`};
   }
   const {error}=await cliente!.storage.from('imagenes-admin').upload(nombre,bytes,{contentType:extension==='jpg'?'image/jpeg':`image/${extension}`,upsert:false});
-  if(error)return {error:'errorCarga'};
+  if(error)return {error:['401','403'].includes(String(error.statusCode))?'sinPermiso':'errorCarga'};
   return {src:cliente!.storage.from('imagenes-admin').getPublicUrl(nombre).data.publicUrl};
  }catch{return {error:'errorCarga'};}
 }

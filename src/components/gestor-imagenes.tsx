@@ -5,7 +5,7 @@ import {MarcoModal} from '@/components/marco-modal';
 import * as Dialog from '@radix-ui/react-dialog';
 import {useLocale,useTranslations} from 'next-intl';
 import {imagenSitioValida} from '@/lib/imagenes-sitio';
-import {subirImagen} from '@/app/panel/imagenes';
+import {subirImagenAdmin} from '@/lib/subir-imagen-admin';
 import {optimizarFotoInicio} from '@/lib/optimizar-foto-inicio';
 export type FotoAdmin={src:string;alt?:{es:string;en:string};caption?:{es:string;en:string}};
 export function GestorImagenes({fotos,cambiar,descripciones=false,descripcionesRequeridas=false,maximo=12,minimo=0,portadaInicio=false,onBusy}:{fotos:FotoAdmin[];cambiar:(f:FotoAdmin[])=>void;descripciones?:boolean;descripcionesRequeridas?:boolean;maximo?:number;minimo?:number;portadaInicio?:boolean;onBusy?:(busy:boolean)=>void}){
@@ -19,15 +19,16 @@ export function GestorImagenes({fotos,cambiar,descripciones=false,descripcionesR
   const archivos=Array.from(lista),indice=reemplazo.current;reemplazo.current=null;
   if((indice===null&&archivos.length+fotos.length>maximo)||(indice!==null&&archivos.length>1)){setError('limite');return;}
   setOcupado(true);onBusy?.(true);setError('');
+  const nuevas:FotoAdmin[]=[];
+  const aplicar=()=>actualizar(indice===null?[...fotos,...nuevas]:fotos.map((f,i)=>i===indice?{...f,src:nuevas[0].src}:f));
   try{
-   const nuevas:FotoAdmin[]=[];
    for(const file of archivos){
     const datos=new FormData();datos.set('archivo',portadaInicio?await optimizarFotoInicio(file):file);
-    const r=await subirImagen(datos);if(!r.src){setError(r.error??'errorCarga');return;}
+    const r=await subirImagenAdmin(datos);if(!r.src){if(nuevas.length)aplicar();setError(r.error??'errorCarga');return;}
     nuevas.push({src:r.src,alt:{es:'',en:''},caption:{es:'',en:''}});
    }
-   actualizar(indice===null?[...fotos,...nuevas]:fotos.map((f,i)=>i===indice?{...f,src:nuevas[0].src}:f));
-  }catch{setError('errorCarga');}finally{setOcupado(false);onBusy?.(false);if(archivo.current)archivo.current.value='';}
+   aplicar();
+  }catch{if(nuevas.length)aplicar();setError('errorCarga');}finally{setOcupado(false);onBusy?.(false);if(archivo.current)archivo.current.value='';}
  }
  function elegir(i:number|null){reemplazo.current=i;if(archivo.current){archivo.current.multiple=i===null;archivo.current.click();}}
  return <section className="gestor-imagenes" aria-label={t('titulo')}>

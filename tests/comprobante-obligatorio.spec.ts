@@ -5,7 +5,10 @@ for(const idioma of ['es','en']){
  test(`comprobante obligatorio solo en pagos manuales ${idioma}`,async({page,context,browserName},info)=>{
   await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
   await page.goto('/tienda');
-  await page.locator('.shop-producto button').first().click();
+  await page.locator('#buscar-equipo').fill('conector');await page.locator('#buscar-equipo').press('Enter');
+  const producto=page.locator('.shop-producto').filter({has:page.locator('button.producto-agregar')}).first();
+  await producto.hover();await producto.locator('button.producto-agregar').click();
+  await expect(producto.locator('button.producto-agregar')).toContainText(idioma==='es'?'Agregado':'Added');
   await page.goto('/finalizar-compra');
   await llegarAPago(page,idioma);
   const form=page.locator('main form'),archivo=form.locator('input[type=file]');
