@@ -21,3 +21,12 @@ test('cookies heredadas conservan formato, antigüedad y prioridad sin reconstru
  assert.equal(conservarClicMeta(anterior,reciente,ahora),reciente);
  assert.equal(conservarClicMeta(undefined,undefined,ahora),undefined);
 });
+
+test('la llegada directa al producto cuenta una vista, sin duplicarla con ViewContent',()=>{
+ for(const ruta of ['/tienda/producto','/tienda/laptop-lenovo-ryzen-5-82xm']){
+  assert.deepEqual(hitosDeNavegacion('PageView',ruta,true),['campana_visita','tienda_vista','tienda_vista_clic_meta']);
+  assert.deepEqual(hitosDeNavegacion('PageView',ruta,false),['campana_visita','tienda_vista']);
+  assert.deepEqual(hitosDeNavegacion('ViewContent',ruta,true),[]);
+ }
+ assert.deepEqual(hitosDeNavegacion('PageView','/tienda-falsa',true),['campana_visita']);
+});

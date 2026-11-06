@@ -22,7 +22,7 @@ export const hitosNavegacion=['campana_visita','tienda_vista','tienda_vista_clic
 export type HitoNavegacion=typeof hitosNavegacion[number];
 /** Counts actions, not unique visitors, messages or purchases. */
 export function hitosDeNavegacion(evento:EventoPublicidad,ruta:string,conClicMeta:boolean):HitoNavegacion[]{
- if(evento==='PageView')return ['campana_visita',...(ruta==='/tienda'?['tienda_vista' as const,...(conClicMeta?['tienda_vista_clic_meta' as const]:[])]:[])];
+ if(evento==='PageView')return ['campana_visita',...((ruta==='/tienda'||ruta.startsWith('/tienda/'))?['tienda_vista' as const,...(conClicMeta?['tienda_vista_clic_meta' as const]:[])]:[])];
  if(evento==='AddToCart')return ['campana_carrito'];
  if(evento==='InitiateCheckout')return ['campana_checkout'];
  if(evento==='WhatsAppClick')return ['campana_whatsapp'];

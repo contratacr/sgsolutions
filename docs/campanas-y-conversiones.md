@@ -194,3 +194,51 @@ Solicitud: aplicar recomendaciones y hacer push/despliegue. La autorización de 
 - Se conserva el diseño de SG Solutions y la traducción español/inglés. No se agrega una categoría ficticia de contenidos externos o confort.
 - La versión 2026-11-03-v1 reconoce las decisiones explícitas de 2026-11-02-v3 y mantiene las negativas históricas. No recupera permisos antiguos que la versión anterior había invalidado.
 - En este bloque se ejecutan solo controles estáticos y compilación. No se ejecutan pruebas funcionales, visuales ni smoke sin autorización adicional.
+
+## Investigación y borrador Lenovo 82XM — 5 de noviembre de 2026
+
+Solicitud: comparar la publicidad anterior y promocionar la publicación de Instagram https://www.instagram.com/p/DfXgOwwsO26/ hacia https://sgsolutionscr.com/tienda/laptop-lenovo-ryzen-5-82xm. No se interpreta el presupuesto de campañas anteriores como autorización de gasto nuevo.
+
+### Historial exportado de Meta
+
+Cuenta 1998397363653982, período Máximo. CSV con fin de informe 2026-11-05, incluyendo campañas eliminadas con entrega. Copia privada: `.privado/evidencias/meta-campanas-historico-20261105.csv`. El nombre de descarga muestra 4 de noviembre; el contenido del CSV muestra 5 de noviembre. No se comparan estas cifras acumuladas como si fueran períodos iguales.
+
+| Campaña | Gasto USD | Impresiones | Clics de enlace | Visitas de destino atribuidas |
+| --- | ---: | ---: | ---: | ---: |
+| Instagram «Cuenta regresiva…», agosto 2025 (archivada) | 29,90 | 16052 | 424 | Sin dato |
+| Conozca el sitio, piloto octubre (archivada) | 0,10 | 68 | 2 | 2 |
+| Video sitio web, reinicio 21 octubre | 6,04 | 2236 | 83 | 54 |
+| Consultas desde la web, 23 octubre | 10,21 | 1447 | 56 | Sin dato |
+| Nueva campaña de Ventas | 13,89 | 6499 | 1074 | Sin dato |
+| Total | 60,14 | 26302 | 1639* | — |
+
+*1639 es la suma de clics de enlace por campaña; no es visitantes únicos. El CSV muestra en algunas filas clics de enlace superiores a «clics (todos)»; conservar esa inconsistencia y no inferir sesiones a partir de ella. No hay resultados de compra atribuidos en la fila de Ventas ni resultado atribuido en Consultas. Un campo vacío no demuestra que no haya habido compras o conversaciones reales fuera de la atribución.
+
+La campaña de tráfico del 21 de octubre tiene la mejor evidencia disponible de llegada (54 visitas atribuidas por USD 6,04), pero no prueba rentabilidad ni permite elegir una ganadora de ventas. Ventas presenta CTR de enlace 16,53% y CPC USD 0,0129 sin confirmación de compra: no escalar por clic barato. La tabla de ubicaciones muestra Audience Network y video con premio en la campaña de Ventas, pero la exportación detallada quedó procesando; no se atribuye a esas ubicaciones una cantidad ni causalidad sin el desglose.
+
+Al consultar, las dos campañas recientes restantes están desactivadas y la de Ventas figura Completado, finalizada el 4 de noviembre. No se borran campañas ni resultados.
+
+### Borrador guardado, NO publicado
+
+- Campaña `120252337186760371`: SG | Lenovo 82XM | Ventas web | 05 nov 2026. Interruptor de campaña apagado, estado Borrador, cambios guardados.
+- Conjunto `120252337186750371`: Costa Rica, objetivo de rendimiento maximizar conversiones, sitio web, Comprar; dataset existente `1837501974261618` (SG Solutions - Sitio web). Comprar aparece entre eventos activos, lo cual no demuestra una venta real reciente.
+- Anuncio `120252337186770371`: publicación Instagram `18119971699982923`, foto del 5 de noviembre a las 10:52, misma descripción y precio ₡388.000. No es un Reel. Se eliminó del borrador la selección automática de un Reel distinto.
+- Destino exacto del producto, botón Comprar. Parámetros separados: `utm_source={{site_source_name}}&utm_medium=paid_social&utm_campaign=sg_lenovo_82xm_20261105&utm_content=ig_dfxgowwso26`.
+- Facebook e Instagram. Audience Network, WhatsApp y Threads excluidos; gasto limitado en excluidas desactivado. Elección de alcance controlado para este ensayo, no prueba de superioridad de estas redes.
+- Redirección automática a otras páginas desactivada. Complemento de WhatsApp del navegador desactivado para conservar el enlace y medición propios de la tienda. Anuncios multianunciante desactivados. Ocho mejoras creativas automáticas desactivadas para conservar producto, texto y precio originales.
+- Vistas previas de feeds Facebook/Instagram y Stories revisadas visualmente: precio, producto y oferta visibles. No se hizo clic publicitario ni se generaron conversiones sintéticas.
+- Presupuesto PROPUESTO: USD 14 total, calendario de borrador 5–12 noviembre, 16:52 CST. Antes de publicar ajustar inicio y fin a siete días desde activación autorizada. No prometer aprendizaje completo ni ventas con este importe.
+
+La ficha web coincide en precio, Ryzen 5, RAM 16GB, SSD 512GB, maletín y mouse. La licencia Microsoft 365 a precio especial está en la publicación pero no en la descripción web revisada; no se añade precio ni se presenta como incluida gratuitamente. No se comprobó inventario físico.
+
+### Medición preparada localmente, pendiente de publicación
+
+Se agrega `sg_lenovo_82xm_20261105` a la lista permitida de atribución y de fuentes de contactos; referencia WhatsApp `SG-TIENDA-LENOVO-0511`, con eliminación de referencias anteriores al cambiar campaña. Migración `20261105000300_contactos_campana_lenovo.sql` extiende la restricción de fuente, sin modificar históricos ni permisos.
+
+El recorrido cuenta PageView de `/tienda` y sus fichas `/tienda/…`; ViewContent no duplica la vista. Se informa en ES/EN que la ampliación aplica desde esta actualización, sin reconstruir eventos pasados. Se mantienen consentimiento, exclusión administrativa, deduplicación y Purchase por pago confirmado. Esto no garantiza que Meta rellene su columna de visitas de destino.
+
+Pruebas locales dirigidas preparadas; autorización solicitada conforme a AGENTS.md. No ejecutadas todavía. Tampoco se ha publicado código ni aplicado la migración. Antes de activar: autorizar nuevo gasto y publicación web/base; verificar código desplegado y respetar aprobación separada de pruebas/smoke.
+
+Decisión posterior: evaluar contactos confirmados, cotizaciones y pagos junto con llegadas consentidas, no solo CTR. Mantener un conjunto y un anuncio evita fragmentar este presupuesto. Conservar dataset e históricos no traslada automáticamente el aprendizaje de un conjunto nuevo.
+
+Fuente primaria consultada: [Meta: launching your first ad campaign](https://developers.meta.com/vr/resources/launch-ad-campaign/) distingue objetivo y optimización con medición web y recomienda adaptar dimensiones a ubicación. No se usa su contexto de apps VR para inferir rendimiento de esta laptop.

@@ -13,9 +13,10 @@ for(const idioma of ['es','en'] as const)test('estadísticas, períodos, privaci
 
  const campanas=(idioma==='es'?es:en).MedicionCampanas;
  await expect(page.getByRole('heading',{name:campanas.titulo,exact:true})).toBeVisible();
- await expect(page.locator('.estadisticas-campanas:visible')).toContainText(campanas.desactivada);
- await expect(page.locator('.estadisticas-campanas:visible table')).toContainText('campana-qa');
- await expect(page.locator('.estadisticas-campanas:visible table')).toContainText('inicial-qa');
+ const seccionCampanas=page.locator('.estadisticas-campanas:visible').filter({has:page.getByRole('heading',{name:campanas.titulo,exact:true})});
+ await expect(seccionCampanas).toContainText(campanas.desactivada);
+ await expect(seccionCampanas.locator('table')).toContainText('campana-qa');
+ await expect(seccionCampanas.locator('table')).toContainText('inicial-qa');
  const tarjeta=(nombre:string)=>page.locator('main.estadisticas-panel:visible .estadisticas-tarjetas article').filter({has:page.locator('span').filter({hasText:new RegExp('^'+nombre+'$')})});
  await expect(tarjeta(t.pagina).locator('strong')).toHaveText('30');await expect(tarjeta(t.visitantes)).toHaveCount(0);await expect(tarjeta(t.visitas)).toHaveCount(0);await expect(tarjeta(t.registrados).locator('strong')).toHaveText('9');await expect(tarjeta(t.nuevosRegistros).locator('strong')).toHaveText('3');await expect(tarjeta(t.clicsContacto).locator('strong')).toHaveText('6');await expect(tarjeta(t.pedidosPagados).locator('strong')).toHaveText('2');
  for(const texto of [t.ayudaPanel,t.detalleMedicion,t.pixelListo,t.configurar])await expect(page.locator('main.estadisticas-panel:visible')).not.toContainText(texto);

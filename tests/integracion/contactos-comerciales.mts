@@ -16,3 +16,15 @@ test('contactos requieren confirmación, referencia interna, fuente permitida y 
  assert.equal(contactoComercial.safeParse(entrada).success,true);
  for(const cambio of [{confirmado:false},{referencia:'nombre@example.com'},{fecha:'2026-02-30'},{revision:-1},{fuente:'utm_desconocido'},{etapa:'pagado'},{correo:'privado@example.com'}])assert.equal(contactoComercial.safeParse({...entrada,...cambio}).success,false);
 });
+
+test('Lenovo conserva su origen y reemplaza referencias anteriores sin duplicar',()=>{
+ const original='https://wa.me/50686065342?text=Hola%20SG';
+ for(const idioma of ['es','en']){
+  const anterior=agregarReferenciaWhatsApp(original,'/tienda','sg_ventas_tienda_20261028',idioma);
+  const actual=agregarReferenciaWhatsApp(anterior,'/tienda/laptop-lenovo-ryzen-5-82xm','sg_lenovo_82xm_20261105',idioma);
+  assert.equal(new URL(actual).searchParams.get('text'),`Hola SG\n\n${idioma==='en'?'Reference':'Referencia'}: SG-TIENDA-LENOVO-0511`);
+  assert.equal(agregarReferenciaWhatsApp(actual,'/tienda','sg_lenovo_82xm_20261105',idioma),actual);
+  assert.equal(new URL(agregarReferenciaWhatsApp(actual,'/tienda','',idioma)).searchParams.get('text'),`Hola SG\n\n${idioma==='en'?'Reference':'Referencia'}: SG-TIENDA`);
+ }
+ assert.equal(contactoComercial.safeParse({id:crypto.randomUUID(),revision:0,referencia:'CONSULTA-002',fecha:'2026-11-05',canal:'whatsapp',fuente:'sg_lenovo_82xm_20261105',etapa:'recibido',prueba:false,confirmado:true}).success,true);
+});
