@@ -8,6 +8,7 @@ import {recordarExploracion} from '@/lib/historial-tienda';
 
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
+import {recordarRetornoTienda} from '@/lib/retorno-tienda';
 import {leerUrlTienda,parametrosApiTienda,parametrosUrlTienda,urlConSeleccionTienda,type EstadoUrlTienda} from '@/lib/url-tienda';
 import {medir} from '@/lib/analitica-cliente';
 import {EsqueletoCatalogo} from './esqueletos';
@@ -117,7 +118,12 @@ export function Catalogo({inicial,estadoInicial}:{inicial:PaginaCatalogo;estadoI
  useEffect(()=>{
   if(!preferenciasListas)return;
   const estado={...leerUrlTienda(new URLSearchParams(firmaSeleccion)),pagina:solicitada};
-  const url=new URL(location.href),destino=urlConSeleccionTienda(url,estado);
+  const url=new URL(location.href);
+  // Do not let an outgoing catalog rewrite a product navigation, or replace
+  // an equivalent entry URL merely to reorder/shorten its query parameters.
+  if(url.pathname!=='/tienda')return;
+  if(parametrosUrlTienda(leerUrlTienda(url.searchParams)).toString()===parametrosUrlTienda(estado).toString()){ultimaSeleccionUrl.current=estado;return;}
+  const destino=urlConSeleccionTienda(url,estado);
   const anterior=ultimaSeleccionUrl.current;
   const mismaSeleccion=parametrosUrlTienda(anterior).toString()===parametrosUrlTienda(estado).toString();
   if(destino!==url.pathname+url.search+url.hash){
@@ -210,7 +216,7 @@ export function Catalogo({inicial,estadoInicial}:{inicial:PaginaCatalogo;estadoI
   ...(anticipadasActuales?.productos.slice(0,6).map(p=>({id:p.slug||p.id,texto:traducir(p.nombre,idioma),tipo:'producto' as const,imagen:p.imagen,precio:p.precio,codigo:p.codigoFabricante}))??[])
  ].slice(0,5):[];
  function elegirSugerencia(opcion:SugerenciaCatalogo){
-  if(opcion.tipo==='producto'){router.push(`/tienda/${encodeURIComponent(opcion.id)}`);return;}
+  if(opcion.tipo==='producto'){const destino=`/tienda/${encodeURIComponent(opcion.id)}`;recordarRetornoTienda(destino);router.push(destino);return;}
   cambiarBusqueda(opcion.texto);
   if(opcion.tipo==='marca')setMarca(opcion.id);
   if(opcion.tipo==='categoria')setCategoria(opcion.id);

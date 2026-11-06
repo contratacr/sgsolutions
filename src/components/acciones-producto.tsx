@@ -4,7 +4,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import {Heart,Search,ShoppingCart,Check,X} from 'lucide-react';
 import {useEffect,useRef,useState} from 'react';
 import {useLocale,useTranslations} from 'next-intl';
-import Link from 'next/link';
+import {EnlaceProducto as Link} from './enlace-producto';
 import {AsesoriaWhatsApp} from './asesoria-whatsapp';
 import {ContadorCantidad} from './contador-cantidad';
 import {descripcionUtil} from '@/lib/descripcion-producto';

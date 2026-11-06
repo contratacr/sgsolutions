@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import {EnlaceProducto as Link} from './enlace-producto';
 import {nombreMarca} from '@/lib/marcas-nombres';
 import {useLocale,useTranslations} from 'next-intl';
 import {traducir,type CatalogoPublico} from '@/lib/catalogo-modelo';

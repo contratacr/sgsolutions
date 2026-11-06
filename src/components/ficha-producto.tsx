@@ -2,14 +2,13 @@
 import {clasificacionesDeProducto} from '@/lib/soluciones-empresariales';
 import {maximoDisponibleProducto} from '@/lib/software';
 import {PrecioProducto,EtiquetaDescuento} from './precio-producto';
-import Link from "next/link";
+import {VolverTienda} from './volver-tienda';
 import {descripcionUtil} from '@/lib/descripcion-producto';
 import {ContadorCantidad} from './contador-cantidad';
 import {AsesoriaWhatsApp} from "./asesoria-whatsapp";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  ArrowLeft,
   ShoppingCart,
 } from "lucide-react";
 import { FotoProducto } from "./foto-producto";
@@ -56,10 +55,7 @@ export function FichaProducto({
   const fotos = [...new Set([p.imagen, ...(p.imagenes ?? [])])];
   return (
     <>
-      <Link className="ficha-volver" href={p.coleccion==='empresas'?'/tienda?categoria=soluciones-empresariales':'/tienda'}>
-        <ArrowLeft size={17} />
-        {t("volver")}
-      </Link>
+      <VolverTienda/>
       <div className="ficha-grid">
         <section className="ficha-galeria" aria-label={t("galeria")}>
           <div className="ficha-foto"><EtiquetaDescuento producto={p}/>
@@ -89,8 +85,8 @@ export function FichaProducto({
             <div><dt>{t("marca")}:</dt><dd>{p.marca || t("pendiente")}</dd></div>
           </dl>
           <div className="ficha-precio-acciones"><div className="ficha-precio">
-            <PrecioProducto producto={p} pendiente={s("precioPendiente")}/>
-            {p.precio !== null && <small>{a("precioConIva")}</small>}
+            <div className="ficha-importe"><PrecioProducto producto={p} pendiente={s("precioPendiente")}/>
+            {p.precio !== null && <small>{a("precioConIva")}</small>}</div>
             {typeof p.stockDisponible==='number'&&Number.isSafeInteger(p.stockDisponible)&&p.stockDisponible>=0&&<small className="ficha-disponibles" aria-label={t(p.origen==='manual'?'existenciasPropias':'existenciasProveedor',{cantidad:p.stockDisponible})}>{t('disponibles',{cantidad:p.stockDisponible})}</small>}
           </div><AsesoriaWhatsApp etiqueta="asesorar" className="shop-asesoria-inline" lineas={[{producto:p,cantidad}]}/></div>
           {p.disponibilidad==='agotado'&&<p className="ficha-stock">{s('agotado')}</p>}

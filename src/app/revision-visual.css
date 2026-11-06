@@ -1260,3 +1260,9 @@ html[data-interaccion=puntero] .tienda-compacta .shop-resultados-cabecera .shop-
 /* Digital licenses retain the same price and disclose on-order delivery. */
 .precio-producto:has(.producto-bajo-pedido),.shop-producto .shop-precio .precio-producto:has(.producto-bajo-pedido){flex-direction:column;align-items:flex-start;gap:4px;white-space:normal}
 .producto-bajo-pedido{display:block;font-size:.75rem;line-height:1.4;font-weight:500;color:var(--texto-secundario,#526b80)}
+
+/* Keep price/tax together and give availability its own space on small screens. */
+.ficha-pagina .ficha-compra .ficha-precio-acciones .ficha-precio{align-items:baseline;gap:8px 24px}
+.ficha-pagina .ficha-precio .ficha-importe{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-width:0}
+.ficha-pagina .ficha-precio-acciones .ficha-importe>small{font-size:var(--ficha-meta-size);line-height:1.5;color:#657b8f;white-space:nowrap}
+@media(max-width:650px){.ficha-pagina .ficha-precio-acciones .ficha-disponibles{flex-basis:100%;margin:0}}

@@ -49,16 +49,17 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
     <nav className="admin-editor-indice" aria-label={u('seccionesProducto')}>{[['basico',u('basico')],['precios',u('precios')],['imagenes',u('imagenes')],['especificaciones',u('especificaciones')],['publicacion',u('publicacion')]].map(([id,etiqueta]) => <a key={id} href={`#${seccion(id)}`} onClick={() => { const destino = document.getElementById(seccion(id)); if (destino instanceof HTMLDetailsElement) destino.open = true; }}>{etiqueta}</a>)}</nav>
     <div className="admin-producto-formulario">
     <section className="admin-producto-seccion" id={seccion('basico')}>
-      <div className="admin-producto-seccion-cabecera"><span>01</span><div><h3>{u('basico')}</h3><p>{u('basicoAyuda')}</p></div></div>
+      <div className="admin-producto-seccion-cabecera"><span>01</span><div><h3>{u('basico')}</h3></div></div>
       <div className="admin-fields">
         <Bilingue titulo={t('nombre')} valor={p.nombre} cambiar={nombre => cambiar(i, { nombre })} />
         <Bilingue titulo={t('descripcionCampo')} valor={p.descripcion} multilinea cambiar={descripcion => cambiar(i, { descripcion })} />
         <label>{t('categoria')}<select value={p.categoria} onChange={e => cambiar(i, { categoria: e.target.value })}>{datos.categorias.map(c => <option key={c.id} value={c.id}>{traducir(c.nombre, idioma)}</option>)}</select></label>
         <label>{t('marca')}<input value={p.marca} maxLength={80} onChange={e => cambiar(i, { marca: e.target.value })} /></label>
+        <label>{t('codigoFabricante')}<input value={p.codigoFabricante} maxLength={100} onChange={e => cambiar(i, { codigoFabricante: e.target.value })} /></label>
       </div>
     </section>
     <section className="admin-producto-seccion" id={seccion('precios')}>
-      <div className="admin-producto-seccion-cabecera"><span>02</span><div><h3>{u('precios')}</h3><p>{u('preciosAyuda')}</p></div></div>
+      <div className="admin-producto-seccion-cabecera"><span>02</span><div><h3>{u('precios')}</h3></div></div>
       <div className="admin-precio-resumen"><span>{t('precioFinal')}</span><strong>{precio === null ? t('sinPrecio') : colones(precio)}</strong></div>
       <div className="admin-fields">
         <label>{t('precioManual')}<input type="number" step="1" min="1" value={p.precioManual ?? ''} onChange={e => cambiar(i, { precioManual: e.target.value === '' ? null : Number(e.target.value),precioFijado:e.target.value!=='',precioReferencia:null,costoUsd:null,costoCrc:null })} /><small>{t('manualNota')}</small></label>
@@ -69,12 +70,11 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
         <label>{t('ofertaFin')}<CampoFechaOferta valor={p.ofertaFin} cambiar={ofertaFin=>cambiar(i,{ofertaFin})}/></label>
         <small className="admin-oferta-ancho">{t('ofertaFechasNota')}</small>
         {esProductoManual(p)&&<><label className="admin-check"><input type="checkbox" checked={p.stockManual!=null} onChange={e=>cambiar(i,{stockManual:e.target.checked?0:null,...(!e.target.checked?{disponibilidadReferencia:'proveedor' as const}:{})})}/>{t('controlExistencias')}</label>{p.stockManual!=null&&<label>{t('existenciasManuales')}<input type="number" min="0" max="1000000" step="1" value={p.stockManual} onChange={e=>cambiar(i,{stockManual:Number(e.target.value)})}/><small>{t('existenciasNota')}</small></label>}</>}
-        <label>{t('disponibilidadManual')}<select disabled={esProductoManual(p)&&p.stockManual!=null} value={esProductoManual(p)&&p.stockManual!=null?(p.stockManual===0?'agotado':'proveedor'):p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>
-        <label>{t('codigoFabricante')}<input value={p.codigoFabricante} maxLength={100} onChange={e => cambiar(i, { codigoFabricante: e.target.value })} /></label>
+        {!(esProductoManual(p)&&p.stockManual!=null)&&<label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>}
       </div>
     </section>
     <section className="admin-producto-seccion" id={seccion('imagenes')}>
-      <div className="admin-producto-seccion-cabecera"><span>03</span><div><h3>{u('imagenes')}</h3><p>{u('imagenesAyuda')}</p></div></div>
+      <div className="admin-producto-seccion-cabecera"><span>03</span><div><h3>{u('imagenes')}</h3></div></div>
       {!tieneImagenProducto(p)&&<p role="status">{u('imagenPendientePublicacion')}</p>}
       <GestorImagenes onBusy={onBusy} fotos={[...new Set([p.imagen, ...p.imagenes])].filter(src => src !== '/imagenes/producto-sin-imagen.svg').map(src => ({ src }))} cambiar={fotos => cambiar(i, { imagen: fotos[0]?.src ?? '/imagenes/producto-sin-imagen.svg', imagenes: fotos.slice(1).map(f => f.src) })} />
       <label>{t('fichaTecnica')}<input type="url" value={p.fichaTecnica ?? ''} onChange={e => cambiar(i, { fichaTecnica: e.target.value || undefined })} /></label>

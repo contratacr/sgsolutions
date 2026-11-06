@@ -2,7 +2,7 @@
 import {FilaProductos} from './fila-productos';
 import {PrecioProducto,EtiquetaDescuento} from './precio-producto';
 import {useEffect,useState} from 'react';
-import Link from 'next/link';
+import {EnlaceProducto as Link} from './enlace-producto';
 import {useLocale,useTranslations} from 'next-intl';
 import {AccionesProducto} from './acciones-producto';
 import {useFavoritos} from '@/lib/favoritos';
