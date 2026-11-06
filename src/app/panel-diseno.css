@@ -1,0 +1,163 @@
+/* Administration-only design system. Public storefront styles are unchanged. */
+.panel-renovado{
+ --panel-fondo:#f3f6f9;--panel-borde:#dce5ec;--panel-tinta:#17364b;--panel-suave:#5b7183;--panel-acento:#ed552f;
+ background:var(--panel-fondo);color:var(--panel-tinta);
+}
+.panel-renovado>main{width:100%;min-width:0;max-width:1480px;padding:36px clamp(20px,3vw,44px) 72px;background:transparent}
+.panel-renovado h1{font-size:clamp(1.65rem,2.6vw,2.25rem);line-height:1.15;letter-spacing:-.035em;margin:0 0 24px}
+.panel-renovado h2,.panel-renovado h3{letter-spacing:-.02em}
+.panel-renovado .panel-cabecera{margin-bottom:28px;align-items:center}
+.panel-renovado .panel-cabecera h1{margin-bottom:8px}
+.panel-renovado .etiqueta{font-size:.67rem;letter-spacing:.14em;margin-bottom:12px}
+.panel-renovado .panel-aviso{background:#eaf1f6;border:1px solid #cddde8;border-radius:12px;font-size:.85rem;padding:14px 18px;line-height:1.55;margin-block:18px}
+.panel-renovado :is(input:not([type=checkbox]):not([type=file]),select,textarea){border-color:#c9d6e0;border-radius:9px;background-color:#fff;min-height:44px;line-height:1.45}
+.panel-renovado :is(input,select,textarea):hover{border-color:#8ba3b5}
+.panel-renovado :is(input,select,textarea):focus-visible{outline:2px solid #4c7895;outline-offset:2px}
+.panel-renovado label{font-weight:550;color:#345165}
+.panel-renovado label :is(input,select,textarea),.panel-renovado label small{font-weight:400}
+.panel-renovado .boton{border-radius:9px;font-weight:650;box-shadow:none;min-height:44px}
+.panel-renovado .boton-azul{background:#244b67;color:#fff;border-color:#244b67}
+.panel-renovado .boton-azul:hover{background:#17384f}
+.panel-renovado .boton-contorno{background:#fff;border-color:#cbd9e3;color:#345165}
+.panel-renovado .boton-contorno:hover{background:#edf3f7;border-color:#96afc0}
+.panel-renovado .pedidos-reales-nav{background:#102b3b}
+.panel-renovado .pedidos-reales-nav nav a{transition:background-color .15s,color .15s}
+.panel-renovado .pedidos-reales-nav nav a[aria-current]{background:#ffffff12}
+/* 1. Start: task groups instead of an undifferentiated wall of cards. */
+.panel-renovado .panel-bienvenida{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:28px;background:#fff;border:1px solid var(--panel-borde);border-radius:18px;margin-bottom:28px}
+.panel-renovado .panel-bienvenida h1{margin-bottom:10px}
+.panel-renovado .panel-bienvenida p:not(.etiqueta){color:var(--panel-suave);font-size:.95rem}
+.panel-renovado .panel-cuenta{font-size:.8rem;color:var(--panel-suave);overflow-wrap:anywhere}
+.panel-renovado .panel-grupo-modulos{margin-top:28px}
+.panel-renovado .panel-grupo-modulos>h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--panel-suave);margin:0 0 12px}
+.panel-renovado .panel-modulos{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0}
+.panel-renovado .panel-modulos a{position:relative;display:flex;align-items:flex-start;gap:16px;padding:24px 20px;background:#fff;border:1px solid var(--panel-borde);border-radius:14px;transition:border-color .15s,box-shadow .15s}
+.panel-renovado .panel-modulos a:hover{border-color:#93adbf;box-shadow:0 6px 20px #17364b0a}
+.panel-renovado .panel-modulo-icono{flex:none;width:42px;height:42px;padding:9px;border-radius:12px;background:#eef4f8;color:#315d7a;margin:0}
+.panel-renovado .panel-modulos h3{font-size:1rem;margin:0 0 8px}
+.panel-renovado .panel-modulos p{font-size:.82rem;line-height:1.55;color:var(--panel-suave);margin:0}
+.panel-renovado .panel-modulo-flecha{color:#7890a2;margin-left:auto;flex:none}
+/* 2–3. Catalog: a real work surface, identity on the left, selling controls on the right. */
+.panel-renovado .admin-editor{padding-bottom:40px}
+.panel-renovado .admin-editor .admin-tabs{display:flex;gap:4px;padding:4px;background:#e5edf3;border-radius:11px;max-width:100%;width:fit-content;margin:0 0 24px}
+.panel-renovado .admin-editor .admin-tabs button{border:0;border-radius:8px;padding:10px 16px;min-height:44px;color:#4b6579;font-size:.85rem;font-weight:600;flex:0 1 auto}
+.panel-renovado .admin-editor .admin-tabs button[aria-pressed=true]{background:#fff;color:#1c3e57;box-shadow:0 1px 4px #17364b12}
+.panel-renovado .admin-lista-cabecera{align-items:center;margin:20px 0}
+.panel-renovado .admin-lista-cabecera h2{font-size:1.1rem}
+.panel-renovado .admin-lista-cabecera:has(>button)>button{order:2}
+.panel-renovado .admin-lista-filtros{background:#fff;border:1px solid var(--panel-borde);padding:18px;border-radius:14px;margin-bottom:16px}
+.panel-renovado .admin-productos-lista{border-radius:14px;border-color:var(--panel-borde)}
+.panel-renovado .admin-producto-fila{padding:16px 20px;gap:18px;transition:background .15s}
+.panel-renovado .admin-producto-fila:hover{background:#f6f9fb}
+.panel-renovado .admin-producto-foto{background:#f6f8fa;border:1px solid #e7edf2;border-radius:10px}
+.panel-renovado .admin-producto-datos strong{font-size:.9rem;line-height:1.5}
+.panel-renovado .admin-producto-estado{gap:7px}
+.panel-renovado .admin-estado-producto{background:#edf3f7;border:1px solid #dbe6ed;padding:5px 10px;font-size:.75rem}
+.panel-renovado .admin-volver-lista{margin:0 0 18px;font-size:.85rem}
+.panel-renovado .admin-edicion-vista .admin-producto-editor{border:0;background:transparent;overflow:visible;margin:0;box-shadow:none}
+.panel-renovado .admin-edicion-vista .admin-editor-cabecera{background:#fff;border:1px solid var(--panel-borde);border-radius:14px;padding:20px 24px;align-items:center}
+.panel-renovado .admin-editor-identidad h2{font-size:1.2rem;margin-block:5px}
+.panel-renovado .admin-editor-identidad>img{width:56px;height:56px}
+.panel-renovado .admin-editor-indice{border:0;background:transparent;padding:12px 0;gap:4px;flex-wrap:wrap}
+.panel-renovado .admin-editor-indice a{font-size:.8rem;min-height:40px;border-radius:8px;padding:8px 12px}
+.panel-renovado .admin-editor-indice a:hover{background:#e3ecf3}
+.panel-renovado .admin-producto-formulario{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,1fr);align-items:start;gap:22px;padding:0}
+.panel-renovado .admin-producto-principal,.panel-renovado .admin-producto-lateral{display:grid;gap:20px;min-width:0}
+.panel-renovado .admin-producto-seccion,.panel-renovado .admin-producto-seccion.admin-editor-seccion{padding:24px;margin:0;border-radius:14px;border:1px solid var(--panel-borde);background:#fff}
+.panel-renovado .admin-producto-seccion h3{font-size:1rem}
+.panel-renovado .admin-producto-seccion-cabecera{border-bottom:1px solid #e8eef3;padding-bottom:16px;margin-bottom:18px}
+.panel-renovado .admin-producto-seccion .admin-fields{margin:0;gap:18px}
+.panel-renovado .admin-producto-seccion .admin-bilingue{gap:18px}
+.panel-renovado .admin-producto-lateral .admin-fields{grid-template-columns:minmax(0,1fr)}
+.panel-renovado .admin-producto-lateral .admin-precio-resumen{background:#eff5f9;border:0;border-radius:10px;margin:0 0 20px;padding:16px;gap:12px}
+.panel-renovado .admin-producto-lateral .admin-precio-resumen span{font-size:.8rem}
+.panel-renovado .admin-producto-lateral .admin-precio-resumen strong{font-size:1.25rem;white-space:nowrap}
+.panel-renovado .admin-producto-seccion .admin-opcion{background:#f6f9fb;padding:14px;border-color:#e1e9ef;margin-top:12px}
+.panel-renovado .admin-producto-seccion .admin-opcion:has(input:checked){background:#edf5f7;border-color:#a7c1cf}
+.panel-renovado .admin-producto-eliminar{border:1px solid #e7d9d5;border-radius:12px;background:#fff;padding:16px;font-size:.8rem}
+.panel-renovado .admin-producto-seccion .gestor-imagenes{border:0;padding:0;margin:0}
+.panel-renovado .gestor-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.panel-renovado .gestor-preview{height:160px;background:#f7f9fb}
+.panel-renovado .gestor-foto{border-radius:10px;border-color:var(--panel-borde)}
+.panel-renovado .admin-actions{border:1px solid #c8d7e2;border-radius:12px;background:#fff;box-shadow:0 5px 24px #16384c14;gap:12px;padding:14px 18px}
+/* 4–5. Supplier and content workspaces. */
+.panel-renovado .admin-item,.panel-renovado .admin-configuracion{border:1px solid var(--panel-borde);border-radius:14px;background:#fff;padding:22px;margin-bottom:14px;box-shadow:none}
+.panel-renovado .admin-item>summary{padding:4px 0;font-size:.95rem;min-height:40px}
+.panel-renovado .admin-item[open]>summary{border-bottom:1px solid #e5edf2;padding-bottom:18px;margin-bottom:18px}
+.panel-renovado .admin-item .admin-fields{gap:20px;margin-top:16px}
+.panel-renovado .admin-textos-filtros{padding:18px;background:#fff;border:1px solid var(--panel-borde);border-radius:12px}
+/* 6. Orders: clear toolbar, muted column header, distinct expanded detail. */
+.panel-renovado .pedidos-reales-bandeja{border-color:var(--panel-borde);border-radius:16px;box-shadow:0 2px 10px #17364b04}
+.panel-renovado .pedidos-reales-columnas{background:#f4f7fa;font-weight:600;color:#526b7c}
+.panel-renovado .pedidos-reales-filtros{background:#f9fbfc;padding-bottom:20px;gap:14px}
+.panel-renovado .pedidos-reales .panel-pedido-detalle>summary:hover{background:#f7fafc}
+.panel-renovado .pedidos-reales .panel-pedido-detalle[open]>summary{background:#edf4f8;box-shadow:inset 3px 0 #ed552f}
+.panel-renovado .pedidos-reales .panel-pedido-cuerpo{background:#f8fafc;padding:24px;gap:24px}
+.panel-renovado .pedido-real-productos,.panel-renovado .pedido-real-acciones>section,.panel-renovado .panel-contacto-cliente{background:#fff;border-radius:12px;border:1px solid var(--panel-borde);padding:20px}
+.panel-renovado .panel-nueva-asesoria[open]{background:#f6f9fb}
+.panel-renovado .asesoria-editor-paso{background:#fff;padding:20px;border:1px solid var(--panel-borde);border-radius:12px}
+/* 7–8. Support and customer records. Modals keep their own responsive layout. */
+.panel-renovado .gestion-soporte-herramientas,.panel-renovado .usuarios-busqueda{padding:18px;background:#fff;border:1px solid var(--panel-borde);border-radius:12px}
+.panel-renovado .gestion-soporte-registros>li,.panel-renovado .usuario-tarjeta{background:#fff;border:1px solid var(--panel-borde);border-radius:14px;padding:22px;box-shadow:0 2px 8px #17364b03}
+.panel-renovado .gestion-soporte-vacio,.panel-renovado .usuarios-vacio,.panel-renovado .admin-lista-vacia{background:#fff;border:1px dashed #c6d5e0;border-radius:14px;padding:40px 24px}
+.panel-renovado .gestion-soporte-datos>div{background:#f5f8fa;border-radius:8px;padding:12px}
+.panel-renovado .gestion-soporte-tabs{margin-right:0;padding-right:0;border-bottom-color:#d6e1e9;margin-bottom:20px}
+.panel-renovado .gestion-soporte-tabs a[aria-current]{color:#1d4864;font-weight:700}
+/* 9. Analytics: lighter metric cards, stronger numbers and consistent sections. */
+.panel-renovado .estadisticas-cabecera nav{background:#e5edf3;border:0;padding:4px;gap:4px}
+.panel-renovado .estadisticas-cabecera nav a[aria-current]{background:#fff;box-shadow:0 1px 4px #17364b12}
+.panel-renovado .estadisticas-grupo{font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;color:#5b7183;margin:30px 0 14px}
+.panel-renovado .estadisticas-tarjetas article{background:#fff;border:1px solid var(--panel-borde);border-radius:14px;padding:22px;border-top:3px solid #b5cbd9}
+.panel-renovado .estadisticas-tarjetas article>span{min-height:2.9em;line-height:1.45}
+.panel-renovado .estadisticas-tarjetas article>strong{font-size:clamp(1.6rem,2.4vw,2.2rem);letter-spacing:-.035em}
+.panel-renovado .estadisticas-grafico,.panel-renovado .estadisticas-lista,.panel-renovado .estadisticas-campanas{background:#fff;border-color:var(--panel-borde);border-radius:14px;padding:24px}
+.panel-renovado .estadisticas-tabla-scroll th{background:#f2f6f9;color:#496579;font-size:.78rem}
+.panel-renovado .estadisticas-tabla-scroll tr:hover td{background:#f8fafc}
+.panel-renovado .estadisticas-meta-estados li{border:1px solid var(--panel-borde);border-radius:8px;padding:10px 14px;background:#f7fafc}
+/* Responsive layout: preserve touch targets, collapse columns, never shrink input text. */
+@media(min-width:1101px){.panel-renovado{grid-template-columns:228px minmax(0,1fr)}.panel-renovado .pedidos-reales-nav{padding:28px 14px}.panel-renovado .pedidos-reales-nav nav a{border-radius:10px;padding:13px 12px}}
+@media(max-width:1250px){.panel-renovado .panel-modulos{grid-template-columns:repeat(2,minmax(0,1fr))}.panel-renovado .admin-producto-formulario{grid-template-columns:minmax(0,1fr) minmax(280px,.85fr)}.panel-renovado .admin-producto-principal .admin-bilingue{grid-template-columns:1fr}}
+@media(max-width:850px){.panel-renovado .admin-producto-formulario{grid-template-columns:1fr}.panel-renovado .admin-producto-principal .admin-bilingue{grid-template-columns:repeat(2,minmax(0,1fr))}.panel-renovado .panel-bienvenida{align-items:start;flex-direction:column}.panel-renovado .admin-producto-lateral .admin-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){
+ .panel-renovado>main{padding:24px 16px 48px}
+ .panel-renovado .panel-bienvenida{padding:22px;border-radius:14px;gap:14px}
+ .panel-renovado .panel-modulos{grid-template-columns:1fr;gap:10px}
+ .panel-renovado .panel-modulos a{padding:18px;align-items:center}
+ .panel-renovado .panel-modulos h3{margin-bottom:4px}
+ .panel-renovado .admin-editor .admin-tabs{width:100%;gap:4px}
+ .panel-renovado .admin-editor .admin-tabs button{font-size:.8rem;padding:10px 12px}
+ .panel-renovado .admin-lista-cabecera{gap:12px;flex-wrap:wrap}
+ .panel-renovado .admin-lista-filtros{padding:14px;gap:14px}
+ .panel-renovado .admin-producto-fila{padding:14px;gap:10px}
+ .panel-renovado .admin-producto-seccion,.panel-renovado .admin-producto-seccion.admin-editor-seccion{padding:18px}
+ .panel-renovado .admin-edicion-vista .admin-editor-cabecera{padding:18px;gap:16px;flex-wrap:wrap}
+ .panel-renovado .admin-editor-cabecera-acciones{justify-content:space-between;width:100%;margin:0}
+ .panel-renovado .admin-editor-indice{gap:2px;padding:10px 0}
+ .panel-renovado .admin-editor-indice a{padding:8px;font-size:.76rem}
+ .panel-renovado .admin-producto-principal .admin-bilingue,.panel-renovado .admin-producto-lateral .admin-fields{grid-template-columns:1fr}
+ .panel-renovado .admin-producto-formulario,.panel-renovado .admin-producto-principal,.panel-renovado .admin-producto-lateral{gap:14px}
+ .panel-renovado .admin-actions{padding:12px;border-radius:12px 12px 0 0}
+ .panel-renovado .admin-item,.panel-renovado .admin-configuracion{padding:18px}
+ .panel-renovado .pedidos-reales .panel-pedido-cuerpo{padding:14px;gap:14px}
+ .panel-renovado .pedido-real-productos,.panel-renovado .panel-contacto-cliente,.panel-renovado .asesoria-editor-paso{padding:16px}
+ .panel-renovado .gestion-soporte-registros>li,.panel-renovado .usuario-tarjeta{padding:18px}
+ .panel-renovado .estadisticas-tarjetas article{padding:16px}
+ .panel-renovado .estadisticas-grafico,.panel-renovado .estadisticas-lista,.panel-renovado .estadisticas-campanas{padding:18px}
+ .panel-renovado :is(input:not([type=checkbox]):not([type=file]),select,textarea){font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.panel-renovado *{transition:none!important}}
+.panel-renovado .eurocomp-busqueda{padding:18px;background:#fff;border:1px solid var(--panel-borde);border-radius:12px;margin-block:24px}
+.panel-renovado .eurocomp-productos{gap:16px}
+.panel-renovado .eurocomp-productos>article{background:#fff;border:1px solid var(--panel-borde);border-radius:14px;padding:20px}
+.panel-renovado .eurocomp-paginacion{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap;padding-block:20px}
+/* Editors rendered through portals inherit a dedicated, scoped treatment. */
+.gestion-soporte-editor,.gestion-modal{border:1px solid #dce5ec;border-radius:18px;background:#fff;box-shadow:0 24px 80px #102b3b30}
+.gestion-soporte-editor>h2,.gestion-modal>h2{font-size:1.4rem;letter-spacing:-.025em;padding-bottom:16px;border-bottom:1px solid #e3eaf0}
+.gestion-soporte-form,.gestion-formulario{gap:20px}
+.gestion-soporte-form-acciones{padding-top:20px;border-top:1px solid #e3eaf0;gap:12px}
+@media(max-width:650px){.gestion-soporte-editor,.gestion-modal{border-radius:14px}.gestion-soporte-editor{padding:20px}.gestion-soporte-form{gap:16px}}
+
+.panel-renovado .admin-categorias-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.panel-renovado .admin-categorias-grid .admin-item{margin:0}
+.panel-renovado .admin-categorias-grid .admin-bilingue{grid-template-columns:1fr}
+@media(max-width:850px){.panel-renovado .admin-categorias-grid{grid-template-columns:1fr}}

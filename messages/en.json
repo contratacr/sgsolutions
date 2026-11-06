@@ -434,7 +434,11 @@
     "proveedoresDetalle": "Eurocomp catalog and synchronization.",
     "usuarios": "Users",
     "usuariosDetalle": "Accounts, details and permissions.",
-    "soporteDetalle": "Manage companies, equipment, tickets and maintenance."
+    "soporteDetalle": "Manage companies, equipment, tickets and maintenance.",
+    "operaciones": "Operations",
+    "tiendaContenido": "Store and content",
+    "resultados": "Results",
+    "inicioAyuda": "What would you like to manage today?"
   },
   "Error": {
     "etiqueta": "LET’S STAY CONNECTED",
@@ -1512,7 +1516,7 @@
     "imagenes": "Images",
     "imagenesAyuda": "The first image will be the product's cover image.",
     "especificaciones": "Technical specifications",
-    "precios": "Price and inventory",
+    "precios": "Pricing and offer",
     "preciosAyuda": "Set the reference price and availability. The agreed price is set during advice.",
     "publicacion": "Publishing",
     "publicacionAyuda": "Unpublished products are saved as drafts.",
@@ -1532,7 +1536,9 @@
     "publicados": "Published",
     "borradores": "Drafts",
     "imagenPendientePublicacion": "Add a verified product photo to display it in the store.",
-    "imagenPendienteCorta": "Image pending"
+    "imagenPendienteCorta": "Image pending",
+    "inventario": "Inventory",
+    "ventaPublicacion": "Sales and publishing"
   },
   "Analitica": {
     "masVistos": "Most viewed products",

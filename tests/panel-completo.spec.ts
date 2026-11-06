@@ -52,7 +52,7 @@ for (const idioma of ['es', 'en'] as const) test(`recorrido completo del panel $
     await expect(page.locator('.admin-producto-fila')).toHaveCount(20);
     await page.locator('.admin-producto-fila button').first().click();
     await expect(page.locator('.admin-producto-editor')).toBeVisible();
-    await expect(page.locator('.admin-editor-indice a')).toHaveCount(5);
+    await expect(page.locator('.admin-editor-indice a')).toHaveCount(6);
     await page.locator('.admin-volver-lista').click();
     await expect(page.locator('.admin-producto-fila')).toHaveCount(20);
     for (const tab of await page.locator('main:visible .admin-tabs button').all()) {

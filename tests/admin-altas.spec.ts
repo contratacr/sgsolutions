@@ -27,7 +27,7 @@ for(const idioma of ['es','en'])test(`altas visibles y errores precisos ${idioma
   await page.locator('input[type=search]').fill('');
   await page.locator('.admin-producto-fila button').first().click();
   await expect(page.locator('main:visible .admin-producto-fila')).toHaveCount(0);
-  await expect(page.locator('.admin-editor-indice a')).toHaveCount(5);
+  await expect(page.locator('.admin-editor-indice a')).toHaveCount(6);
   const precios=page.locator('.admin-producto-seccion[id$="-precios"] input[type=number]');
   const precioOriginal=await precios.first().inputValue();
   await precios.first().fill('100000');

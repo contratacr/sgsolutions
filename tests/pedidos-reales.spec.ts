@@ -40,7 +40,16 @@ for(const idioma of ['es','en'] as const)test(`bandeja real unificada, filtros y
  await mkdir('.privado/pedidos-reales',{recursive:true});await page.screenshot({path:`.privado/pedidos-reales/${info.project.name}-${idioma}.png`,fullPage:true});await page.screenshot({path:`.privado/pedidos-reales/header-${info.project.name}-${idioma}.png`});expect(errores).toEqual([]);
 });
 
-async function etapasVisibles(barra:import('@playwright/test').Locator){return barra.evaluate(el=>{const r=el.getBoundingClientRect(),botones=[...el.children].map(h=>h.getBoundingClientRect());const ok=getComputedStyle(el).scrollbarWidth==='none'&&(el.scrollWidth<=el.clientWidth+1||botones.some(b=>b.left<r.right&&b.right>r.right));return ok;});}
+async function etapasVisibles(barra:import('@playwright/test').Locator){return barra.evaluate(el=>{
+ const r=el.getBoundingClientRect();
+ if(getComputedStyle(el).scrollbarWidth!=='none'||r.right>innerWidth+1)return false;
+ // The edge can fall in the gap between labels. Verify usable overflow, not a clipped letter.
+ if(el.scrollWidth<=el.clientWidth+1)return true;
+ const inicio=el.scrollLeft;el.scrollLeft=el.scrollWidth;
+ const ultimo=el.lastElementChild!.getBoundingClientRect();
+ const visible=ultimo.left>=r.left-1&&ultimo.right<=r.right+1;
+ el.scrollLeft=inicio;return visible;
+ });}
 for(const idioma of ['es','en'] as const)test(`header compartido en cada sección administrativa ${idioma}`,async({page,context},info)=>{
  const {token}=JSON.parse(await readFile('.privado/contenido-pruebas/sesion.json','utf8'));
  await context.addCookies([{name:'sg-admin-local',value:token,domain:'127.0.0.1',path:'/'},{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);

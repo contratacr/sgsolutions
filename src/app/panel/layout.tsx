@@ -8,5 +8,5 @@ export default async function DisenoPanel({children}:{children:React.ReactNode})
  if(acceso==='mfa')redirect('/admin/doble-factor');
  if(acceso==='sinSesion')redirect('/admin');
  if(acceso!=='administrador')return <AccesoDenegado error={acceso==='error'}/>;
- return <ProtegerCambiosPanel><div className="panel-diseno"><NavegacionPanel/>{children}</div></ProtegerCambiosPanel>;
+ return <ProtegerCambiosPanel><div className="panel-diseno panel-renovado"><NavegacionPanel/>{children}</div></ProtegerCambiosPanel>;
 }

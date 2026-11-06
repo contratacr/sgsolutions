@@ -46,10 +46,10 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
       <div className="admin-editor-identidad"><Image src={p.imagen} alt="" width={70} height={70} unoptimized/><div><span className="admin-kicker">{u('edicion')}</span><h2>{traducir(p.nombre, idioma) || t('nuevoProducto')}</h2><p>{p.codigoFabricante || u('sinCodigo')}</p></div></div>
       <div className="admin-editor-cabecera-acciones"><span className="admin-estado-producto">{p.publicado ? t('publicado') : t('borrador')}</span><button type="button" className="boton boton-contorno" onClick={cerrar}>{u('cerrarEditor')}</button></div>
     </div>
-    <nav className="admin-editor-indice" aria-label={u('seccionesProducto')}>{[['basico',u('basico')],['precios',u('precios')],['imagenes',u('imagenes')],['especificaciones',u('especificaciones')],['publicacion',u('publicacion')]].map(([id,etiqueta]) => <a key={id} href={`#${seccion(id)}`} onClick={() => { const destino = document.getElementById(seccion(id)); if (destino instanceof HTMLDetailsElement) destino.open = true; }}>{etiqueta}</a>)}</nav>
+    <nav className="admin-editor-indice" aria-label={u('seccionesProducto')}>{[['basico',u('basico')],['precios',u('precios')],['inventario',u('inventario')],['imagenes',u('imagenes')],['especificaciones',u('especificaciones')],['publicacion',u('publicacion')]].map(([id,etiqueta]) => <a key={id} href={`#${seccion(id)}`} onClick={() => { const destino = document.getElementById(seccion(id)); if (destino instanceof HTMLDetailsElement) destino.open = true; }}>{etiqueta}</a>)}</nav>
     <div className="admin-producto-formulario">
-    <section className="admin-producto-seccion" id={seccion('basico')}>
-      <div className="admin-producto-seccion-cabecera"><span>01</span><div><h3>{u('basico')}</h3></div></div>
+<div className="admin-producto-principal">    <section className="admin-producto-seccion" id={seccion('basico')}>
+      <div className="admin-producto-seccion-cabecera"><div><h3>{u('basico')}</h3></div></div>
       <div className="admin-fields">
         <Bilingue titulo={t('nombre')} valor={p.nombre} cambiar={nombre => cambiar(i, { nombre })} />
         <Bilingue titulo={t('descripcionCampo')} valor={p.descripcion} multilinea cambiar={descripcion => cambiar(i, { descripcion })} />
@@ -58,8 +58,27 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
         <label>{t('codigoFabricante')}<input value={p.codigoFabricante} maxLength={100} onChange={e => cambiar(i, { codigoFabricante: e.target.value })} /></label>
       </div>
     </section>
+    <section className="admin-producto-seccion" id={seccion('imagenes')}>
+      <div className="admin-producto-seccion-cabecera"><div><h3>{u('imagenes')}</h3></div></div>
+      {!tieneImagenProducto(p)&&<p role="status">{u('imagenPendientePublicacion')}</p>}
+      <GestorImagenes onBusy={onBusy} fotos={[...new Set([p.imagen, ...p.imagenes])].filter(src => src !== '/imagenes/producto-sin-imagen.svg').map(src => ({ src }))} cambiar={fotos => cambiar(i, { imagen: fotos[0]?.src ?? '/imagenes/producto-sin-imagen.svg', imagenes: fotos.slice(1).map(f => f.src) })} />
+      <label>{t('fichaTecnica')}<input type="url" value={p.fichaTecnica ?? ''} onChange={e => cambiar(i, { fichaTecnica: e.target.value || undefined })} /></label>
+    </section>
+    <details className="admin-producto-seccion admin-editor-seccion" id={seccion('especificaciones')}><summary><strong>{u('especificaciones')} ({p.especificaciones.length})</strong></summary>
+      <button className="boton boton-contorno" type="button" onClick={() => cambiar(i, { especificaciones: [...p.especificaciones, { nombre: { es: '', en: '' }, valor: { es: '', en: '' } }] })}>{t('nuevaEspecificacion')}</button>
+      {p.especificaciones.map((e, j) => <div className="admin-especificacion" key={j}>
+        <Bilingue titulo={t('nombre')} valor={e.nombre} cambiar={nombre => cambiar(i, { especificaciones: p.especificaciones.map((x, k) => k === j ? { ...x, nombre } : x) })} />
+        <Bilingue titulo={t('valor')} valor={e.valor} cambiar={valor => cambiar(i, { especificaciones: p.especificaciones.map((x, k) => k === j ? { ...x, valor } : x) })} />
+        <button className="boton boton-contorno" type="button" onClick={() => cambiar(i, { especificaciones: p.especificaciones.filter((_, k) => k !== j) })}>{t('quitarEspecificacion')}</button>
+      </div>)}
+    </details>
+</div><aside className="admin-producto-lateral" aria-label={u('ventaPublicacion')}>     <section className="admin-producto-seccion" id={seccion('publicacion')}>
+      <div className="admin-producto-seccion-cabecera"><div><h3>{u('publicacion')}</h3><p>{u('publicacionAyuda')}</p></div></div>
+      <label className="admin-check admin-opcion"><input type="checkbox" checked={p.publicado} onChange={e => cambiar(i, { publicado: e.target.checked })} />{t('publicado')}</label>
+      <label className="admin-check admin-opcion"><input type="checkbox" checked={p.destacado} onChange={e => cambiar(i, { destacado: e.target.checked })} />{t('destacado')}</label><small>{t('destacadoNota')}</small>
+    </section>
     <section className="admin-producto-seccion" id={seccion('precios')}>
-      <div className="admin-producto-seccion-cabecera"><span>02</span><div><h3>{u('precios')}</h3></div></div>
+      <div className="admin-producto-seccion-cabecera"><div><h3>{u('precios')}</h3></div></div>
       <div className="admin-precio-resumen"><span>{t('precioFinal')}</span><strong>{precio === null ? t('sinPrecio') : colones(precio)}</strong></div>
       <div className="admin-fields">
         <label>{t('precioManual')}<input type="number" step="1" min="1" value={p.precioManual ?? ''} onChange={e => cambiar(i, { precioManual: e.target.value === '' ? null : Number(e.target.value),precioFijado:e.target.value!=='',precioReferencia:null,costoUsd:null,costoCrc:null })} /><small>{t('manualNota')}</small></label>
@@ -69,32 +88,13 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
         <label>{t('ofertaInicio')}<CampoFechaOferta valor={p.ofertaInicio} cambiar={ofertaInicio=>cambiar(i,{ofertaInicio})}/></label>
         <label>{t('ofertaFin')}<CampoFechaOferta valor={p.ofertaFin} cambiar={ofertaFin=>cambiar(i,{ofertaFin})}/></label>
         <small className="admin-oferta-ancho">{t('ofertaFechasNota')}</small>
-        {esProductoManual(p)&&<><label className="admin-check"><input type="checkbox" checked={p.stockManual!=null} onChange={e=>cambiar(i,{stockManual:e.target.checked?0:null,...(!e.target.checked?{disponibilidadReferencia:'proveedor' as const}:{})})}/>{t('controlExistencias')}</label>{p.stockManual!=null&&<label>{t('existenciasManuales')}<input type="number" min="0" max="1000000" step="1" value={p.stockManual} onChange={e=>cambiar(i,{stockManual:Number(e.target.value)})}/><small>{t('existenciasNota')}</small></label>}</>}
-        {!(esProductoManual(p)&&p.stockManual!=null)&&<label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>}
+
       </div>
     </section>
-    <section className="admin-producto-seccion" id={seccion('imagenes')}>
-      <div className="admin-producto-seccion-cabecera"><span>03</span><div><h3>{u('imagenes')}</h3></div></div>
-      {!tieneImagenProducto(p)&&<p role="status">{u('imagenPendientePublicacion')}</p>}
-      <GestorImagenes onBusy={onBusy} fotos={[...new Set([p.imagen, ...p.imagenes])].filter(src => src !== '/imagenes/producto-sin-imagen.svg').map(src => ({ src }))} cambiar={fotos => cambiar(i, { imagen: fotos[0]?.src ?? '/imagenes/producto-sin-imagen.svg', imagenes: fotos.slice(1).map(f => f.src) })} />
-      <label>{t('fichaTecnica')}<input type="url" value={p.fichaTecnica ?? ''} onChange={e => cambiar(i, { fichaTecnica: e.target.value || undefined })} /></label>
-    </section>
-    <details className="admin-producto-seccion admin-editor-seccion" id={seccion('especificaciones')}><summary><span>04</span><strong>{u('especificaciones')} ({p.especificaciones.length})</strong></summary>
-      <button className="boton boton-contorno" type="button" onClick={() => cambiar(i, { especificaciones: [...p.especificaciones, { nombre: { es: '', en: '' }, valor: { es: '', en: '' } }] })}>{t('nuevaEspecificacion')}</button>
-      {p.especificaciones.map((e, j) => <div className="admin-especificacion" key={j}>
-        <Bilingue titulo={t('nombre')} valor={e.nombre} cambiar={nombre => cambiar(i, { especificaciones: p.especificaciones.map((x, k) => k === j ? { ...x, nombre } : x) })} />
-        <Bilingue titulo={t('valor')} valor={e.valor} cambiar={valor => cambiar(i, { especificaciones: p.especificaciones.map((x, k) => k === j ? { ...x, valor } : x) })} />
-        <button className="boton boton-contorno" type="button" onClick={() => cambiar(i, { especificaciones: p.especificaciones.filter((_, k) => k !== j) })}>{t('quitarEspecificacion')}</button>
-      </div>)}
-    </details>
-    <section className="admin-producto-seccion" id={seccion('publicacion')}>
-      <div className="admin-producto-seccion-cabecera"><span>05</span><div><h3>{u('publicacion')}</h3><p>{u('publicacionAyuda')}</p></div></div>
-      <label className="admin-check admin-opcion"><input type="checkbox" checked={p.publicado} onChange={e => cambiar(i, { publicado: e.target.checked })} />{t('publicado')}</label>
-      <label className="admin-check admin-opcion"><input type="checkbox" checked={p.destacado} onChange={e => cambiar(i, { destacado: e.target.checked })} />{t('destacado')}</label><small>{t('destacadoNota')}</small>
-    </section>
-    <details className="admin-producto-eliminar"><summary>{u('opcionesAvanzadas')}</summary><p>{u('eliminarAyuda')}</p>
+<section className="admin-producto-seccion" id={seccion('inventario')}><div className="admin-producto-seccion-cabecera"><div><h3>{u('inventario')}</h3></div></div><div className="admin-fields">        {esProductoManual(p)&&<><label className="admin-check"><input type="checkbox" checked={p.stockManual!=null} onChange={e=>cambiar(i,{stockManual:e.target.checked?0:null,...(!e.target.checked?{disponibilidadReferencia:'proveedor' as const}:{})})}/>{t('controlExistencias')}</label>{p.stockManual!=null&&<label>{t('existenciasManuales')}<input type="number" min="0" max="1000000" step="1" value={p.stockManual} onChange={e=>cambiar(i,{stockManual:Number(e.target.value)})}/><small>{t('existenciasNota')}</small></label>}</>}
+        {!(esProductoManual(p)&&p.stockManual!=null)&&<label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>}</div></section>    <details className="admin-producto-eliminar"><summary>{u('opcionesAvanzadas')}</summary><p>{u('eliminarAyuda')}</p>
       <button className="boton boton-contorno" type="button" onClick={() => { if (window.confirm(u('confirmarEliminar'))) eliminar(i); }}>{t('quitar')}</button>
-    </details>
+    </details></aside>
     </div>
   </section>;
 }
@@ -216,7 +216,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
           </div></div>;
         })}</div>{paginacion()}</> : <p className="admin-lista-vacia">{u('vacio')}</p>}
       </>}
-      {tab === 'categorias' && <><div className="admin-lista-cabecera"><div><h2>{t('categorias')}</h2><p>{u('categoriasAyuda')}</p></div><button type="button" className="boton boton-azul" onClick={() => { const id = `categoria-${crypto.randomUUID().slice(0, 8)}`; setDatos(d => ({ ...d, categorias: [{ id, nombre: { es: '', en: '' } }, ...d.categorias] })); setEstado(''); requestAnimationFrame(() => enfocarRegistro(id)); }}>{t('nuevaCategoria')}</button></div>{datos.categorias.map((c, i) => <div className="admin-item" key={c.id} id={c.id}><div className="admin-fields"><Bilingue titulo={t('nombre')} valor={c.nombre} cambiar={nombre => setDatos(d => ({ ...d, categorias: d.categorias.map((x, j) => j === i ? { ...x, nombre } : x) }))} /></div><button type="button" className="boton boton-contorno" disabled={datos.categorias.length === 1 || datos.productos.some(p => p.categoria === c.id)} onClick={() => setDatos(d => ({ ...d, categorias: d.categorias.filter((_, j) => j !== i) }))}>{t('quitar')}</button><p>{t('categoriaNota')}</p></div>)}</>}
+      {tab === 'categorias' && <><div className="admin-lista-cabecera"><div><h2>{t('categorias')}</h2><p>{u('categoriasAyuda')}</p></div><button type="button" className="boton boton-azul" onClick={() => { const id = `categoria-${crypto.randomUUID().slice(0, 8)}`; setDatos(d => ({ ...d, categorias: [{ id, nombre: { es: '', en: '' } }, ...d.categorias] })); setEstado(''); requestAnimationFrame(() => enfocarRegistro(id)); }}>{t('nuevaCategoria')}</button></div><div className="admin-categorias-grid">{datos.categorias.map((c, i) => <div className="admin-item" key={c.id} id={c.id}><div className="admin-fields"><Bilingue titulo={t('nombre')} valor={c.nombre} cambiar={nombre => setDatos(d => ({ ...d, categorias: d.categorias.map((x, j) => j === i ? { ...x, nombre } : x) }))} /></div><button type="button" className="boton boton-contorno" disabled={datos.categorias.length === 1 || datos.productos.some(p => p.categoria === c.id)} onClick={() => setDatos(d => ({ ...d, categorias: d.categorias.filter((_, j) => j !== i) }))}>{t('quitar')}</button><p>{t('categoriaNota')}</p></div>)}</div></>}
       {tab === 'textos' && <section className="admin-configuracion"><h2>{t('textos')}</h2><p>{u('textosAyuda')}</p><div id="admin-textos" className="admin-fields">{(['titulo', 'descripcion', 'aviso'] as const).map(k => <Bilingue key={k} titulo={t(k === 'titulo' ? 'tituloTienda' : k === 'descripcion' ? 'descripcionCampo' : 'aviso')} valor={datos.textos[k]} multilinea={k !== 'titulo'} cambiar={valor => setDatos(d => ({ ...d, textos: { ...d.textos, [k]: valor } }))} />)}</div></section>}
     </fieldset>
     <ErroresAdmin campos={campos} abrir={abrirCampo} />

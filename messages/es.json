@@ -434,7 +434,11 @@
     "proveedoresDetalle": "Catálogo y sincronización de Eurocomp.",
     "usuarios": "Usuarios",
     "usuariosDetalle": "Cuentas, datos y permisos.",
-    "soporteDetalle": "Gestione empresas, equipos, tickets y mantenimientos."
+    "soporteDetalle": "Gestione empresas, equipos, tickets y mantenimientos.",
+    "operaciones": "Operaciones",
+    "tiendaContenido": "Tienda y contenido",
+    "resultados": "Resultados",
+    "inicioAyuda": "¿Qué desea gestionar hoy?"
   },
   "Error": {
     "etiqueta": "SIGAMOS CONECTADOS",
@@ -1512,7 +1516,7 @@
     "imagenes": "Imágenes",
     "imagenesAyuda": "La primera imagen será la portada del producto.",
     "especificaciones": "Especificaciones técnicas",
-    "precios": "Precio e inventario",
+    "precios": "Precios y oferta",
     "preciosAyuda": "Defina el precio normal y, si corresponde, una oferta con IVA incluido.",
     "publicacion": "Publicación",
     "publicacionAyuda": "Sin publicar, se guarda como borrador.",
@@ -1532,7 +1536,9 @@
     "publicados": "Publicados",
     "borradores": "Borradores",
     "imagenPendientePublicacion": "Agregue una foto real verificada para mostrar el producto en la tienda.",
-    "imagenPendienteCorta": "Imagen pendiente"
+    "imagenPendienteCorta": "Imagen pendiente",
+    "inventario": "Existencias",
+    "ventaPublicacion": "Venta y publicación"
   },
   "Analitica": {
     "masVistos": "Productos más vistos",
