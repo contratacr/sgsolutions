@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   const id = crypto.randomUUID();
   const db = basePedidosManuales(config);
   const { data:guardado,error } = await db.from('pedidos_manuales').insert({ id, entorno:process.env.SG_ENTORNO==='produccion'?'produccion':'pruebas', solicitud_asesoria_id:aprobacion.id, estado:'pendiente_pago', metodo: datos.metodo, total_productos: total, costo_envio: envio, total_cobrar: totalConEnvio, cliente: { ...datos.datos, ...aceptacionPedido(), idioma: datos.idioma, envio_cobro_separado:datos.datos.modalidad==='express' }, articulos }).select('referencia_numero').single();
-  if (error) {console.error('pedido_manual_fallido',{etapa:'guardar',codigo:/^[A-Z0-9]{1,12}$/.test(error.code??'')?error.code:'no_disponible'});await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
+  if (error) {console.error('pedido_manual_fallido',{etapa:'guardar',codigo:/^[A-Z0-9]{1,12}$/.test(error.code??'')?error.code:'no_disponible'});await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});if(error.message?.includes('STOCK_INSUFICIENTE'))return Response.json({error:'catalogo_actualizado'},{status:409});return Response.json({ error: 'no_disponible' }, { status: 503 });}
   await registrarOperacion('manual',id,datos.idioma);
   await cambiarAsesoria(aprobacion.id,'procesando',{estado:'utilizada',pedido_id:id});
   const numero = numeroPedido(id,guardado?.referencia_numero);

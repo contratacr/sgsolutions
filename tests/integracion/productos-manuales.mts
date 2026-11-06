@@ -93,3 +93,12 @@ test('la mezcla empresarial no desplaza ni duplica una oferta prioritaria',async
  assert.equal(pagina.productos.length,2);assert.equal(new Set(pagina.productos.map(p=>p.id)).size,2);
  assert.ok(pagina.productos.every(p=>p.precioOriginal!==null));
 });
+
+test('inventario manual se conserva al sincronizar y determina existencias públicas',async()=>{
+ const {catalogoTienda}=await import('../../src/lib/soluciones-empresariales');
+ const c=catalogo();c.productos[0]={...c.productos[0],stockManual:2};
+ const validado=esquemaCatalogo.parse(c);const p=publicarCatalogo(validado).productos[0];assert.equal(p.stockDisponible,2);assert.equal(p.disponibilidad,'proveedor');
+ assert.equal(reconciliarEurocomp(validado,{fecha:new Date().toISOString(),bodega:0,articulos:[]}).productos[0].stockManual,2);
+ const cero=publicarCatalogo({...validado,productos:[{...validado.productos[0],stockManual:0}]});assert.equal(cero.productos[0].disponibilidad,'agotado');assert.equal(catalogoTienda(cero).productos.length,0);
+ for(const stockManual of [-1,1.5,1000001])assert.equal(esquemaCatalogo.safeParse({...c,productos:[{...c.productos[0],stockManual}]}).success,false);
+});

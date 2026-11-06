@@ -19,14 +19,14 @@ import { crearClienteServidor } from '@/lib/supabase/servidor';
 import { basePedidosAdministracion } from '@/lib/tilopay';
 import { colones } from '@/lib/catalogo-modelo';
 import { enlacePedido, basePedidosManuales, configuracionPedidosManuales, numeroPedido, type EstadoPedidoManual } from '@/lib/pedidos-manuales';
-import { actualizarPedidoManual, reenviarCorreoPedido } from './acciones';
+import { actualizarPedidoManual, reenviarCorreoPedido,resolverInventarioPedido } from './acciones';
 import {costoEntrega} from '@/lib/envio';
 
 type Pedido = {
   id: string; referencia_numero?:number;
   creado_en: string;
   estado_entrega: EstadoEntrega;
-  archivado_en: string|null;archivado_motivo?:string|null;
+  archivado_en: string|null;archivado_motivo?:string|null;inventario_alerta?:boolean;
   estado: 'iniciado' | 'pendiente' | 'pagado' | 'rechazado' | 'error';
   entorno: 'pruebas' | 'produccion';
   resultado_tilopay: string|null;aviso_intento_estado?:string;
@@ -36,7 +36,7 @@ type Pedido = {
 };
 
 type Manual = {
-  id: string; referencia_numero?:number; creado_en: string; archivado_en:string|null;archivado_motivo?:string|null; estado_entrega: EstadoEntrega; estado: EstadoPedidoManual; metodo: 'sinpe' | 'transferencia';
+  id: string; referencia_numero?:number; creado_en: string; archivado_en:string|null;archivado_motivo?:string|null;inventario_alerta?:boolean; estado_entrega: EstadoEntrega; estado: EstadoPedidoManual; metodo: 'sinpe' | 'transferencia';
   total_productos: number; costo_envio: number | null; total_cobrar: number | null;
   cliente: { nombre?: string; apellidos?: string; correo?: string; telefono?: string; modalidad?: string; direccion?: string };
   articulos: { nombre?: string; cantidad?: number }[];
@@ -69,13 +69,13 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
   const idioma = await getLocale();
   const db = basePedidosAdministracion();
   const { data, error } = db
-    ? await db.from('pedidos_tilopay').select('id,referencia_numero,creado_en,estado,estado_entrega,archivado_en,archivado_motivo,entorno,total,cliente,articulos,resultado_tilopay,aviso_intento_estado').order('creado_en', { ascending: false }).limit(50)
+    ? await db.from('pedidos_tilopay').select('id,referencia_numero,creado_en,estado,estado_entrega,archivado_en,archivado_motivo,inventario_alerta,entorno,total,cliente,articulos,resultado_tilopay,aviso_intento_estado').order('creado_en', { ascending: false }).limit(50)
     : { data: null, error: null };
   const pedidos = (data ?? []) as Pedido[];
   const configManual = configuracionPedidosManuales();
   const manualDb = configManual ? basePedidosManuales(configManual) : null;
   const { data: manualData, error: manualError } = manualDb
-    ? await manualDb.from('pedidos_manuales').select('id,referencia_numero,creado_en,estado,estado_entrega,archivado_en,archivado_motivo,metodo,total_productos,costo_envio,total_cobrar,cliente,articulos,comprobante_path,correo_cliente_en,correo_pago_en').order('creado_en', { ascending: false }).limit(50)
+    ? await manualDb.from('pedidos_manuales').select('id,referencia_numero,creado_en,estado,estado_entrega,archivado_en,archivado_motivo,inventario_alerta,metodo,total_productos,costo_envio,total_cobrar,cliente,articulos,comprobante_path,correo_cliente_en,correo_pago_en').order('creado_en', { ascending: false }).limit(50)
     : { data: null, error: null };
   const manuales = (manualData ?? []) as Manual[];
   const contactosPedidos=new Map([...manuales,...pedidos].map(p=>[p.id,p.cliente]));
@@ -101,7 +101,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
         const total = p.total_cobrar ?? p.total_productos + (envio ?? 0);
         const enlace = new URL(enlacePedido(configManual!, p.id, configManual!.origen));
         const comprobante = p.comprobante_path ? await manualDb!.storage.from('comprobantes-pedidos').createSignedUrl(p.comprobante_path, 300) : null;
-        return {id:p.id,tipo:'manual',metodo:p.metodo,modalidad:p.cliente?.modalidad??'retiro',fecha:p.creado_en,pago:p.estado,estado:estadoGestion(p.estado,p.estado_entrega),archivado:Boolean(p.archivado_en),busqueda:[numeroPedido(p.id,p.referencia_numero),numeroPedido(p.id),p.cliente.nombre,p.cliente.apellidos,p.cliente.correo,p.cliente.telefono,...p.articulos.map(x=>x.nombre)].join(' '),contenido:<article key={p.id} className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{p.cliente.nombre} {p.cliente.apellidos}</strong><small>{numeroPedido(p.id,p.referencia_numero)} · <time dateTime={p.creado_en}>{new Intl.DateTimeFormat(idioma,{dateStyle:'medium'}).format(new Date(p.creado_en))}</time></small>{p.archivado_en&&<span className="pedido-archivo-etiqueta">{archivoT('estadoArchivado')}</span>}</div><div><small>{t(`metodo_${p.metodo}`)}</small><EstadosPedidoAdmin key="estados" pago={p.estado} entrega={p.estado_entrega}/></div><span>{t(`modalidad_${p.cliente?.modalidad==='digital'?'digital':p.cliente?.modalidad==='express'?'express':p.cliente?.modalidad==='envio'?'envio':'retiro'}`)}</span><strong>{colones(total)}</strong></summary><div className="panel-pedido-cuerpo">
+        return {id:p.id,tipo:'manual',metodo:p.metodo,modalidad:p.cliente?.modalidad??'retiro',fecha:p.creado_en,pago:p.estado,estado:estadoGestion(p.estado,p.estado_entrega),archivado:Boolean(p.archivado_en),busqueda:[numeroPedido(p.id,p.referencia_numero),numeroPedido(p.id),p.cliente.nombre,p.cliente.apellidos,p.cliente.correo,p.cliente.telefono,...p.articulos.map(x=>x.nombre)].join(' '),contenido:<article key={p.id} className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{p.cliente.nombre} {p.cliente.apellidos}</strong><small>{numeroPedido(p.id,p.referencia_numero)} · <time dateTime={p.creado_en}>{new Intl.DateTimeFormat(idioma,{dateStyle:'medium'}).format(new Date(p.creado_en))}</time></small>{p.archivado_en&&<span className="pedido-archivo-etiqueta">{archivoT('estadoArchivado')}</span>}</div><div><small>{t(`metodo_${p.metodo}`)}</small><EstadosPedidoAdmin key="estados" pago={p.estado} entrega={p.estado_entrega}/></div><span>{t(`modalidad_${p.cliente?.modalidad==='digital'?'digital':p.cliente?.modalidad==='express'?'express':p.cliente?.modalidad==='envio'?'envio':'retiro'}`)}</span><strong>{colones(total)}</strong></summary><div className="panel-pedido-cuerpo">{p.inventario_alerta&&<div role="alert"><p>{reales('inventarioAlerta')}</p><form action={resolverInventarioPedido}><input type="hidden" name="id" value={p.id}/><input type="hidden" name="tipo" value="manual"/><button className="boton boton-contorno">{reales('resolverInventario')}</button></form></div>}
           <div className="pedido-real-contexto"><div className="pedidos-admin-encabezado"><div><strong>{p.cliente?.nombre} {p.cliente?.apellidos}</strong><small>{p.cliente?.correo} · {p.cliente?.telefono}</small></div></div>
           <p>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Costa_Rica' }).format(new Date(p.creado_en))} · {t(`metodo_${p.metodo}`)} · {t(`modalidad_${p.cliente?.modalidad==='digital'?'digital':p.cliente?.modalidad === 'express'?'express':p.cliente?.modalidad === 'envio' ? 'envio' : 'retiro'}`)}</p>
           </div><div className="pedido-real-contacto"><ContactoPedidoAdmin key="contacto" cliente={p.cliente} pagoPendiente={['revision','pendiente_pago'].includes(p.estado)} referencia={numeroPedido(p.id,p.referencia_numero)}/></div><div className="pedido-real-productos"><h3>{propuesta('productos')}</h3>
@@ -120,7 +120,7 @@ export default async function Pedidos({ searchParams }: { searchParams: Promise<
           {(p.estado === 'revision' || p.estado === 'pendiente_pago' || p.estado === 'comprobante_recibido') && <form action={actualizarPedidoManual}><input type="hidden" name="id" value={p.id}/><input type="hidden" name="estado" value="cancelado"/><button className="boton boton-contorno">{t('cancelar')}</button></form>}
         </div></div></details></article>};
       }));
-  const tarjetaItems:ItemPedidoReal[]=pedidos.map(pedido => ({id:pedido.id,tipo:'tarjeta',metodo:'tarjeta',modalidad:pedido.cliente?.modalidad??'retiro',fecha:pedido.creado_en,pago:pedido.estado,estado:estadoGestion(pedido.estado,pedido.estado_entrega),archivado:Boolean(pedido.archivado_en),busqueda:[numeroPedido(pedido.id,pedido.referencia_numero),numeroPedido(pedido.id),pedido.id,pedido.cliente.nombre,pedido.cliente.apellidos,pedido.cliente.correo,...pedido.articulos.map(x=>x.nombre)].join(' '),contenido:<article key={pedido.id} className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{pedido.cliente.nombre} {pedido.cliente.apellidos}</strong><small>{numeroPedido(pedido.id,pedido.referencia_numero)} · <time dateTime={pedido.creado_en}>{new Intl.DateTimeFormat(idioma,{dateStyle:'medium'}).format(new Date(pedido.creado_en))}</time> · {t(pedido.entorno)}</small>{pedido.archivado_en&&<span className="pedido-archivo-etiqueta">{archivoT('estadoArchivado')}</span>}</div><div><small>{propuesta('metodo_tarjeta')}</small><EstadosPedidoAdmin key="estados" pago={pedido.estado} entrega={pedido.estado_entrega}/></div><span>{t(`modalidad_${pedido.cliente?.modalidad==='digital'?'digital':pedido.cliente?.modalidad==='express'?'express':pedido.cliente?.modalidad==='envio'?'envio':'retiro'}`)}</span><strong>{colones(pedido.total)}</strong></summary><div className="panel-pedido-cuerpo">
+  const tarjetaItems:ItemPedidoReal[]=pedidos.map(pedido => ({id:pedido.id,tipo:'tarjeta',metodo:'tarjeta',modalidad:pedido.cliente?.modalidad??'retiro',fecha:pedido.creado_en,pago:pedido.estado,estado:estadoGestion(pedido.estado,pedido.estado_entrega),archivado:Boolean(pedido.archivado_en),busqueda:[numeroPedido(pedido.id,pedido.referencia_numero),numeroPedido(pedido.id),pedido.id,pedido.cliente.nombre,pedido.cliente.apellidos,pedido.cliente.correo,...pedido.articulos.map(x=>x.nombre)].join(' '),contenido:<article key={pedido.id} className="pedidos-admin-tarjeta"><details className="panel-pedido-detalle"><summary><div><strong>{pedido.cliente.nombre} {pedido.cliente.apellidos}</strong><small>{numeroPedido(pedido.id,pedido.referencia_numero)} · <time dateTime={pedido.creado_en}>{new Intl.DateTimeFormat(idioma,{dateStyle:'medium'}).format(new Date(pedido.creado_en))}</time> · {t(pedido.entorno)}</small>{pedido.archivado_en&&<span className="pedido-archivo-etiqueta">{archivoT('estadoArchivado')}</span>}</div><div><small>{propuesta('metodo_tarjeta')}</small><EstadosPedidoAdmin key="estados" pago={pedido.estado} entrega={pedido.estado_entrega}/></div><span>{t(`modalidad_${pedido.cliente?.modalidad==='digital'?'digital':pedido.cliente?.modalidad==='express'?'express':pedido.cliente?.modalidad==='envio'?'envio':'retiro'}`)}</span><strong>{colones(pedido.total)}</strong></summary><div className="panel-pedido-cuerpo">{pedido.inventario_alerta&&<div role="alert"><p>{reales('inventarioAlerta')}</p><form action={resolverInventarioPedido}><input type="hidden" name="id" value={pedido.id}/><input type="hidden" name="tipo" value="tarjeta"/><button className="boton boton-contorno">{reales('resolverInventario')}</button></form></div>}
           <div className="pedido-real-contexto"><div className="pedidos-admin-encabezado">
             <div><strong>{pedido.cliente?.nombre} {pedido.cliente?.apellidos}</strong><small>{pedido.cliente?.correo}</small></div>
 

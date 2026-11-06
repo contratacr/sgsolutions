@@ -64,7 +64,7 @@ export function clasificacionesDeProducto(p:CatalogoPublico['productos'][number]
  return p.clasificaciones??[{categoria:p.categoria,subcategoria:p.subcategoria}];
 }
 export function catalogoTienda(c:CatalogoPublico):CatalogoPublico{
- return {...c,categorias:[categoriaEmpresarial,...c.categorias.filter(x=>x.id!==categoriaEmpresarial.id)],productos:c.productos.map(p=>{
+ return {...c,categorias:[categoriaEmpresarial,...c.categorias.filter(x=>x.id!==categoriaEmpresarial.id)],productos:c.productos.filter(p=>!(p.origen==='manual'&&p.stockDisponible===0)).map(p=>{
   const marcaOriginal=p.marca;
   const solucion=solucionDeProducto(p),rama=solucionesEmpresariales.find(x=>x.id===solucion);
   const general=clasificacionGeneral(p),principal=rama?{categoria:categoriaEmpresarial.id,subcategoria:rama.nombre}:general;

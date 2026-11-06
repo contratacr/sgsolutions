@@ -1,5 +1,5 @@
 'use client';
-import {limiteCantidadProducto} from '@/lib/software';
+import {maximoDisponibleProducto} from '@/lib/software';
 import {PrecioProducto} from './precio-producto';
 import Image from 'next/image';
 import {useCallback,useEffect,useId,useState} from 'react';
@@ -10,7 +10,8 @@ import {IndicadorCantidad} from './indicador-cantidad';
 import { ShoppingCart, Trash2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import Link from 'next/link';
+import Link,{useLinkStatus} from 'next/link';
+import {usePathname} from 'next/navigation';
 import {enlaceIngresoCompra} from '@/lib/retorno-compra';
 import { cambiarCantidad, useCarrito } from '@/lib/carrito';
 import {useCatalogo} from './datos-catalogo';
@@ -19,7 +20,14 @@ import {ContadorCantidad} from './contador-cantidad';
 import {EsqueletoCarrito} from './esqueletos';
 
 
+function EstadoFinalizar(){
+  const {pending}=useLinkStatus();
+  const t=useTranslations('Carrito');
+  return <span aria-live="polite" aria-busy={pending}>{t(pending?'abriendoCompra':'finalizar')}</span>;
+}
+
 export function Carrito({sesionIniciada=false,cantidadIndicador}:{sesionIniciada?:boolean;cantidadIndicador?:number|null}) {
+  const ruta=usePathname();
   const acceso=useTranslations('AccesoCompra');
   const t = useTranslations('Carrito');
 
@@ -33,6 +41,8 @@ export function Carrito({sesionIniciada=false,cantidadIndicador}:{sesionIniciada
   const faltantes=todas.some(l=>!productos.some(p=>p.id===l.id)&&!noDisponibles.includes(l.id));
   const descripcionCantidad=useId();
   const [abierto,setAbierto]=useState(false),[aviso,setAviso]=useState<{id:string;agregadas:number}|null>(null);
+  const [rutaAnterior,setRutaAnterior]=useState(ruta);
+  if(rutaAnterior!==ruta){setRutaAnterior(ruta);setAbierto(false);}
   const cerrarAviso=useCallback(()=>setAviso(null),[]);
   useEffect(()=>{const agregado=(evento:Event)=>setAviso((evento as CustomEvent<{id:string;agregadas:number}>).detail);window.addEventListener('sg-carrito-agregado',agregado);window.addEventListener('sg-favorito-guardado',cerrarAviso);return()=>{window.removeEventListener('sg-carrito-agregado',agregado);window.removeEventListener('sg-favorito-guardado',cerrarAviso);};},[cerrarAviso]);
   const productoAviso=aviso?productos.find(p=>p.id===aviso.id):undefined;
@@ -48,12 +58,12 @@ export function Carrito({sesionIniciada=false,cantidadIndicador}:{sesionIniciada
       {lineas.length === 0 && todas.length>0 ? null : lineas.length === 0 ? <div className="carrito-vacio"><ShoppingCart size={44} aria-hidden="true"/><p>{faltantes?tienda('productoNoDisponible'):t('vacio')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/tienda">{t('explorar')}</Link></Dialog.Close></div> : <>
         <ul className="carrito-lineas">{lineas.map(linea => {
           const producto = productos.find(p => p.id === linea.id)!;
-          return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><PrecioProducto producto={producto} pendiente={tienda('precioPendiente')}/><ContadorCantidad maximo={limiteCantidadProducto(linea.id)} cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;
+          return <li key={linea.id}><Image src={producto.imagen} alt={nombre(linea.id)} width={80} height={80}/><div className="carrito-producto"><strong>{nombre(linea.id)}</strong><PrecioProducto producto={producto} pendiente={tienda('precioPendiente')}/><ContadorCantidad maximo={maximoDisponibleProducto(producto)} cantidad={linea.cantidad} nombre={nombre(linea.id)} cambiar={cantidad=>cambiarCantidad(linea.id,cantidad)}/></div><button className="boton-icono" aria-label={t('quitar', {nombre: nombre(linea.id)})} onClick={() => cambiarCantidad(linea.id, 0)}><Trash2 size={18}/></button></li>;
         })}</ul>
 
       </>}
       </div>
-      {lineas.length>0&&<div className="carrito-resumen"><div><strong>{t('total')}</strong><strong>{lineas.some(l=>productos.find(p=>p.id===l.id)!.precio===null)?t('pendiente'):colones(lineas.reduce((a,l)=>a+productos.find(p=>p.id===l.id)!.precio!*l.cantidad,0))}</strong></div><p>{t('nota')}</p><Dialog.Close asChild><Link className="boton boton-azul" href="/pagar">{t('finalizar')}</Link></Dialog.Close>{!sesionIniciada&&<Dialog.Close asChild><Link className="carrito-ingreso" href={enlaceIngresoCompra()}>{acceso('carrito')}</Link></Dialog.Close>}</div>}
+      {lineas.length>0&&<div className="carrito-resumen"><div><strong>{t('total')}</strong><strong>{lineas.some(l=>productos.find(p=>p.id===l.id)!.precio===null)?t('pendiente'):colones(lineas.reduce((a,l)=>a+productos.find(p=>p.id===l.id)!.precio!*l.cantidad,0))}</strong></div><p>{t('nota')}</p><Link className="boton boton-azul" href="/pagar"><EstadoFinalizar/></Link>{!sesionIniciada&&<Dialog.Close asChild><Link className="carrito-ingreso" href={enlaceIngresoCompra()}>{acceso('carrito')}</Link></Dialog.Close>}</div>}
     </MarcoModal></Dialog.Portal>
   </Dialog.Root>{aviso&&<ConfirmacionAccion clase="carrito-confirmacion" titulo={t(aviso.agregadas>0?'productoAgregado':'noAgregado')} icono={<ShoppingCart size={21}/>} reiniciar={aviso} cerrar={cerrarAviso} accion={<button type="button" onClick={()=>{cerrarAviso();setAbierto(true);}}>{t('verCarrito')}</button>}>
    {aviso.agregadas>0&&<><small>{t('resumenAgregado',{cantidad:aviso.agregadas,total:cantidad})}</small><p className="carrito-confirmacion-producto">{productoAviso&&<Image src={productoAviso.imagen} alt="" width={44} height={44}/>}<span>{traducir(productoAviso?.nombre??{es:'',en:''},idioma)}</span></p></>}

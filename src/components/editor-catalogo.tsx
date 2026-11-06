@@ -1,7 +1,7 @@
 'use client';
 
 import {CampoFechaOferta} from './campo-fecha-oferta';
-import {esProductoEurocomp} from '@/lib/catalogo-fuente';
+import {esProductoEurocomp,esProductoManual} from '@/lib/catalogo-fuente';
 import Image from 'next/image';
 import {tieneImagenProducto} from '@/lib/imagenes-productos';
 import { useEffect, useRef, useState, useTransition, useSyncExternalStore } from 'react';
@@ -68,7 +68,8 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
         <label>{t('ofertaInicio')}<CampoFechaOferta valor={p.ofertaInicio} cambiar={ofertaInicio=>cambiar(i,{ofertaInicio})}/></label>
         <label>{t('ofertaFin')}<CampoFechaOferta valor={p.ofertaFin} cambiar={ofertaFin=>cambiar(i,{ofertaFin})}/></label>
         <small className="admin-oferta-ancho">{t('ofertaFechasNota')}</small>
-        <label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>
+        {esProductoManual(p)&&<><label className="admin-check"><input type="checkbox" checked={p.stockManual!=null} onChange={e=>cambiar(i,{stockManual:e.target.checked?0:null,...(!e.target.checked?{disponibilidadReferencia:'proveedor' as const}:{})})}/>{t('controlExistencias')}</label>{p.stockManual!=null&&<label>{t('existenciasManuales')}<input type="number" min="0" max="1000000" step="1" value={p.stockManual} onChange={e=>cambiar(i,{stockManual:Number(e.target.value)})}/><small>{t('existenciasNota')}</small></label>}</>}
+        <label>{t('disponibilidadManual')}<select disabled={esProductoManual(p)&&p.stockManual!=null} value={esProductoManual(p)&&p.stockManual!=null?(p.stockManual===0?'agotado':'proveedor'):p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>
         <label>{t('codigoFabricante')}<input value={p.codigoFabricante} maxLength={100} onChange={e => cambiar(i, { codigoFabricante: e.target.value })} /></label>
       </div>
     </section>
@@ -197,7 +198,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
         <EditorProducto p={datos.productos[productoAbierto]} i={productoAbierto} datos={datos} idioma={idioma} cambiar={cambiarProducto} onBusy={setCargandoImagenes} cerrar={cerrarProducto} eliminar={indice => { setDatos(d => ({ ...d, productos: d.productos.filter((_, j) => indice !== j) })); cerrarProducto(); }} />
       </div> : tab === 'productos' && <>
         <div className="admin-lista-cabecera" ref={listaRef}>
-          <button type="button" className="boton boton-azul" disabled={datos.productos.length>=20000} onClick={()=>{const id=`manual-${crypto.randomUUID()}`;const producto:Producto={id,origen:'manual',categoria:datos.categorias[0].id,nombre:{es:'',en:''},descripcion:{es:'',en:''},imagen:'/imagenes/producto-sin-imagen.svg',imagenes:[],especificaciones:[],marca:'',codigoFabricante:'',inventarioPropio:false,costoUsd:null,costoCrc:null,precioReferencia:null,precioManual:null,precioDescuento:null,disponibilidadReferencia:'consultar',revisionPrecio:false,publicado:false,destacado:false};setDatos(d=>({...d,productos:[producto,...d.productos]}));setFiltroEstado('todos');setCategoriaFiltro('todos');setBuscar('');setPaginaAdmin(1);setEditorId(id);setEstado('');}}>{t('agregarProducto')}</button>
+          <button type="button" className="boton boton-azul" disabled={datos.productos.length>=20000} onClick={()=>{const id=`manual-${crypto.randomUUID()}`;const producto:Producto={id,origen:'manual',categoria:datos.categorias[0].id,nombre:{es:'',en:''},descripcion:{es:'',en:''},imagen:'/imagenes/producto-sin-imagen.svg',imagenes:[],especificaciones:[],marca:'',codigoFabricante:'',stockManual:0,inventarioPropio:false,costoUsd:null,costoCrc:null,precioReferencia:null,precioManual:null,precioDescuento:null,disponibilidadReferencia:'consultar',revisionPrecio:false,publicado:false,destacado:false};setDatos(d=>({...d,productos:[producto,...d.productos]}));setFiltroEstado('todos');setCategoriaFiltro('todos');setBuscar('');setPaginaAdmin(1);setEditorId(id);setEstado('');}}>{t('agregarProducto')}</button>
           <div><h2>{t('productos')}</h2><p>{u('resultados', { cantidad: seleccion.length })} · {u('mostrando', { inicio: seleccion.length ? (paginaVisible - 1) * POR_PAGINA + 1 : 0, fin: Math.min(paginaVisible * POR_PAGINA, seleccion.length) })}</p></div>
         </div>
         <div className="admin-lista-filtros">
@@ -220,6 +221,6 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
     </fieldset>
     <ErroresAdmin campos={campos} abrir={abrirCampo} />
     <div className="admin-actions"><button type="button" className="boton boton-azul" disabled={ocupado || cargandoImagenes} onClick={guardar}>{t(ocupado ? 'guardando' : 'guardar')}</button><button type="button" className="boton boton-contorno" disabled={ocupado || cargandoImagenes} onClick={() => { if (window.confirm(u('descartar'))) { setDatos(ultimoGuardado); setCampos([]); setEstado(''); setEditorId(null); } }}>{t('restablecer')}</button><span role="status">{estado && estado !== 'guardado' ? t(estado) : pendientes ? m('pendientes') : estado ? t(estado) : t('notaGuardar')}</span></div>
-    {estado==='guardado'&&!pendientes&&editorId&&<p className="admin-publicacion-nota" aria-live="polite">{t(ultimoGuardado.productos.find(p=>p.id===editorId)?.publicado?'guardadoPublicado':'guardadoBorrador')}</p>}
+    {estado==='guardado'&&!pendientes&&editorId&&<p className="admin-publicacion-nota" aria-live="polite">{t(ultimoGuardado.productos.find(p=>p.id===editorId)?.publicado?(ultimoGuardado.productos.find(p=>p.id===editorId)?.stockManual===0?'guardadoSinExistencias':'guardadoPublicado'):'guardadoBorrador')}</p>}
   </div>;
 }

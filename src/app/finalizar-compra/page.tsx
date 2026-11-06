@@ -11,12 +11,14 @@ export async function generateMetadata() {
   return { title: t("titulo"), robots: { index: false, follow: false }, referrer:"no-referrer" as const };
 }
 export default async function Compra({searchParams}:{searchParams:Promise<{asesoria?:string;acceso?:string}>}) {
-  const parametros=await searchParams;
-  const solicitud=await leerAprobacion(parametros.asesoria??"",parametros.acceso??"",true);
+  const [parametros,solicitud,perfilCompra,{pagos}]=await Promise.all([
+    searchParams,
+    searchParams.then(p=>leerAprobacion(p.asesoria??"",p.acceso??"",true)),
+    leerPerfilCompra(),
+    leerContenido(),
+  ]);
   const aprobacion=solicitud?{id:solicitud.id,token:solicitud.token!,articulos:solicitud.articulos,contacto:solicitud.contacto}:null;
-  const perfilCompra=await leerPerfilCompra();
   const proveedores=perfilCompra?{google:false}:await proveedoresCuenta();
-  const { pagos } = await leerContenido();
   return (
     <main id="contenido" className="contenedor compra-pagina">
       <FinalizarCompra googleDisponible={proveedores.google} datosGuardados={perfilCompra?.datos} cuentaDisponible={Boolean(perfilCompra)} enlaceInvalido={Boolean((parametros.asesoria||parametros.acceso)&&!aprobacion)} aprobacion={aprobacion} pagos={pagos} tarjetaEnPruebas={process.env.TILOPAY_MODO !== "produccion"} tarjetaDisponible={Boolean(configuracionTilopay() && process.env.TILOPAY_RETORNO_URL)} pedidosManualesDisponibles={Boolean(configuracionPedidosManuales())} />

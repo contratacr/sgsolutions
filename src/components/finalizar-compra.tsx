@@ -1,4 +1,5 @@
 "use client";
+import {flushSync} from 'react-dom';
 import {DURACION_BORRADOR_COMPRA,depurarBorradoresCompra,huellaCompra,huellaBorrador} from '@/lib/borrador-compra';
 import {DireccionCompra} from './direccion-compra';
 import {normalizarComprobante} from '@/lib/archivo-comprobante';
@@ -42,7 +43,8 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
     l = useLocale(),
     c = useCatalogo(),
     carrito = useCarrito();
-  const lineas=aprobacion?aprobacion.articulos.map(x=>({id:x.producto.id,cantidad:x.cantidad})):carrito;
+  const [lineasConfirmadas,setLineasConfirmadas]=useState<{id:string;cantidad:number}[]|null>(null);
+  const lineas=lineasConfirmadas??(aprobacion?aprobacion.articulos.map(x=>({id:x.producto.id,cantidad:x.cantidad})):carrito);
 
   const [errorStock,setErrorStock]=useState(false);
   const [camposInvalidos,setCamposInvalidos]=useState<string[]>([]);
@@ -66,7 +68,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
   const bloqueoRevision=useRef(false);
   const [guardandoCompra,setGuardandoCompra]=useState(false);
   useEffect(()=>{
-    const volver=()=>{setProcesando(false);setGuardandoCompra(false);bloqueoRevision.current=false;};
+    const volver=()=>{setLineasConfirmadas(null);setProcesando(false);setGuardandoCompra(false);bloqueoRevision.current=false;};
     window.addEventListener('pageshow',volver);
     window.addEventListener('sg-app-resume',volver);
     return()=>{window.removeEventListener('pageshow',volver);window.removeEventListener('sg-app-resume',volver);};
@@ -165,7 +167,7 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
   const bloqueado =
     (!aprobacion && c.errorCarrito) ||
     productos.length !== lineas.length ||
-    productos.some((x) => x.p.disponibilidad === "agotado");
+    productos.some((x) => x.p.disponibilidad === "agotado"||(x.p.origen==='manual'&&typeof x.p.stockDisponible==='number'&&x.cantidad>x.p.stockDisponible));
   const pendiente = productos.length !== lineas.length || productos.some((x) => x.p.precio === null),
     subtotal = productos.reduce((s, x) => s + (x.p.precio ?? 0) * x.cantidad, 0),
     envio = costoEntrega(soloDigital?'digital':express?'express':entrega?'envio':'retiro'),
@@ -260,6 +262,8 @@ export function FinalizarCompra({ simularPedido, datosGuardados={},cuentaDisponi
       if (!respuesta.ok || typeof ruta !== 'string' || !(/^\/pedido\/[A-Za-z0-9_-]{64}$/.test(ruta) || ruta.startsWith('/finalizar-compra/pedido?'))) throw new Error('PEDIDO_NO_DISPONIBLE');
       const destino=new URL(ruta,window.location.origin);
       await adjuntarComprobantePedido(destino,comprobante);
+      // Keep the confirmed summary painted before the external cart store notifies subscribers.
+      flushSync(()=>setLineasConfirmadas(lineas));
       if (!aprobacion) retirarArticulosPedido(productos.map(x => ({id:x.p.id,cantidad:x.cantidad})));
       limpiarBorrador();
       window.location.assign(destino.href);

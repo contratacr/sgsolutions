@@ -328,6 +328,7 @@
     "noAgregado": "You reached the cart limit. Review your quantities.",
     "verCarrito": "View cart",
     "resumenAgregado": "{cantidad, plural, one {# item added} other {# items added}} · {total, plural, one {# item in your cart} other {# items in your cart}}",
+    "abriendoCompra": "Opening checkout…",
     "finalizar": "Checkout"
   },
   "Pedido": {
@@ -692,7 +693,12 @@
     "ofertaFechasNota": "No start: begins now. No end: continues until you remove it. Costa Rica time (UTC−6).",
     "protegerPrecio": "Keep this regular price when syncing the supplier",
     "destacadoNota": "Gives visibility in Recommended. Does not change the price or require a sale.",
-    "ofertaAutomatica": "Active sales appear first in Recommended."
+    "ofertaAutomatica": "Active sales appear first in Recommended.",
+    "controlExistencias": "Track own inventory",
+    "existenciasManuales": "Units available to sell",
+    "existenciasNota": "Exclude units reserved for pending orders. At zero, the product is hidden from the store. With tracking disabled, it is sold on order.",
+    "inventarioReservado": "Pending orders have reserved units. Resolve them before deleting this product or disabling inventory tracking.",
+    "guardadoSinExistencias": "Product saved. It is out of stock and hidden from the store until you replenish it."
   },
   "ServiciosSoporte": {
     "etiqueta": "OUR SERVICES",
@@ -904,7 +910,8 @@
     "cantidad": "Quantity",
     "existenciasProveedor": "Available from supplier: {cantidad}",
     "disponibles": "{cantidad} available",
-    "coleccion": "Collection"
+    "coleccion": "Collection",
+    "existenciasPropias": "{cantidad} units available in our inventory"
   },
   "MensajePedido": {
     "titulo": "Order request · SG Solutions",
@@ -2426,7 +2433,9 @@
   "PedidosReales": {
     "avisoIntentoIncierto": "The internal notification needs review. Check the email logs before resending to avoid duplicates.",
     "crear": "Create order",
-    "enlace": "Purchase link"
+    "enlace": "Purchase link",
+    "inventarioAlerta": "Payment received after the reservation expired. Insufficient stock: review this order before fulfilment.",
+    "resolverInventario": "Retry inventory allocation"
   },
   "SolucionesEmpresariales": {
     "titulo": "Business Solutions",

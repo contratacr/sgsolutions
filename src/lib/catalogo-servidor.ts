@@ -12,7 +12,7 @@ let inicialValidado:CatalogoAdmin|undefined;
 export function obtenerCatalogoInicial(){
  return inicialValidado??=incorporarEmpresariales(migrarCatalogoManual(esquemaCatalogo.parse(inicial)));
 }
-export const leerCatalogoPublico=cache(async():Promise<CatalogoPublico>=>{
+const leerCatalogoCompleto=cache(async():Promise<CatalogoPublico>=>{
   const local=await leerLocal('catalogo');if(local)return publicarCatalogo(incorporarEmpresariales(migrarCatalogoManual(esquemaCatalogo.parse(local.contenido))));
   const cliente=await crearClienteServidor();
   if(!cliente) return publicarCatalogo(obtenerCatalogoInicial());
@@ -24,6 +24,8 @@ export const leerCatalogoPublico=cache(async():Promise<CatalogoPublico>=>{
   const ids=new Set(c.productos.map(p=>p.id));
   return {...c,productos:[...c.productos,...empresas.filter(p=>!ids.has(p.id))]};
 });
+
+export const leerCatalogoPublico=cache(async()=>{const c=await leerCatalogoCompleto();return {...c,productos:c.productos.filter(p=>!(p.origen==='manual'&&p.stockDisponible===0))};});
 
 // Only for authenticated administrators preparing an assisted order.
 export async function leerProductosAsesoria(){

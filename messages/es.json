@@ -328,6 +328,7 @@
     "noAgregado": "Alcanzó el límite del carrito. Revise sus cantidades.",
     "verCarrito": "Ver carrito",
     "resumenAgregado": "{cantidad, plural, one {# unidad agregada} other {# unidades agregadas}} · {total, plural, one {# producto en su carrito} other {# productos en su carrito}}",
+    "abriendoCompra": "Abriendo compra…",
     "finalizar": "Finalizar compra"
   },
   "Pedido": {
@@ -692,7 +693,12 @@
     "ofertaFechasNota": "Sin inicio: comienza ahora. Sin fin: continúa hasta que usted la quite. Hora de Costa Rica (UTC−6).",
     "protegerPrecio": "Conservar este precio normal al sincronizar el proveedor",
     "destacadoNota": "Da visibilidad en Recomendados. No cambia el precio ni exige una oferta.",
-    "ofertaAutomatica": "Las ofertas vigentes aparecen primero en Recomendados."
+    "ofertaAutomatica": "Las ofertas vigentes aparecen primero en Recomendados.",
+    "controlExistencias": "Controlar existencias propias",
+    "existenciasManuales": "Unidades disponibles para vender",
+    "existenciasNota": "No incluya unidades reservadas por pedidos pendientes. Al llegar a cero, el producto deja de mostrarse en la tienda. Si desactiva el control, se venderá bajo pedido.",
+    "inventarioReservado": "Hay pedidos con existencias reservadas. No puede eliminar el producto ni desactivar su control hasta resolverlos.",
+    "guardadoSinExistencias": "Producto guardado. Está sin existencias y no se muestra en la tienda hasta que reponga unidades."
   },
   "ServiciosSoporte": {
     "etiqueta": "NUESTROS SERVICIOS",
@@ -904,7 +910,8 @@
     "cantidad": "Cantidad",
     "existenciasProveedor": "Disponibles en proveedor: {cantidad}",
     "disponibles": "{cantidad} disponibles",
-    "coleccion": "Colección"
+    "coleccion": "Colección",
+    "existenciasPropias": "{cantidad} unidades disponibles en inventario propio"
   },
   "MensajePedido": {
     "titulo": "Solicitud de pedido · SG Solutions",
@@ -2426,7 +2433,9 @@
   "PedidosReales": {
     "avisoIntentoIncierto": "El envío del aviso interno requiere revisión. Compruebe los registros de correo antes de reenviarlo para evitar duplicados.",
     "crear": "Crear pedido",
-    "enlace": "Enlace de compra"
+    "enlace": "Enlace de compra",
+    "inventarioAlerta": "Pago recibido después de vencer la reserva. Faltan existencias: revise este pedido antes de preparar la entrega.",
+    "resolverInventario": "Reintentar asignación de existencias"
   },
   "SolucionesEmpresariales": {
     "titulo": "Soluciones Empresariales",

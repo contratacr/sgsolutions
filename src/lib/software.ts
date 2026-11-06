@@ -6,3 +6,5 @@ export function esProductoSoftware(p:{id:string;categoria?:string;marca?:string;
 export function limiteCantidadProducto(id:string){return id===SOFTWARE_ID?30:99;}
 export function compraSoloDigital(articulos:readonly {producto:{id:string;categoria?:string;marca?:string;codigoFabricante?:string}}[]){return articulos.length>0&&articulos.every(a=>esProductoSoftware(a.producto));}
 export function modalidadCompraValida(articulos:Parameters<typeof compraSoloDigital>[0],modalidad:string){return compraSoloDigital(articulos)?modalidad==='digital':modalidad!=='digital';}
+
+export function maximoDisponibleProducto(p:{id:string;origen?:string;stockDisponible?:number|null}){return p.origen==='manual'&&typeof p.stockDisponible==='number'?Math.min(limiteCantidadProducto(p.id),p.stockDisponible):limiteCantidadProducto(p.id);}

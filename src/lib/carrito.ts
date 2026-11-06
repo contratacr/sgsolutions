@@ -64,10 +64,10 @@ export function cambiarCantidad(id: ProductoId, cantidad: number) {
   const actuales = obtener().filter(linea => linea.id !== id);
   guardar(cantidad ? [...actuales, { id, cantidad }] : actuales);
 }
-export function agregarProducto(id: ProductoId, unidades=1, avisar=true) {
+export function agregarProducto(id: ProductoId, unidades=1, avisar=true, maximo=limiteCantidadProducto(id)) {
   if(id.startsWith('empresa-intcomex-')||!Number.isInteger(unidades)||unidades<1||unidades>limiteCantidadProducto(id))return;
   const cantidad = obtener().find(linea => linea.id === id)?.cantidad ?? 0;
-  cambiarCantidad(id, Math.min(cantidad + unidades, limiteCantidadProducto(id)));
+  cambiarCantidad(id, Math.min(cantidad + unidades, limiteCantidadProducto(id),maximo));
   const agregadas=(obtener().find(l=>l.id===id)?.cantidad??0)-cantidad;
   if(agregadas>0)medir('carrito',id);
   if(avisar)window.dispatchEvent(new CustomEvent('sg-carrito-agregado',{detail:{id,agregadas}}));

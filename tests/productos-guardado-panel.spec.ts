@@ -20,7 +20,7 @@ for(const idioma of ['es','en'] as const)test('borrador visible, publicación co
  await editor.getByLabel(t.publicado,{exact:true}).check();await guardar.click();await expect(estado).toHaveText(t.publicacionInvalida);expect(JSON.parse(await readFile(archivo,'utf8')).revision).toBe(inicial.revision);
  await editor.locator('input[type=file]').setInputFiles('public/imagenes/logo-principal.png');await expect(editor.locator('.gestor-foto')).toHaveCount(1);
  await editor.getByLabel(`${t.nombre} (${u.idiomaEs})`,{exact:true}).fill('Nombre cambiado QA');
- await editor.getByLabel(t.codigoFabricante,{exact:true}).fill('QA-GUARDADO');await editor.getByLabel(t.precioManual,{exact:false}).fill('25000');
+ await editor.getByLabel(t.codigoFabricante,{exact:true}).fill('QA-GUARDADO');await editor.getByLabel(t.precioManual,{exact:false}).fill('25000');await editor.getByLabel(t.existenciasManuales,{exact:false}).fill('5');
  await guardar.click();await expect(estado).toHaveText(t.guardado);await expect(page.locator('.admin-publicacion-nota')).toHaveText(t.guardadoPublicado);
  const publicado=JSON.parse(await readFile(archivo,'utf8'));expect(publicado.revision).toBe(inicial.revision+1);expect(publicado.contenido.productos.filter((x:{origen?:string})=>x.origen==='manual')).toHaveLength(1);expect(publicado.contenido.productos[0]).toMatchObject({id:p.id,slug:p.slug,publicado:true,precioManual:25000});
  await guardar.click();await expect(estado).toHaveText(t.guardado);expect(JSON.parse(await readFile(archivo,'utf8')).contenido.productos.filter((x:{origen?:string})=>x.origen==='manual')).toHaveLength(1);

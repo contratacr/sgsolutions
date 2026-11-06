@@ -22,7 +22,7 @@ export async function guardarCatalogo(datos:unknown,revision:number){
  if(!validado.success||descuentosInvalidos(validado.data).length>0||!Number.isInteger(revision)||revision<0)return {error:'validacion'};
  if(publicacionesManualesInvalidas(validado.data).length)return {error:'publicacionInvalida'};
  const {data,error}=await cliente.rpc('guardar_catalogo',{privado:migrarCatalogoManual(validado.data),visible:publicarCatalogo(migrarCatalogoManual(validado.data)),revision_esperada:revision});
- if(error)return {error:error.message.includes('CONFLICTO')?'conflicto':'error'};
+ if(error)return {error:error.message.includes('CONFLICTO')?'conflicto':error.message.includes('INVENTARIO_CON_RESERVAS')?'inventarioReservado':'error'};
  if(!Number.isInteger(data)||data!==revision+1)return {error:'error'};
  revalidatePath('/','layout');
  return {revision:Number(data)};

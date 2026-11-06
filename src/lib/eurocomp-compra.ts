@@ -41,7 +41,7 @@ export async function verificarCompraEurocomp(articulos:{producto:CatalogoPublic
  for(const {producto,cantidad} of articulos){
   if(esProductoSoftware(producto)||esProductoManual(producto)){
    const actual=privado.productos.find(p=>p.id===producto.id&&(esProductoSoftware(p)||esProductoManual(p)));
-   if(!actual?.publicado||actual.disponibilidadReferencia==='agotado'||cantidad<1||!Number.isInteger(cantidad)||cantidad>limiteCantidadProducto(producto.id)||preciosProducto(actual,ajustes).precio!==producto.precio)throw new ErrorEurocomp('catalogo_actualizado');
+   if(!actual?.publicado||(actual.stockManual==null&&actual.disponibilidadReferencia==='agotado')||cantidad<1||!Number.isInteger(cantidad)||cantidad>limiteCantidadProducto(producto.id)||(esProductoManual(actual)&&actual.stockManual!=null&&cantidad>actual.stockManual)||preciosProducto(actual,ajustes).precio!==producto.precio)throw new ErrorEurocomp('catalogo_actualizado');
    continue;
   }
   if(!producto.codigoEurocomp)continue;

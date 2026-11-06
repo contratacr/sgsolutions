@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     cliente: { ...(entrada.datos ?? {nombre:entrada.nombre,apellidos:entrada.apellidos,correo:entrada.correo,telefono:entrada.telefono,modalidad:'retiro'}), ...aceptacionPedido(), idioma:entrada.idioma, total_productos:subtotal, costo_envio:envio, envio_cobro_separado:entrada.datos?.modalidad==='express' },
     articulos,
   });
-  if (guardarError) {await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});return Response.json({ error: 'no_disponible' }, { status: 503 });}
+  if (guardarError) {await cambiarAsesoria(aprobacion.id,'procesando',{estado:'aprobada'});if(guardarError.message?.includes('STOCK_INSUFICIENTE'))return Response.json({error:'catalogo_actualizado'},{status:409});return Response.json({ error: 'no_disponible' }, { status: 503 });}
   await registrarOperacion('tarjeta',id,entrada.idioma,config.modo);
   try {
     const token = await tokenTilopay(config);

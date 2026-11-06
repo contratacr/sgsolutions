@@ -142,3 +142,16 @@ export async function cambiarArchivoPanel(form:FormData){
  revalidatePath('/panel/pedidos');
  redirect(`/panel/pedidos?seccion=${destino}&resultado=${archivar?'archivado':'restaurado'}&pedido=${id}`);
 }
+
+export async function resolverInventarioPedido(form:FormData){
+ await exigirAdminMfa();
+ if(!await autorizado())redirect('/admin');
+ const id=String(form.get('id')??''),tipo=String(form.get('tipo')??'');
+ if(!/^[0-9a-f-]{36}$/.test(id)||!['manual','tarjeta'].includes(tipo))redirect('/panel/pedidos?resultado=invalido');
+ const manual=configuracionPedidosManuales();
+ const db=tipo==='manual'?(manual?basePedidosManuales(manual):null):basePedidosAdministracion();
+ if(!db)redirect('/panel/pedidos?resultado=no_disponible');
+ const {error}=await db.from(tipo==='manual'?'pedidos_manuales':'pedidos_tilopay').update({inventario_alerta:false}).eq('id',id).eq('estado','pagado').eq('inventario_alerta',true);
+ revalidatePath('/','layout');
+ redirect('/panel/pedidos?pedido='+id+'&resultado='+(error?'no_disponible':'guardado'));
+}
