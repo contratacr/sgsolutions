@@ -1654,7 +1654,10 @@
     "masInformacion": "More information",
     "necesariasInformacion": "Keep your session, security, cart, favorites, and language working. They do not authorize advertising or send events to Meta. They are needed to provide the features you request and cannot be turned off from this panel.",
     "analiticaInformacion": "Our own counters record pages, product views, searches without their text, filters, clicks, reading progress, and form statuses. They retain only daily totals by general device type and language, without IP addresses, accounts, visitor identifiers, individual journeys, or typed content. They are retained for 30 days and are not sent to Meta. You can turn them off and save your choices.",
-    "publicidadInformacion": "When you allow this category, we store technical campaign attribution for up to 30 days and send limited events to Meta from the server. Advertising identifiers are pseudonymous; Meta may combine them with information it already has. We do not send names, email addresses, phone numbers, messages, or search text. You can withdraw permission here; pending sends are revoked, but events Meta has already received cannot be withdrawn through this setting."
+    "publicidadInformacion": "When you allow this category, we store technical campaign attribution for up to 30 days and send limited events to Meta from the server. Advertising identifiers are pseudonymous; Meta may combine them with information it already has. We do not send names, email addresses, phone numbers, messages, or search text. You can withdraw permission here; pending sends are revoked, but events Meta has already received cannot be withdrawn through this setting.",
+    "periodoTodo": "All time",
+    "historialNota": "Includes all retained data since each measurement began. Earlier or deleted records cannot be recovered.",
+    "graficoHistorial": "Daily page views across the available history."
   },
   "Asesoria": {
     "confirmarExistencia": "Check stock",

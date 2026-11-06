@@ -4,10 +4,10 @@ import {baseMedicion} from '@/lib/medicion-servidor';
 import {fechasAnalitica} from '@/lib/analitica-servidor';
 import {etapasContacto,fuentesContacto,type ContactoGuardado} from '@/lib/contactos-comerciales-modelo';
 import {ContactoComercialFormulario} from './contacto-comercial-formulario';
-export async function ContactosComerciales({dias}:{dias:7|30}){
+export async function ContactosComerciales({dias}:{dias:0|7|30}){
  await exigirAdminMfa();const t=await getTranslations('ContactosComerciales');
- const fechas=fechasAnalitica(dias),hoy=fechas.at(-1)!;const db=baseMedicion();
- const r=db?await db.from('contactos_comerciales').select('*').gte('fecha',fechas[0]).lte('fecha',hoy).order('fecha',{ascending:false}).order('id').limit(501):null;
+ const fechas=fechasAnalitica(dias||1),hoy=fechas.at(-1)!;const db=baseMedicion();
+ const r=db?await db.from('contactos_comerciales').select('*').gte('fecha',dias===0?'0001-01-01':fechas[0]).lte('fecha',hoy).order('fecha',{ascending:false}).order('id').limit(501):null;
  const filas=(r?.data??[]) as ContactoGuardado[],disponible=Boolean(r&&!r.error),reales=filas.filter(f=>!f.prueba),limitado=filas.length>500;
  return <section className="estadisticas-campanas"><h2>{t('titulo')}</h2><p>{t('detalle')}</p><p>{t('criterio')}</p>
  {!disponible?<p role="alert">{t('error')}</p>:<>

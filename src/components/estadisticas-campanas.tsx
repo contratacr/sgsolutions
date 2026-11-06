@@ -3,7 +3,7 @@ import {crearClienteServidor} from '@/lib/supabase/servidor';
 import {configuracionMeta} from '@/lib/publicidad-servidor';
 import {procesarMedicionPanel} from '@/app/panel/estadisticas/acciones';
 type Fila={tipo:string;cantidad:number;canal:string;medio:string;campana:string;primer_canal:string;primera_campana:string};
-export async function EstadisticasCampanas({dias}:{dias:7|30}){
+export async function EstadisticasCampanas({dias}:{dias:0|7|30}){
  const t=await getTranslations('MedicionCampanas'),db=await crearClienteServidor();
  const r=db?await db.rpc('resumen_campanas_panel',{dias}):null;
  if(!r||r.error||!r.data||!Array.isArray(r.data.campanas)||!Array.isArray(r.data.embudo)||!Array.isArray(r.data.meta))return <section className="estadisticas-lista"><h2>{t('titulo')}</h2><p>{t('pendienteMigracion')}</p></section>;

@@ -180,3 +180,10 @@ body select:not([multiple]):not([size]){appearance:none!important;padding-right:
  .panel-diseno .admin-editor .admin-tabs{gap:6px}
  .panel-diseno .admin-editor .admin-tabs button{flex:0 1 auto;padding:10px 12px}
 }
+
+/* Compact pagination: three aligned controls without a repeated visual label. */
+.panel-diseno .admin-paginacion{display:grid;grid-template-columns:auto minmax(120px,220px) auto;justify-content:end;align-items:center;gap:8px}
+.panel-diseno .admin-paginacion label{display:block;min-width:0}
+.panel-diseno .admin-paginacion select{width:100%;min-width:0;min-height:44px}
+.panel-diseno .admin-paginacion button{min-height:44px;padding:10px 12px}
+@media(max-width:650px){.panel-diseno .admin-paginacion{grid-template-columns:auto minmax(0,1fr) auto;width:100%;gap:6px}.panel-diseno .admin-paginacion button{padding:10px 8px;font-size:.8rem}.panel-diseno .admin-paginacion select{font-size:16px;padding-left:8px;padding-right:28px;background-position:right 8px center}}

@@ -185,13 +185,13 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
     if (paginasAdmin <= 1) return null;
     return <nav className="admin-paginacion" aria-label={t('paginasProductos')}>
       <button type="button" disabled={paginaVisible === 1} onClick={() => irPagina(paginaVisible - 1)}>{t('anterior')}</button>
-      <label>{u('irPagina')}<select value={paginaVisible} onChange={e => irPagina(Number(e.target.value))}>{Array.from({ length: paginasAdmin }, (_, i) => <option key={i} value={i + 1}>{t('pagina', { pagina: i + 1, total: paginasAdmin })}</option>)}</select></label>
+      <label><span className="sr-only">{u('irPagina')}</span><select value={paginaVisible} onChange={e => irPagina(Number(e.target.value))}>{Array.from({ length: paginasAdmin }, (_, i) => <option key={i} value={i + 1}>{t('pagina', { pagina: i + 1, total: paginasAdmin })}</option>)}</select></label>
       <button type="button" disabled={paginaVisible === paginasAdmin} onClick={() => irPagina(paginaVisible + 1)}>{t('siguiente')}</button>
     </nav>;
   }
 
   return <div className="admin-editor admin-tienda">
-    <div className="admin-tabs" role="group" aria-label={t('titulo')}>{['productos', 'categorias', 'textos'].map(k => <button type="button" aria-pressed={tab === k} onClick={() => { setTab(k); setEditorId(null); }} key={k}>{t(k)}</button>)}</div>
+    <div className="admin-tabs" role="group" aria-label={t('titulo')}>{['productos', 'categorias'].map(k => <button type="button" aria-pressed={tab === k} onClick={() => { setTab(k); setEditorId(null); }} key={k}>{t(k)}</button>)}</div>
     <fieldset disabled={ocupado || cargandoImagenes} className="admin-tienda-cuerpo">
       {tab === 'productos' && editorId && productoAbierto >= 0 ? <div className="admin-edicion-vista">
         <button type="button" className="admin-volver-lista" onClick={cerrarProducto}>{u('volverLista')}</button>

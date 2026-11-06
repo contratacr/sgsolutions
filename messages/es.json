@@ -1654,7 +1654,10 @@
     "masInformacion": "Más información",
     "necesariasInformacion": "Mantienen la sesión, la seguridad, el carrito, los favoritos y el idioma. No autorizan publicidad ni envían eventos a Meta. Son necesarias para prestar las funciones que usted solicita y no pueden desactivarse desde este panel.",
     "analiticaInformacion": "Los contadores propios registran páginas, productos consultados, búsquedas sin su texto, filtros, clics, avance de lectura y estados de formularios. Solo conservan totales diarios por dispositivo general e idioma, sin IP, cuentas, identificadores de visitante, recorridos individuales ni contenido escrito. Se conservan durante 30 días y no se envían a Meta. Puede desactivarlos y guardar su elección.",
-    "publicidadInformacion": "Al permitir esta categoría, guardamos atribución técnica de campañas durante un máximo de 30 días y enviamos eventos limitados a Meta desde el servidor. Los identificadores publicitarios son seudónimos; Meta puede combinarlos con información que ya tenga. No enviamos nombres, correos, teléfonos, mensajes ni búsquedas escritas. Puede retirar el permiso aquí; se revocan los envíos pendientes, pero no se retiran los que Meta ya recibió."
+    "publicidadInformacion": "Al permitir esta categoría, guardamos atribución técnica de campañas durante un máximo de 30 días y enviamos eventos limitados a Meta desde el servidor. Los identificadores publicitarios son seudónimos; Meta puede combinarlos con información que ya tenga. No enviamos nombres, correos, teléfonos, mensajes ni búsquedas escritas. Puede retirar el permiso aquí; se revocan los envíos pendientes, pero no se retiran los que Meta ya recibió.",
+    "periodoTodo": "Todo el historial",
+    "historialNota": "Incluye todos los datos conservados desde el inicio de cada medición. No recupera datos anteriores ni registros eliminados.",
+    "graficoHistorial": "Páginas vistas por día en el historial disponible."
   },
   "Asesoria": {
     "confirmarExistencia": "Consultar existencia",

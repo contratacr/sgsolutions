@@ -16,7 +16,8 @@ export async function generateMetadata(){const t=await getTranslations('Analitic
 export default async function Estadisticas({searchParams}:{searchParams:Promise<{dias?:string}>}){
  await exigirAdminMfa();
  const local=await sesionLocal();if(!local){const db=await crearClienteServidor();if(!db)redirect('/admin');const {data:{user}}=await db.auth.getUser();if(!user)redirect('/admin');const {data}=await db.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();if(!data?.activo||data.rol!=='administrador')redirect('/panel');}
- const dias=(await searchParams).dias==='7'?7:30;
+ const periodo=(await searchParams).dias;
+ const dias=periodo==='todo'?0:periodo==='7'?7:30;
  const t=await getTranslations('Analitica'),idioma=await getLocale();
  const [resumen,catalogo,planes,popularidad]=await Promise.all([resumenAnalitica(dias),leerCatalogoPublico(),getTranslations('Inicio'),popularidadProductos(dias)]);
  const numero=(n:number|undefined)=>n===undefined?'—':new Intl.NumberFormat(idioma==='en'?'en-US':'es-CR').format(n);
@@ -46,14 +47,15 @@ export default async function Estadisticas({searchParams}:{searchParams:Promise<
   return <section className="estadisticas-lista"><h2>{t(tipo==='vistas'?'masVistos':'masComprados')}</h2><p>{t(tipo==='vistas'?'masVistosDetalle':'unidadesPagadas')}</p>{filas.length?<ol>{filas.map(f=>{const p=catalogo.productos.find(p=>p.id===f.id||p.slug===f.id);const agregados=resumen?.filas.filter(x=>x.tipo==='carrito'&&(x.detalle===f.id||p&&(x.detalle===p.id||x.detalle===p.slug))).reduce((s,x)=>s+x.cantidad,0)??0;return <li key={f.id}><span>{p?<><Link href={rutaProducto(p)}>{traducir(p.nombre,idioma)}</Link><small>{p.marca}{p.codigoFabricante&&<> · {t('codigoProducto',{codigo:p.codigoFabricante})}</>}</small>{tipo==='vistas'&&<small>{t('accionesProducto',{total:numero(agregados)})}</small>}</>:<>{'nombre' in f&&typeof f.nombre==='string'?f.nombre:f.id}<small>{t('productoRetirado')}</small></>}</span><strong>{numero(f.cantidad)}</strong></li>;})}</ol>:<p>{t('sinDatos')}</p>}</section>;
  };
  const diario=resumen?.diario??[],max=Math.max(1,...diario.map(d=>d.visitas));
- const fechas=fechasAnalitica(dias);
+ const fechas=dias===0?diario.map(d=>d.fecha).sort():fechasAnalitica(dias);
  return <main id="contenido" className="contenedor seccion estadisticas-panel">
-  <div className="estadisticas-cabecera"><h1>{t('tituloPanel')}</h1><nav aria-label={t('periodoFiltro')}>{([7,30] as const).map(n=><Link key={n} href={`/panel/estadisticas?dias=${n}`} aria-current={n===dias?'page':undefined}>{t(n===7?'periodo7':'periodo30')}</Link>)}</nav></div>
-  {!resumen&&<p role="alert" className="panel-aviso">{t('noDisponible')} <a href={`/panel/estadisticas?dias=${dias}`}>{t('reintentar')}</a></p>}
+  <div className="estadisticas-cabecera"><h1>{t('tituloPanel')}</h1><nav aria-label={t('periodoFiltro')}>{([7,30,0] as const).map(n=><Link key={n} href={`/panel/estadisticas?dias=${n===0?'todo':n}`} aria-current={n===dias?'page':undefined}>{t(n===0?'periodoTodo':n===7?'periodo7':'periodo30')}</Link>)}</nav></div>
+  {dias===0&&<p className="estadisticas-nota">{t('historialNota')}</p>}
+  {!resumen&&<p role="alert" className="panel-aviso">{t('noDisponible')} <a href={`/panel/estadisticas?dias=${dias===0?'todo':dias}`}>{t('reintentar')}</a></p>}
   <section aria-labelledby="trafico-titulo"><h2 id="trafico-titulo" className="estadisticas-grupo" title={t('conPermiso')}>{t('trafico')}</h2><div className="estadisticas-tarjetas">
    {tarjeta(t('pagina'),numero(total('pagina')))}{tarjeta(t('producto'),numero(total('producto')))}{tarjeta(t('carrito'),numero(total('carrito')))}{tarjeta(t('clicsContacto'),numero(clics))}
   </div></section>
-  <section className="estadisticas-grafico"><h2>{t('visitasDiarias')}</h2>{diario.some(d=>d.visitas)?<><div className="estadisticas-barras" role="img" aria-label={t('graficoDescripcion',{dias})}>{fechas.map(fecha=>{const valor=diario.find(d=>d.fecha===fecha)?.visitas??0;return <div key={fecha} title={`${fecha}: ${numero(valor)}`}><span style={{height:`${valor/max*100}%`}}/><span className="sr-only">{fecha}: {numero(valor)}</span></div>;})}</div><div className="estadisticas-fechas"><span>{fechas[0]}</span><span>{fechas.at(-1)}</span></div><details><summary>{t('verDatos')}</summary><table><thead><tr><th>{t('fecha')}</th><th>{t('pagina')}</th></tr></thead><tbody>{fechas.map(fecha=><tr key={fecha}><td>{fecha}</td><td>{numero(diario.find(d=>d.fecha===fecha)?.visitas??0)}</td></tr>)}</tbody></table></details></>:<p>{t('sinDatos')}</p>}</section>
+  <section className="estadisticas-grafico"><h2>{t('visitasDiarias')}</h2>{diario.some(d=>d.visitas)?<><div className="estadisticas-barras" role="img" aria-label={dias===0?t('graficoHistorial'):t('graficoDescripcion',{dias})}>{fechas.map(fecha=>{const valor=diario.find(d=>d.fecha===fecha)?.visitas??0;return <div key={fecha} title={`${fecha}: ${numero(valor)}`}><span style={{height:`${valor/max*100}%`}}/><span className="sr-only">{fecha}: {numero(valor)}</span></div>;})}</div><div className="estadisticas-fechas"><span>{fechas[0]}</span><span>{fechas.at(-1)}</span></div><details><summary>{t('verDatos')}</summary><table><thead><tr><th>{t('fecha')}</th><th>{t('pagina')}</th></tr></thead><tbody>{fechas.map(fecha=><tr key={fecha}><td>{fecha}</td><td>{numero(diario.find(d=>d.fecha===fecha)?.visitas??0)}</td></tr>)}</tbody></table></details></>:<p>{t('sinDatos')}</p>}</section>
   <section aria-labelledby="clientes-titulo"><h2 id="clientes-titulo" className="estadisticas-grupo">{t('clientes')}</h2><div className="estadisticas-tarjetas estadisticas-tres">
    {tarjeta(t('registrados'),numero(resumen?.clientes?.total),t('acumulado'))}{tarjeta(t('nuevosRegistros'),numero(resumen?.clientes?.nuevos))}{tarjeta(t('clientesActivos'),numero(resumen?.clientes?.activos))}
   </div></section>
