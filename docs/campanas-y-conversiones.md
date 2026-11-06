@@ -242,3 +242,14 @@ Pruebas locales dirigidas preparadas; autorización solicitada conforme a AGENTS
 Decisión posterior: evaluar contactos confirmados, cotizaciones y pagos junto con llegadas consentidas, no solo CTR. Mantener un conjunto y un anuncio evita fragmentar este presupuesto. Conservar dataset e históricos no traslada automáticamente el aprendizaje de un conjunto nuevo.
 
 Fuente primaria consultada: [Meta: launching your first ad campaign](https://developers.meta.com/vr/resources/launch-ad-campaign/) distingue objetivo y optimización con medición web y recomienda adaptar dimensiones a ubicación. No se usa su contexto de apps VR para inferir rendimiento de esta laptop.
+
+
+### Autorización y validación previa a activación
+
+El usuario autorizó expresamente publicar medición, ejecutar pruebas y activar esta campaña con USD 14 totales por siete días. Se recomienda enviarla hoy a revisión, sin prometer un horario de aprobación de Meta.
+
+- Base de producción: aplicada la migración Lenovo; restricción posterior incluye la nueva fuente. RLS sigue activo, anon no tiene SELECT, authenticated no tiene INSERT, service_role sí tiene INSERT. No se modificaron contactos históricos.
+- PostgreSQL efímero: nueva fuente aceptada, fuente desconocida rechazada, fila histórica conservada y permisos/RLS preservados.
+- Diez pruebas de contrato/atribución/referencias aprobadas. El primer comando omitía `--conditions=react-server`; se corrigió la invocación, sin modificar el límite de servidor.
+- Doce casos de navegador aprobados en escritorio y Safari móvil, ES/EN: consentimiento, navegación, panel, períodos, persistencia de idioma y fallos controlados. Se corrigió un selector de prueba ambiguo entre las secciones de campañas y contactos; no se cambió el comportamiento de la aplicación para hacer pasar la prueba.
+- Rebase sobre `ddc0df9` conserva los diez commits posteriores de tienda/consentimiento. Se renombró la migración a `20261105000300` para evitar colisión de versión con inventario manual. Tipos, lint, 2531 textos bilingües y secretos aprobados.
