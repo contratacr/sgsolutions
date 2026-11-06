@@ -1,6 +1,18 @@
 /** Read-only public catalogue audit. No stock/price changes or automatic image guesses. */
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import sharp from 'sharp';
+// Retry a transient transport interruption once; a 404 remains a real failure.
+async function descargarImagen(url){
+ for(let intento=1;intento<=2;intento++){
+  try{
+   const r=await fetch(url,{signal:AbortSignal.timeout(15000)});
+   if(!r.ok){if(r.status>=500&&intento<2){await r.body?.cancel();await new Promise(r=>setTimeout(r,500));continue;}throw Error(`HTTP ${r.status}`);}
+   const chunks=[];let total=0;for await(const chunk of r.body){total+=chunk.length;if(total>15_000_000)throw Error('Imagen demasiado grande');chunks.push(chunk);}
+   return Buffer.concat(chunks);
+  }catch(e){if(intento===2||e.message.startsWith('HTTP ')||e.message==='Imagen demasiado grande')throw e;await new Promise(r=>setTimeout(r,500));}
+ }
+ throw Error('Descarga no disponible');
+}
 const base=new URL(process.env.SG_CATALOGO_URL??'http://127.0.0.1:3140');
 const primera=await fetch(new URL('/api/catalogo',base)).then(r=>{if(!r.ok)throw Error(`Catálogo HTTP ${r.status}`);return r.json();});
 const productos=[...primera.productos];
@@ -26,8 +38,7 @@ await Promise.all(Array.from({length:8},async()=>{while(indice<urls.length){
   else if(descargadas.has(url))bytes=await readFile(descargadas.get(url));
   else{
    const destino=new URL(url);if(destino.protocol!=='https:')throw Error('URL no segura');
-   const r=await fetch(destino,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error(`HTTP ${r.status}`);
-   const chunks=[];let total=0;for await(const chunk of r.body){total+=chunk.length;if(total>15_000_000)throw Error('Imagen demasiado grande');chunks.push(chunk);}bytes=Buffer.concat(chunks);
+   bytes=await descargarImagen(destino);
   }
   const meta=await sharp(bytes).metadata();if(!meta.width||!meta.height||meta.width<40||meta.height<40)throw Error('Imagen no válida');
  }catch(e){error=e.message;}
