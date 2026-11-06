@@ -23,3 +23,10 @@ Comprobaciones de tipos, lint, 1.281 claves bilingües, revisión heurística de
 ## Pendiente fuera de la prueba local
 
 Publicar los cambios y aplicar las migraciones; configurar secretos y activar la sincronización horaria de GitHub Actions; comprobar el despliegue contra Supabase y Brevo reales. Los cobros reales de tarjeta permanecen desactivados. No existe envío automático de órdenes o reservas a Eurocomp. Confirmar con Eurocomp el significado de la bodega 0 y posibles tasas/exenciones por artículo: el precio neto se comprobó contra la cuenta autenticada, pero SOAP no informa una tasa individual de IVA. Sigue pendiente una imagen verificable para el rollo Zebra 10043287.
+
+## Regresión de timeout y conservación manual — 5 de noviembre de 2026
+
+- `node tests/sql/eurocomp-publicacion.mjs`: migración sobre PostgreSQL efímero (PGlite), copia de 11 736 artículos, permisos, publicación atómica, rechazo de costos públicos, revisión obsoleta tras una reserva manual, conservación de precio/oferta/inventario y repetición idempotente tras otra venta. Una copia preparada por sí sola no cambia la tienda ni su fecha de publicación.
+- `node --conditions=react-server --import tsx tests/integracion/eurocomp-publicacion.mts`: seis casos con transporte local simulado, incluidos `57014`, `55P03`, conflicto, respuesta perdida al preparar la copia, límite de tres intentos y errores no recuperables. Verifica que cada reintento relea cambios manuales y que precio/existencias de Eurocomp sí se actualicen.
+- `playwright.eurocomp-manual.config.ts`: cuatro casos en PC/Safari móvil y español/inglés, con servicios ficticios; actualización, intervalo, fallo del proveedor, respuesta vacía y conflicto conservando el catálogo publicado.
+- Se mantienen las pruebas de política de precios/stock y las de inventario manual; los nuevos bloques SQL/integración quedan en la regresión manual de GitHub Actions, sin añadir una regresión completa a cada push.

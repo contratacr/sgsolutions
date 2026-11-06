@@ -1,9 +1,10 @@
+import {publicarCopiaEurocomp} from './eurocomp-publicacion';
 import 'server-only';
 import {mkdir,readFile,writeFile,rename,open} from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {sesionLocal,leerLocal,guardarLocal} from './admin-local';
-import {esquemaCatalogo,publicarCatalogo,type CatalogoAdmin} from './catalogo-modelo';
+import {esquemaCatalogo,type CatalogoAdmin} from './catalogo-modelo';
 import {reconciliarEurocomp} from './eurocomp-catalogo';
 import {crearClienteServidor} from './supabase/servidor';
 import {consultarEurocomp,ErrorEurocomp,type CatalogoEurocomp} from './eurocomp-protocolo';
@@ -64,11 +65,7 @@ export async function actualizarEurocomp(){
   if(actual){const r=await guardarLocal('catalogo',reconciliarEurocomp(esquemaCatalogo.parse(actual.contenido),catalogo),actual.revision);if(r.error)throw new ErrorEurocomp('almacenamiento');}
   await escribir({catalogo,intento,token});
  }else{
-  const {data,error}=await a.cliente.from('catalogo_privado').select('contenido,revision').eq('id',1).single();
-  if(error||!data){console.error('EUROCOMP_CATALOGO_FALLO',error?.code??'sin_datos');throw new ErrorEurocomp('almacenamiento');}
-  const privado=esquemaCatalogo.parse(reconciliarEurocomp(esquemaCatalogo.parse(data.contenido),catalogo));
-  const r=await a.cliente.rpc('publicar_eurocomp',{token_esperado:token,nuevo_catalogo:catalogo,privado,visible:publicarCatalogo(privado),revision_esperada:data.revision});
-  if(r.error){console.error('EUROCOMP_PUBLICACION_FALLO',r.error.code);throw new ErrorEurocomp(r.error.message.includes('CONFLICTO')?'conflicto':'almacenamiento');}
+  await publicarCopiaEurocomp(a.cliente,token,catalogo,d=>console.info('EUROCOMP_PUBLICACION',JSON.stringify(d)));
  }
  return {total:catalogo.articulos.length};
 }

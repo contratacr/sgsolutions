@@ -94,7 +94,7 @@ jobs:
           - grupo: contratos-y-colas
             bloques: inventario integracion-campanas-contrato integracion-campanas-transporte integracion-conciliacion-tarjeta integracion-plazo-correos integracion-retiro-pago sql-conciliacion-tarjeta sql-campanas-conversiones
           - grupo: permisos-adicionales
-            bloques: sql-archivo-panel sql-autogestion-cuenta sql-estado-entrega sql-eurocomp-manual sql-favoritos sql-perfiles-compra sql-popularidad-catalogo sql-popularidad-productos sql-seguridad-archivo sql-usuarios-panel
+            bloques: sql-archivo-panel sql-autogestion-cuenta sql-estado-entrega sql-eurocomp-manual sql-eurocomp-publicacion integracion-eurocomp-publicacion sql-favoritos sql-perfiles-compra sql-popularidad-catalogo sql-popularidad-productos sql-seguridad-archivo sql-usuarios-panel
           - grupo: contenido
             bloques: imagenes-admin catalogo-estable contenido publicas frontend integracion-catalogo-red integracion-productos-manuales sql-inventario-manual integracion-ofertas-compra integracion-compras-manuales sql-favoritos-manuales
           - grupo: compras-correos

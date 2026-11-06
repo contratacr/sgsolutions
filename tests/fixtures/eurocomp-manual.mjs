@@ -31,6 +31,7 @@ http.createServer(async(req,res)=>{
  if(u.pathname==='/rest/v1/catalogo_privado')return send({contenido:privado,revision});
  if(u.pathname==='/rest/v1/rpc/consultar_eurocomp')return send({fecha:copia.fecha,total:copia.articulos.length,resultados:copia.articulos.length,pagina:1,paginas:1,articulos:copia.articulos});
  if(u.pathname==='/rest/v1/rpc/iniciar_eurocomp'){if(!sub||sub.endsWith('7'))return error('SIN_PERMISO');if(Date.now()-intento<300000)return error('ESPERA');intento=Date.now();return send(true);}
- if(u.pathname==='/rest/v1/rpc/publicar_eurocomp'){if(modo==='conflicto')return error('CONFLICTO');privado=d.privado;visible=d.visible;copia=d.nuevo_catalogo;publicaciones++;revision++;return send(revision);}
+ if(u.pathname==='/rest/v1/rpc/preparar_publicacion_eurocomp'){copia=d.nuevo_catalogo;return send(true);}
+ if(u.pathname==='/rest/v1/rpc/publicar_eurocomp'){if(modo==='conflicto')return error('CONFLICTO');privado=d.privado;visible=d.visible;if(d.nuevo_catalogo)copia=d.nuevo_catalogo;publicaciones++;revision++;return send(revision);}
  return send(null);
 }).listen(3121,'127.0.0.1');

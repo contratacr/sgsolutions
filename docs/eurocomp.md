@@ -52,3 +52,15 @@ El artículo código 10015, parte 100-100000031BOX, muestra en la web autenticad
 ## Actualización manual entre sincronizaciones
 
 La migración `20261013000200_eurocomp_manual.sql` reduce únicamente el intervalo de las consultas manuales a cinco minutos. El trabajo horario conserva su límite y comparte el bloqueo con el panel. Se necesita `EUROCOMP_ACTUALIZACION_ACTIVA=1` en el servidor para habilitar el botón, después de probar la capacidad del Worker. Si está apagado, el panel lo indica explícitamente. Las respuestas vacías, los fallos del proveedor y los conflictos con ediciones conservan el catálogo anterior.
+
+## Publicación resiliente — 5 de noviembre de 2026
+
+El job fallido `42135336511` terminó en la fase de publicación con SQLSTATE `57014` (HTTP 500). La lectura de configuración mostró un límite de sentencia de 8 s en `authenticator`; las estadísticas de publicaciones previas registraban unos 4,7 s de media y máximos de 7,8 s. La copia vigente tenía 11 736 artículos (3,96 MB JSON), el catálogo privado 1 921 productos (2,61 MB) y el público 1 595 (1,93 MB). Esto deja poco margen; no se atribuye todo el fallo a la descarga ni se afirma haber recuperado el bloqueo histórico exacto.
+
+La migración `20261105000200_eurocomp_publicacion_resiliente.sql` separa el guardado de la copia privada del proveedor (`preparar_publicacion_eurocomp`) de la publicación conjunta de los dos catálogos de la tienda (`publicar_eurocomp`). La copia preparada no indica que la tienda se haya actualizado. La publicación nueva no vuelve a enviar ni escribir el JSON completo del proveedor; conserva compatibilidad con clientes anteriores que todavía lo envían.
+
+Ambas operaciones requieren administrador con MFA o el servicio existente, verifican el token de la actualización y toman el bloqueo del proveedor sin esperar indefinidamente. La publicación toma además el bloqueo compartido con las ventas y ediciones del catálogo. Se mantiene el control de revisión y la transacción única del catálogo privado/público. No se aumentó el timeout general ni se relajaron permisos.
+
+El helper compartido de actualizaciones manuales y programadas limita a tres intentos los fallos transitorios de red, timeout, bloqueo y conflicto de revisión, con esperas cortas y límite de transporte por petición. Cada intento de publicar relee el catálogo y reconcilia otra vez contra la misma copia del proveedor: conserva nombres, imágenes, ofertas, precios protegidos y existencias/reservas de productos manuales. No repite la descarga SOAP ni crea pedidos en Eurocomp. Permisos, token obsoleto, catálogo vacío y errores de validación detienen la operación.
+
+`copia_token`, `publicado_token`, `publicado_revision` y `publicado_en` distinguen copia preparada y publicación confirmada. Si la respuesta se pierde después de confirmar, repetir el mismo token devuelve la revisión ya publicada sin sobrescribir una venta o edición posterior. Los logs contienen fase, número de intento, duración, código SQL y HTTP; no imprimen credenciales ni el contenido privado del catálogo.

@@ -1,0 +1,37 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create role service_role;create function public.es_administrador_activo() returns boolean language sql as $$select coalesce(current_setting('qa.admin',true),'false')='true'$$;`);
+for(const f of ['20260909000200_catalogo.sql','20261009000100_eurocomp_privado.sql','20261009000200_eurocomp_sincronizacion.sql'])await db.exec(await readFile('supabase/migrations/'+f,'utf8'));
+for(const tabla of ['pedidos_manuales','pedidos_tilopay'])await db.exec(`create table public.${tabla}(id uuid primary key,entorno text,estado text,articulos jsonb,archivado_en timestamptz,estado_entrega text default 'pendiente_preparar');`);
+for(const f of ['20261105000100_inventario_manual.sql','20261105000200_eurocomp_publicacion_resiliente.sql'])await db.exec(await readFile('supabase/migrations/'+f,'utf8'));
+const manual={id:'manual-qa',origen:'manual',stockManual:3,publicado:true,precioManual:25000,destacado:true,nombre:{es:'Manual original',en:'Original manual'},imagen:'/imagenes/logo-principal.png',precioDescuento:20000,ofertaInicio:'2026-01-01T00:00:00Z'};
+const privado={productos:[manual]},visible={productos:[{id:manual.id,origen:'manual',stockDisponible:3,precio:20000}]};
+await db.query('insert into public.catalogo_privado values(1,$1,1)',[privado]);await db.query('insert into public.catalogo_publico values(1,$1)',[visible]);
+const token='00000000-0000-4000-8000-000000000001';
+await db.query('insert into public.eurocomp_privado(id,token) values(1,$1)',[token]);
+const copia={fecha:'2026-11-05T12:00:00Z',articulos:Array.from({length:11736},(_,i)=>({codigo:'sku-'+i,precio:10,stock:50,nombre:'Artículo '+i,imagen:'https://eurocompcr.com/upload/qa.jpg',familia:'Redes'}))};
+await db.exec('set role anon');await assert.rejects(()=>db.query('select public.preparar_publicacion_eurocomp($1,$2)',[token,copia]),/permission denied/);
+await db.exec('reset role;set role authenticated');await assert.rejects(()=>db.query('select public.preparar_publicacion_eurocomp($1,$2)',[token,copia]),/SIN_PERMISO/);
+await db.exec('reset role');await db.query("select set_config('request.jwt.claims','{\"role\":\"service_role\"}',false)");await db.exec('set role service_role');
+await assert.rejects(()=>db.query('select public.publicar_eurocomp($1,null,$2,$3,1)',[token,privado,visible]),/COPIA_NO_PREPARADA/);
+await assert.rejects(()=>db.query('select public.preparar_publicacion_eurocomp($1,$2)',[token,{articulos:[]}]),/VALIDACION/);
+await db.query('select public.preparar_publicacion_eurocomp($1,$2)',[token,copia]);
+await db.exec('reset role');assert.deepEqual((await db.query('select contenido from public.catalogo_publico')).rows[0].contenido,visible);assert.equal((await db.query('select publicado_en from public.eurocomp_privado')).rows[0].publicado_en,null);
+// A sale between upload and publication changes stock/revision; stale data cannot overwrite it.
+await db.query("insert into public.pedidos_manuales(id,entorno,estado,articulos) values('00000000-0000-4000-8000-000000000002','produccion','pendiente_pago',$1)",[[{id:manual.id,cantidad:1}]]);
+await db.exec('set role service_role');await assert.rejects(()=>db.query('select public.publicar_eurocomp($1,null,$2,$3,1)',[token,privado,visible]),/CONFLICTO/);
+await db.exec('reset role');const actual=(await db.query('select contenido,revision from public.catalogo_privado')).rows[0];assert.equal(actual.contenido.productos[0].stockManual,2);
+const siguiente={productos:[{id:'eurocomp-qa',eurocomp:{stock:20,costo:15},precioManual:12000},...actual.contenido.productos]},publico={productos:[{id:'eurocomp-qa',stockDisponible:20,precio:12000},{id:manual.id,origen:'manual',stockDisponible:2,precio:20000}]};
+await db.exec('set role service_role');await assert.rejects(()=>db.query('select public.publicar_eurocomp($1,null,$2,$3,$4)',[token,siguiente,{productos:[{id:'qa',costoUsd:2}]},actual.revision]),/VALIDACION/);
+const revision=(await db.query('select public.publicar_eurocomp($1,null,$2,$3,$4) r',[token,siguiente,publico,actual.revision])).rows[0].r;assert.equal(revision,3);
+await db.exec('reset role');assert.deepEqual((await db.query('select contenido from public.catalogo_privado')).rows[0].contenido.productos[1],{...manual,stockManual:2});
+assert.equal((await db.query('select catalogo from public.eurocomp_privado')).rows[0].catalogo.articulos.length,11736);
+// Lost response: another sale happens after commit, then the original request is replayed.
+await db.query("insert into public.pedidos_tilopay(id,entorno,estado,articulos) values('00000000-0000-4000-8000-000000000003','produccion','iniciado',$1)",[[{id:manual.id,cantidad:1}]]);
+await db.exec('set role service_role');assert.equal((await db.query('select public.publicar_eurocomp($1,null,$2,$3,2) r',[token,siguiente,publico])).rows[0].r,3);
+await db.query('select public.preparar_publicacion_eurocomp($1,$2)',[token,{...copia,articulos:[{codigo:'do-not-overwrite'}]}]);
+await db.exec('reset role');const final=(await db.query('select contenido,revision from public.catalogo_privado')).rows[0];assert.equal(final.revision,4);assert.equal(final.contenido.productos[1].stockManual,1);assert.equal((await db.query('select catalogo from public.eurocomp_privado')).rows[0].catalogo.articulos.length,11736);
+await db.query("update public.eurocomp_privado set token='00000000-0000-4000-8000-000000000009'");await db.exec('set role service_role');await assert.rejects(()=>db.query('select public.publicar_eurocomp($1,null,$2,$3,4)',[token,siguiente,publico]),/TOKEN_OBSOLETO/);
+await db.close();console.log('Eurocomp SQL: copia grande por separado, publicación atómica, permisos, costos privados, stock manual concurrente y replay idempotente aprobados.');
