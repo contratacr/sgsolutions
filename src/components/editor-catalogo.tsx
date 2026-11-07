@@ -91,10 +91,10 @@ function EditorProducto({ p, i, datos, idioma, cambiar, eliminar, cerrar, onBusy
 
       </div>
     </section>
-<section className="admin-producto-seccion" id={seccion('inventario')}><div className="admin-producto-seccion-cabecera"><div><h3>{u('inventario')}</h3></div></div><div className="admin-fields">        {esProductoManual(p)&&<><label className="admin-check"><input type="checkbox" checked={p.stockManual!=null} onChange={e=>cambiar(i,{stockManual:e.target.checked?0:null,...(!e.target.checked?{disponibilidadReferencia:'proveedor' as const}:{})})}/>{t('controlExistencias')}</label>{p.stockManual!=null&&<label>{t('existenciasManuales')}<input type="number" min="0" max="1000000" step="1" value={p.stockManual} onChange={e=>cambiar(i,{stockManual:Number(e.target.value)})}/><small>{t('existenciasNota')}</small></label>}</>}
-        {!(esProductoManual(p)&&p.stockManual!=null)&&<label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>}</div></section>    <details className="admin-producto-eliminar"><summary>{u('opcionesAvanzadas')}</summary><p>{u('eliminarAyuda')}</p>
+<section className="admin-producto-seccion" id={seccion('inventario')}><div className="admin-producto-seccion-cabecera"><div><h3>{u('inventario')}</h3></div></div><div className="admin-fields">        {esProductoManual(p)&&<><label className="admin-check"><input type="checkbox" checked={p.stockManual!=null} onChange={e=>cambiar(i,{stockManual:e.target.checked?0:null,...(!e.target.checked?{disponibilidadReferencia:'proveedor' as const}:{})})}/>{t('controlExistencias')}</label>{p.stockManual!=null&&<label>{t('existenciasManuales')}<input type="number" min="0" max="1000000" step="1" inputMode="numeric" value={p.stockManual} onChange={e=>{const valor=e.currentTarget.value.replace(/^0+(?=\d)/,'');e.currentTarget.value=valor;cambiar(i,{stockManual:Number(valor)});}} onBlur={e=>{e.currentTarget.value=String(p.stockManual??0);}}/><small>{t('existenciasNota')}</small></label>}</>}
+        {!(esProductoManual(p)&&p.stockManual!=null)&&<label>{t('disponibilidadManual')}<select value={p.disponibilidadReferencia} onChange={e=>cambiar(i,{disponibilidadReferencia:e.target.value as Producto['disponibilidadReferencia']})}><option value="consultar">{t('disponibilidadConsultar')}</option><option value="proveedor">{t('disponibilidadPedido')}</option><option value="agotado">{t('disponibilidadAgotado')}</option></select></label>}</div></section>    <section className="admin-producto-eliminar"><p>{u('eliminarAyuda')}</p>
       <button className="boton boton-contorno" type="button" onClick={() => { if (window.confirm(u('confirmarEliminar'))) eliminar(i); }}>{t('quitar')}</button>
-    </details></aside>
+    </section></aside>
     </div>
   </section>;
 }
@@ -120,6 +120,18 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
   const [ocupado, iniciar] = useTransition();
   const { pendientes, confirmarGuardado } = useCambiosAdmin(datos);
   const listaRef = useRef<HTMLDivElement>(null);
+  const editorRef=useRef<HTMLDivElement>(null),accionesRef=useRef<HTMLDivElement>(null),revisionDialogo=useRef<HTMLDialogElement>(null);
+  const [versionReciente,setVersionReciente]=useState<{catalogo:CatalogoAdmin;revision:number}|null>(null);
+  useEffect(()=>{
+    const editor=editorRef.current,barra=accionesRef.current;if(!editor||!barra)return;
+    const medir=()=>{const r=editor.getBoundingClientRect();barra.style.left=`${r.left}px`;barra.style.width=`${r.width}px`;editor.style.setProperty('--acciones-altura',`${barra.getBoundingClientRect().height+24}px`);};
+    const observer=new ResizeObserver(medir);observer.observe(editor);observer.observe(barra);window.addEventListener('resize',medir);medir();
+    return()=>{observer.disconnect();window.removeEventListener('resize',medir);};
+  },[]);
+  function revisarVersion(){
+    iniciar(async()=>{try{const r=await actualizarCatalogo(revision);if(r.catalogo&&typeof r.revision==='number'){setVersionReciente({catalogo:r.catalogo,revision:r.revision});revisionDialogo.current?.showModal();}else if(r.error)setEstado(r.error);}catch{setEstado('error');}});
+  }
+
 
   // A mounted editor otherwise keeps its initial stock forever, even after another
   // administrator saves. Refresh only clean forms; never replace a local draft.
@@ -214,7 +226,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
     </nav>;
   }
 
-  return <div className="admin-editor admin-tienda">
+  return <div ref={editorRef} className="admin-editor admin-tienda admin-guardado-fijo">
     <div className="admin-tabs" role="group" aria-label={t('titulo')}>{['productos', 'categorias'].map(k => <button type="button" aria-pressed={tab === k} onClick={() => { setTab(k); setEditorId(null); }} key={k}>{t(k)}</button>)}</div>
     <fieldset disabled={ocupado || cargandoImagenes} className="admin-tienda-cuerpo">
       {tab === 'productos' && editorId && productoAbierto >= 0 ? <div className="admin-edicion-vista">
@@ -244,7 +256,12 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
       {tab === 'textos' && <section className="admin-configuracion"><h2>{t('textos')}</h2><p>{u('textosAyuda')}</p><div id="admin-textos" className="admin-fields">{(['titulo', 'descripcion', 'aviso'] as const).map(k => <Bilingue key={k} titulo={t(k === 'titulo' ? 'tituloTienda' : k === 'descripcion' ? 'descripcionCampo' : 'aviso')} valor={datos.textos[k]} multilinea={k !== 'titulo'} cambiar={valor => setDatos(d => ({ ...d, textos: { ...d.textos, [k]: valor } }))} />)}</div></section>}
     </fieldset>
     <ErroresAdmin campos={campos} abrir={abrirCampo} />
-    <div className="admin-actions"><button type="button" className="boton boton-azul" disabled={ocupado || cargandoImagenes} onClick={guardar}>{t(ocupado ? 'guardando' : 'guardar')}</button><button type="button" className="boton boton-contorno" disabled={ocupado || cargandoImagenes} onClick={() => { if (window.confirm(u('descartar'))) { setDatos(ultimoGuardado); setCampos([]); setEstado(''); setEditorId(null); } }}>{t('restablecer')}</button><span role="status">{estado && estado !== 'guardado' ? t(estado) : pendientes ? m('pendientes') : estado ? t(estado) : t('notaGuardar')}</span></div>
+    <div ref={accionesRef} className="admin-actions"><button type="button" className="boton boton-azul" disabled={ocupado || cargandoImagenes} onClick={guardar}>{t(ocupado ? 'guardando' : 'guardar')}</button><button type="button" className="boton boton-contorno" disabled={ocupado || cargandoImagenes} onClick={() => { if (window.confirm(u('descartar'))) { setDatos(ultimoGuardado); setCampos([]); setEstado(''); setEditorId(null); } }}>{t('restablecer')}</button><span role="status">{estado && estado !== 'guardado' ? t(estado) : pendientes ? m('pendientes') : estado ? t(estado) : t('notaGuardar')}</span>{estado==='conflicto'&&<button type="button" className="boton boton-contorno" disabled={ocupado} onClick={revisarVersion}>{t('revisarVersion')}</button>}</div>
+    <dialog ref={revisionDialogo} className="admin-revision-dialogo" aria-labelledby="revision-catalogo-titulo">
+      <h2 id="revision-catalogo-titulo">{t('revisarVersion')}</h2><p>{t('revisionAyuda')}</p>
+      {versionReciente&&editorId&&<dl><dt>{t('existenciasManuales')}</dt><dd>{t('versionGuardada')}: {versionReciente.catalogo.productos.find(p=>p.id===editorId)?.stockManual??'—'}</dd><dd>{t('suEdicion')}: {datos.productos.find(p=>p.id===editorId)?.stockManual??'—'}</dd></dl>}
+      <div className="admin-revision-botones"><button type="button" className="boton boton-contorno" onClick={()=>revisionDialogo.current?.close()}>{t('seguirEditando')}</button><button type="button" className="boton boton-azul" onClick={()=>{if(versionReciente&&window.confirm(u('descartar'))){setDatos(versionReciente.catalogo);setUltimoGuardado(versionReciente.catalogo);confirmarGuardado(versionReciente.catalogo);setRevision(versionReciente.revision);setCampos([]);setEstado('');revisionDialogo.current?.close();}}}>{t('cargarVersion')}</button></div>
+    </dialog>
     {estado==='guardado'&&!pendientes&&editorId&&<p className="admin-publicacion-nota" aria-live="polite">{t(ultimoGuardado.productos.find(p=>p.id===editorId)?.publicado?(ultimoGuardado.productos.find(p=>p.id===editorId)?.stockManual===0?'guardadoSinExistencias':'guardadoPublicado'):'guardadoBorrador')}</p>}
   </div>;
 }

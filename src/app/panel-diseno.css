@@ -1,4 +1,13 @@
 /* Administration-only design system. Public storefront styles are unchanged. */
+.panel-renovado .admin-guardado-fijo{padding-bottom:var(--acciones-altura,190px)}
+.panel-renovado .admin-guardado-fijo>.admin-actions{position:fixed;z-index:80;bottom:0;margin:0;background:#fff;backdrop-filter:none;filter:none;padding-bottom:calc(14px + env(safe-area-inset-bottom));max-height:45dvh;overflow-y:auto}
+.panel-renovado .admin-revision-dialogo{width:min(560px,calc(100% - 32px));max-height:85dvh;overflow:auto;border:1px solid #c8d7e2;border-radius:16px;padding:24px;background:#fff;color:#17364b}
+.panel-renovado .admin-revision-dialogo::backdrop{background:#102b3b80}
+.panel-renovado .admin-revision-dialogo p{line-height:1.6;margin-block:16px}
+.panel-renovado .admin-revision-dialogo dl{margin-block:20px;padding:16px;background:#f3f6f9;border-radius:10px}
+.panel-renovado .admin-revision-dialogo dd{margin:8px 0 0}
+.panel-renovado .admin-revision-botones{display:flex;flex-wrap:wrap;gap:12px}
+.panel-renovado .admin-revision-botones .boton{flex:1 1 190px}
 .panel-renovado{
  --panel-fondo:#f3f6f9;--panel-borde:#dce5ec;--panel-tinta:#17364b;--panel-suave:#5b7183;--panel-acento:#ed552f;
  background:var(--panel-fondo);color:var(--panel-tinta);

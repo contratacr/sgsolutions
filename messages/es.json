@@ -673,7 +673,7 @@
     "validacion": "Revise los campos: ambos idiomas son obligatorios, los importes deben ser válidos y las categorías deben existir.",
     "sinPermiso": "Su cuenta no tiene permiso para editar el catálogo.",
     "noDisponible": "El catálogo administrativo requiere la base de datos configurada y su migración aplicada.",
-    "conflicto": "Otro administrador guardó cambios. Recargue la página antes de continuar.",
+    "conflicto": "Hay cambios nuevos. Revise la versión guardada antes de continuar.",
     "error": "No se pudieron guardar los cambios. Su edición sigue aquí.",
     "buscarProductos": "Buscar nombre o código",
     "paginasProductos": "Páginas de productos",
@@ -702,7 +702,13 @@
     "existenciasManuales": "Unidades disponibles",
     "existenciasNota": "Excluya las unidades reservadas. Con cero unidades, se oculta de la tienda. Sin control, se vende bajo pedido.",
     "inventarioReservado": "Hay pedidos con existencias reservadas. No puede eliminar el producto ni desactivar su control hasta resolverlos.",
-    "guardadoSinExistencias": "Producto guardado. Está sin existencias y no se muestra en la tienda hasta que reponga unidades."
+    "guardadoSinExistencias": "Producto guardado. Está sin existencias y no se muestra en la tienda hasta que reponga unidades.",
+    "revisarVersion": "Revisar cambios",
+    "revisionAyuda": "Su edición sigue intacta. Puede volver a ella o cargar la versión más reciente. Cargar la versión guardada descartará sus cambios pendientes.",
+    "versionGuardada": "Versión guardada",
+    "suEdicion": "Su edición",
+    "seguirEditando": "Volver a mi edición",
+    "cargarVersion": "Cargar versión guardada"
   },
   "ServiciosSoporte": {
     "etiqueta": "NUESTROS SERVICIOS",

@@ -673,7 +673,7 @@
     "validacion": "Check all fields: both languages are required, amounts must be valid and categories must exist.",
     "sinPermiso": "Your account cannot edit the catalog.",
     "noDisponible": "Catalog administration requires a configured database with its migration applied.",
-    "conflicto": "Another administrator saved changes. Reload before continuing.",
+    "conflicto": "There are new changes. Review the saved version before continuing.",
     "error": "Unable to save changes. Your edits are still here.",
     "buscarProductos": "Search name or code",
     "paginasProductos": "Product pages",
@@ -702,7 +702,13 @@
     "existenciasManuales": "Available units",
     "existenciasNota": "Exclude reserved units. At zero, the product is hidden from the store. Without tracking, it is sold to order.",
     "inventarioReservado": "Pending orders have reserved units. Resolve them before deleting this product or disabling inventory tracking.",
-    "guardadoSinExistencias": "Product saved. It is out of stock and hidden from the store until you replenish it."
+    "guardadoSinExistencias": "Product saved. It is out of stock and hidden from the store until you replenish it.",
+    "revisarVersion": "Review changes",
+    "revisionAyuda": "Your edits are still intact. You can return to them or load the latest version. Loading the saved version will discard your unsaved changes.",
+    "versionGuardada": "Saved version",
+    "suEdicion": "Your edits",
+    "seguirEditando": "Return to my edits",
+    "cargarVersion": "Load saved version"
   },
   "ServiciosSoporte": {
     "etiqueta": "OUR SERVICES",
