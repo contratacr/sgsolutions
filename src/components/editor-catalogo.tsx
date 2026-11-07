@@ -9,7 +9,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { colones, preciosProducto,descuentosInvalidos,publicacionesManualesInvalidas,esquemaCatalogo, traducir, type CatalogoAdmin, type Texto } from '@/lib/catalogo-modelo';
 import { useCambiosAdmin } from '@/components/use-cambios-admin';
 import { GestorImagenes } from '@/components/gestor-imagenes';
-import { guardarCatalogo } from '@/app/panel/catalogo/acciones';
+import { guardarCatalogo,actualizarCatalogo } from '@/app/panel/catalogo/acciones';
 import { ErroresAdmin, enfocarRegistro, type CampoAdmin } from '@/components/errores-admin';
 
 const suscribirListo=()=>()=>{};
@@ -121,6 +121,29 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
   const { pendientes, confirmarGuardado } = useCambiosAdmin(datos);
   const listaRef = useRef<HTMLDivElement>(null);
 
+  // A mounted editor otherwise keeps its initial stock forever, even after another
+  // administrator saves. Refresh only clean forms; never replace a local draft.
+  useEffect(()=>{
+    if(ocupado||pendientes||cargandoImagenes)return;
+    let cancelado=false,enCurso=false;
+    const recuperar=async()=>{
+      if(cancelado||enCurso||document.visibilityState!=='visible')return;
+      enCurso=true;
+      try{
+        const r=await actualizarCatalogo(revision);
+        if(!cancelado&&r.catalogo&&typeof r.revision==='number'&&r.revision>revision){
+          setDatos(r.catalogo);setUltimoGuardado(r.catalogo);confirmarGuardado(r.catalogo);setRevision(r.revision);setEstado('');
+        }
+      }catch{/* Keep the confirmed snapshot; saving still enforces database revision. */}
+      finally{enCurso=false;}
+    };
+    const visible=()=>{if(document.visibilityState==='visible')void recuperar();};
+    window.addEventListener('focus',recuperar);window.addEventListener('pageshow',recuperar);
+    document.addEventListener('visibilitychange',visible);
+    const intervalo=setInterval(recuperar,60000);
+    return()=>{cancelado=true;clearInterval(intervalo);window.removeEventListener('focus',recuperar);window.removeEventListener('pageshow',recuperar);document.removeEventListener('visibilitychange',visible);};
+  },[revision,ocupado,pendientes,cargandoImagenes,confirmarGuardado]);
+
   const seleccion = datos.productos.map((p, i) => ({ p, i })).filter(({ p }) => (filtroEstado === 'todos' || filtroEstado === 'publicados' && p.publicado || filtroEstado === 'borradores' && !p.publicado) && (categoriaFiltro==='todos'||p.categoria===categoriaFiltro)).filter(({ p }) => `${p.nombre.es} ${p.nombre.en} ${p.codigoFabricante} ${p.marca}`.toLocaleLowerCase().includes(buscar.trim().toLocaleLowerCase()));
   const paginasAdmin = Math.max(1, Math.ceil(seleccion.length / POR_PAGINA));
   const paginaVisible = Math.min(paginaAdmin, paginasAdmin);
@@ -163,6 +186,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
   }
 
   function guardar() {
+    if(ocupado||cargandoImagenes)return;
     for(const fecha of document.querySelectorAll<HTMLInputElement>('.admin-producto-editor input[type="datetime-local"]'))if(!fecha.reportValidity())return;
     const validado = esquemaCatalogo.safeParse(datos);
     if (!validado.success) { setCampos(validado.error.issues.map(x => x.path.map(k => typeof k === 'number' ? k : String(k)))); setEstado('validacion'); return; }
@@ -170,7 +194,7 @@ export function EditorCatalogo({ inicial, revisionInicial }: { inicial: Catalogo
     if(ofertasInvalidas.length){setCampos(ofertasInvalidas.map(i=>['productos',i,'precioDescuento']));setEstado('validacion');return;}
     const publicacionesInvalidas=publicacionesManualesInvalidas(validado.data);
     if(publicacionesInvalidas.length){setCampos(publicacionesInvalidas.map(i=>['productos',i,'publicado']));setEstado('publicacionInvalida');return;}
-    setCampos([]);
+    setCampos([]);setEstado('guardando');
     iniciar(async () => {
       try {
         const respuesta = await guardarCatalogo(validado.data, revision);
