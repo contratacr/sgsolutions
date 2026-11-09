@@ -1,4 +1,5 @@
 import {nombreMarca} from './marcas-nombres';
+import {aplicarMinimosVenta} from './politica-visibilidad-productos';
 import type {CatalogoPublico,ClasificacionProducto} from './catalogo-modelo';
 
 export const solucionesEmpresariales = [
@@ -64,6 +65,7 @@ export function clasificacionesDeProducto(p:CatalogoPublico['productos'][number]
  return p.clasificaciones??[{categoria:p.categoria,subcategoria:p.subcategoria}];
 }
 export function catalogoTienda(c:CatalogoPublico):CatalogoPublico{
+ c=aplicarMinimosVenta(c);
  return {...c,categorias:[categoriaEmpresarial,...c.categorias.filter(x=>x.id!==categoriaEmpresarial.id)],productos:c.productos.filter(p=>!(p.origen==='manual'&&p.stockDisponible===0)).map(p=>{
   const marcaOriginal=p.marca;
   const solucion=solucionDeProducto(p),rama=solucionesEmpresariales.find(x=>x.id===solucion);

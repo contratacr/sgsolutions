@@ -1,4 +1,5 @@
 import 'server-only';
+import {cumpleMinimoVenta} from './politica-visibilidad-productos';
 import {incorporarSoftware} from './incorporar-software';
 import {esProductoSoftware,limiteCantidadProducto} from './software';
 import {esProductoManual} from './catalogo-fuente';
@@ -39,6 +40,8 @@ export async function verificarCompraEurocomp(articulos:{producto:CatalogoPublic
  privado=incorporarSoftware(privado??esquemaCatalogo.parse(inicial));
  const {cambio,utilidad,iva,adicional}=ajustes;const vence=Date.now()+20_000;
  for(const {producto,cantidad} of articulos){
+  const vigente=privado.productos.find(p=>p.id===producto.id);
+  if(!cumpleMinimoVenta({...producto,...(vigente?{nombre:vigente.nombre,categoria:vigente.categoria,subcategoria:vigente.subcategoria}:{}),precio:producto.precio}))throw new ErrorEurocomp('catalogo_actualizado');
   if(esProductoSoftware(producto)||esProductoManual(producto)){
    const actual=privado.productos.find(p=>p.id===producto.id&&(esProductoSoftware(p)||esProductoManual(p)));
    if(!actual?.publicado||(actual.stockManual==null&&actual.disponibilidadReferencia==='agotado')||cantidad<1||!Number.isInteger(cantidad)||cantidad>limiteCantidadProducto(producto.id)||(esProductoManual(actual)&&actual.stockManual!=null&&cantidad>actual.stockManual)||preciosProducto(actual,ajustes).precio!==producto.precio)throw new ErrorEurocomp('catalogo_actualizado');

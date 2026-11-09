@@ -1,4 +1,5 @@
 import 'server-only';
+import {aplicarMinimosVenta} from './politica-visibilidad-productos';
 import {completarSoftwarePublico} from './incorporar-software';
 import {incorporarEmpresariales} from './incorporar-empresariales';
 import {completarExistencias} from './existencias-catalogo';
@@ -25,7 +26,7 @@ const leerCatalogoCompleto=cache(async():Promise<CatalogoPublico>=>{
   return {...c,productos:[...c.productos,...empresas.filter(p=>!ids.has(p.id))]};
 });
 
-export const leerCatalogoPublico=cache(async()=>{const c=await leerCatalogoCompleto();return {...c,productos:c.productos.filter(p=>!(p.origen==='manual'&&p.stockDisponible===0))};});
+export const leerCatalogoPublico=cache(async()=>{const c=aplicarMinimosVenta(await leerCatalogoCompleto());return {...c,productos:c.productos.filter(p=>!(p.origen==='manual'&&p.stockDisponible===0))};});
 
 // Only for authenticated administrators preparing an assisted order.
 export async function leerProductosAsesoria(){
