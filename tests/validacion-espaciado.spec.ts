@@ -1,7 +1,7 @@
 import {llegarAPago} from './ayudas/compra';
 import {test,expect} from '@playwright/test';
 for(const idioma of ['es','en'])test(`error de casilla cercano y limpieza ${idioma}`,async({page,context,baseURL})=>{
- await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
+ await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await page.locator('#buscar-equipo').press('Escape');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto button').first().click();await page.goto('/pagar');
  await llegarAPago(page,idioma);
  const casilla=page.locator('input[name=consentimiento]');await casilla.evaluate((el:HTMLInputElement)=>el.reportValidity());
  const etiqueta=casilla.locator('..'),error=etiqueta.locator('.validacion-campo-error');await expect(error).toBeVisible();await expect(casilla).toHaveAttribute('aria-describedby',/validacion/);

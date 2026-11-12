@@ -17,7 +17,8 @@ for(const idioma of ['es','en'])test(`los límites se refrescan al volver a la p
  await expect(page.locator('.shop-orden-trigger')).toBeEnabled();
  const previo=await page.locator('.shop-sidebar input[type=range]').last().getAttribute('max');
  await page.route('**/api/catalogo?*',async route=>{const r=await route.fetch();const d=await r.json();await route.fulfill({json:{...d,rangoPrecios:{minimo:500,maximo:Number(previo)+500000}}});});
- await page.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));
+ // Returning to the tab refreshes only after 30 s since the last load; move the page clock past that.
+ await page.evaluate(()=>{const real=Date.now.bind(Date);Date.now=()=>real()+31000;document.dispatchEvent(new Event('visibilitychange'));});
  await expect(page.locator('.shop-sidebar input[type=range]').last()).toHaveAttribute('max',String(Number(previo)+500000));
 });
 

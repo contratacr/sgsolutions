@@ -31,7 +31,7 @@ try{
  const {notificarPagoTarjeta}=await import('../../src/lib/email/pago-tarjeta');
  const {aceptacionPedido}=await import('../../src/lib/politicas');
  const promesas={es:'Entrega en un máximo de 7 días hábiles desde la confirmación del pago.',en:'Delivery within 7 business days after payment confirmation.'};
- const fisico={id:'qa-fisico',nombre:{es:'Producto QA',en:'QA product'},precio:500,codigoFabricante:'QA',disponibilidad:'disponible'};
+ const fisico={id:'qa-fisico',categoria:'redes',nombre:{es:'Producto QA',en:'QA product'},precio:500,codigoFabricante:'QA',disponibilidad:'disponible'};
  const {incorporarSoftware}=await import('../../src/lib/incorporar-software');
  const {preciosProducto}=await import('../../src/lib/catalogo-modelo');
  const actualizado=incorporarSoftware(catalogo),base=actualizado.productos.find(p=>p.id==='software-intcomex-se027mse92')!;

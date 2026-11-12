@@ -72,7 +72,7 @@ for(const idioma of ['es','en'])test(`equipo empresarial solicita existencia y n
  const base=(await(await request.get('/api/catalogo')).json()).productos[0];
  const producto={...base,id:'empresa-intcomex-es000ubq07',slug:'equipo-empresarial-qa',coleccion:'empresas',solucionEmpresarial:'redes',codigoEurocomp:undefined,categoria:'redes',nombre:{es:'Equipo empresarial QA',en:'QA business equipment'},disponibilidad:'consultar'};
  await page.route('**/api/catalogo?*',r=>r.fulfill({json:{productos:[producto],total:1,pagina:1,paginas:1}}));
- await page.goto('/tienda/soluciones-empresariales');await page.locator('#buscar-equipo').fill('QA');
+ await page.goto('/tienda/soluciones-empresariales');await page.locator('#buscar-equipo').fill('QA');await page.locator('#buscar-equipo').press('Escape');
  const tarjeta=page.locator('.shop-producto').filter({hasText:idioma==='es'?'Equipo empresarial QA':'QA business equipment'});
  await expect(tarjeta).toBeVisible();await tarjeta.hover();
  const consulta=tarjeta.getByRole('link',{name:idioma==='es'?/Consultar existencia/:/Check stock/});
@@ -124,7 +124,7 @@ for(const idioma of ['es','en'])test(`confirmar existencia comparte presentació
  const base=(await(await request.get('/api/catalogo')).json()).productos[0];
  const productos=[{...base,id:'empresa-intcomex-es000ubq07',coleccion:'empresas',nombre:{es:'Equipo QA empresa',en:'QA business equipment'}},{...base,id:'eurocomp-qa',coleccion:undefined,nombre:{es:'Equipo QA tienda',en:'QA store equipment'}}];
  await page.route('**/api/catalogo?*',r=>r.fulfill({json:{productos,total:2,pagina:1,paginas:1}}));
- await page.goto('/tienda');await page.locator('#buscar-equipo').fill('QA');
+ await page.goto('/tienda');await page.locator('#buscar-equipo').fill('QA');await page.locator('#buscar-equipo').press('Escape');
  await expect(page.locator('.shop-producto')).toHaveCount(2);
  const enlaces=page.locator('.shop-producto a.producto-agregar'),carrito=page.locator('.shop-producto button.producto-agregar');
  await expect(enlaces).toHaveCount(1);await expect(carrito).toHaveCount(1);
@@ -152,7 +152,8 @@ test('equipos empresariales aparecen en categorías generales sin duplicarse ni 
  expect(computadoras.productos.some(p=>/^Kit |^Mouse |acoplamiento/.test(p.nombre.es))).toBe(false);
  const categorias=catalogoTienda(c),resumen=resumenCatalogo(c);
  expect(catalogoTienda(categorias)).toEqual(categorias);
- expect(new Set(categorias.productos.map(p=>p.id)).size).toBe(c.productos.length);
+ // No duplicates; the store hides products below minimum sale prices (politica-visibilidad-productos).
+ expect(new Set(categorias.productos.map(p=>p.id)).size).toBe(categorias.productos.length);
  for(const categoria of ['computadoras','redes','seguridad','almacenamiento','energia']){
   const todos=categorias.productos.filter(p=>clasificacionesDeProducto(p).some(x=>x.categoria===categoria));
   const r=consultar({categoria});expect(r.total).toBe(todos.length);expect(resumen.conteos[categoria]).toBe(todos.length);
@@ -171,7 +172,7 @@ for(const idioma of ['es','en'])test(`Computadoras incluye equipos empresariales
  const panel=page.locator(movil?'.shop-panel-filtros':'.shop-sidebar');
  await panel.getByRole('button',{name:idioma==='es'?'Computadoras':'Computers',exact:true}).click();
  if(movil)await panel.locator('.shop-panel-filtros-acciones>.boton').first().click();
- await page.locator('#buscar-equipo').fill('PC14250_U7ARL321TBWPS_3WX');
+ await page.locator('#buscar-equipo').fill('PC14250_U7ARL321TBWPS_3WX');await page.locator('#buscar-equipo').press('Escape');
  const producto=page.locator('.shop-producto').filter({hasText:'PC14250_U7ARL321TBWPS_3WX'});
  await expect(producto).toHaveCount(1);await expect(producto.locator('a.producto-agregar')).toContainText(idioma==='es'?'Consultar existencia':'Check stock');
  await expect(producto.locator('button.producto-agregar')).toHaveCount(0);

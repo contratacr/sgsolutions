@@ -7,8 +7,9 @@ import {publicarCatalogo,esquemaCatalogo} from '../src/lib/catalogo-modelo';
 import inicial from '../src/lib/catalogo-inicial.json';
 import empresas from '../src/lib/catalogo-empresarial.json';
 
-test('las 31 fotografías recuperadas existen y son imágenes decodificables',async()=>{
- expect(reparadas).toHaveLength(31);
+test('las 32 fotografías recuperadas existen y son imágenes decodificables',async()=>{
+ // Count of imagenes-productos-verificadas.json: update when a verified photo is added.
+ expect(reparadas).toHaveLength(32);
  for(const f of reparadas){
   const bytes=await readFile('public'+f.imagen);
   const meta=await sharp(bytes).metadata();

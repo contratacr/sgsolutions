@@ -85,3 +85,28 @@
  .cuenta-menu-secciones>form{border-top:1px solid #edf1f5}
  .cuenta-menu-secciones>form>.cuenta-salir{padding:20px 18px;border-radius:0}
 }
+
+/* Estado activo claro del menú de la cuenta (escritorio y móvil). */
+.cuenta-menu-secciones>a{position:relative;border-left:3px solid transparent}
+.cuenta-menu-secciones>a[aria-current=page]{background:#eaf1f7;color:#17354b;font-weight:700;border-left-color:#f65a27}
+.cuenta-menu-secciones>a[aria-current=page] .cuenta-menu-icono{color:#17354b}
+.cuenta-menu-secciones>a:not([aria-current=page]):hover{background:#f3f6f9}
+.cuenta-menu-secciones>a:focus-visible{outline:3px solid #406985;outline-offset:-3px}
+@media(max-width:650px){.cuenta-menu-secciones>a[aria-current=page]{background:#eaf1f7}
+/* En móvil, sin sección abierta solo se ve el menú: no resaltar la sección predeterminada. */
+.cuenta-distribucion:not(.cuenta-seccion-abierta) .cuenta-menu-secciones>a[aria-current=page]{background:transparent;border-left-color:transparent;font-weight:600}}
+
+/* Estado del pedido como etiqueta con tono propio; no depende de clases del panel. */
+.cuenta-estado,.cuenta-pedido-cabecera .cuenta-estado{display:inline-flex;align-items:center;gap:6px;border:1px solid #d5e0e8;background:#f1f5f8;color:#3b5568;font-weight:650;white-space:nowrap}
+.cuenta-estado::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.cuenta-estado[data-tono=exito]{background:#e8f5ec;border-color:#b9dfc6;color:#1d5a35}
+.cuenta-estado[data-tono=aviso]{background:#fdf3e1;border-color:#efd29d;color:#7a4a0c}
+.cuenta-estado[data-tono=peligro]{background:#fcecec;border-color:#f0c2c4;color:#9b2730}
+.cuenta-estado[data-tono=info]{background:#e8f1fb;border-color:#bcd4ee;color:#1f4f80}
+
+/* Líneas de producto alineadas con el resto de la tarjeta. */
+.cuenta-pedido ul.cuenta-pedido-articulos{list-style:none;padding:0;margin:18px 0}
+.cuenta-pedido-articulos li{padding-left:0}
+
+/* Mis datos se muestra abierto; facturación y envío siguen como subsecciones opcionales. */
+.cuenta-panel .cuenta-datos>h2{margin:0 0 10px;font-size:1.3rem}

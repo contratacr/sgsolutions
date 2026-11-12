@@ -17,7 +17,7 @@ export async function asignarRolCliente(_estado:EstadoRol,formulario:FormData):P
  }catch(e){return e instanceof Error&&e.message==='SIN_PERMISO'?'sinPermiso':'error';}
 }
 
-export type EstadoGestion=EstadoRol|'datosActualizados'|'recuperacionEnviada'|'confirmacionEnviada'|'accesoActualizado'|'bloqueado'|'desbloqueado'|'eliminado'|'confirmarAccion'|'propiaCuenta'|'ultimoAdmin'|'correoDuplicado'|'limiteIntentos'|'confirmarCorreo'|'eliminacionPendiente'|'operacionParcial'|'registroFallido'|'noDisponible';
+export type EstadoGestion=EstadoRol|'datosActualizados'|'recuperacionEnviada'|'confirmacionEnviada'|'accesoActualizado'|'bloqueado'|'desbloqueado'|'eliminado'|'confirmarAccion'|'propiaCuenta'|'ultimoAdmin'|'correoDuplicado'|'limiteIntentos'|'confirmarCorreo'|'eliminacionPendiente'|'operacionParcial'|'desbloqueoParcial'|'registroFallido'|'noDisponible';
 const gestion=z.object({usuario:z.uuid(),operacion:z.enum(['datos','acceso','recuperacion','confirmacion','bloquear','desbloquear','eliminar']),version:z.coerce.number().int().min(0).max(Number.MAX_SAFE_INTEGER)});
 function falloGestion(error:{code?:string;message?:string;status?:number}):EstadoGestion{
  if(error.code==='42501')return 'sinPermiso';
@@ -30,7 +30,7 @@ function falloGestion(error:{code?:string;message?:string;status?:number}):Estad
 export async function administrarUsuario(_estado:EstadoGestion,formulario:FormData):Promise<EstadoGestion>{
  await exigirAdminMfa();
  const datos=gestion.safeParse(Object.fromEntries(formulario));if(!datos.success)return 'error';
- let resultado:EstadoGestion='error',cambio=false,borrado=false;
+ let resultado:EstadoGestion='error',cambio=false,borrado=false,desbaneado=false;
  try{
   const acceso=await accesoUsuarios();if(acceso.local)return 'local';
   const {usuario,operacion,version}=datos.data;
@@ -55,7 +55,10 @@ export async function administrarUsuario(_estado:EstadoGestion,formulario:FormDa
    const nombre=z.string().trim().min(2).max(150).safeParse(formulario.get('nombre'));
    const correo=z.string().trim().toLowerCase().pipe(z.email().max(254)).safeParse(formulario.get('correo'));
    if(!nombre.success||!correo.success)return 'error';
-   if(formulario.get('correo_actual')!==(objetivo.email??''))return 'conflicto';
+   // Control optimista sin migración: estado_cuentas_usuario.version no cambia al editar datos,
+   // así que se comparan los valores que la persona vio con los actuales de Auth.
+   const nombreActual=String(objetivo.user_metadata?.nombre_completo??objetivo.user_metadata?.full_name??'').slice(0,150);
+   if(formulario.get('correo_actual')!==(objetivo.email??'')||formulario.has('nombre_actual')&&String(formulario.get('nombre_actual')).trim()!==nombreActual.trim())return 'conflicto';
    const cambiaCorreo=correo.data!==(objetivo.email??'').toLowerCase();
    if(cambiaCorreo&&usuario===acceso.actor)return 'propiaCuenta';
    if(cambiaCorreo&&formulario.get('confirmar')!=='si')return 'confirmarAccion';
@@ -79,9 +82,11 @@ export async function administrarUsuario(_estado:EstadoGestion,formulario:FormDa
    // Desbloquear Auth primero; el estado de la app sigue cerrado hasta que la RPC lo autorice.
    if(operacion==='desbloquear'){
     const {error}=await admin.auth.admin.updateUserById(usuario,{ban_duration:'none'});if(error)return falloGestion(error);
+    desbaneado=true;
    }
    const preparado=await acceso.cliente.rpc('gestionar_acceso_usuario',{usuario,accion:operacion==='eliminar'?'eliminar':operacion,nuevo_rol:null,version_esperada:version});
-   if(preparado.error)return falloGestion(preparado.error);
+   // Si Auth ya levantó el bloqueo pero la RPC falla, la cuenta sigue bloqueada en la app: informarlo como parcial.
+   if(preparado.error){if(desbaneado)revalidatePath('/panel/usuarios');return desbaneado?'desbloqueoParcial':falloGestion(preparado.error);}
    cambio=true;
    if(operacion==='eliminar'){
     // Los pedidos conservan sus datos y solo se desvincula el ID del usuario.
@@ -92,7 +97,7 @@ export async function administrarUsuario(_estado:EstadoGestion,formulario:FormDa
     resultado=error?'operacionParcial':'bloqueado';
    }else resultado='desbloqueado';
   }
- }catch(e){resultado=e instanceof Error&&e.message==='SIN_PERMISO'?'sinPermiso':cambio?'operacionParcial':'error';}
+ }catch(e){resultado=e instanceof Error&&e.message==='SIN_PERMISO'?'sinPermiso':cambio?'operacionParcial':desbaneado?'desbloqueoParcial':'error';}
  if(cambio)revalidatePath('/panel/usuarios');
  if(borrado)redirect(`/panel/usuarios?resultado=${resultado==='eliminado'?'eliminado':'registroFallido'}`);
  return resultado;

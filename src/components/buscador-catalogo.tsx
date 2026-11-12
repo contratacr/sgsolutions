@@ -10,9 +10,11 @@ export function BuscadorCatalogo({valor,listo,sugerencias,cambiar,limpiar,elegir
  const contenedor=useRef<HTMLDivElement>(null);
  useEffect(()=>{
   if(!abierto)return;
-  const cerrarFuera=(event:PointerEvent)=>{if(event.target instanceof Node&&!contenedor.current?.contains(event.target)){setAbierto(false);setIndice(-1);}};
-  document.addEventListener('pointerdown',cerrarFuera);
-  return()=>document.removeEventListener('pointerdown',cerrarFuera);
+  // Close on click, not pointerdown: on phones the panel is in the page flow, so closing it at pointerdown
+  // moved the results up and the tap landed on a different element (e.g. a favorite tap opened nothing).
+  const cerrarFuera=(event:MouseEvent)=>{if(event.target instanceof Node&&!contenedor.current?.contains(event.target)){setAbierto(false);setIndice(-1);}};
+  document.addEventListener('click',cerrarFuera);
+  return()=>document.removeEventListener('click',cerrarFuera);
  },[abierto]);
  const visible=abierto&&valor.trim().length>=2&&sugerencias.length>0;
  useEffect(()=>{

@@ -16,7 +16,7 @@ function Datos({u,propia}:{u:UsuarioPanel;propia:boolean}){
  const t=useTranslations('UsuariosPanel'),id=useId();const [nombre,setNombre]=useState(u.nombre),[correo,setCorreo]=useState(u.correo??'');const {confirmarGuardado}=useCambiosAdmin({nombre,correo});const [estado,accion,pendiente]=useActionState(async(estado:EstadoGestion,datos:FormData)=>{const resultado=await accionSegura(estado,datos);if(exitos.has(resultado))confirmarGuardado();return resultado;},'inicio' as EstadoGestion);
  const cambiaCorreo=correo.trim().toLowerCase()!==(u.correo??'').toLowerCase();
  return <form action={accion} onReset={e=>e.preventDefault()} className="gestion-formulario" aria-busy={pendiente}>
-  <Campos u={u} operacion="datos"/><input type="hidden" name="correo_actual" value={u.correo??''}/>
+  <Campos u={u} operacion="datos"/><input type="hidden" name="correo_actual" value={u.correo??''}/><input type="hidden" name="nombre_actual" value={u.nombre}/>
   <label htmlFor={`${id}-nombre`}>{t('nombre')}</label><input id={`${id}-nombre`} name="nombre" value={nombre} onChange={e=>setNombre(e.target.value)} minLength={2} maxLength={150} required autoComplete="off"/>
   <label htmlFor={`${id}-correo`}>{t('correo')}</label><input id={`${id}-correo`} name="correo" type="email" value={correo} onChange={e=>setCorreo(e.target.value)} required maxLength={254} readOnly={propia} autoComplete="off"/>
   <p className="gestion-ayuda">{t(propia?'correoPropio':'correoDetalle')}</p>

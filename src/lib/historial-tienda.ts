@@ -1,7 +1,8 @@
 type Historial={activo:boolean;ids:string[];vistas:string[]};
 let ids:string[]=[];
 let vistas:string[]=[];
-function limpiarLegado(){
+/** Older versions persisted browsing history; remove it as soon as the store loads. */
+export function limpiarLegado(){
  try{localStorage.removeItem('sg-recomendaciones');sessionStorage.removeItem('sg-intereses-sesion');}catch{}
 }
 export function leerHistorial():Historial{

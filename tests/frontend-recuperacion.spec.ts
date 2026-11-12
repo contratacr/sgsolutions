@@ -1,14 +1,15 @@
 import {test,expect} from '@playwright/test';
-for(const idioma of ['es','en'])test(`fallo de red conserva productos y permite reintento ${idioma}`,async({page,context})=>{
+for(const idioma of ['es','en'])test(`fallo de red muestra un aviso recuperable y permite reintento ${idioma}`,async({page,context})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
  await page.goto('/tienda');
  await expect(page.locator('.shop-producto')).toHaveCount(24);
  await expect(page.locator('#buscar-equipo')).toBeEnabled();
  await page.route('**/api/catalogo?**',r=>r.fulfill({status:503,json:{error:'no disponible'}}));
- await page.locator('#buscar-equipo').fill('Lenovo');
+ await page.locator('#buscar-equipo').fill('Lenovo');await page.locator('#buscar-equipo').press('Escape');
  const alerta=page.locator('.estado-inline[role=alert]');
  await expect(alerta).toBeVisible();
- await expect(page.locator('.shop-producto')).toHaveCount(24);
+ // The alert replaces results from the previous search rather than presenting them as current.
+ await expect(page.locator('.shop-producto')).toHaveCount(0);
  await expect(page.locator('.carga-esqueleto')).toHaveCount(0);
  await expect(page.locator('html')).toHaveAttribute('lang',idioma);
  await page.unroute('**/api/catalogo?**');

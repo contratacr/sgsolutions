@@ -31,7 +31,7 @@ for(const idioma of ['es','en'] as const)test('estadísticas, períodos, privaci
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);await page.screenshot({path:'.privado/evidencias/estadisticas-'+idioma+'-'+test.info().project.name+'.png',fullPage:true});
  await request.post('http://127.0.0.1:3123/__test/error',{data:{error:true}});await page.reload();await expect(page.locator('main.estadisticas-panel:visible').getByRole('alert')).toContainText(t.noDisponible);await expect(tarjeta(t.pagina).locator('strong')).toHaveText('—');
  await request.post('http://127.0.0.1:3123/__test/error',{data:{error:false}});await page.getByRole('link',{name:t.reintentar,exact:true}).click();await expect(tarjeta(t.pagina).locator('strong')).toHaveText('30');
- const otro=idioma==='es'?'en':'es';await page.locator('.estadisticas-idioma:visible button[value='+otro+']').click();await expect(page.locator('html')).toHaveAttribute('lang',otro);await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',otro);
+ const otro=idioma==='es'?'en':'es';await page.locator('.panel-nav-idioma:visible button[value='+otro+']').click();await expect(page.locator('html')).toHaveAttribute('lang',otro);await page.reload();await expect(page.locator('html')).toHaveAttribute('lang',otro);
 });
 
 for(const estado of ['inactivo','rol-no-disponible'])test(`no medir administración con estado ${estado}`,async({page,context,request})=>{

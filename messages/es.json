@@ -79,7 +79,7 @@
     "sinCuentaObligatoria": "También puede comprar sin registrarse. Al verificar su correo, verá los pedidos hechos con esa misma dirección.",
     "perfil": "Datos de la cuenta",
     "salir": "Cerrar sesión",
-    "pedidos": "Mis pedidos",
+    "pedidos": "Mis compras",
     "pedidosError": "No pudimos cargar sus pedidos. Intente de nuevo más tarde.",
     "sinPedidos": "Todavía no encontramos pedidos asociados a este correo.",
     "verTienda": "Explorar la tienda",
@@ -438,7 +438,21 @@
     "operaciones": "Operaciones",
     "tiendaContenido": "Tienda y contenido",
     "resultados": "Resultados",
-    "inicioAyuda": "¿Qué desea gestionar hoy?"
+    "inicioAyuda": "¿Qué desea gestionar hoy?",
+    "inicioPanel": "Inicio del panel administrativo",
+    "sesionIniciada": "Sesión iniciada como",
+    "resumenAtencion": "Requiere atención",
+    "resumenResultados": "Últimos resultados",
+    "resumenPorVerificar": "Comprobantes por verificar",
+    "resumenPorPreparar": "Pagados por preparar",
+    "resumenEnCamino": "Listos o enviados",
+    "resumenEsperandoPago": "Esperando pago del cliente",
+    "resumenTickets": "Tickets sin archivar",
+    "resumenVisitas": "Páginas vistas · 7 días",
+    "resumenPagados": "Pedidos pagados · 30 días",
+    "resumenIngresos": "Importe pagado · 30 días",
+    "resumenHayPendientes": "{cantidad, plural, one {Hay # pedido que requiere su atención.} other {Hay # pedidos que requieren su atención.}}",
+    "resumenAlDia": "No hay pedidos pendientes de su revisión."
   },
   "Error": {
     "etiqueta": "SIGAMOS CONECTADOS",
@@ -708,7 +722,45 @@
     "versionGuardada": "Versión guardada",
     "suEdicion": "Su edición",
     "seguirEditando": "Volver a mi edición",
-    "cargarVersion": "Cargar versión guardada"
+    "cargarVersion": "Cargar versión guardada",
+    "estadoPublicado": "Publicación activada",
+    "visibleTienda": "Visible en la tienda",
+    "ocultoPublico": "Oculto al público",
+    "motivo": "Motivo: {motivos}",
+    "verTienda": "Ver en la tienda",
+    "avisoEurocomp": "Eurocomp reporta {stock} unidades. Con menos de {minimo}, el producto no se muestra en la tienda aunque esté publicado.",
+    "sinCambiosNuevos": "No hay cambios nuevos en la versión guardada. Puede intentar guardar de nuevo.",
+    "guardadoOculto": "Producto guardado, pero no se muestra en la tienda. Motivo: {motivos}.",
+    "descartarTitulo": "¿Descartar los cambios?",
+    "descartarConfirmar": "Descartar cambios",
+    "eliminarTitulo": "¿Quitar este producto?",
+    "cancelar": "Cancelar",
+    "cargarVersionTitulo": "¿Cargar la versión guardada?",
+    "origen": "Origen",
+    "motivos": {
+      "borrador": "es un borrador",
+      "origen": "origen no habilitado para la tienda",
+      "sinImagen": "falta una foto real verificada",
+      "duplicadoEmpresarial": "duplica un modelo de Soluciones Empresariales",
+      "existenciasEurocomp": "Eurocomp reporta menos de 15 unidades",
+      "sinExistencias": "sin existencias propias",
+      "minimoVenta": "precio menor al mínimo de venta de la tienda"
+    },
+    "filtros": {
+      "visibles": "Visibles en la tienda",
+      "ocultos": "Ocultos al público (todos)",
+      "agotados": "Agotados",
+      "oferta": "En oferta",
+      "sinFoto": "Sin foto",
+      "motivoOculto": "Ocultos por motivo",
+      "oculto": "Oculto: {motivo}"
+    },
+    "origenes": {
+      "manual": "Manual",
+      "eurocomp": "Eurocomp",
+      "empresarial": "Soluciones Empresariales",
+      "software": "Software digital"
+    }
   },
   "ServiciosSoporte": {
     "etiqueta": "NUESTROS SERVICIOS",
@@ -1311,7 +1363,10 @@
     "tituloCaso": "Título del proyecto",
     "descripcionCaso": "Descripción del proyecto",
     "publicarCaso": "Publicar en la web",
-    "casoPublicado": "Publicado"
+    "casoPublicado": "Publicado",
+    "pestanas": "Secciones de contenido",
+    "reordenarBusqueda": "Para reordenar los casos, borre la búsqueda.",
+    "campoTexto": "{grupo} · {campo}"
   },
   "Legal": {
     "etiqueta": "Información legal",
@@ -1669,7 +1724,12 @@
     "publicidadInformacion": "Al permitir esta categoría, guardamos atribución técnica de campañas durante un máximo de 30 días y enviamos eventos limitados a Meta desde el servidor. Los identificadores publicitarios son seudónimos; Meta puede combinarlos con información que ya tenga. No enviamos nombres, correos, teléfonos, mensajes ni búsquedas escritas. Puede retirar el permiso aquí; se revocan los envíos pendientes, pero no se retiran los que Meta ya recibió.",
     "periodoTodo": "Todo el historial",
     "historialNota": "Incluye todos los datos conservados desde el inicio de cada medición. No recupera datos anteriores ni registros eliminados.",
-    "graficoHistorial": "Páginas vistas por día en el historial disponible."
+    "graficoHistorial": "Páginas vistas por día en el historial disponible.",
+    "indiceSecciones": "Ir a una sección de estadísticas",
+    "listas": "Listas",
+    "indiceCampanas": "Campañas",
+    "indiceContactos": "Contactos",
+    "barraValor": "{fecha}: {total} páginas vistas"
   },
   "Asesoria": {
     "confirmarExistencia": "Consultar existencia",
@@ -1803,7 +1863,8 @@
     "eliminar": "Eliminar del panel",
     "eliminarAyuda": "Solo se eliminan del panel consultas canceladas que no generaron un pedido. Su referencia se conserva internamente y no se reutiliza.",
     "confirmarEliminar": "Confirmo que deseo eliminar esta consulta del panel.",
-    "eliminando": "Eliminando…"
+    "eliminando": "Eliminando…",
+    "eliminarTitulo": "¿Eliminar la consulta {referencia}?"
   },
   "PanelLista": {
     "estadoPago": "Estado del pago",
@@ -1867,9 +1928,22 @@
     "codigo26": "Eurocomp suspendió temporalmente las consultas. Espere antes de volver a actualizar (código 26).",
     "codigo27": "Eurocomp bloqueó el acceso. Solicite al proveedor que lo revise (código 27).",
     "codigo28": "Eurocomp tiene demasiadas consultas simultáneas. Intente más tarde (código 28).",
-    "proveedor": "Eurocomp"
+    "proveedor": "Eurocomp",
+    "enTienda": "Ya está en la tienda",
+    "noEnTienda": "No está en la tienda",
+    "editarProducto": "Editar en Productos",
+    "editarProductoEtiqueta": "Editar {nombre} en Productos",
+    "tiendaNoDisponible": "No pudimos comparar estos artículos con los productos de la tienda."
   },
   "UsuariosPanel": {
+    "filtroEtiqueta": "Mostrar usuarios",
+    "filtro_todos": "Todos",
+    "filtro_administradores": "Administradores",
+    "filtro_clientes": "Clientes",
+    "filtro_bloqueados": "Bloqueados",
+    "filtro_sin_confirmar": "Sin confirmar",
+    "vacioFiltro": "Ningún usuario coincide con este filtro. Pruebe con Todos.",
+    "filtroNoDisponible": "Este filtro estará disponible cuando se aplique la actualización de la base de datos. Mientras tanto, use Todos o la búsqueda.",
     "titulo": "Usuarios",
     "etiqueta": "Clientes y cuentas",
     "descripcion": "Cuentas de clientes y empleados.",
@@ -1969,7 +2043,12 @@
     "eventoTipoCliente": "Tipo de cliente actualizado",
     "cliente": "Cliente",
     "mfaConfigurado": "Doble factor configurado",
-    "mfaPendiente": "Doble factor pendiente"
+    "mfaPendiente": "Doble factor pendiente",
+    "vacioBusqueda": "Revise el nombre o el correo, o limpie la búsqueda para ver todas las cuentas.",
+    "vacioAyuda": "Las cuentas aparecerán aquí cuando los clientes se registren.",
+    "estadoCuenta": "Estado de la cuenta",
+    "estadoActivo": "Cuenta activa",
+    "desbloqueoParcial": "Se levantó el bloqueo de inicio de sesión, pero la cuenta sigue bloqueada en SG Solutions porque no se completó el cambio. Recargue la página y vuelva a intentar desbloquearla."
   },
   "DatosCuenta": {
     "titulo": "Mis datos de compra",
@@ -2120,6 +2199,7 @@
     "archivarTitulo": "Archivar {referencia}",
     "restaurarTitulo": "Restaurar {referencia}",
     "conserva": "Se conservarán los pagos, comprobantes y el historial del cliente.",
+    "vencidoCancela": "Este enlace de compra ya venció; al archivarlo también se cancela y deja de funcionar definitivamente.",
     "cancelar": "Cancelar",
     "confirmar": "Confirmar",
     "guardando": "Guardando…",
@@ -2450,7 +2530,50 @@
     "crear": "Crear pedido",
     "enlace": "Enlace de compra",
     "inventarioAlerta": "Pago recibido después de vencer la reserva. Faltan existencias: revise este pedido antes de preparar la entrega.",
-    "resolverInventario": "Reintentar asignación de existencias"
+    "resolverInventario": "Reintentar asignación de existencias",
+    "descripcion": "Atienda primero lo que requiere acción de SG: comprobantes, pedidos pagados por preparar y asesorías nuevas.",
+    "resumenTitulo": "Resumen de pedidos",
+    "resumen_verificar": "Comprobantes o disponibilidad por revisar",
+    "resumen_preparar": "Pagados por preparar",
+    "resumen_curso": "En preparación o por entregar",
+    "resumen_cliente": "Esperando pago del cliente",
+    "resumen_tarjeta": "Intentos con tarjeta por revisar",
+    "esperandoCliente": "Esperando al cliente",
+    "pago_por_verificar": "Por revisar o verificar",
+    "pago_problema": "Rechazado o con aviso por revisar",
+    "destinoOculto": "El registro actualizado no aparece con la vista y los filtros actuales. Ahora está en «{etapa}».",
+    "mostrarDestino": "Mostrar el registro",
+    "vacioEtapa": "No hay registros en esta etapa",
+    "vacioEtapaAyuda": "Cuando haya pedidos o consultas en esta etapa aparecerán aquí.",
+    "enlaceVencido": "Enlace vencido",
+    "vence": "Vence:",
+    "vencio": "Venció:",
+    "referencia": "Referencia",
+    "numero": "Número de pedido",
+    "creado": "Fecha de creación",
+    "estado": "Estado",
+    "ambiente": "Ambiente",
+    "seguimiento": "Aviso interno por revisar",
+    "archivo_cancelarPrimero": "Este pedido sigue activo. Para archivarlo, primero cancélelo; así el cliente no queda con un pedido abierto sin seguimiento.",
+    "archivo_entregarPrimero": "Podrá archivar este pedido cuando se confirme la entrega.",
+    "cancelarAsesoriaTitulo": "¿Cancelar la asesoría {referencia}?",
+    "cancelarAsesoriaEnlace": "El enlace de compra dejará de funcionar de inmediato.",
+    "cancelarSinCorreo": "No se envía ningún correo automático al cliente; si corresponde, avísele usted.",
+    "cancelarTitulo": "¿Cancelar el pedido {referencia}?",
+    "cancelarDescripcion": "El pedido quedará cancelado y el cliente ya no podrá pagarlo.",
+    "cancelarInventario": "Si había existencias reservadas para este pedido, se liberan.",
+    "cancelarIrreversible": "Esta acción no se puede deshacer desde el panel.",
+    "pagadoTitulo": "¿Marcar como pagado el pedido {referencia}?",
+    "pagadoCorreo": "Se enviará al cliente un correo de confirmación de pago.",
+    "pagadoPreparar": "El pedido quedará pagado y listo para preparar.",
+    "pagadoIrreversible": "Esta acción no se puede deshacer desde el panel.",
+    "resultado_pagado": "Pago registrado. Se envió la confirmación al cliente.",
+    "resultado_pagado_sin_correo": "Pago registrado, pero el correo de confirmación no se envió. Comuníquese con el cliente o reenvíe el correo del pedido.",
+    "resultado_pagado_sin_medicion": "Pago registrado y confirmación enviada. La medición interna del pago no se pudo registrar; no requiere acción con el cliente.",
+    "resultado_cancelado": "Pedido cancelado.",
+    "resultado_inventario_resuelto": "Existencias asignadas. El pedido ya se puede preparar.",
+    "resultado_inventario_pendiente": "Todavía faltan existencias para este pedido. Actualice el inventario del producto y vuelva a intentarlo.",
+    "resultado_inventario_error": "No pudimos asignar las existencias. Inténtelo de nuevo o revise el inventario."
   },
   "SolucionesEmpresariales": {
     "titulo": "Soluciones Empresariales",
@@ -2506,7 +2629,7 @@
     "completado": "Completado",
     "programado": "Programado",
     "actualizado": "Actualizado el {fecha}",
-    "verDetalle": "Ver detalles y acciones",
+    "verDetalle": "Ver detalles e historial",
     "historial": "Historial de actividad",
     "archivar": "Archivar",
     "restaurar": "Restaurar",
@@ -2582,7 +2705,8 @@
       "conflicto": "El registro cambió mientras lo editaba. Cierre y vuelva a abrirlo para revisar la última versión.",
       "duplicado": "Ya existe una empresa con esa identificación o un equipo con ese número de serie.",
       "relacion": "Revise las relaciones: el equipo debe pertenecer a la empresa y el ticket al equipo seleccionado.",
-      "adjuntoError": "No se pudo subir la imagen. Revise el formato, el tamaño y el límite de 10 imágenes."
+      "adjuntoError": "No se pudo subir la imagen. Revise el formato, el tamaño y el límite de 10 imágenes.",
+      "adjuntoRecarga": "La imagen se subió, pero no pudimos actualizar la lista. Pulse Ver imágenes para revisarla."
     },
     "acciones": {
       "creado": "Registro creado",
@@ -2590,7 +2714,21 @@
       "archivado": "Registro archivado",
       "restaurado": "Registro restaurado"
     },
-    "local": "Entorno local de prueba. Estos registros y archivos no se envían a producción."
+    "local": "Entorno local de prueba. Estos registros y archivos no se envían a producción.",
+    "pagina": "Página {pagina} de {total}",
+    "cerrarMensaje": "Cerrar mensaje",
+    "codigoAccesible": "{tipo} número {numero}",
+    "codigos": {
+      "tickets": "Ticket",
+      "equipos": "Equipo",
+      "empresas": "Empresa",
+      "mantenimientos": "Mantenimiento"
+    },
+    "archivarTitulo": "¿Archivar este registro?",
+    "archivarDetalle": "«{nombre}» saldrá de la lista activa y conservará su historial. Puede restaurarlo desde Ver archivados.",
+    "archivarConfirmar": "Sí, archivar",
+    "vacioArchivo": "No hay registros archivados en esta sección.",
+    "reportesTitulo": "Resumen de soporte"
   },
   "MfaAdmin": {
     "etiqueta": "ACCESO ADMINISTRATIVO",

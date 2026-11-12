@@ -18,7 +18,7 @@ for(const idioma of ['es','en']){
   await page.route('**/api/catalogo?**',route=>route.abort());
   await page.goto('/tienda');
   await expect(page.locator('.shop-producto').first()).toBeVisible();
-  await page.locator('#buscar-equipo').fill('Lenovo');
+  await page.locator('#buscar-equipo').fill('Lenovo');await page.locator('#buscar-equipo').press('Escape');
   await expect(page.locator('.estado-inline[role="alert"]')).toBeVisible();
   await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
   await page.unroute('**/api/catalogo?**');

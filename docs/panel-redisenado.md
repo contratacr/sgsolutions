@@ -25,3 +25,22 @@ El rediseño mantiene las operaciones, permisos y validaciones existentes. Los e
 - La prueba de pestañas de Pedidos verifica que el desplazamiento permita llegar a la última opción, incluso si el borde visible coincide con un espacio entre etiquetas.
 
 Esta ronda no realiza pagos, no modifica usuarios o pedidos reales y no sustituye una regresión completa de toda la aplicación.
+
+## Segunda ronda — 11 de noviembre de 2026
+
+- **Usuarios:** filtros Todos, Administradores, Clientes, Bloqueados y Sin confirmar, compatibles con la búsqueda y la paginación. Requieren la migración `20261111000100_filtro_usuarios_panel.sql`, que se aplica con el workflow *Migraciones controladas*: primero en simulación y luego con respaldo. Mientras no se aplique, Todos y la búsqueda funcionan igual que antes y los filtros muestran un aviso. Prueba SQL aislada: `tests/sql/filtro-usuarios.mjs`.
+- **Asesorías:** un enlace de compra aprobado y vencido se puede archivar directamente. En el mismo cambio queda cancelado y el diálogo lo advierte. No requiere migración, porque el trigger de archivo ya acepta el estado `cancelada`.
+- **Tienda:** los filtros esperan a que la página termine de cargar antes de aceptar clics, como ya ocurría con Ordenar. Antes, un toque en ese momento se perdía o se sobrescribía al restaurar la URL. Al cargar la tienda también se elimina el historial de recomendaciones de versiones anteriores, y la regla de mínimos de venta tolera instantáneas sin categoría.
+- **Pruebas actualizadas al comportamiento vigente:**
+  - el aviso de privacidad del 3 de noviembre (consentimiento explícito)
+  - los mínimos de venta de 726a6dc
+  - la limpieza de la categoría padre al quitar una subcategoría
+  - la recarga al volver a la pestaña, limitada a cada 30 s
+  - la selección que se guarda en la URL
+  - el orden del listado, que no usa historial (934cca2)
+  - el conteo de fotos verificadas
+  - las sugerencias de búsqueda, que se cierran con Escape antes de elegir un producto
+- **Se decidió no hacer:**
+  - **Versión por usuario:** la edición de datos ya compara nombre y correo con Auth antes de guardar.
+  - **Borrado automático de imágenes sin uso:** sería irreversible y una foto puede seguir referenciada en correos enviados o en contenido archivado.
+  - **Texto alternativo por foto de producto:** la foto principal usa el nombre del producto y las miniaturas tienen nombre accesible.

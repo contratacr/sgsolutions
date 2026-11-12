@@ -1,0 +1,22 @@
+/* Productos, Proveedores y Contenido del panel. Shared tokens live in panel-diseno.css. */
+.panel-renovado .admin-lista-filtros.catalogo-filtros{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.panel-renovado .catalogo-fila-estado{display:flex;flex-direction:column;align-items:flex-end;gap:var(--p-esp-1)}
+.panel-renovado .catalogo-visibilidad{display:inline-flex;flex-direction:column;align-items:flex-end;gap:2px;max-width:100%}
+.panel-renovado .catalogo-visibilidad small{color:var(--p-suave);font-size:var(--p-texto-xs);line-height:1.4;text-align:right;white-space:normal;overflow-wrap:anywhere}
+.panel-renovado .catalogo-editor-estado{align-items:center}
+.panel-renovado .catalogo-editor-estado .catalogo-visibilidad{align-items:flex-start}
+.panel-renovado .catalogo-editor-estado .catalogo-visibilidad small{text-align:left}
+.panel-renovado .catalogo-estado-limpio:empty{display:none}
+.panel-renovado .catalogo-estado-limpio{margin:var(--p-esp-4) 0 0;color:var(--p-exito);font-size:var(--p-texto-s)}
+/* Portalled dialogs are outside .panel-renovado; scope them to the mounted panel. */
+.panel-renovado .catalogo-boton-peligro,:root:has(.panel-renovado) .modal-marco .catalogo-boton-peligro{background:var(--p-peligro);border:1px solid var(--p-peligro);color:#fff}
+.panel-renovado .catalogo-boton-peligro:hover,:root:has(.panel-renovado) .modal-marco .catalogo-boton-peligro:hover{filter:brightness(.92)}
+:root:has(.panel-renovado) .modal-marco .catalogo-revision dl{margin:0 0 var(--p-esp-5);padding:var(--p-esp-4);background:var(--p-superficie-3);border-radius:var(--p-radio-s);color:var(--p-tinta)}
+:root:has(.panel-renovado) .modal-marco .catalogo-revision dd{margin:var(--p-esp-2) 0 0}
+/* Proveedores: store link status per supplier item. */
+.panel-renovado .proveedor-tienda{display:flex;flex-wrap:wrap;align-items:center;gap:var(--p-esp-2);margin-top:var(--p-esp-3)}
+.panel-renovado .proveedor-tienda small{flex-basis:100%;color:var(--p-suave);font-size:var(--p-texto-xs);line-height:1.4}
+.panel-renovado .proveedor-tienda a{font-size:var(--p-texto-s);font-weight:650;color:var(--p-primario)}
+/* Contenido. */
+.panel-renovado .contenido-nota-orden{margin:var(--p-esp-2) 0 0;color:var(--p-suave);font-size:var(--p-texto-xs)}
+@media(max-width:760px){.panel-renovado .catalogo-fila-estado,.panel-renovado .catalogo-visibilidad{align-items:flex-start}.panel-renovado .catalogo-visibilidad small{text-align:left}}

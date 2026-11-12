@@ -10,19 +10,21 @@ for(const idioma of ['es','en'])test(`catálogo inmediato y skeleton recuperable
  expect(peticiones).toBe(0);
  let liberar!:()=>void;const espera=new Promise<void>(r=>{liberar=r;});
  await page.route('**/api/catalogo?**',async r=>{await espera;await r.continue();});
- await page.locator('#buscar-equipo').fill('Lenovo');
+ await page.locator('#buscar-equipo').fill('Lenovo');await page.locator('#buscar-equipo').press('Escape');
+ // Since 934cca2 a real change of search shows the skeleton instead of cards from the previous selection.
  await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','true');
- await expect(page.locator('.shop-producto')).toHaveCount(24);
- await expect(page.locator('.carga-esqueleto')).toHaveCount(0);
+ await expect(page.locator('.carga-esqueleto')).toBeVisible();
+ await expect(page.locator('.shop-producto')).toHaveCount(0);
  liberar();
  await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
  await expect(page.locator('.shop-producto').first()).toContainText(/lenovo/i);
  await page.unroute('**/api/catalogo?**');
- await page.locator('#buscar-equipo').fill('zzsinresultadosqa999');
+ await page.locator('#buscar-equipo').fill('zzsinresultadosqa999');await page.locator('#buscar-equipo').press('Escape');
  await expect(page.locator('.shop-producto')).toHaveCount(0);
  let terminar!:()=>void;const pendiente=new Promise<void>(r=>{terminar=r;});
  await page.route('**/api/catalogo?**',async r=>{await pendiente;await r.continue();});
- await page.locator('#buscar-equipo').fill('Lenovo');
+ // A term not searched before: repeated searches are answered from the client cache without a skeleton.
+ await page.locator('#buscar-equipo').fill('Hikvision');
  await expect(page.locator('.carga-esqueleto[role=status]')).toBeVisible();
  await expect(page.locator('.esqueleto-producto')).toHaveCount(6);
  await expect(page.locator('.estado-carga')).toHaveCount(0);
@@ -32,8 +34,8 @@ for(const idioma of ['es','en'])test(`catálogo inmediato y skeleton recuperable
  await page.locator('.carga-esqueleto').scrollIntoViewIfNeeded();
  await page.screenshot({path:`/tmp/sg-skeleton-${idioma}-${test.info().project.name}.png`});
  terminar();await expect(page.locator('.carga-esqueleto')).toHaveCount(0);
- await expect(page.locator('.shop-producto').first()).toContainText(/lenovo/i);
- await page.locator('#buscar-equipo').fill('');
+ await expect(page.locator('.shop-producto').first()).toContainText(/hikvision/i);
+ await page.locator('#buscar-equipo').fill('');await page.locator('#buscar-equipo').press('Escape');
  await expect(page.locator('.shop-producto')).toHaveCount(24);
 });
 

@@ -577,3 +577,7 @@
 
 .shop-sugerencias-panel{max-height:var(--sugerencias-altura,min(520px,55dvh));-webkit-overflow-scrolling:touch;scroll-padding-bottom:12px}
 @media(max-width:650px){.shop-sugerencias-panel{position:relative;top:auto;left:auto;right:auto;margin-top:6px;overscroll-behavior-y:auto}.shop-autocompletar:has(.shop-sugerencias-panel){scroll-margin-bottom:16px}}
+
+/* Filters wait for hydration without looking disabled; controls disabled on their own keep their style. */
+.shop-filtros-campos{display:contents;border:0;margin:0;padding:0;min-width:0}
+.shop-filtros-campos:disabled :is(button,input):not([disabled]),.shop-abrir-filtros:disabled,.shop-filtros-activos button:disabled{opacity:1;cursor:default}

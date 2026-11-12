@@ -15,7 +15,7 @@ for(const idioma of ['es','en'])test(`buscar y paginar no alterna productos al a
   await route.fulfill({json:{productos,total:48,pagina,paginas:2}});
  });
  await page.goto('/tienda');
- await page.locator('#buscar-equipo').fill('camara');
+ await page.locator('#buscar-equipo').fill('camara');await page.locator('#buscar-equipo').press('Escape');
  const primero=page.locator('.shop-grid .shop-producto h3').first();
  const prefijo=idioma==='es'?'Cámara':'Camera';
  await expect(primero).toHaveText(`${prefijo} 1 0`);await page.locator('#buscar-equipo').press('Escape');

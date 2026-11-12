@@ -1,5 +1,6 @@
 type ProductoComercial={categoria:string;subcategoria?:{es:string;en:string};nombre:{es:string;en:string};precio:number|null};
-const normalizar=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
+// Tolerate older snapshots without a category or subcategory instead of rejecting the purchase.
+const normalizar=(s:string|undefined|null)=>(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
 /** Store policy, independent of supplier. Never changes inventory or publication flags. */
 export function minimoVentaProducto(p:Omit<ProductoComercial,'precio'>):number|null{
  const nombres=[normalizar(p.nombre.es),normalizar(p.nombre.en)];

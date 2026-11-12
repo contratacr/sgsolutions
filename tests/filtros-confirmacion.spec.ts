@@ -9,7 +9,8 @@ for(const idioma of ['es','en'])test(`los filtros móviles solo se aplican con V
   productos:Array.from(document.querySelectorAll('.shop-grid h3 a')).map(e=>({texto:e.textContent,ruta:e.getAttribute('href')})),
   asesoria:document.querySelector('.shop-asesoria-inline')!.getAttribute('href'),
   busqueda:(document.querySelector('#buscar-equipo') as HTMLInputElement).value,
-  preferencias:sessionStorage.getItem('sg-tienda-preferencias'),
+  // The applied selection lives in the URL (sessionStorage preferences were retired).
+  url:location.pathname+location.search,
  }));
  const antes=await estado(),panel=page.locator('.shop-panel-filtros');
  for(const cerrar of ['fuera','escape','boton','aplicar']){
@@ -34,7 +35,7 @@ for(const idioma of ['es','en'])test(`los filtros móviles solo se aplican con V
   }else{
    await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');
    await expect(page.locator('.shop-filtros-activos')).not.toHaveText('');
-   expect((await estado()).preferencias).not.toBe(antes.preferencias);
+   expect((await estado()).url).not.toBe(antes.url);
    await page.reload();await expect(page.locator('.shop-filtros-activos')).not.toHaveText('');
   }
  }

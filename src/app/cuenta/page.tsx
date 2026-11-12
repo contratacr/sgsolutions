@@ -24,6 +24,9 @@ type PedidoCuenta = {
   articulos: { nombre?: string; cantidad?: number }[] | null;
 };
 
+const tonosEstado:Record<string,'exito'|'aviso'|'peligro'|'info'|'neutro'>={pagado:'exito',iniciado:'aviso',pendiente:'aviso',pendiente_pago:'aviso',revision:'info',comprobante_recibido:'info',rechazado:'peligro',error:'peligro',cancelado:'neutro'};
+const tonoEstado=(estado:string)=>tonosEstado[estado]??'neutro';
+
 export async function generateMetadata() {
   const t = await getTranslations('CuentaCliente');
   return { title: t('titulo'), description: t('descripcion'), robots: { index: false, follow: false } };
@@ -67,8 +70,8 @@ export default async function CuentaCliente({ searchParams }: { searchParams: Pr
       <section className="cuenta-pedidos" aria-labelledby="cuenta-pedidos-titulo">
         <div className="cuenta-pedidos-titulo"><h2 id="cuenta-pedidos-titulo">{t('pedidos')}</h2><span>{pedidos.length}</span></div>
         {errorPedidos ? <p role="alert">{t('pedidosError')}</p> : pedidos.length === 0 ? <div className="cuenta-bloque"><p>{t('sinPedidos')}</p><Link className="boton boton-azul" href="/tienda">{t('verTienda')}</Link></div> : <ol className="cuenta-lista">{pedidos.map(pedido => <li className="cuenta-pedido" key={`${pedido.origen}-${pedido.id}`}>
-          <div className="cuenta-pedido-cabecera"><div><strong>{numeroPedido(pedido.id,pedido.referencia_numero)}</strong><span>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))}</span></div><span className="cuenta-estado">{t(`estado_${pedido.estado}` as 'estado_pagado')}</span></div>
-          <ul>{pedido.articulos?.map((articulo, indice) => <li key={indice}>{articulo.cantidad ?? 1} × {articulo.nombre ?? t('producto')}</li>)}</ul>
+          <div className="cuenta-pedido-cabecera"><div><strong>{numeroPedido(pedido.id,pedido.referencia_numero)}</strong><span>{new Intl.DateTimeFormat(idioma === 'en' ? 'en-US' : 'es-CR', { dateStyle: 'medium', timeZone: 'America/Costa_Rica' }).format(new Date(pedido.creado_en))}</span></div><span className="cuenta-estado" data-tono={tonoEstado(pedido.estado)}>{t(`estado_${pedido.estado}` as 'estado_pagado')}</span></div>
+          <ul className="cuenta-pedido-articulos">{pedido.articulos?.map((articulo, indice) => <li key={indice}>{articulo.cantidad ?? 1} × {articulo.nombre ?? t('producto')}</li>)}</ul>
           <div className="cuenta-pedido-pie"><span>{pedido.origen === 'tarjeta' ? t('tarjeta') : t('pagoManual')}</span><strong>{pedido.total == null ? t('totalPendiente') : colones(Number(pedido.total))}</strong></div>
         </li>)}</ol>}
       </section>}/>

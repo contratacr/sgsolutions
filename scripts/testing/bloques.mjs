@@ -1,5 +1,5 @@
 // Registro de pruebas aisladas. Diagnósticos reales de Meta y producción quedan fuera.
-const sql=['eurocomp-publicacion','inventario-manual','favoritos-manuales','conciliacion-tarjeta','campanas-conversiones','mfa-administradores','estadisticas-panel','favoritos-empresariales','referencias-pedidos','pedidos-archivo-express','archivo-panel','autogestion-cuenta','estado-entrega','eurocomp-manual','favoritos','perfiles-compra','popularidad-catalogo','popularidad-productos','seguridad-archivo','soporte-panel','usuarios-panel'];
+const sql=['eurocomp-publicacion','inventario-manual','favoritos-manuales','conciliacion-tarjeta','campanas-conversiones','mfa-administradores','estadisticas-panel','favoritos-empresariales','referencias-pedidos','pedidos-archivo-express','archivo-panel','autogestion-cuenta','estado-entrega','eurocomp-manual','favoritos','perfiles-compra','popularidad-catalogo','popularidad-productos','seguridad-archivo','soporte-panel','usuarios-panel','filtro-usuarios'];
 const integraciones=['eurocomp-publicacion','productos-manuales','ofertas-compra','compras-manuales','campanas-contrato','campanas-transporte','publicidad-cliente','recorrido-campanas','contactos-comerciales','conciliacion-tarjeta','plazo-correos','retiro-pago','catalogo-red'];
 export const bloques=[
  ['verificar',['npm','run','verificar']],

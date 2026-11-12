@@ -28,6 +28,8 @@ test('buscar vacío conserva orden y evita lecturas extra de descripciones',()=>
  const c=publicarCatalogo(esquemaCatalogo.parse(inicial));let lecturas=0;
  const productos=c.productos.map(p=>new Proxy(p,{get(target,key,receiver){if(key==='descripcion')lecturas++;return Reflect.get(target,key,receiver);}}));
  const pagina=consultarCatalogo({...c,productos},new URLSearchParams({orden:'menor'}));
- expect(pagina.total).toBe(productos.length);expect(lecturas).toBe(productos.length);
+ // The store applies minimum sale prices (politica-visibilidad-productos), so it may show fewer than the published projection.
+ const tienda=catalogoTienda(c).productos.length;expect(tienda).toBeLessThanOrEqual(productos.length);
+ expect(pagina.total).toBe(tienda);expect(lecturas).toBe(tienda);
  expect(pagina.productos).toEqual([...catalogoTienda(c).productos].sort((a,b)=>(a.precio??Infinity)-(b.precio??Infinity)).slice(0,24));
 });

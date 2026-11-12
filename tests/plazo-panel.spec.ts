@@ -13,8 +13,8 @@ for(const idioma of ['es','en'] as const)for(const nuevo of [true,false])test(`c
  if(await card.locator('.panel-pedido-detalle').getAttribute('open')===null)await card.locator('.panel-pedido-detalle>summary').click();
  await card.getByRole('button',{name:t.reenviarCorreo,exact:true}).click();
  await expect.poll(async()=>(await (await request.get(fixture+'/correos')).json()).length).toBe(2);
- if(await card.locator('.panel-pedido-detalle').getAttribute('open')===null)await card.locator('.panel-pedido-detalle>summary').click();
- await card.getByRole('button',{name:t.marcarPagado,exact:true}).click();
+ await page.waitForLoadState('networkidle');if(await card.locator('.panel-pedido-detalle').getAttribute('open')===null)await card.locator('.panel-pedido-detalle>summary').click();
+ await card.getByRole('button',{name:t.marcarPagado,exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:t.marcarPagado,exact:true}).click();
  await expect.poll(async()=>(await (await request.get(fixture+'/correos')).json()).length).toBe(3);
  const correos=await (await request.get(fixture+'/correos')).json();
  for(const c of correos)for(const campo of ['textContent','htmlContent'])expect(c[campo].includes(idioma==='es'?'Entrega en un máximo de 7 días hábiles desde la confirmación del pago.':'Delivery within 7 business days after payment confirmation.')).toBe(nuevo);

@@ -50,7 +50,9 @@ export async function actualizarPedidoManual(form: FormData) {
   if (nuevo === 'pagado') cambios.verificado_en = new Date().toISOString();
   const { data, error } = await db.from('pedidos_manuales').update(cambios).eq('id', id).eq('estado', pedido.estado).select('id').maybeSingle();
   if (error || !data) redirect('/panel/pedidos?resultado=error');
-  if(nuevo==='pagado')await registrarPago('manual',id);
+  // The payment is already stored: a measurement failure must never block the customer notice or the redirect.
+  let medicionFallida=false;
+  if(nuevo==='pagado')try{await registrarPago('manual',id);}catch{medicionFallida=true;console.error('MEDICION_PAGO_MANUAL_FALLIDA');}
   const ingles = pedido.cliente?.idioma === 'en';
   let correoEnviado = false;
   const numero = numeroPedido(id,pedido.referencia_numero);
@@ -78,7 +80,7 @@ export async function actualizarPedidoManual(form: FormData) {
     } catch { /* El pedido conserva el estado; avisar desde el panel. */ }
   }
   revalidatePath('/panel/pedidos');
-  redirect(`/panel/pedidos?resultado=${nuevo === 'cancelado' || correoEnviado ? 'guardado' : 'sin_correo'}&pedido=${id}`);
+  redirect(`/panel/pedidos?resultado=${nuevo === 'cancelado' ? 'cancelado' : nuevo === 'pagado' ? (correoEnviado ? (medicionFallida ? 'pagado_sin_medicion' : 'pagado') : 'pagado_sin_correo') : correoEnviado ? 'guardado' : 'sin_correo'}&pedido=${id}`);
 }
 
 export async function reenviarCorreoPedido(form:FormData){
@@ -151,7 +153,11 @@ export async function resolverInventarioPedido(form:FormData){
  const manual=configuracionPedidosManuales();
  const db=tipo==='manual'?(manual?basePedidosManuales(manual):null):basePedidosAdministracion();
  if(!db)redirect('/panel/pedidos?resultado=no_disponible');
- const {error}=await db.from(tipo==='manual'?'pedidos_manuales':'pedidos_tilopay').update({inventario_alerta:false}).eq('id',id).eq('estado','pagado').eq('inventario_alerta',true);
- revalidatePath('/','layout');
- redirect('/panel/pedidos?pedido='+id+'&resultado='+(error?'no_disponible':'guardado'));
+ // The inventory trigger may keep the alert when stock is still missing, so the returned row decides the message.
+ const {data,error}=await db.from(tipo==='manual'?'pedidos_manuales':'pedidos_tilopay').update({inventario_alerta:false}).eq('id',id).eq('estado','pagado').eq('inventario_alerta',true).select('id,inventario_alerta');
+ const resultado=error?'inventario_error':!data?.length?'invalido':data.some(f=>f.inventario_alerta)?'inventario_pendiente':'inventario_resuelto';
+ revalidatePath('/panel/pedidos');
+ // Stock was reassigned: public stock shown in the catalogue changes too.
+ if(resultado==='inventario_resuelto')revalidatePath('/','layout');
+ redirect('/panel/pedidos?pedido='+id+'&resultado='+resultado);
 }

@@ -9,6 +9,8 @@ import es from "../../../../messages/es.json";
 import en from "../../../../messages/en.json";
 import {textosEditables} from '@/lib/textos-editables';
 import {sesionLocal,leerLocal} from '@/lib/admin-local';
+import {EncabezadoPanel} from '@/components/encabezado-panel';
+import '../catalogo/catalogo-panel.css';
 export async function generateMetadata(){const t=await getTranslations('AdminContenido');return {title:t('titulo'),robots:{index:false,follow:false}};}
 export default async function Pagina() {
  await exigirAdminMfa();
@@ -26,7 +28,8 @@ export default async function Pagina() {
     .eq("activo", true)
     .maybeSingle():{data:local};
   if (perfil?.rol !== "administrador") redirect("/panel");
-  const t = await getTranslations("AdminContenido");
+  const t = await getTranslations("AdminContenido"), p = await getTranslations("Panel");
+  const encabezado = <EncabezadoPanel seccion={p("tiendaContenido")} titulo={t("titulo")} descripcion={t("descripcion")} />;
   const { data, error } = local?{data:await leerLocal('contenido'),error:null}:await c!
     .from("contenido_privado")
     .select("contenido,revision")
@@ -35,14 +38,14 @@ export default async function Pagina() {
   if (error)
     return (
       <main id="contenido" className="contenedor seccion">
-        <h1>{t("titulo")}</h1>
+        {encabezado}
         <p>{t("noDisponible")}</p>
       </main>
     );
   const textos=textosEditables(es,en);
   return (
     <main id="contenido" className="contenedor seccion">
-      <h1>{t("titulo")}</h1>
+      {encabezado}
       <EditorContenido
         inicial={
           data ? esquemaContenido.parse(data.contenido) : contenidoInicial

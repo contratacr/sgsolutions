@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test';
-for(const idioma of ['es','en'])test(`la subcategoría reemplaza la etiqueta de categoría y al quitarla la restaura ${idioma}`,async({page,context,baseURL},info)=>{
+for(const idioma of ['es','en'])test(`la subcategoría reemplaza la etiqueta de categoría y al quitarla limpia también la categoría ${idioma}`,async({page,context,baseURL},info)=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);await page.goto('/tienda');
  if(/movil|mobile/.test(info.project.name))await page.locator('.shop-abrir-filtros').click();
  await page.locator(/movil|mobile/.test(info.project.name)?'.shop-panel-filtros .shop-categoria-empresa>button':'.shop-sidebar .shop-categoria-empresa>button').click();
@@ -15,8 +15,8 @@ for(const idioma of ['es','en'])test(`la subcategoría reemplaza la etiqueta de 
  expect(colocacion).toBe(true);
 
  await page.reload();await expect(etiquetas.getByRole('button',{name:subcategoria,exact:true})).toBeVisible();
+ // Removing the subcategory also clears its parent category, so it does not reappear as a filter.
  await etiquetas.getByRole('button',{name:subcategoria,exact:true}).click();
- await expect(etiquetas.getByRole('button',{name:categoria,exact:true})).toBeVisible();
- await expect(etiquetas.getByRole('button',{name:subcategoria,exact:true})).toHaveCount(0);
- await etiquetas.getByRole('button',{name:categoria,exact:true}).click();await expect(etiquetas.locator('button')).toHaveCount(0);
+ await expect(etiquetas.locator('button')).toHaveCount(0);
+ await expect(page).not.toHaveURL(/categoria=/);
 });

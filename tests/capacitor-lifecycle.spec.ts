@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import es from '../messages/es.json';import en from '../messages/en.json';
 for(const idioma of ['es','en'])test(`retorno nativo conserva carrito, idioma y borrador sin guardar tarjeta ${idioma}`,async({page,context,baseURL})=>{
  await context.addCookies([{name:'sg-idioma',value:idioma,url:baseURL!}]);
- await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto').first().hover();await page.locator('.producto-agregar').first().click();
+ await page.goto('/tienda');await page.locator('#buscar-equipo').fill('conector');await page.locator('#buscar-equipo').press('Escape');await expect(page.locator('.shop-producto button.producto-agregar').first()).toBeVisible();await expect(page.locator('.shop-orden-trigger')).toBeEnabled();await page.locator('.shop-producto').first().hover();await page.locator('.producto-agregar').first().click();
  await expect(page.locator('.carrito-cantidad')).toHaveText('1');
  await page.evaluate(()=>{const items=JSON.parse(localStorage.getItem('sg-carrito-v1')!);items[0].cantidad=3;localStorage.setItem('sg-carrito-v1',JSON.stringify(items));});
  await expect(page.locator('.carrito-cantidad')).toHaveText('1');

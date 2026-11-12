@@ -1,17 +1,52 @@
 /* Administration-only design system. Public storefront styles are unchanged. */
 .panel-renovado .admin-guardado-fijo{padding-bottom:var(--acciones-altura,190px)}
 .panel-renovado .admin-guardado-fijo>.admin-actions{position:fixed;z-index:80;bottom:0;margin:0;background:#fff;backdrop-filter:none;filter:none;padding-bottom:calc(14px + env(safe-area-inset-bottom));max-height:45dvh;overflow-y:auto}
-.panel-renovado .admin-revision-dialogo{width:min(560px,calc(100% - 32px));max-height:85dvh;overflow:auto;border:1px solid #c8d7e2;border-radius:16px;padding:24px;background:#fff;color:#17364b}
-.panel-renovado .admin-revision-dialogo::backdrop{background:#102b3b80}
-.panel-renovado .admin-revision-dialogo p{line-height:1.6;margin-block:16px}
-.panel-renovado .admin-revision-dialogo dl{margin-block:20px;padding:16px;background:#f3f6f9;border-radius:10px}
-.panel-renovado .admin-revision-dialogo dd{margin:8px 0 0}
-.panel-renovado .admin-revision-botones{display:flex;flex-wrap:wrap;gap:12px}
-.panel-renovado .admin-revision-botones .boton{flex:1 1 190px}
-.panel-renovado{
- --panel-fondo:#f3f6f9;--panel-borde:#dce5ec;--panel-tinta:#17364b;--panel-suave:#5b7183;--panel-acento:#ed552f;
- background:var(--panel-fondo);color:var(--panel-tinta);
+/* Design tokens. Declared on the document root while the panel is mounted so portalled dialogs inherit them. */
+:root:has(.panel-renovado),.panel-renovado{
+ --p-fondo:#f3f6f9;--p-superficie:#fff;--p-superficie-2:#f7fafc;--p-superficie-3:#eef3f7;
+ --p-borde:#dce5ec;--p-borde-fuerte:#b9cbd8;
+ --p-tinta:#17364b;--p-tinta-2:#345165;--p-suave:#5b7183;--p-tenue:#7890a2;
+ --p-primario:#244b67;--p-primario-hover:#17384f;--p-primario-suave:#e8f0f6;
+ --p-acento:#ef4e2b;--p-foco:#2f6f98;
+ --p-exito:#1d6b45;--p-exito-fondo:#e6f4ec;--p-exito-borde:#b7dcc6;
+ --p-aviso:#8a5300;--p-aviso-fondo:#fdf3e1;--p-aviso-borde:#efd3a1;
+ --p-peligro:#a3261b;--p-peligro-fondo:#fcebe8;--p-peligro-borde:#efc0b9;
+ --p-info:#1f5a85;--p-info-fondo:#e7f1f9;--p-info-borde:#bcd6ea;
+ --p-neutro:#4b6579;--p-neutro-fondo:#eef3f7;--p-neutro-borde:#d6e1e9;
+ --p-radio-s:8px;--p-radio:12px;--p-radio-l:16px;--p-radio-pill:999px;
+ --p-esp-1:4px;--p-esp-2:8px;--p-esp-3:12px;--p-esp-4:16px;--p-esp-5:20px;--p-esp-6:24px;--p-esp-8:32px;
+ --p-texto-xs:.75rem;--p-texto-s:.85rem;--p-texto:.95rem;--p-texto-l:1.1rem;
+ --p-sombra-1:0 1px 3px #17364b0f;--p-sombra-2:0 6px 20px #17364b12;--p-sombra-3:0 24px 80px #102b3b30;
+ --panel-fondo:var(--p-fondo);--panel-borde:var(--p-borde);--panel-tinta:var(--p-tinta);--panel-suave:var(--p-suave);--panel-acento:var(--p-acento);
 }
+.panel-renovado{background:var(--p-fondo);color:var(--p-tinta)}
+/* Shared status chip: never colour-only; background, border and text change together. */
+.panel-chip{display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:3px 10px;border-radius:var(--p-radio-pill);border:1px solid var(--p-neutro-borde);background:var(--p-neutro-fondo);color:var(--p-neutro);font-size:var(--p-texto-xs);font-weight:650;line-height:1.3;white-space:nowrap}
+.panel-chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.panel-chip[data-tono=exito]{background:var(--p-exito-fondo);border-color:var(--p-exito-borde);color:var(--p-exito)}
+.panel-chip[data-tono=aviso]{background:var(--p-aviso-fondo);border-color:var(--p-aviso-borde);color:var(--p-aviso)}
+.panel-chip[data-tono=peligro]{background:var(--p-peligro-fondo);border-color:var(--p-peligro-borde);color:var(--p-peligro)}
+.panel-chip[data-tono=info]{background:var(--p-info-fondo);border-color:var(--p-info-borde);color:var(--p-info)}
+/* Shared page header used by every module. */
+.panel-renovado .panel-encabezado{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--p-esp-4) var(--p-esp-6);margin:0 0 var(--p-esp-6)}
+.panel-renovado .panel-encabezado h1{margin:0}
+.panel-renovado .panel-encabezado p{margin:var(--p-esp-2) 0 0;color:var(--p-suave);font-size:var(--p-texto);max-width:68ch;line-height:1.55}
+.panel-renovado .panel-encabezado-miga{display:block;font-size:var(--p-texto-xs);font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--p-tenue);margin-bottom:var(--p-esp-2)}
+.panel-renovado .panel-encabezado-acciones{display:flex;flex-wrap:wrap;gap:var(--p-esp-3);align-items:center}
+/* Shared empty state. */
+.panel-renovado .panel-vacio{display:grid;justify-items:center;text-align:center;gap:var(--p-esp-2);padding:40px 24px;background:var(--p-superficie);border:1px dashed var(--p-borde-fuerte);border-radius:var(--p-radio);color:var(--p-suave)}
+.panel-renovado .panel-vacio svg{color:var(--p-tenue)}
+.panel-renovado .panel-vacio h2,.panel-renovado .panel-vacio h3{margin:0;color:var(--p-tinta);font-size:var(--p-texto-l)}
+.panel-renovado .panel-vacio p{margin:0}
+/* Shared summary strip (KPI tiles). */
+.panel-renovado .panel-resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:var(--p-esp-3);margin:0 0 var(--p-esp-6);padding:0;list-style:none}
+.panel-renovado .panel-resumen>li,.panel-renovado .panel-resumen>a{display:grid;gap:var(--p-esp-1);padding:var(--p-esp-4) var(--p-esp-5);background:var(--p-superficie);border:1px solid var(--p-borde);border-radius:var(--p-radio);color:inherit;text-decoration:none}
+.panel-renovado .panel-resumen>a:hover{border-color:var(--p-borde-fuerte);box-shadow:var(--p-sombra-2)}
+.panel-renovado .panel-resumen span{font-size:var(--p-texto-s);color:var(--p-suave)}
+.panel-renovado .panel-resumen strong{font-size:1.6rem;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--p-tinta)}
+.panel-renovado .panel-resumen [data-tono=aviso] strong{color:var(--p-aviso)}
+.panel-renovado .panel-resumen [data-tono=peligro] strong{color:var(--p-peligro)}
+.panel-renovado .panel-resumen [data-tono=exito] strong{color:var(--p-exito)}
 .panel-renovado>main{width:100%;min-width:0;max-width:1480px;padding:36px clamp(20px,3vw,44px) 72px;background:transparent}
 .panel-renovado h1{font-size:clamp(1.65rem,2.6vw,2.25rem);line-height:1.15;letter-spacing:-.035em;margin:0 0 24px}
 .panel-renovado h2,.panel-renovado h3{letter-spacing:-.02em}
@@ -29,9 +64,6 @@
 .panel-renovado .boton-azul:hover{background:#17384f}
 .panel-renovado .boton-contorno{background:#fff;border-color:#cbd9e3;color:#345165}
 .panel-renovado .boton-contorno:hover{background:#edf3f7;border-color:#96afc0}
-.panel-renovado .pedidos-reales-nav{background:#102b3b}
-.panel-renovado .pedidos-reales-nav nav a{transition:background-color .15s,color .15s}
-.panel-renovado .pedidos-reales-nav nav a[aria-current]{background:#ffffff12}
 /* 1. Start: task groups instead of an undifferentiated wall of cards. */
 .panel-renovado .panel-bienvenida{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:28px;background:#fff;border:1px solid var(--panel-borde);border-radius:18px;margin-bottom:28px}
 .panel-renovado .panel-bienvenida h1{margin-bottom:10px}
@@ -40,7 +72,7 @@
 .panel-renovado .panel-grupo-modulos{margin-top:28px}
 .panel-renovado .panel-grupo-modulos>h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--panel-suave);margin:0 0 12px}
 .panel-renovado .panel-modulos{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0}
-.panel-renovado .panel-modulos a{position:relative;display:flex;align-items:flex-start;gap:16px;padding:24px 20px;background:#fff;border:1px solid var(--panel-borde);border-radius:14px;transition:border-color .15s,box-shadow .15s}
+.panel-renovado .panel-modulos a{position:relative;display:flex;align-items:flex-start;gap:16px;padding:24px 20px;background:#fff;border:1px solid var(--panel-borde);border-radius:14px;transition:border-color .15s,box-shadow .15s,transform .15s}
 .panel-renovado .panel-modulos a:hover{border-color:#93adbf;box-shadow:0 6px 20px #17364b0a}
 .panel-renovado .panel-modulo-icono{flex:none;width:42px;height:42px;padding:9px;border-radius:12px;background:#eef4f8;color:#315d7a;margin:0}
 .panel-renovado .panel-modulos h3{font-size:1rem;margin:0 0 8px}
@@ -124,7 +156,6 @@
 .panel-renovado .estadisticas-tabla-scroll tr:hover td{background:#f8fafc}
 .panel-renovado .estadisticas-meta-estados li{border:1px solid var(--panel-borde);border-radius:8px;padding:10px 14px;background:#f7fafc}
 /* Responsive layout: preserve touch targets, collapse columns, never shrink input text. */
-@media(min-width:1101px){.panel-renovado{grid-template-columns:228px minmax(0,1fr)}.panel-renovado .pedidos-reales-nav{padding:28px 14px}.panel-renovado .pedidos-reales-nav nav a{border-radius:10px;padding:13px 12px}}
 @media(max-width:1250px){.panel-renovado .panel-modulos{grid-template-columns:repeat(2,minmax(0,1fr))}.panel-renovado .admin-producto-formulario{grid-template-columns:minmax(0,1fr) minmax(280px,.85fr)}.panel-renovado .admin-producto-principal .admin-bilingue{grid-template-columns:1fr}}
 @media(max-width:850px){.panel-renovado .admin-producto-formulario{grid-template-columns:1fr}.panel-renovado .admin-producto-principal .admin-bilingue{grid-template-columns:repeat(2,minmax(0,1fr))}.panel-renovado .panel-bienvenida{align-items:start;flex-direction:column}.panel-renovado .admin-producto-lateral .admin-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){
@@ -170,3 +201,13 @@
 .panel-renovado .admin-categorias-grid .admin-item{margin:0}
 .panel-renovado .admin-categorias-grid .admin-bilingue{grid-template-columns:1fr}
 @media(max-width:850px){.panel-renovado .admin-categorias-grid{grid-template-columns:1fr}}
+
+/* Home command centre. */
+.panel-renovado .panel-inicio-bloque{margin-top:var(--p-esp-6)}
+.panel-renovado .panel-inicio-bloque>h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--p-suave);margin:0 0 var(--p-esp-3)}
+.panel-renovado .panel-resumen>li{padding:0}
+.panel-renovado .panel-resumen>li>a{display:grid;gap:var(--p-esp-1);padding:var(--p-esp-4) var(--p-esp-5);color:inherit;text-decoration:none;border-radius:inherit;min-height:100%}
+.panel-renovado .panel-resumen>li:has(>a:hover){border-color:var(--p-borde-fuerte);box-shadow:var(--p-sombra-2)}
+.panel-renovado .panel-resumen>li>a:focus-visible{outline:2px solid var(--p-foco);outline-offset:2px}
+.panel-renovado .panel-resumen>li[data-tono=aviso]{border-left:3px solid var(--p-aviso-borde)}
+.panel-renovado .panel-inicio .panel-grupo-modulos{margin-top:var(--p-esp-8)}

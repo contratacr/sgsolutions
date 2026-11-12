@@ -1,3 +1,4 @@
+import {VERSION_PREFERENCIAS_MEDICION} from '../src/lib/preferencias-medicion';
 import {test,expect,type BrowserContext} from '@playwright/test';
 async function sesion(context:BrowserContext){const sub='00000000-0000-4000-8000-000000000001',jwt=[{alg:'HS256',typ:'JWT'},{sub,role:'authenticated',aud:'authenticated',aal:'aal1',exp:Math.floor(Date.now()/1000)+3600}].map(x=>Buffer.from(JSON.stringify(x)).toString('base64url')).join('.')+'.fixture';await context.addCookies([{name:'sb-127-auth-token',value:'base64-'+Buffer.from(JSON.stringify({access_token:jwt,refresh_token:'fixture',expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user:{id:sub}})).toString('base64url'),domain:'127.0.0.1',path:'/'}]);}
 for(const idioma of ['es','en'])test(`administrador en Mi cuenta y cierre real de sesión: ${idioma}`,async({page,context,request})=>{
@@ -33,6 +34,8 @@ test('el administrador queda excluido en una pestaña pública que ya estaba abi
 });
 
 test('clientes y visitantes anónimos sí cuentan, antes y después de cerrar sesión',async({page,context,request})=>{
+ // Counting requires a saved statistics choice (privacy notice since 2026-11-03).
+ await page.addInitScript(version=>localStorage.setItem('sg-medicion',JSON.stringify({version,analitica:true,publicidad:false,fecha:new Date().toISOString()})),VERSION_PREFERENCIAS_MEDICION);
  await request.post('http://127.0.0.1:3173/__test/perfil',{data:{rol:'cliente',activo:true}});await sesion(context);
  const total=async()=>(await (await request.get('http://127.0.0.1:3173/__test/eventos')).json()).eventos;
  const antes=await total();await page.goto('/nosotros');await expect.poll(total).toBeGreaterThan(antes);expect(await page.evaluate(()=>localStorage.getItem('sg-excluir-medicion'))).toBeNull();

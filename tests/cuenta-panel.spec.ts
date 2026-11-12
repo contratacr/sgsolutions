@@ -13,7 +13,7 @@ for(const idioma of ['es','en'])test(`cuenta y panel comparten sesión de produc
  for(const f of filas)expect(f).toEqual(filas[0]);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.screenshot({path:`.privado/cuenta-menu-unificado-${info.project.name}-${idioma}.png`,fullPage:true});
- await admin.click();await expect(page).toHaveURL(/\/panel$/);await expect(page.locator('.panel-modulos')).toBeVisible();
+ await admin.click();await expect(page).toHaveURL(/\/panel$/);await expect(page.locator('.panel-modulos').first()).toBeVisible();
  await page.goto('/admin');await expect(page).toHaveURL(/\/panel$/);
  await expect(page.locator('html')).toHaveAttribute('lang',idioma);
  await page.goto('/cuenta');await page.locator('.cuenta-menu-secciones .cuenta-salir').click();

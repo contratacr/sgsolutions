@@ -1,5 +1,5 @@
 import 'server-only';
-import {motivoArchivoValido} from './archivo-pedidos';
+import {motivoArchivoValido,enlaceVencido} from './archivo-pedidos';
 import {referenciaPedido} from './referencia-pedido';
 import {createClient} from '@supabase/supabase-js';
 import {randomBytes} from 'node:crypto';
@@ -53,13 +53,18 @@ export async function eliminarConsultaCancelada(id:string){
 export async function archivarAsesoriaPanel(id:string,archivar:boolean,motivo=''){
  if(archivar&&!motivoArchivoValido(motivo))return false;
  if(await adminLocalDisponible())return localModificar(f=>{
-  const s=f.find(x=>x.id===id&&!x.eliminado_en);if(!s||Boolean(s.archivado_en)===archivar||archivar&&!['utilizada','cancelada'].includes(s.estado))return false;
+  const s=f.find(x=>x.id===id&&!x.eliminado_en);const vencido=Boolean(s&&archivar&&enlaceVencido(s));if(!s||Boolean(s.archivado_en)===archivar||archivar&&!vencido&&!['utilizada','cancelada'].includes(s.estado))return false;
+  if(vencido){s.estado='cancelada';s.token=null;}
   s.archivado_en=archivar?new Date().toISOString():null;if(archivar)s.archivado_motivo=motivo.trim();return true;
  });
  const cliente=db();if(!cliente)return false;
- let q=cliente.from('solicitudes_asesoria').update({archivado_en:archivar?new Date().toISOString():null,...(archivar?{archivado_motivo:motivo.trim()}:{})}).eq('id',id).is('eliminado_en',null);
+ const ahora=new Date().toISOString();
+ let q=cliente.from('solicitudes_asesoria').update({archivado_en:archivar?ahora:null,...(archivar?{archivado_motivo:motivo.trim()}:{})}).eq('id',id).is('eliminado_en',null);
  q=archivar?q.is('archivado_en',null).in('estado',['utilizada','cancelada']):q.not('archivado_en','is',null);
- const {data,error}=await q.select('id').maybeSingle();return !error&&Boolean(data);
+ const {data,error}=await q.select('id').maybeSingle();if(error)return false;if(data||!archivar)return Boolean(data);
+ // Expired approved link: cancel it and archive in one update (the archive trigger accepts 'cancelada').
+ const vencido=await cliente.from('solicitudes_asesoria').update({estado:'cancelada',token:null,archivado_en:ahora,archivado_motivo:motivo.trim()}).eq('id',id).is('eliminado_en',null).is('archivado_en',null).eq('estado','aprobada').lte('vence_en',ahora).select('id').maybeSingle();
+ return !vencido.error&&Boolean(vencido.data);
 }
 
 async function pagoRecuperable(s:SolicitudAsesoria){

@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const {PGlite}=await import(process.env.SG_PGLITE_MODULE??'@electric-sql/pglite');
+const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create schema auth;create schema storage;
+create table auth.users(id uuid primary key,email text,raw_user_meta_data jsonb default '{}',created_at timestamptz default now(),last_sign_in_at timestamptz,email_confirmed_at timestamptz default now(),banned_until timestamptz,deleted_at timestamptz);
+create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+grant usage on schema auth,public,storage to authenticated;
+create table storage.objects(id integer,bucket_id text);alter table storage.objects enable row level security;grant insert on storage.objects to authenticated;`);
+for(const file of ['20260909000100_perfiles.sql','20261012000100_usuarios_panel.sql','20261012000200_gestion_usuarios.sql','20261012000300_perfiles_compra_clientes.sql'])await db.exec(await readFile('supabase/migrations/'+file,'utf8'));
+await db.exec(`create policy administradores_suben_imagenes on storage.objects for insert to authenticated with check(true);`);
+await db.exec(await readFile('supabase/migrations/20261013000100_seguridad_y_archivo_roles.sql','utf8'));
+await db.exec(await readFile('supabase/migrations/20261111000100_filtro_usuarios_panel.sql','utf8'));
+const id=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+await db.query(`insert into auth.users(id,email,created_at,email_confirmed_at,banned_until) values
+ ($1,'admin@example.com','2026-01-05',now(),null),($2,'ana@example.com','2026-01-04',now(),null),($3,'sin@example.com','2026-01-03',null,null),
+ ($4,'bloq@example.com','2026-01-02',now(),'2999-01-01'),($5,'comercial@example.com','2026-01-01',now(),null)`,[id(1),id(2),id(3),id(4),id(5)]);
+await db.query(`insert into public.perfiles values($1,'Admin','administrador',true,now()),($2,'Comercial','comercial',true,now())`,[id(1),id(5)]);
+await db.query(`insert into public.estado_cuentas_usuario(usuario_id,estado) values($1,'eliminando')`,[id(2)]);
+assert.equal((await db.query(`select count(*)::int n from pg_proc where proname='listar_usuarios_panel'`)).rows[0].n,1);
+assert.equal((await db.query(`select has_function_privilege('anon','public.listar_usuarios_panel(text,integer,text)','EXECUTE') ok`)).rows[0].ok,false);
+await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id(1)]);await db.exec('set role authenticated');
+const lista=async(...a)=>{const {rows}=await db.query(`select public.listar_usuarios_panel(${a.map((_,i)=>'$'+(i+1)).join(',')}) r`,a);return {total:rows[0].r.total,ids:rows[0].r.usuarios.map(u=>u.id.slice(-1))};};
+assert.deepEqual(await lista(),{total:5,ids:['1','2','3','4','5']});
+assert.deepEqual(await lista('',1,'todos'),await lista('',1));
+assert.deepEqual(await lista('',1,'administradores'),{total:1,ids:['1']});
+assert.deepEqual(await lista('',1,'clientes'),{total:4,ids:['2','3','4','5']});
+assert.deepEqual(await lista('',1,'bloqueados'),{total:2,ids:['2','4']});
+assert.deepEqual(await lista('',1,'sin_confirmar'),{total:1,ids:['3']});
+assert.deepEqual(await lista('ANA',1,'bloqueados'),{total:1,ids:['2']});
+assert.deepEqual(await lista('',2,'clientes'),{total:4,ids:[]});
+await assert.rejects(()=>lista('',1,'otro'),/DATOS_INVALIDOS/);
+await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id(2)]);await db.exec('set role authenticated');
+await assert.rejects(()=>lista('',1,'todos'),/SIN_PERMISO/);
+await db.close();console.log('PASS: users filter by access and state, legacy call, search, paging and permissions.');

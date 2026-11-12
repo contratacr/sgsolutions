@@ -53,10 +53,10 @@ for(const idioma of ['es','en'] as const){
    const q=p.get('q')!;consultas.push(q);if(q==='lenta')await pendiente;
    await route.fulfill({json:{...inicial,total:1,pagina:1,paginas:1,productos:[{...producto,id:'manual-'+q,nombre:{es:'QA '+q,en:'QA '+q}}]}}).catch(()=>{});
   });
-  await page.goto('/tienda');await page.locator('#buscar-equipo').fill('lenta');
+  await page.goto('/tienda');await page.locator('#buscar-equipo').fill('lenta');await page.locator('#buscar-equipo').press('Escape');
   await expect(page.locator('.shop-resultados .carga-esqueleto')).toBeVisible();await expect(page.locator('.shop-grid .shop-producto')).toHaveCount(0);
   await expect.poll(()=>consultas.includes('lenta')).toBe(true);
-  await page.locator('#buscar-equipo').fill('reciente');
+  await page.locator('#buscar-equipo').fill('reciente');await page.locator('#buscar-equipo').press('Escape');
   await expect(page.locator('.shop-grid .shop-producto h3').first()).toHaveText('QA reciente');
   liberar();await page.waitForTimeout(400);await expect(page.locator('.shop-grid .shop-producto h3').first()).toHaveText('QA reciente');
   await expect(page.locator('.shop-resultados .carga-esqueleto')).toHaveCount(0);await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');

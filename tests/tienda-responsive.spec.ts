@@ -64,6 +64,6 @@ test('cinta espera imágenes lentas y mantiene continuidad al cerrar el bucle',a
 });
 
  test('filtros se conservan al regresar de una ficha',async({page})=>{
- await page.goto('/tienda');await page.locator('#buscar-equipo').fill('Lenovo');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);await page.locator('.shop-producto h3 a').first().click();await expect(page).toHaveURL(/tienda\/.+/);await page.goBack();await expect(page.locator('#buscar-equipo')).toHaveValue('Lenovo');await expect(page.locator('.shop-vistas')).toHaveCount(0);
+ await page.goto('/tienda');await page.locator('#buscar-equipo').fill('Lenovo');await page.locator('#buscar-equipo').press('Escape');await expect(page.locator('.shop-resultados')).toHaveAttribute('aria-busy','false');await page.locator('.shop-producto').first().scrollIntoViewIfNeeded();await expect.poll(()=>page.locator('.shop-producto[data-revelando]').count()).toBe(0);await page.locator('.shop-producto h3 a').first().click();await expect(page).toHaveURL(/tienda\/.+/);await page.goBack();await expect(page.locator('#buscar-equipo')).toHaveValue('Lenovo');await expect(page.locator('.shop-vistas')).toHaveCount(0);
  await page.getByRole('button',{name:'Read this page in English'}).click();await expect(page.locator('html')).toHaveAttribute('lang','en');
  });

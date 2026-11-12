@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {consultarCatalogo} from '../src/lib/catalogo-consulta';
 import {recomendaciones} from '../src/lib/recomendaciones';
 import {publicarCatalogo,esquemaCatalogo} from '../src/lib/catalogo-modelo';
-import {seleccionInicioEmpresarial} from '../src/lib/soluciones-empresariales';
+import {seleccionInicioEmpresarial,catalogoTienda} from '../src/lib/soluciones-empresariales';
 import {incorporarEmpresariales} from '../src/lib/incorporar-empresariales';
 import inicial from '../src/lib/catalogo-inicial.json';
 test('recomendaciones excluyen stock bajo, precios pendientes y el producto actual',()=>{
@@ -12,11 +12,12 @@ test('recomendaciones excluyen stock bajo, precios pendientes y el producto actu
  expect(r.destacados.map(x=>x.id)).toEqual(['eurocomp-qa-0','eurocomp-qa-2']);expect(r.sugeridos.map(x=>x.id)).toEqual(['eurocomp-qa-2']);
  expect(recomendaciones(p.map(x=>({...x,precio:null}))).destacados).toEqual([]);
 });
-test('recomendados adapta afinidad y respeta precio y búsqueda',()=>{
+test('recomendados ignora el historial y respeta precio y búsqueda',()=>{
  const catalogo=publicarCatalogo(esquemaCatalogo.parse(inicial));const base=catalogo.productos[0];
  const c={...catalogo,productos:[{...base,id:'qa-a',destacado:false,precio:1000,marca:'A'},{...base,id:'qa-b',destacado:true,precio:3000,marca:'B'},{...base,id:'qa-c',destacado:false,precio:2000,marca:'A'}]};
  expect(consultarCatalogo(c,new URLSearchParams()).productos[0].id).toBe('qa-b');
- expect(consultarCatalogo(c,new URLSearchParams({orden:'recomendados',explorados:'qa-a,qa-c'})).productos[0].marca).toBe('A');
+ // Since 934cca2 the main listing keeps one server/client order: browsing history does not reorder it.
+ expect(consultarCatalogo(c,new URLSearchParams({orden:'recomendados',explorados:'qa-a,qa-c'})).productos[0].id).toBe('qa-b');
  expect(consultarCatalogo(c,new URLSearchParams({orden:'menor',explorados:'qa-b'})).productos.map(p=>p.precio)).toEqual([1000,2000,3000]);
  expect(consultarCatalogo(c,new URLSearchParams({orden:'mayor'})).productos.map(p=>p.precio)).toEqual([3000,2000,1000]);
  expect(consultarCatalogo(c,new URLSearchParams({q:'no-match-zzzz'})).total).toBe(0);
@@ -54,7 +55,8 @@ test('la portada conserva compra directa y destaca cuatro soluciones sin perder 
  const reemplazos=consultarCatalogo(sinPreferido,new URLSearchParams()).productos.filter(p=>p.coleccion==='empresas');
  expect(reemplazos).toHaveLength(4);expect(new Set(reemplazos.map(p=>p.solucionEmpresarial)).size).toBe(4);
  const soloDirectos={...c,productos:c.productos.filter(p=>p.coleccion!=='empresas')};
- expect(consultarCatalogo(soloDirectos,new URLSearchParams()).total).toBe(soloDirectos.productos.length);
+ // The store hides products below minimum sale prices (politica-visibilidad-productos).
+ expect(consultarCatalogo(soloDirectos,new URLSearchParams()).total).toBe(catalogoTienda(soloDirectos).productos.length);
  const soloEmpresas=consultarCatalogo(c,new URLSearchParams({categoria:'soluciones-empresariales'}));
  expect(soloEmpresas.productos.every(p=>p.coleccion==='empresas')).toBe(true);
  for(const orden of ['menor','mayor']){

@@ -11,6 +11,8 @@ import {useCambiosAdmin} from '@/components/use-cambios-admin';
 import {GestorImagenes} from '@/components/gestor-imagenes';
 import {ErroresAdmin,enfocarRegistro,type CampoAdmin} from '@/components/errores-admin';
 type Texto = { es: string; en: string };
+/** "Inicio.tituloPrincipal" → "Titulo principal": readable fallback when a key has no translated label. */
+const humanizar = (clave: string) => { const texto = clave.replace(/[._-]+/g, ' ').replace(/([a-z\u00e0-\u00ff])([A-Z0-9])/g, '$1 $2').toLowerCase().trim(); return texto.charAt(0).toUpperCase() + texto.slice(1); };
 export function EditorContenido({
   inicial,
   revisionInicial,
@@ -32,6 +34,9 @@ export function EditorContenido({
   const idioma=useLocale();
   const [grupo,setGrupo]=useState('todos'),[buscarCasos,setBuscarCasos]=useState('');
   const grupos=[...new Set(Object.keys(textos).map(k=>k.split('.')[0]))];
+  const etiquetaGrupo=(g:string)=>t.has('grupo'+g)?t('grupo'+g):humanizar(g);
+  const etiquetaCampo=(k:string)=>{const [g,...resto]=k.split('.');return resto.length?t('campoTexto',{grupo:etiquetaGrupo(g),campo:humanizar(resto.join('.'))}):humanizar(k);};
+  const ordenBloqueado=buscarCasos.trim()!=='';
   const textosFiltrados=Object.entries(textos).filter(([k,v])=>(grupo==='todos'||k.startsWith(grupo+'.'))&&`${k} ${(datos.textos[k]??v).es} ${(datos.textos[k]??v).en}`.toLowerCase().includes(busqueda.toLowerCase()));
   const [nuevoId,setNuevoId]=useState(''),[eliminarCaso,setEliminarCaso]=useState<string|null>(null);
   const [limite,setLimite]=useState(30);
@@ -45,7 +50,7 @@ export function EditorContenido({
   function bilingue(titulo: string, valor: Texto, cambiar: (v: Texto) => void, corto = false, requerido = false) {
     return (["es", "en"] as const).map((l) => (
       <label key={l}>
-        {titulo} ({l.toUpperCase()}){requerido&&' *'}
+        {titulo} ({u(l==='es'?'idiomaEs':'idiomaEn')}){requerido&&' *'}
         {corto ? <input required={requerido} maxLength={250} value={valor[l]} onChange={(e) => cambiar({ ...valor, [l]: e.target.value })} /> : <textarea
           required={requerido} maxLength={4000}
           value={valor[l]}
@@ -81,9 +86,9 @@ export function EditorContenido({
   return (
     <div className="admin-editor">
 
-      <div className="admin-tabs">
+      <div className="admin-tabs" role="group" aria-label={t('pestanas')}>
         {["casos", "textos", "imagenes", "contacto", "pagos"].map((k) => (
-          <button key={k} aria-pressed={tab === k} onClick={() => setTab(k)}>
+          <button type="button" key={k} aria-pressed={tab === k} onClick={() => setTab(k)}>
             {t(k)}
           </button>
         ))}
@@ -93,7 +98,7 @@ export function EditorContenido({
           <>
             <div className="admin-lista-cabecera"><div><h2>{t('casos')}</h2><p>{t('casosAyuda')}</p></div></div>
             <button
-              className="boton boton-contorno"
+              type="button" className="boton boton-contorno"
               onClick={() => {const id=`caso-${crypto.randomUUID().slice(0,8)}`;setNuevoId(id);setBuscarCasos('');
                 setDatos((d) => ({
                   ...d,
@@ -115,7 +120,7 @@ export function EditorContenido({
             >
               {t("nuevo")}
             </button>
-            <label className="admin-casos-buscar">{t('casosBuscar')}<input type="search" value={buscarCasos} onChange={e=>setBuscarCasos(e.target.value)}/></label>
+            <label className="admin-casos-buscar">{t('casosBuscar')}<input type="search" value={buscarCasos} onChange={e=>setBuscarCasos(e.target.value)} aria-describedby={ordenBloqueado?'contenido-nota-orden':undefined}/></label>{ordenBloqueado&&<p id="contenido-nota-orden" className="contenido-nota-orden" role="status">{t('reordenarBusqueda')}</p>}
             {datos.casos.map((c, i) => ({c,i})).filter(({c})=>`${c.cliente} ${c.titulo.es} ${c.titulo.en}`.toLowerCase().includes(buscarCasos.toLowerCase())).map(({c,i}) => (
               <details key={c.id} id={c.id} className="admin-item" open={c.id===nuevoId?true:undefined}>
                 <summary><strong>{c.cliente || t('nuevo')}</strong><span className="admin-estado-producto">{c.publicado?t('casoPublicado'):a('borrador')}</span></summary>
@@ -144,9 +149,9 @@ export function EditorContenido({
                   ))}
                 </div>
                 <GestorImagenes onBusy={setCargandoImagenes} fotos={c.fotos} descripciones descripcionesRequeridas={c.publicado} cambiar={fotos=>caso(i,{fotos:fotos.map(f=>({src:f.src,alt:c.fotos.some(anterior=>anterior.src===f.src)?{es:f.alt?.es??'',en:f.alt?.en??''}:{es:f.alt?.es||c.cliente,en:f.alt?.en||c.cliente},caption:{es:f.caption?.es??'',en:f.caption?.en??''}}))})}/>
-                <div className="gestor-operaciones"><button type="button" disabled={i===0} aria-label={t('subirCaso',{cliente:c.cliente||t('nuevo')})} onClick={()=>setDatos(d=>{const casos=[...d.casos];[casos[i-1],casos[i]]=[casos[i],casos[i-1]];return {...d,casos};})}>{t('subir')}</button><button type="button" disabled={i===datos.casos.length-1} aria-label={t('bajarCaso',{cliente:c.cliente||t('nuevo')})} onClick={()=>setDatos(d=>{const casos=[...d.casos];[casos[i+1],casos[i]]=[casos[i],casos[i+1]];return {...d,casos};})}>{t('bajar')}</button></div>
+                <div className="gestor-operaciones"><button type="button" disabled={ordenBloqueado||i===0} aria-label={t('subirCaso',{cliente:c.cliente||t('nuevo')})} onClick={()=>setDatos(d=>{const casos=[...d.casos];[casos[i-1],casos[i]]=[casos[i],casos[i-1]];return {...d,casos};})}>{t('subir')}</button><button type="button" disabled={ordenBloqueado||i===datos.casos.length-1} aria-label={t('bajarCaso',{cliente:c.cliente||t('nuevo')})} onClick={()=>setDatos(d=>{const casos=[...d.casos];[casos[i+1],casos[i]]=[casos[i],casos[i+1]];return {...d,casos};})}>{t('bajar')}</button></div>
                 <button
-                  className="boton boton-contorno"
+                  type="button" className="boton boton-contorno"
                   onClick={() => setEliminarCaso(c.id)}
                 >
                   {a("quitar")}
@@ -158,7 +163,7 @@ export function EditorContenido({
         {tab === "textos" && (
           <>
             <div className="admin-lista-cabecera"><div><h2>{t('textos')}</h2><p>{t('textosAyuda')}</p></div></div>
-            <div className="admin-textos-filtros"><label>{t('grupoTextos')}<select value={grupo} onChange={e=>{setGrupo(e.target.value);setLimite(30);}}><option value="todos">{t('todosTextos')}</option>{grupos.map(g=><option key={g} value={g}>{t.has('grupo'+g)?t('grupo'+g):g}</option>)}</select></label><label>
+            <div className="admin-textos-filtros"><label>{t('grupoTextos')}<select value={grupo} onChange={e=>{setGrupo(e.target.value);setLimite(30);}}><option value="todos">{t('todosTextos')}</option>{grupos.map(g=><option key={g} value={g}>{etiquetaGrupo(g)}</option>)}</select></label><label>
               {t("buscar")}
               <input
                 type="search"
@@ -173,7 +178,7 @@ export function EditorContenido({
                 <details key={k} id={k} className="admin-item">
                   <summary><span className="admin-texto-resumen">{(datos.textos[k]??v)[idioma==='en'?'en':'es']}</span></summary><p className="admin-clave">{k}</p>
                   <div className="admin-fields">
-                    {bilingue(k, datos.textos[k] ?? v, (valor) =>
+                    {bilingue(etiquetaCampo(k), datos.textos[k] ?? v, (valor) =>
                       setDatos((d) => ({
                         ...d,
                         textos: { ...d.textos, [k]: valor },
@@ -183,7 +188,7 @@ export function EditorContenido({
                   </div>
                 </details>
               ))}
-            {textosFiltrados.length>limite&&<button className="boton boton-contorno" onClick={()=>setLimite(n=>n+30)}>{u("mas")}</button>}
+            {textosFiltrados.length>limite&&<button type="button" className="boton boton-contorno" onClick={()=>setLimite(n=>n+30)}>{u("mas")}</button>}
           </>
         )}
         {tab === 'imagenes'&&<section id="config-imagenes" className="admin-configuracion"><h2>{t('imagenes')}</h2>{Object.entries(datos.imagenes).map(([clave,src])=><details key={clave} className="admin-item"><summary>{t('imagen'+clave)}</summary><GestorImagenes portadaInicio={['inicioTienda','inicioSoporte','inicioEmpresas'].includes(clave)} fotos={[{src}]} maximo={1} minimo={1} onBusy={setCargandoImagenes} cambiar={fotos=>setDatos(d=>({...d,imagenes:{...d.imagenes,[clave]:fotos[0]?.src??src}}))}/></details>)}</section>}
