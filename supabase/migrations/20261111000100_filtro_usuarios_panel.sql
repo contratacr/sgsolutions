@@ -1,8 +1,9 @@
 -- Usuarios del panel: filtro opcional por acceso o estado de la cuenta. No cambia datos ni permisos.
 -- La firma anterior (busqueda,pagina) se reemplaza; el nuevo parámetro tiene valor por defecto,
 -- así que las llamadas existentes siguen funcionando igual.
+-- Idempotente: puede ejecutarse de nuevo (por ejemplo desde el SQL Editor y luego con db push) sin error.
 drop function if exists public.listar_usuarios_panel(text,integer);
-create function public.listar_usuarios_panel(busqueda text default '',pagina integer default 1,filtro text default 'todos')
+create or replace function public.listar_usuarios_panel(busqueda text default '',pagina integer default 1,filtro text default 'todos')
 returns jsonb language plpgsql stable security definer set search_path='' as $$
 declare resultado jsonb; texto text:=lower(left(trim(coalesce(busqueda,'')),150)); vista text:=coalesce(filtro,'todos'); total bigint;
 begin
@@ -31,3 +32,4 @@ begin
 end;$$;
 revoke all on function public.listar_usuarios_panel(text,integer,text) from public,anon;
 grant execute on function public.listar_usuarios_panel(text,integer,text) to authenticated;
+notify pgrst,'reload schema';

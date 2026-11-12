@@ -10,7 +10,7 @@ create table storage.objects(id integer,bucket_id text);alter table storage.obje
 for(const file of ['20260909000100_perfiles.sql','20261012000100_usuarios_panel.sql','20261012000200_gestion_usuarios.sql','20261012000300_perfiles_compra_clientes.sql'])await db.exec(await readFile('supabase/migrations/'+file,'utf8'));
 await db.exec(`create policy administradores_suben_imagenes on storage.objects for insert to authenticated with check(true);`);
 await db.exec(await readFile('supabase/migrations/20261013000100_seguridad_y_archivo_roles.sql','utf8'));
-await db.exec(await readFile('supabase/migrations/20261111000100_filtro_usuarios_panel.sql','utf8'));
+const filtro=await readFile('supabase/migrations/20261111000100_filtro_usuarios_panel.sql','utf8');await db.exec(filtro);await db.exec(filtro);// Re-run must be harmless (manual SQL Editor + later db push).
 const id=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
 await db.query(`insert into auth.users(id,email,created_at,email_confirmed_at,banned_until) values
  ($1,'admin@example.com','2026-01-05',now(),null),($2,'ana@example.com','2026-01-04',now(),null),($3,'sin@example.com','2026-01-03',null,null),
