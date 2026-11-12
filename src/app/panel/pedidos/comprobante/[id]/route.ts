@@ -9,8 +9,7 @@ const respuesta=(estado:number)=>new NextResponse(null,{status:estado,headers:pr
 
 /** Signs the payment receipt on demand, so a panel opened for hours never shows an expired link. */
 export async function GET(_req:NextRequest,ctx:{params:Promise<{id:string}>}){
- const acceso=await leerAccesoPanel();
- if(acceso!=='administrador')return respuesta(acceso==='mfa'||acceso==='sinSesion'?401:403);
+ if(await leerAccesoPanel()!=='administrador')return new NextResponse(null,{status:403,headers:privado});
  if(!await sesionLocal()){
   const cliente=await crearClienteServidor();const user=cliente?(await cliente.auth.getUser()).data.user:null;if(!cliente||!user)return respuesta(401);
   const {data:perfil}=await cliente.from('perfiles').select('rol,activo').eq('id',user.id).maybeSingle();
