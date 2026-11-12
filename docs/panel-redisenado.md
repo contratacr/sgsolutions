@@ -50,4 +50,4 @@ Esta ronda no realiza pagos, no modifica usuarios o pedidos reales y no sustituy
 - Commits `0a01ca9` y `c9ff582` en `main`; CI de seguridad aprobado. La ruta del comprobante usa ahora el patrón de autorización que exige `scripts/verificar-mfa.mjs`.
 - Worker desplegado: versión `04d15c25-ec7e-4f17-9aa7-79c7210b16aa`. Versión anterior para revertir: `d1ed980e-c4bd-4cd4-a7c2-e3c85fcd0e07`.
 - Smoke de producción: seis comprobaciones de solo lectura aprobadas.
-- **Pendiente:** aplicar `20261111000100_filtro_usuarios_panel.sql` en Supabase Producción desde el SQL Editor. Es idempotente: se puede volver a ejecutar sin error, también con un `db push` posterior. Mientras tanto, "Todos" y la búsqueda funcionan; los filtros nuevos muestran un aviso.
+- Migración `20261111000100_filtro_usuarios_panel.sql` aplicada en Producción el 12 de noviembre de 2026 desde el SQL Editor. Verificado: solo existe la firma `(text,integer,text)`, `anon` no la ejecuta, sigue como security definer con `search_path` vacío. Nota: el historial de migraciones de Supabase está vacío, así que no usar `db push` contra Producción.
