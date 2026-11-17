@@ -339,8 +339,11 @@ body:has(.inicio-triptico) .barra-local .contenedor{min-height:32px}
 @media(min-width:701px){.ficha-pagina .ficha-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}.ficha-pagina .ficha-galeria{grid-column:1;grid-row:1}.ficha-pagina .ficha-compra{grid-column:2;grid-row:1}.ficha-pagina .ficha-compra .ficha-detalles{display:block}}
 @media(min-width:701px) and (max-width:1000px){.ficha-pagina .ficha-foto{min-height:280px;padding:12px}.ficha-pagina .ficha-foto img{height:260px}.ficha-pagina .ficha-compra h1{font-size:1.3rem}}
 /* Ficha compacta: imagen e información forman un único bloque equilibrado. */
-.ficha-pagina .ficha-grid{align-items:center}
-.ficha-pagina .ficha-galeria{position:static;align-self:center}
+/* La galería se alinea arriba: centrarla contra una columna de especificaciones larga dejaba la foto
+   cientos de píxeles más abajo, rodeada de espacio vacío. En escritorio acompaña la lectura con sticky. */
+.ficha-pagina .ficha-grid{align-items:start}
+.ficha-pagina .ficha-galeria{position:static;align-self:start}
+@media(min-width:701px){.ficha-pagina .ficha-galeria{position:sticky;top:110px}}
 .ficha-pagina .ficha-foto{display:grid;place-items:center;height:380px;min-height:380px;padding:16px}
 .ficha-pagina .ficha-foto img{width:100%;height:348px;object-fit:contain}
 .ficha-pagina .ficha-compra h1{font-size:clamp(1.3rem,2vw,1.65rem);line-height:1.3;margin-bottom:10px}
