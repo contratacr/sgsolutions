@@ -20,7 +20,9 @@ export async function iniciarSesion(_estado: string, datos: FormData): Promise<s
   const permiso=await cliente.rpc('es_administrador_identificado');
   if(permiso.error)return 'error';
   if(permiso.data!==true)return 'sinPermiso';
-  redirect('/admin');
+  // Go straight to the destination instead of re-rendering /admin just to redirect again.
+  const activo=await cliente.rpc('es_administrador_activo');
+  redirect(!activo.error&&activo.data===true?'/panel':'/admin/doble-factor');
 }
 export async function cerrarSesion() {
   await marcarLimpiezaCompra();
