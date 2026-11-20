@@ -1,6 +1,7 @@
 'use client';
 import {agregarReferenciaWhatsApp} from '@/lib/contactos-comerciales-modelo';
 import {campanaConsultaActual} from '@/lib/publicidad-cliente';
+import {recuperarParametrosMeta,borrarCookiesMeta} from '@/lib/parametros-meta-cliente';
 import {useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
@@ -23,6 +24,7 @@ export function Medicion(){
    control?.abort();const actual=new AbortController();control=actual;
    if(!await comprobarPermisoMedicion(actual.signal)||actual.signal.aborted)return;
    const publicidad=publicidadHabilitada(),analitica=Boolean(leerPreferenciasMedicion()?.analitica);
+   if(publicidad){await Promise.race([recuperarParametrosMeta(),new Promise<void>(r=>setTimeout(r,800))]);if(actual.signal.aborted)return;}
    void sincronizarPublicidad(publicidad,adquisicion);if(actual.signal.aborted)return;if(ultimaRuta.current!==ruta){ultimaRuta.current=ruta;if(analitica||publicidad)medir('pagina');if(ruta.startsWith('/tienda/')&&(analitica||publicidad))medir('producto',ruta.split('/')[2]);}else if((publicidad&&!publicidadAnterior.current)||(analitica&&!analiticaAnterior.current)){const canales={analitica:analitica&&!analiticaAnterior.current,publicidad:publicidad&&!publicidadAnterior.current};medir('pagina','',canales);if(ruta.startsWith('/tienda/'))medir('producto',ruta.split('/')[2],canales);}
    publicidadAnterior.current=publicidad;analiticaAnterior.current=analitica;
   };
@@ -45,7 +47,7 @@ export function Medicion(){
   const vistos=new Set<number>();const scroll=()=>{const max=document.documentElement.scrollHeight-innerHeight;if(max<=0)return;const porcentaje=scrollY/max*100;for(const n of [25,50,75,100])if(porcentaje>=n-1&&!vistos.has(n)){vistos.add(n);medir('scroll',String(n));}};
   document.addEventListener('click',clic);window.addEventListener('scroll',scroll,{passive:true});return()=>{control?.abort();cambios.disconnect();document.removeEventListener('input',empezar,true);document.removeEventListener('submit',enviar,true);document.removeEventListener('invalid',invalido,true);window.removeEventListener('sg-formulario-recibido',recibido);window.removeEventListener('focus',volver);window.removeEventListener('pageshow',volver);window.removeEventListener('storage',almacenamiento);document.removeEventListener('visibilitychange',volver);document.removeEventListener('click',clic);window.removeEventListener('scroll',scroll);};
  },[ruta,version]);
- function elegir(permitirAnalitica:boolean,permitirPublicidad:boolean){const preferencia={analitica:permitirAnalitica,publicidad:permitirPublicidad,version:VERSION_PREFERENCIAS_MEDICION,fecha:new Date().toISOString()};guardarPreferenciasMedicion(preferencia);void sincronizarPublicidad(permitirPublicidad);if(!permitirPublicidad){window.fbq?.('consent','revoke');for(const nombre of ['_fbp','_fbc'])document.cookie=`${nombre}=; Max-Age=0; Path=/`; }borrarIdentificadoresMedicion();cerrarPreferenciasMedicion();setAjustes(false);setVersion(v=>v+1);}
+ function elegir(permitirAnalitica:boolean,permitirPublicidad:boolean){const preferencia={analitica:permitirAnalitica,publicidad:permitirPublicidad,version:VERSION_PREFERENCIAS_MEDICION,fecha:new Date().toISOString()};guardarPreferenciasMedicion(preferencia);void sincronizarPublicidad(permitirPublicidad);if(!permitirPublicidad){window.fbq?.('consent','revoke');borrarCookiesMeta(); }borrarIdentificadoresMedicion();cerrarPreferenciasMedicion();setAjustes(false);setVersion(v=>v+1);}
  if(ruta.startsWith('/admin')||ruta.startsWith('/panel'))return null;
  const guardadas=leerPreferenciasMedicion(),mostrarAjustes=ajustes||Boolean(guardadas);
  return abierto&&<section className={`medicion-aviso${mostrarAjustes?' medicion-aviso--ajustes':''}`} role="dialog" aria-modal="false" aria-labelledby="medicion-titulo">
