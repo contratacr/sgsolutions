@@ -86,7 +86,7 @@ export function Medicion(){
  const guardadas=leerPreferenciasMedicion(),mostrarAjustes=ajustes||Boolean(guardadas);
  return abierto&&<section ref={avisoRef} className={`medicion-aviso${mostrarAjustes?' medicion-aviso--ajustes':''}`} role="dialog" aria-modal="false" aria-labelledby="medicion-titulo">
   <h2 id="medicion-titulo" ref={tituloRef} tabIndex={-1}>{t(mostrarAjustes?'tituloAjustes':'titulo')}</h2>
-  <p>{t(mostrarAjustes?'detalleAjustes':'consentimiento')}</p>
+  <p>{t(mostrarAjustes?'detalleAjustes':'consentimiento')}{!mostrarAjustes&&<>{' '}<Link href="/privacidad#legal-4">{t('politicaCookies')}</Link></>}</p>
   {mostrarAjustes?<>
    <div className="medicion-categorias">
     <div className="medicion-categoria">
@@ -115,9 +115,6 @@ export function Medicion(){
    <button type="button" className="medicion-cerrar" aria-label={t('cerrarAviso')} onClick={cerrarAviso}><X aria-hidden="true" size={20}/></button>
    <div className="medicion-acciones">
     <button type="button" onClick={continuar}>{t('continuar')}</button>
-   </div>
-   <div className="medicion-enlaces">
-    <Link href="/privacidad#legal-4">{t('politicaCookies')}</Link>
    </div>
   </>}
  </section>;
