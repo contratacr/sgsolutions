@@ -528,3 +528,19 @@ svg { flex-shrink: 0; }
 .medicion-categoria summary{display:list-item;cursor:pointer;color:#294c70;text-decoration:underline;text-underline-offset:3px;line-height:1.4;padding:8px 0}
 .medicion-categoria summary:focus-visible{outline:3px solid #ed5938;outline-offset:2px}
 .medicion-categoria details p{margin:4px 0 0;font-size:.8rem;line-height:1.5;color:#536b80}
+
+/* Notice with a single "Continuar" button and an X. On phones it is a compact bottom sheet and the page keeps room below it. */
+.medicion-aviso:not(.medicion-aviso--ajustes) h2{padding-right:44px}
+.medicion-aviso .medicion-cerrar{position:absolute;top:8px;right:8px;display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:#173149}
+.medicion-aviso .medicion-cerrar:hover{background:#eef3f7}
+.medicion-acciones button{width:100%;min-height:48px;border-radius:12px;font-size:.92rem}
+@media(max-width:650px){
+ .medicion-aviso:not(.medicion-aviso--ajustes){left:0;right:0;bottom:0;width:auto;max-height:50dvh;padding:14px 16px calc(12px + env(safe-area-inset-bottom));border-radius:16px 16px 0 0;border-width:1px 0 0}
+ .medicion-aviso:not(.medicion-aviso--ajustes) h2{margin-bottom:6px;font-size:1rem}
+ .medicion-aviso .medicion-cerrar{top:6px;right:8px;width:36px;height:36px;min-height:36px}
+ .medicion-aviso:not(.medicion-aviso--ajustes) p{margin-bottom:10px;font-size:.78rem;line-height:1.45}
+ .medicion-aviso:not(.medicion-aviso--ajustes) .medicion-enlaces{margin-top:4px}
+ .medicion-aviso:not(.medicion-aviso--ajustes) .medicion-enlaces a{min-height:36px;padding:2px 0}
+ body{padding-bottom:var(--medicion-alto,0px)}
+ .whatsapp-flotante{bottom:calc(var(--medicion-alto,0px) + 16px)}
+}

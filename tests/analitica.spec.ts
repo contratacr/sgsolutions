@@ -7,15 +7,15 @@ test('solo admite dimensiones cerradas, sin identidad ni contenido libre',()=>{
  expect(conteoAnonimo.safeParse(evento).success).toBe(true);
  for(const extra of [{usuario:'cuenta'},{sesion:crypto.randomUUID()},{visitante:crypto.randomUUID()},{ip:'127.0.0.1'},{campana:'identificador'},{ruta:'/cuenta'},{ruta:'/pagar/token-secreto'},{detalle:'nombre-persona'},{tipo:'scroll',detalle:'numero-telefono'}])expect(conteoAnonimo.safeParse({...evento,...extra}).success).toBe(false);
 });
-// Consent model since 2026-11-03 (docs/campanas-y-conversiones.md): nothing is measured until an explicit choice.
-for(const idioma of ['es','en'] as const)test(`sin elección no mide; De acuerdo habilita contadores agregados ${idioma}`,async({page,context})=>{
+// Consent model since 2026-11-25 (docs/campanas-y-conversiones.md): nothing is measured until Continuar, the X or moving to another page.
+for(const idioma of ['es','en'] as const)test(`sin elección no mide; Continuar habilita contadores agregados ${idioma}`,async({page,context})=>{
  const t=(idioma==='es'?es:en).Analitica;
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
  let publicidadPermitida=0;page.on('request',r=>{if(r.url().includes('/api/publicidad/contexto')&&r.postDataJSON()?.permitir===true)publicidadPermitida++;});
  const eventos:Record<string,string>[]=[];await page.route('**/api/estadisticas',async r=>{const headers=await r.request().allHeaders();expect(headers.cookie).toBeUndefined();expect(headers.authorization).toBeUndefined();expect(headers.referer).toBeUndefined();expect(headers['x-sg-conteo']).toBeTruthy();eventos.push(r.request().postDataJSON());await r.fulfill({status:204});});
  await page.goto('/?utm_campaign=persona-identificable');const aviso=page.locator('.medicion-aviso');await expect(aviso).toBeVisible();await page.waitForLoadState('networkidle');
  expect(eventos).toEqual([]);expect(publicidadPermitida).toBe(0);expect(await page.evaluate(()=>Boolean(window.fbq))).toBe(false);expect(await page.evaluate(()=>localStorage.getItem('sg-medicion'))).toBeNull();
- await aviso.getByRole('button',{name:t.deAcuerdo,exact:true}).click();await expect(aviso).toHaveCount(0);
+ await aviso.getByRole('button',{name:t.continuar,exact:true}).click();await expect(aviso).toHaveCount(0);
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('sg-medicion')??'null'))).toMatchObject({analitica:true,publicidad:true});
  await expect.poll(()=>eventos.filter(e=>e.tipo==='pagina').length).toBeGreaterThan(0);await expect.poll(()=>publicidadPermitida).toBeGreaterThan(0);
  for(const e of eventos){expect(Object.keys(e).sort()).toEqual(['detalle','dispositivo','idioma','ruta','tipo']);expect(JSON.stringify(e)).not.toContain('persona-identificable');}
@@ -32,7 +32,7 @@ for(const idioma of ['es','en'] as const)test(`la elección de privacidad se sin
  await context.addCookies([{name:'sg-idioma',value:idioma,domain:'127.0.0.1',path:'/'}]);
  const otra=await context.newPage();await page.goto('/tienda');await otra.goto('/empresas');
  await expect(page.locator('.medicion-aviso')).toBeVisible();await expect(otra.locator('.medicion-aviso')).toBeVisible();
- await page.locator('.medicion-aviso').getByRole('button',{name:t.configuracion,exact:true}).click();
+ await page.locator('footer .pie-preferencias').click();
  await page.locator('.medicion-aviso').getByRole('checkbox',{name:new RegExp(t.publicidad)}).uncheck();await page.locator('.medicion-aviso').getByRole('button',{name:t.guardar,exact:true}).click();
  await expect(otra.locator('.medicion-aviso')).toHaveCount(0);
  await otra.reload();await expect(otra.locator('.medicion-aviso')).toHaveCount(0);
@@ -63,7 +63,7 @@ for(const idioma of ['es','en'] as const)test(`Meta separado y limpieza de ident
  await page.goto('/privacidad');const aviso=page.locator('.medicion-aviso');await expect(aviso).toBeVisible();
  await expect.poll(()=>page.evaluate(()=>localStorage.getItem('sg-medicion-visitante'))).toBeNull();expect(await page.evaluate(()=>sessionStorage.getItem('sg-medicion-sesion'))).toBeNull();expect((await context.cookies()).some(c=>c.name==='sg-analitica')).toBe(false);
  await page.waitForLoadState('networkidle');expect(eventos).toEqual([]);expect(cargas).toBe(0);
- await aviso.getByRole('button',{name:t.configuracion,exact:true}).click();await aviso.getByRole('button',{name:t.aceptarTodo,exact:true}).click();await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('sg-medicion')??'null')?.publicidad)).toBe(true);
+ await page.locator('footer .pie-preferencias').click();await aviso.getByRole('button',{name:t.aceptarTodo,exact:true}).click();await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('sg-medicion')??'null')?.publicidad)).toBe(true);
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('sg-medicion')??'null')?.version)).toBe(VERSION_PREFERENCIAS_MEDICION);
  // Meta receives events from the server; its browser script is never loaded.
  await expect.poll(()=>eventos.filter(e=>e.tipo==='pagina').length).toBe(1);expect(cargas).toBe(0);expect(await page.evaluate(()=>Boolean(window.fbq))).toBe(false);

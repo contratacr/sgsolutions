@@ -55,7 +55,7 @@ for(const idioma of ['es','en'] as const)test(`visita anónima cuenta después d
  const antes=await total();await page.goto('/privacidad');await expect(page.locator('h1')).toBeVisible();
  const t=(idioma==='es'?es:en).Analitica;
  const aviso=page.locator('.medicion-aviso');await expect(aviso).toBeVisible();expect(await total()).toBe(antes);
- await aviso.getByRole('button',{name:t.configuracion,exact:true}).click();
+ await page.locator('footer .pie-preferencias').click();
  await aviso.locator('input[type=checkbox]').last().uncheck();
  await aviso.getByRole('button',{name:t.guardar,exact:true}).click();
  await expect.poll(total).toBeGreaterThan(antes);

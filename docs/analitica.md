@@ -28,7 +28,7 @@ Fuentes oficiales: [Cloudflare Workers Logs](https://developers.cloudflare.com/w
 
 ## Publicidad y comprobaciones
 
-Meta permanece separado y solo se inicia tras aceptar publicidad en las preferencias del footer. Sin esa decisión no se carga el píxel. No se hace grabación de sesiones. El ID público configurado no es una clave privada.
+Meta permanece separado y solo se inicia tras la aceptación (botón «Continuar», X o pasar a otra página; ver «Aviso con un solo botón» en `campanas-y-conversiones.md`). El permiso se retira en «Configurar cookies y privacidad», en el pie. Sin aceptación no se carga el píxel ni se mide nada. No se hace grabación de sesiones. El ID público configurado no es una clave privada.
 
 Pruebas dirigidas: `npx playwright test --config playwright.estadisticas.config.ts` cubre escritorio y Safari móvil, ambos idiomas, exclusión administrativa, fallos de rol, ausencia de cookies/Referer, igualdad del permiso entre navegadores y transporte servidor–Supabase sin datos del visitante. `npm run verificar` y build antes de entregar cambios. La regresión completa solo se ejecuta manualmente según la preferencia del usuario; nunca contra producción.
 

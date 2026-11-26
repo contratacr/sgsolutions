@@ -6,12 +6,15 @@ let version=0;
 let revocacion=0;
 let primera:ReturnType<typeof origenCampana>|undefined,clicInicial:string|undefined;
 /** Capture only after advertising consent, before asynchronous permission checks/navigation. */
-export function leerAdquisicionPublicidad(){
+export type Aterrizaje={href:string;search:string;referrer:string};
+/** Landing details kept in memory only (never stored or sent) until the visitor decides, so acceptance by browsing keeps the campaign. */
+export function leerAterrizaje():Aterrizaje{return {href:location.href,search:location.search,referrer:document.referrer};}
+export function leerAdquisicionPublicidad(aterrizaje?:Aterrizaje){
  if(!publicidadHabilitada())return undefined;
- const q=new URLSearchParams(location.search);let externa=document.referrer;
+ const q=new URLSearchParams(aterrizaje?.search??location.search);let externa=aterrizaje?.referrer??document.referrer;
  try{if(new URL(externa).origin===location.origin)externa='';}catch{}
  const clic=q.get('fbclid');
- return {origen:origenCampana(location.search,externa),clic:clic&&/^[A-Za-z0-9_-]{1,300}$/.test(clic)?clic:undefined};
+ return {origen:origenCampana(aterrizaje?.search??location.search,externa),clic:clic&&/^[A-Za-z0-9_-]{1,300}$/.test(clic)?clic:undefined};
 }
 export function sincronizarPublicidad(permitir:boolean,captura=permitir?leerAdquisicionPublicidad():undefined){
  const actual=++version,previa=sincronizacion;

@@ -6,7 +6,7 @@ Este documento describe la medición y su historial. El código revisado el 31 d
 
 - Contadores propios: totales diarios de páginas, productos, clics, búsquedas sin texto, búsquedas sin resultados, cambios del tipo de filtro y formularios. No incluyen identificadores de personas, cuentas, sesiones, IP, mensajes ni historial individual. La cantidad de cierres de formularios es aproximada: se observa que el formulario se retire sin envío mientras la página sigue activa; no reconstruye abandonos fuera de línea.
 - Atribución publicitaria: requiere `publicidad === true` en las preferencias reconocidas. `sg-publicidad` es HttpOnly, firmada, SameSite=Lax y Secure en producción. Caduca a los 30 días del primer permiso, sin extenderse en cada visita. Contiene un ID técnico, fbp, fbc cuando existe clic de Meta, primer origen y reciente. Es seudónima, no anónima. No se vincula a la cuenta. Un navegador compartido puede compartir esta atribución.
-- Sin preferencia guardada se muestra el aviso. Rechazar publicidad impide el envío publicitario; no aceptar tampoco habilita Meta. La medición agregada del navegador requiere por separado `analitica === true`. Los hitos operativos del servidor tienen su propia elegibilidad. Ninguna de estas métricas representa todos los visitantes necesariamente.
+- Sin preferencia guardada se muestra el aviso. Hasta que haya aceptación (Continuar, X o pasar a otra página, ver «Aviso con un solo botón») no se mide nada ni se envía nada a Meta. Retirar el permiso desde «Configurar cookies y privacidad» impide el envío publicitario. La medición agregada del navegador requiere por separado `analitica === true`. Los hitos operativos del servidor tienen su propia elegibilidad. Ninguna de estas métricas representa todos los visitantes necesariamente.
 - Los códigos `utm_campaign` se aceptan solo si están en `SG_CAMPANAS_PERMITIDAS`. Fuente/medio usan listas cerradas. Facebook/Instagram de referencia no significan anuncios pagados. UTM desconocida no se publica como campaña pagada verificada; los valores declarados no demuestran por sí mismos un clic pagado real.
 - La atribución permite contar conversiones por campaña, no calcular ROAS ni costo de adquisición sin importar gasto real de anuncios. No se atribuyen conversiones históricas sin contexto permitido.
 
@@ -253,3 +253,23 @@ El usuario autorizó expresamente publicar medición, ejecutar pruebas y activar
 - Diez pruebas de contrato/atribución/referencias aprobadas. El primer comando omitía `--conditions=react-server`; se corrigió la invocación, sin modificar el límite de servidor.
 - Doce casos de navegador aprobados en escritorio y Safari móvil, ES/EN: consentimiento, navegación, panel, períodos, persistencia de idioma y fallos controlados. Se corrigió un selector de prueba ambiguo entre las secciones de campañas y contactos; no se cambió el comportamiento de la aplicación para hacer pasar la prueba.
 - Rebase sobre `ddc0df9` conserva los diez commits posteriores de tienda/consentimiento. Se renombró la migración a `20261105000300` para evitar colisión de versión con inventario manual. Tipos, lint, 2531 textos bilingües y secretos aprobados.
+
+## Aviso con un solo botón — 25 de noviembre de 2026
+
+Decisión del dueño (Isaac), mismo comportamiento que el aviso de ContrataCR (commit c257706e de ese repositorio).
+
+- El aviso se titula «Cookies y píxeles de seguimiento» y tiene un botón «Continuar» y una X. No hay «Rechazar» ni «Configuración» en el aviso. El texto dice que, al navegar, el visitante acepta el uso de cookies y píxeles y que se comparta la información con socios de redes sociales, publicidad y analítica.
+- Cuenta como aceptación: pulsar «Continuar», cerrar con la X o pasar a otra página del sitio (incluido abrir el enlace de la política) después de que el aviso se mostró. La primera vista y las recargas no cuentan; tampoco las pantallas `/admin` y `/panel`, los navegadores excluidos ni la app nativa (Capacitor), donde solo «Continuar» acepta.
+- Hasta la aceptación no se mide nada ni se envía nada a Meta. Una negativa guardada (también de una versión anterior del aviso o una elección mixta) se respeta: cerrar el aviso o navegar no la cambia. Si el navegador no deja leer el almacenamiento, no se acepta nada de forma implícita.
+- `sg-medicion` guarda además `origen`: `click`, `close` o `implicit`, para distinguir aceptaciones explícitas de las implícitas. Es solo local, sin migración de base de datos y sin versión nueva del aviso (no se vuelve a preguntar a quien ya eligió).
+- La URL de la primera página (campaña UTM y `fbclid`) se conserva solo en memoria mientras el aviso está pendiente. Al aceptar se usa para la atribución y para recuperar `_fbc`; si no se acepta, se descarta. No se guarda ni se envía antes.
+- Salvaguarda permanente: «Configurar cookies y privacidad» en el pie y en la página de privacidad abre un panel para ver y retirar el permiso. Al guardar sin categorías se apaga la medición en el momento y se guarda como rechazo.
+- Las visitas administrativas y del equipo siguen excluidas como antes (`sg-excluir-medicion`, cuentas administradoras y vista móvil local).
+
+### Riesgo asumido por el dueño
+
+No hay confirmación de un abogado de que seguir navegando valga como consentimiento. La decisión de usar aceptación implícita es del dueño y su riesgo es suyo. Puntos a vigilar:
+
+- Los anuncios de Meta de SG solo se entregan en Costa Rica (desglose por país de Ads Manager, 26 oct–24 nov 2026). El tráfico orgánico no se pudo verificar por país: Cloudflare no estaba con sesión iniciada y los contadores propios no guardan país por diseño.
+- Si hay visitas desde Europa o el Reino Unido, el consentimiento implícito no es válido allí. Propuesta pendiente de decisión: mostrar solo a esos visitantes (país por `request.cf.country` en el Worker) dos botones del mismo tamaño, «Aceptar» y «Rechazar».
+- El texto del aviso habla de «píxeles». SG no carga el píxel de Meta en el navegador (los eventos salen del servidor); el texto es amplio a propósito y no debe interpretarse como que se cargue ese píxel.

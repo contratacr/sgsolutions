@@ -8,13 +8,13 @@ let tarea:Promise<void>|undefined;
  * library (pinned, no CDN) makes no network request, and no IP lookup function
  * or personal data is passed to it. Call only after advertising consent.
  */
-export function recuperarParametrosMeta(){
+export function recuperarParametrosMeta(urlAterrizaje?:string){
  if(typeof window==='undefined'||!publicidadHabilitada())return Promise.resolve();
  tarea??=(async()=>{
   try{
    const modulo=await import('meta-capi-param-builder-clientjs') as unknown as {clientParamBuilder?:Constructor;default?:{clientParamBuilder?:Constructor}};
    const constructor=modulo.clientParamBuilder??modulo.default?.clientParamBuilder;
-   await constructor?.processAndCollectAllParams();
+   await constructor?.processAndCollectAllParams(urlAterrizaje);
   }catch{/* Measurement must never affect navigation. */}
  })();
  return tarea;
